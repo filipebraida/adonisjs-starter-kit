@@ -1,0 +1,4 @@
+name: repo
+
+include:
+  - ./apps/web/docker-compose.yaml
