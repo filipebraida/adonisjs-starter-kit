@@ -12,6 +12,7 @@ This is a starter kit for AdonisJS projects using a monorepo setup. It leverages
 - **User Management**: Fully implemented user management system.
 - **Authorization & Authentication**: Secure access control for users.
 - **Password Recovery**: Built-in functionality for password reset and recovery.
+- **Social Auth**: Authentication using social providers like Google, GitHub, and others via the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
 
 ## Installation
 
