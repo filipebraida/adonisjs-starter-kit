@@ -1,4 +1,4 @@
-# AdonisJS Monorepo Starter Kit
+# AdonisJS Starter Kit
 
 This is a starter kit for AdonisJS projects using a monorepo setup. It leverages cutting-edge tools like TurboRepo, pnpm, ShadCN, Inertia.js, Tailwind CSS, and PostgreSQL to streamline the development process and get your projects up and running faster. Additionally, it includes a documentation project built with Next.js to make maintaining your project's documentation seamless.
 
@@ -9,7 +9,9 @@ This is a starter kit for AdonisJS projects using a monorepo setup. It leverages
 - **Frontend Integration**: Inertia.js for a modern single-page app experience.
 - **Styling**: Tailwind CSS for rapid and responsive UI development.
 - **Database**: PostgreSQL for robust and scalable data storage.
-- **Documentation**: A dedicated Next.js app for creating and hosting project documentation.
+- **User Management**: Fully implemented user management system.
+- **Authorization & Authentication**: Secure access control for users.
+- **Password Recovery**: Built-in functionality for password reset and recovery.
 
 ## Installation
 
