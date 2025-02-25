@@ -67,7 +67,7 @@ export default function UsersTable({ users, roles }: DataTableProps) {
           additionalFilters={
             <>
               <Input
-                placeholder={'Pesquisar ...'}
+                placeholder={'Search ...'}
                 value={(props.table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
                 onChange={(event) =>
                   props.table.getColumn('fullName')?.setFilterValue(event.target.value)
