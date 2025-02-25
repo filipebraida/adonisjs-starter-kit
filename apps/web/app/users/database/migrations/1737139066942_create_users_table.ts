@@ -17,7 +17,8 @@ export default class extends BaseSchema {
         .defaultTo(Roles.USER)
       table.string('full_name').nullable()
       table.string('email', 254).notNullable().unique()
-      table.string('password').notNullable()
+      table.string('password').nullable()
+      table.string('avatar_url').nullable().defaultTo(null)
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

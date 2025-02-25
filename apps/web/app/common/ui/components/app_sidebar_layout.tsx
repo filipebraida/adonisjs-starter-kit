@@ -110,6 +110,7 @@ export default function AppLayout({ children, breadcrumbs = [] }: AppLayoutProps
                   user={{
                     name: user.fullName ?? undefined,
                     email: user.email,
+                    avatar: user.avatarUrl ?? undefined,
                   }}
                   options={navUser}
                 />

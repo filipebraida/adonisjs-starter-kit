@@ -10,12 +10,18 @@ export default class SignInController {
     return inertia.render('auth/sign_in')
   }
 
-  async handle({ auth, request, response }: HttpContext) {
+  async handle({ auth, request, response, session }: HttpContext) {
     const { email, password } = await request.validateUsing(signInValidator)
 
-    const user = await User.verifyCredentials(email, password)
+    try {
+      const user = await User.verifyCredentials(email, password)
 
-    await auth.use('web').login(user)
+      await auth.use('web').login(user)
+    } catch (error) {
+      session.flash('errors', 'The provided username/email or password is incorrect')
+
+      return response.redirect().toRoute('auth.sign_in.show')
+    }
 
     return response.redirect().toRoute(afterAuthRedirectRoute)
   }
