@@ -6,14 +6,14 @@ import AppLayout from '#common/ui/components/app_sidebar_layout'
 import HeadingSmall from '#common/ui/components/heading_small'
 import { PasswordForm } from '#users/ui/components/password_form'
 
-import ProfileLayout from '#users/ui/components/profile_layout'
+import SettingsLayout from '#users/ui/components/settings_layout'
 
 export default function PasswordPage({}: InferPageProps<PasswordController, 'show'>) {
   const currentPath = '/settings/password'
 
   return (
     <AppLayout breadcrumbs={[{ label: 'Usuários' }]}>
-      <ProfileLayout currentPath={currentPath}>
+      <SettingsLayout currentPath={currentPath}>
         <div className="space-y-6">
           <HeadingSmall
             title="Update password"
@@ -21,7 +21,7 @@ export default function PasswordPage({}: InferPageProps<PasswordController, 'sho
           />
           <PasswordForm />
         </div>
-      </ProfileLayout>
+      </SettingsLayout>
     </AppLayout>
   )
 }

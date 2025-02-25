@@ -26,7 +26,7 @@ const sidebarNavItems: NavItem[] = [
   },
 ]
 
-export default function ProfileLayout({
+export default function SettingsLayout({
   children,
   currentPath,
 }: {
