@@ -4,9 +4,9 @@ import atislabsLogo from '../images/atislabs.png'
 export default function LogosSection() {
   return (
     <section>
-      <div className="bg-white py-24 sm:py-32">
+      <div className="bg-background text-foreground py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 className="text-center text-lg/8 font-semibold text-gray-900">Developed by</h2>
+          <h2 className="text-center text-lg/8 font-semibold">Developed by</h2>
           <div className="mx-auto mt-10 max-w-lg grid grid-cols-6 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <a href="https://atislabs.com.br" target="_blank" rel="noreferrer">
               <span className="sr-only">AtisLabs</span>
