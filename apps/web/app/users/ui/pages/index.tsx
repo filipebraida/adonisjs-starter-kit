@@ -1,15 +1,15 @@
 import { InferPageProps } from '@adonisjs/inertia/types'
 
+import type UsersController from '#users/controllers/users_controller'
+
 import AppLayout from '#common/ui/components/app_sidebar_layout'
 import { Main } from '#common/ui/components/main'
+import Heading from '#common/ui/components/heading'
 
 import UsersTable from '#users/ui/components/users_table'
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
 import { UsersDialogs } from '#users/ui/components/users_dialogs'
 import UsersProvider from '#users/ui/context/users_context'
-
-import type UsersController from '#users/controllers/users_controller'
-import Heading from '#common/ui/components/heading'
 
 export default function ListUsersPage({ users, roles }: InferPageProps<UsersController, 'index'>) {
   return (
