@@ -71,7 +71,6 @@ root/
 - **Inertia.js**: Seamless frontend-backend integration.
 - **Tailwind CSS**: Utility-first CSS framework for styling.
 - **PostgreSQL**: High-performance database.
-- **Next.js**: Framework for the documentation app.
 
 ## Contributing
 
