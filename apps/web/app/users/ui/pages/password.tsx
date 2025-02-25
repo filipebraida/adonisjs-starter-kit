@@ -1,6 +1,6 @@
 import { InferPageProps } from '@adonisjs/inertia/types'
 
-import PasswordController from '#users/controllers/password_controller'
+import type PasswordController from '#users/controllers/password_controller'
 
 import AppLayout from '#common/ui/components/app_sidebar_layout'
 import HeadingSmall from '#common/ui/components/heading_small'

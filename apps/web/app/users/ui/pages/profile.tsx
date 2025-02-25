@@ -1,6 +1,6 @@
 import { InferPageProps } from '@adonisjs/inertia/types'
 
-import ProfileController from '#users/controllers/profile_controller'
+import type ProfileController from '#users/controllers/profile_controller'
 
 import AppLayout from '#common/ui/components/app_sidebar_layout'
 import HeadingSmall from '#common/ui/components/heading_small'
