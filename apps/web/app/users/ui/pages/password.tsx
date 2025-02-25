@@ -12,7 +12,7 @@ export default function PasswordPage({}: InferPageProps<PasswordController, 'sho
   const currentPath = '/settings/password'
 
   return (
-    <AppLayout breadcrumbs={[{ label: 'Usuários' }]}>
+    <AppLayout breadcrumbs={[{ label: 'Users' }]}>
       <SettingsLayout currentPath={currentPath}>
         <div className="space-y-6">
           <HeadingSmall

@@ -12,7 +12,7 @@ export default function ProfilePage({ profile }: InferPageProps<ProfileControlle
   const currentPath = '/settings/profile'
 
   return (
-    <AppLayout breadcrumbs={[{ label: 'Usuários' }]}>
+    <AppLayout breadcrumbs={[{ label: 'Users' }]}>
       <SettingsLayout currentPath={currentPath}>
         <div className="space-y-6">
           <HeadingSmall
