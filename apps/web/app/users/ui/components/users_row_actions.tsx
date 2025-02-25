@@ -1,4 +1,5 @@
 import { EditIcon, TrashIcon, EllipsisIcon } from 'lucide-react'
+
 import { Button } from '@workspace/ui/components/button'
 import {
   DropdownMenu,
@@ -8,8 +9,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
-import { useUsers } from '../context/users_context'
 import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
+
+import { useUsers } from '#users/ui/context/users_context'
 
 import type UserDto from '#users/dtos/user'
 

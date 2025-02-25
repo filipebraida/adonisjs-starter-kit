@@ -1,7 +1,7 @@
 import { Button } from '@workspace/ui/components/button'
 import { UserPlus } from 'lucide-react'
 
-import { useUsers } from '../context/users_context'
+import { useUsers } from '#users/ui/context/users_context'
 
 export function UsersPrimaryButtons() {
   const { setOpen } = useUsers()

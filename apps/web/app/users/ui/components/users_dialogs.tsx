@@ -1,6 +1,6 @@
-import { useUsers } from '../context/users_context'
-import { UsersActionDialog } from './users_action_dialog'
-import { UsersDeleteDialog } from './users_delete_dialog'
+import { useUsers } from '#users/ui/context/users_context'
+import { UsersActionDialog } from '#users/ui/components/users_action_dialog'
+import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 
 import RoleDto from '#users/dtos/role'
 
