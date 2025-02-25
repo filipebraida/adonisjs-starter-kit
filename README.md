@@ -18,7 +18,7 @@ This is a starter kit for AdonisJS projects using a monorepo setup. It leverages
 ### Cloning the Repository
 To initialize a new project based on this starter kit, run:
 ```bash
-npm init adonisjs@latest -- -K="filipebraida/adonisjs-shadcn-ui-monorepo.git"
+npm init adonisjs@latest -- -K="filipebraida/adonisjs-starter-kit.git"
 ```
 
 ### Installing Dependencies
@@ -57,7 +57,6 @@ This command will start the AdonisJS server and any related apps.
 root/
 ├── apps/
 │   ├── web/        # Backend and Frontend app using AdonisJS with Inertia.js
-│   ├── docs/       # Documentation app powered by Next.js
 ├── packages/       # Shared packages and utilities
 ├── pnpm-workspace.yaml # Monorepo configuration
 ├── turbo.json      # TurboRepo configuration
