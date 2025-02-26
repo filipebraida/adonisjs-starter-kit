@@ -1,8 +1,7 @@
-include:
-  - ./apps/web/docker-compose.yaml
-
 services:
-  adonis:
+  web:
+    container_name: '${COMPOSE_PROJECT_NAME}_web'
+    restart: always
     build:
       context: .
       dockerfile: apps/web/Dockerfile
@@ -10,13 +9,29 @@ services:
       - apps/web/.env
     networks:
       - sail
-    ports:
-      - 3333:3333
     environment:
-      HOST: adonis
+      HOST: web
       NODE_ENV: production
       DB_HOST: pgsql
 
-networks:
-  sail:
-    driver: bridge
+  proxy:
+    container_name: '${COMPOSE_PROJECT_NAME}_proxy'
+    restart: always
+    build:
+      context: ./.github/docker/nginx
+      dockerfile: Dockerfile
+    volumes:
+      - ./.github/docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template
+    networks:
+      - sail
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - PORT=3333
+      
+  pgsql:
+    ports: []
+    restart: always

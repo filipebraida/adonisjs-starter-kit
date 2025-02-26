@@ -1,5 +1,3 @@
-name: repo
-
 services:
   pgsql:
     image: 'pgvector/pgvector:0.8.0-pg17'
