@@ -2,11 +2,11 @@ import { ReactNode } from 'react'
 import { Link } from '@inertiajs/react'
 
 import Heading from '#common/ui/components/heading'
+import { Main } from '#common/ui/components/main'
 
 import { Button } from '@workspace/ui/components/button'
 import { Separator } from '@workspace/ui/components/separator'
 import { cn } from '@workspace/ui/lib/utils'
-import { Main } from '#common/ui/components/main'
 
 type NavItem = {
   title: string
