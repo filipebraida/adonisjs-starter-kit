@@ -64,7 +64,10 @@ export function ProfileForm({ user }: Props) {
           className="w-full h-2 bg-gray-200 rounded mt-2"
         />
       )}
-      <Button type="submit">Save</Button>
+
+      <div className="pt-2">
+        <Button type="submit">Save</Button>
+      </div>
     </form>
   )
 }

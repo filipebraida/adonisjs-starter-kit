@@ -1,29 +1,22 @@
 import { ReactNode } from 'react'
-import { Link } from '@inertiajs/react'
 
 import Heading from '#common/ui/components/heading'
 import { Main } from '#common/ui/components/main'
+import SidebarNav from '#common/ui/components/sidebar_nav'
 
-import { Button } from '@workspace/ui/components/button'
 import { Separator } from '@workspace/ui/components/separator'
-import { cn } from '@workspace/ui/lib/utils'
+import { KeyRound, User } from 'lucide-react'
 
-type NavItem = {
-  title: string
-  url: string
-  icon: React.ReactNode | null
-}
-
-const sidebarNavItems: NavItem[] = [
+const sidebarNavItems = [
   {
     title: 'Profile',
-    url: '/settings/profile',
-    icon: null,
+    icon: <User size={18} />,
+    href: '/settings/profile',
   },
   {
     title: 'Password',
-    url: '/settings/password',
-    icon: null,
+    icon: <KeyRound size={18} />,
+    href: '/settings/password',
   },
 ]
 
@@ -43,21 +36,7 @@ export default function SettingsLayout({
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
         <aside className="w-full max-w-xl lg:w-48">
           <nav className="flex flex-col space-y-1 space-x-0">
-            {sidebarNavItems.map((item) => (
-              <Button
-                key={item.url}
-                size="sm"
-                variant="ghost"
-                asChild
-                className={cn('w-full justify-start', {
-                  'bg-muted': currentPath === item.url,
-                })}
-              >
-                <Link href={item.url} prefetch>
-                  {item.title}
-                </Link>
-              </Button>
-            ))}
+            <SidebarNav items={sidebarNavItems} currentPath={currentPath} />
           </nav>
         </aside>
 
