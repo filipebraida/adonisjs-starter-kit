@@ -6,6 +6,7 @@ import Heading from '#common/ui/components/heading'
 import { Button } from '@workspace/ui/components/button'
 import { Separator } from '@workspace/ui/components/separator'
 import { cn } from '@workspace/ui/lib/utils'
+import { Main } from '#common/ui/components/main'
 
 type NavItem = {
   title: string
@@ -34,7 +35,7 @@ export default function SettingsLayout({
   currentPath: string
 }) {
   return (
-    <div className="px-4 py-6">
+    <Main>
       <Heading title="Settings" description="Manage your profile and account settings" />
 
       <Separator className="my-6" />
@@ -66,6 +67,6 @@ export default function SettingsLayout({
           <section className="max-w-xl space-y-12">{children}</section>
         </div>
       </div>
-    </div>
+    </Main>
   )
 }
