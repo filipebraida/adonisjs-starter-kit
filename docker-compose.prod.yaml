@@ -1,0 +1,22 @@
+include:
+  - ./apps/web/docker-compose.yaml
+
+services:
+  adonis:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    env_file:
+      - apps/web/.env
+    networks:
+      - sail
+    ports:
+      - 3333:3333
+    environment:
+      HOST: adonis
+      NODE_ENV: production
+      DB_HOST: pgsql
+
+networks:
+  sail:
+    driver: bridge
