@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm } from '@inertiajs/react'
+
+import { UserAvatar } from '#common/ui/components/user_avatar'
 
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -14,9 +16,24 @@ interface Props {
 }
 
 export function ProfileForm({ user }: Props) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
   const { data, setData, errors, put, progress } = useForm({
-    fullName: user.fullName ? user.fullName : '',
+    fullName: user.fullName ?? '',
+    avatar: null as File | null,
   })
+
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      setData('avatar', file)
+      setPreviewUrl(URL.createObjectURL(file))
+    } else {
+      setPreviewUrl(null)
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -24,6 +41,8 @@ export function ProfileForm({ user }: Props) {
     put('/settings/profile', {
       preserveScroll: true,
       onSuccess: () => {
+        setPreviewUrl(null)
+
         toast({
           title: 'Success',
           description: 'Profile updated successfully',
@@ -33,21 +52,48 @@ export function ProfileForm({ user }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-0.5">
+    <form onSubmit={handleSubmit} className="space-y-4 p-0.5" encType="multipart/form-data">
+      <div className="col-span-full flex items-center gap-x-8">
+        <UserAvatar
+          user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
+          className="size-24 flex-none rounded-lg object-cover"
+        />
+
+        <div>
+          <Button type="button" onClick={() => avatarInputRef.current?.click()}>
+            Change avatar
+          </Button>
+          <p className="mt-2 text-xs/5">JPG, GIF or PNG. 1MB max.</p>
+        </div>
+      </div>
+
+      <Input
+        ref={avatarInputRef}
+        id="avatar"
+        type="file"
+        className="hidden"
+        accept="image/*"
+        onChange={handleAvatarChange}
+      />
+
+      {errors?.avatar && (
+        <p className="text-[0.8rem] font-medium text-destructive">{errors.avatar}</p>
+      )}
+
       <div>
-        <Label htmlFor="name" className="mb-1 text-gray-700">
+        <Label htmlFor="fullName" className="mb-1 text-gray-700">
           Full Name
         </Label>
         <Input
           id="fullName"
           placeholder="Enter user's full name"
           value={data.fullName}
-          onChange={(element) => setData('fullName', element.target.value)}
-          className={`${errors?.fullName ? 'border-red-500' : ''}`}
+          onChange={(e) => setData('fullName', e.target.value)}
+          className={errors?.fullName ? 'border-red-500' : ''}
         />
-        <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-          {errors?.fullName}
-        </p>
+        {errors?.fullName && (
+          <p className="text-[0.8rem] font-medium text-destructive">{errors.fullName}</p>
+        )}
       </div>
 
       <div>

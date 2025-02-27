@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
 
-import type User from '#users/models/user'
+import UserDto from '#users/dtos/user'
 
 export type NavUserOptionsGroup = {
   title: string
@@ -25,7 +25,7 @@ export type NavUserOptionsGroup = {
 }[]
 
 export interface NavUserProps {
-  user: User
+  user: UserDto
   options: NavUserOptionsGroup[]
 }
 

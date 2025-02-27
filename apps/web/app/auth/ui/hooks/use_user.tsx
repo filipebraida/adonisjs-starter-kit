@@ -1,7 +1,8 @@
 import usePageProps from '#common/ui/hooks/use_page_props'
-import type User from '#users/models/user'
+
+import UserDto from '#users/dtos/user'
 
 export default function useUser() {
-  const { user } = usePageProps<{ user: User }>()
+  const { user } = usePageProps<{ user: UserDto }>()
   return user
 }

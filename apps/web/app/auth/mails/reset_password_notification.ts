@@ -1,6 +1,7 @@
-import User from '#users/models/user'
 import { BaseMail } from '@adonisjs/mail'
 import router from '@adonisjs/core/services/router'
+
+import User from '#users/models/user'
 
 export default class ResetPasswordNotification extends BaseMail {
   from = 'delivered@resend.dev'

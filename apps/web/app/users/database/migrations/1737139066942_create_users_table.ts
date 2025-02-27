@@ -19,6 +19,7 @@ export default class extends BaseSchema {
       table.string('email', 254).notNullable().unique()
       table.string('password').nullable()
       table.string('avatar_url').nullable().defaultTo(null)
+      table.json('avatar').nullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

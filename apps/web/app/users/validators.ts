@@ -18,6 +18,12 @@ export const createUserValidator = vine.compile(
 export const updateProfileValidator = vine.compile(
   vine.object({
     fullName: vine.string().trim().minLength(3).maxLength(255),
+    avatar: vine
+      .file({
+        extnames: ['png', 'jpg', 'jpeg', 'gif'],
+        size: 1 * 1024 * 1014,
+      })
+      .nullable(),
   })
 )
 

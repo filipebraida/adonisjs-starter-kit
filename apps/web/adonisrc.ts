@@ -16,6 +16,7 @@ export default defineConfig({
     () => import('@adocasts.com/dto/commands'),
     () => import('@adonisjs/mail/commands'),
     () => import('@adonisjs/bouncer/commands'),
+    () => import('@jrmc/adonis-attachment/commands'),
   ],
 
   /*
@@ -47,6 +48,8 @@ export default defineConfig({
     () => import('@adonisjs/mail/mail_provider'),
     () => import('@adonisjs/bouncer/bouncer_provider'),
     () => import('@adonisjs/ally/ally_provider'),
+    () => import('@jrmc/adonis-attachment/attachment_provider'),
+    () => import('@adonisjs/drive/drive_provider'),
   ],
 
   /*

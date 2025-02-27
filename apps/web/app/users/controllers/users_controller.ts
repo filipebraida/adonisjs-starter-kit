@@ -18,6 +18,8 @@ export default class UsersController {
     const users = await User.query().preload('role')
     const roles = await Role.all()
 
+    await User.preComputeUrls(users)
+
     return inertia.render('users/index', {
       users: UserDto.fromArray(users),
       roles: RoleDto.fromArray(roles),
