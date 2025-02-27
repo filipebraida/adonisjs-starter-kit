@@ -22,6 +22,15 @@ export default function UsersTable({ users, roles }: DataTableProps) {
     {
       header: 'Full Name',
       accessorKey: 'fullName',
+      cell: ({ row }) => {
+        return row.original.fullName ? (
+          row.original.fullName
+        ) : (
+          <span className="text-muted-foreground">
+            <i>Not provided</i>
+          </span>
+        )
+      },
     },
     {
       header: 'Email',
