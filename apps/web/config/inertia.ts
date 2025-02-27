@@ -16,9 +16,11 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     user: async (ctx) => {
-      await User.preComputeUrls(ctx.auth?.user!)
+      if (ctx.auth?.user) {
+        await User.preComputeUrls(ctx.auth?.user)
 
-      return new UserDto(ctx.auth?.user)
+        return new UserDto(ctx.auth?.user)
+      }
     },
     flashMessages: (ctx) => ctx.session?.flashMessages.all(),
     abilities: (ctx) => {

@@ -53,6 +53,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
       return
     }
 
+    if (!models.avatar) {
+      return
+    }
+
     await attachmentManager.computeUrl(models.avatar)
   }
 }
