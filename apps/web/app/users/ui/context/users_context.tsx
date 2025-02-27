@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import User from '#users/dtos/user'
 import useDialogState from '#common/ui/hooks/use_dialog_state'
 
-type UsersDialogType = 'add' | 'edit' | 'delete'
+type UsersDialogType = 'add' | 'edit' | 'delete' | 'invite'
 
 interface UsersContextType {
   open: UsersDialogType | null
