@@ -2,6 +2,7 @@ import { useUsers } from '#users/ui/context/users_context'
 import { UsersActionDialog } from '#users/ui/components/users_action_dialog'
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 import { UsersInviteDialog } from '#users/ui/components/users_invite_dialog'
+import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'
 
 import RoleDto from '#users/dtos/role'
 
@@ -25,6 +26,18 @@ export function UsersDialogs({ roles }: { roles: RoleDto[] }) {
 
       {currentRow && (
         <>
+          <UsersImpersonateDialog
+            key={`user-impersonate-${currentRow.id}`}
+            open={open === 'impersonate'}
+            onOpenChange={() => {
+              setOpen('impersonate')
+              setTimeout(() => {
+                setCurrentRow(null)
+              }, 500)
+            }}
+            currentRow={currentRow}
+          />
+
           <UsersActionDialog
             key={`user-edit-${currentRow.id}`}
             roles={roles}

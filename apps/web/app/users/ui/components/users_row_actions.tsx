@@ -1,4 +1,4 @@
-import { EditIcon, TrashIcon, EllipsisIcon } from 'lucide-react'
+import { EditIcon, TrashIcon, EllipsisIcon, UserRoundSearch } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -14,9 +14,12 @@ import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/da
 import { useUsers } from '#users/ui/context/users_context'
 
 import type UserDto from '#users/dtos/user'
+import useUser from '#auth/ui/hooks/use_user'
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps<UserDto>) {
   const { setOpen, setCurrentRow } = useUsers()
+  const user = useUser()
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -27,6 +30,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<UserDto>) 
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
+          {user.id !== row.original.id && (
+            <DropdownMenuItem
+              onClick={() => {
+                setCurrentRow(row.original)
+                setOpen('impersonate')
+              }}
+            >
+              Login as
+              <DropdownMenuShortcut>
+                <UserRoundSearch size={16} />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(row.original)

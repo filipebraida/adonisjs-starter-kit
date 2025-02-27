@@ -12,7 +12,8 @@ import router from '@adonisjs/core/services/router'
 const UsersController = () => import('#users/controllers/users_controller')
 const ProfileController = () => import('#users/controllers/profile_controller')
 const PasswordController = () => import('#users/controllers/password_controller')
-const InviteController = () => import('./controllers/invite_controller.js')
+const InviteController = () => import('#users/controllers/invite_controller')
+const ImpersonatesController = () => import('#users/controllers/impersonates_controller')
 
 router
   .resource('/users', UsersController)
@@ -20,6 +21,9 @@ router
   .use('*', middleware.auth())
 
 router.post('/users/invite', [InviteController]).middleware(middleware.auth())
+router
+  .post('/users/impersonate/:id', [ImpersonatesController, 'store'])
+  .middleware(middleware.auth())
 
 router
   .get('/settings', ({ response }) => {
