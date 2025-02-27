@@ -15,7 +15,7 @@ export default class UsersController {
   public async index({ bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
-    const users = await User.all()
+    const users = await User.query().preload('role')
     const roles = await Role.all()
 
     return inertia.render('users/index', {

@@ -51,7 +51,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
             <span className="font-bold">{currentRow.email}</span>?
             <br />
             This action will allow you to act as this user (Role:{' '}
-            <span className="font-bold">{currentRow.roleId}</span>) in the system.
+            <span className="font-bold">{currentRow.role}</span>) in the system.
           </p>
 
           <Alert>

@@ -58,7 +58,8 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             ?
             <br />
             This action will permanently remove the user with the role of{' '}
-            <span className="font-bold">ADMIN</span> from the system. This cannot be undone.
+            <span className="font-bold">{currentRow.role}</span> from the system. This cannot be
+            undone.
           </p>
 
           <Label className="my-2">

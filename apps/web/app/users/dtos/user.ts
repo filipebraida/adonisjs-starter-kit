@@ -5,6 +5,7 @@ export default class UserDto extends BaseModelDto {
   declare id: number
   declare roleId: number
   declare fullName: string | null
+  declare role: string | null
   declare email: string
   declare avatarUrl: string | null
   declare createdAt: string
@@ -17,6 +18,7 @@ export default class UserDto extends BaseModelDto {
 
     this.id = user.id
     this.roleId = user.roleId
+    this.role = user.role?.name
     this.fullName = user.fullName
     this.email = user.email
     this.avatarUrl = user.avatarUrl
