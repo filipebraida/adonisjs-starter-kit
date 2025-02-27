@@ -1,4 +1,7 @@
+import React from 'react'
 import { Link } from '@inertiajs/react'
+
+import { UserAvatar } from '#common/ui/components/user_avatar'
 
 import { LucideIcon } from 'lucide-react'
 
@@ -11,9 +14,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/components/avatar'
 
-import React from 'react'
+import type User from '#users/models/user'
 
 export type NavUserOptionsGroup = {
   title: string
@@ -23,49 +25,24 @@ export type NavUserOptionsGroup = {
 }[]
 
 export interface NavUserProps {
-  user: {
-    name?: string
-    email: string
-    avatar?: string
-  }
+  user: User
   options: NavUserOptionsGroup[]
 }
 
-function generateFallbackText(user: { name?: string; email: string }): string {
-  if (user.name) {
-    const initials = user.name
-      .split(' ')
-      .map((word) => word[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase()
-    return initials
-  }
-  return user.email.slice(0, 2).toUpperCase()
-}
-
 export function NavUser({ user, options }: NavUserProps) {
-  const fallbackText = generateFallbackText(user)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
-          <Avatar className="h-8 w-8 cursor-pointer">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="uppercase">{fallbackText}</AvatarFallback>
-          </Avatar>
+          <UserAvatar className="cursor-pointer" user={user} />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" side="bottom" align="end">
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">{fallbackText}</AvatarFallback>
-            </Avatar>
+            <UserAvatar className="rounded-lg" user={user} />
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">{user.name}</span>
+              <span className="truncate font-semibold">{user.fullName ?? ''}</span>
               <span className="truncate text-xs">{user.email}</span>
             </div>
           </div>

@@ -1,7 +1,13 @@
 import React from 'react'
 
-import useUser from '#auth/ui/hooks/use_user'
+import { ModeToggle } from '#common/ui/components/mode_toggle'
+import { NavUser, NavUserOptionsGroup } from '#common/ui/components/nav_user'
 import { AppSidebar, NavMainSections } from '#common/ui/components/app_sidebar'
+
+import useUser from '#auth/ui/hooks/use_user'
+
+import AbilityProvider from '#users/ui/context/abilities_context'
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,10 +21,6 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@workspace/ui/com
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { Toaster } from '@workspace/ui/components/toaster'
 
-import { ModeToggle } from '#common/ui/components/mode_toggle'
-import { NavUser, NavUserOptionsGroup } from '#common/ui/components/nav_user'
-
-import AbilityProvider from '#users/ui/context/abilities_context'
 import { LayoutGrid, LogOut, Settings, Users } from 'lucide-react'
 
 interface BreadcrumbItemProps {
@@ -106,14 +108,7 @@ export default function AppLayout({ children, breadcrumbs = [] }: AppLayoutProps
               )}
               <div className="flex flex-row items-center gap-2 ml-auto">
                 <ModeToggle />
-                <NavUser
-                  user={{
-                    name: user.fullName ?? undefined,
-                    email: user.email,
-                    avatar: user.avatarUrl ?? undefined,
-                  }}
-                  options={navUser}
-                />
+                <NavUser user={user} options={navUser} />
               </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
