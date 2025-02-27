@@ -12,11 +12,14 @@ import router from '@adonisjs/core/services/router'
 const UsersController = () => import('#users/controllers/users_controller')
 const ProfileController = () => import('#users/controllers/profile_controller')
 const PasswordController = () => import('#users/controllers/password_controller')
+const InviteController = () => import('./controllers/invite_controller.js')
 
 router
   .resource('/users', UsersController)
   .only(['index', 'store', 'update', 'destroy'])
   .use('*', middleware.auth())
+
+router.post('/users/invite', [InviteController]).middleware(middleware.auth())
 
 router
   .get('/settings', ({ response }) => {

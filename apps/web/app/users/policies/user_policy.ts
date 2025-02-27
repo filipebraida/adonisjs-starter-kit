@@ -22,4 +22,8 @@ export default class UserPolicy extends BasePolicy {
   delete(currentUser: User, user: User): AuthorizerResponse {
     return currentUser.isAdmin && currentUser.id !== user.id
   }
+
+  invite(currentUser: User): AuthorizerResponse {
+    return currentUser.isAdmin
+  }
 }

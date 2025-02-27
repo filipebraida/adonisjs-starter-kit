@@ -21,6 +21,14 @@ export const updateProfileValidator = vine.compile(
   })
 )
 
+export const inviteUserValidator = vine.compile(
+  vine.object({
+    email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),
+    description: vine.string().trim().optional(),
+    roleId: vine.number().exists({ table: 'roles', column: 'id' }),
+  })
+)
+
 export const updatePasswordValidator = vine.compile(
   vine.object({
     password: vine
