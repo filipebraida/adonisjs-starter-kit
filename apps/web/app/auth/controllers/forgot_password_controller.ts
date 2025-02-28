@@ -1,11 +1,9 @@
 import { HttpContext } from '@adonisjs/core/http'
-import mail from '@adonisjs/mail/services/main'
+import emitter from '@adonisjs/core/services/emitter'
 
 import User from '#users/models/user'
 
 import { forgotPasswordValidator } from '#auth/validators'
-
-import ResetPasswordNotification from '#auth/mails/reset_password_notification'
 
 export default class ForgotPasswordController {
   async show({ inertia }: HttpContext) {
@@ -31,7 +29,7 @@ export default class ForgotPasswordController {
     /**
      * Send an email with the signed URL.
      */
-    await mail.send(new ResetPasswordNotification(user))
+    emitter.emit('auth:forgot_password', user)
 
     /**
      * Redirect back with a success message.

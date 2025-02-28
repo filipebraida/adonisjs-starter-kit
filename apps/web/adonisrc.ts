@@ -68,6 +68,7 @@ export default defineConfig({
 
     //auth
     () => import('#auth/start/view'),
+    () => import('#auth/start/events'),
     () => import('#auth/routes'),
 
     //users
