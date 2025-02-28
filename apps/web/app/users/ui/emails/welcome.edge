@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome!</title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      .email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+      }
+      .email-card {
+        background: #fff;
+        border: 1px solid #dddddd;
+        padding: 20px;
+        text-align: center;
+      }
+      .title {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 38px;
+        font-weight: bold;
+        line-height: 1;
+        color: #555;
+        padding: 10px 25px 40px;
+        text-align: center;
+      }
+      .subtitle {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1;
+        color: #555;
+        padding: 10px 25px 40px;
+        text-align: center;
+      }
+      .button-wrapper {
+        padding: 30px 25px 50px;
+      }
+      .button-wrapper a {
+        display: inline-block;
+        background: #2f67f6;
+        color: #ffffff;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 15px;
+        padding: 15px 25px;
+        border-radius: 3px;
+        text-decoration: none;
+      }
+      .message {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+        color: #7f8fa4;
+        padding: 10px 25px 40px;
+        text-align: center;
+      }
+      .email-footer {
+        padding: 20px 0;
+        text-align: center;
+      }
+      .email-footer .footer-text {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 12px;
+        font-weight: 300;
+        color: #575757;
+        text-align: center;
+      }
+      @media only screen and (max-width: 480px) {
+        .email-wrapper {
+          width: 100% !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <div class="email-card">
+        <div class="title">Welcome!</div>
+        <div class="subtitle">
+          We're thrilled to have you on board.
+        </div>
+        <div class="button-wrapper">
+          <a href="{{ welcomeUrl }}" target="_blank">Get Started</a>
+        </div>
+        <div class="message">
+          @if(welcomeMessage)
+            {{ welcomeMessage }}
+          @else
+            Thank you for joining our community. Explore our features and start your journey with us. If you have any questions, feel free to reach out!
+          @endif
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <div class="footer-text">
+          <a href="https://github.com/filipebraida/adonisjs-starter-kit">AdonisJS Starter Kit</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

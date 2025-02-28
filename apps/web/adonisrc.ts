@@ -71,6 +71,7 @@ export default defineConfig({
     () => import('#auth/routes'),
 
     //users
+    () => import('#users/start/view'),
     () => import('#users/routes'),
 
     //analytics
