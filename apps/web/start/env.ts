@@ -44,6 +44,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   RESEND_API_KEY: Env.schema.string(),
+  EMAIL_FROM: Env.schema.string(),
 
   /*
   |----------------------------------------------------------

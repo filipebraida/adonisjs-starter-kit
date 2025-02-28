@@ -1,10 +1,11 @@
 import { BaseMail } from '@adonisjs/mail'
+import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 
 import User from '#users/models/user'
 
 export default class ResetPasswordNotification extends BaseMail {
-  from = 'delivered@resend.dev'
+  from = env.get('EMAIL_FROM')
   subject = `Reset your password for app`
 
   constructor(private user: User) {
@@ -23,10 +24,10 @@ export default class ResetPasswordNotification extends BaseMail {
     const signedUrl = router.makeSignedUrl(
       'auth.reset_password.show',
       { email: this.user.email },
-      { expiresIn: '30m', prefixUrl: 'http://localhost:3333', purpose: 'reset_password' }
+      { expiresIn: '30m', prefixUrl: env.get('APP_URL'), purpose: 'reset_password' }
     )
 
-    this.message.to('delivered@resend.dev')
+    this.message.to(this.user.email)
 
     this.message.htmlView('auth::emails/forgot_password', { user: this.user, signedUrl })
   }
