@@ -1,81 +1,118 @@
 # AdonisJS Starter Kit
 
-This is a starter kit for AdonisJS projects using a monorepo setup. It leverages cutting-edge tools like TurboRepo, pnpm, ShadCN, Inertia.js, Tailwind CSS, and PostgreSQL to streamline the development process and get your projects up and running faster.
+AdonisJS Starter Kit is a robust, monorepo-based template for developing full-stack applications with AdonisJS. Leveraging modern tools such as TurboRepo, pnpm, ShadCN, Inertia.js, Tailwind CSS, and PostgreSQL, this starter kit streamlines your development process and enables you to rapidly bootstrap your projects.
 
 ## Features
 
-- **Monorepo Setup**: Powered by TurboRepo and pnpm for efficient package management and build processes.
-- **UI Framework**: ShadCN for reusable and customizable UI components.
-- **Frontend Integration**: Inertia.js for a modern single-page app experience.
-- **Styling**: Tailwind CSS for rapid and responsive UI development.
-- **Database**: PostgreSQL for robust and scalable data storage.
-- **User Management**: Fully implemented user management system.
-- **Authorization & Authentication**: Secure access control for users.
+- **Monorepo Setup**: Efficient package management and build processes powered by TurboRepo and pnpm.
+- **UI Framework**: Reusable and customizable components provided by ShadCN.
+- **Frontend Integration**: Inertia.js delivers a modern single-page application (SPA) experience.
+- **Styling**: Rapid and responsive UI development using Tailwind CSS.
+- **Database**: PostgreSQL ensures robust, scalable, and high-performance data storage.
+- **User Management**: Comprehensive user management system.
+- **Authorization & Authentication**: Secure access control mechanisms.
 - **Password Recovery**: Built-in functionality for password reset and recovery.
-- **Social Auth**: Authentication using social providers like Google, GitHub, and others via the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
-- **Impersonate**: Allows administrators to temporarily assume the identity of any user for support or testing purposes. 
+- **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
+- **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
 
 ## Installation
 
 ### Cloning the Repository
-To initialize a new project based on this starter kit, run:
-```bash
-npm init adonisjs@latest -- -K="filipebraida/adonisjs-starter-kit.git"
-```
 
-### Installing Dependencies
-Navigate to the project directory and install the dependencies:
+To create a new project using this starter kit, run:
+
 ```bash
-pnpm install
+pnpm create adonisjs@latest -K="filipebraida/adonisjs-starter-kit"
 ```
 
 ### Setting Up the Environment
-Copy the example environment file and generate the app key:
+
+1. **Copy the Example Environment File**  
+   Duplicate the example file to create your own environment configuration.
 ```bash
 cp apps/web/.env.example apps/web/.env
 ```
+
+2. **Generate the App Key**  
+   Generate a cryptographically secure key and assign it to the `APP_KEY` environment variable.
 ```bash
 node apps/web/ace generate:key
 ```
 
-### Adding a New Component
-To add a new UI component using ShadCN, execute:
+3. **Configure Social Auth & Email**  
+   Social authentication and email settings can be configured later as needed.
+
+### Database Setup
+
+The project includes a Dockerfile that automatically initializes the necessary configurations using your environment variables. To set up the database:
+
+1. **Start the Database with Docker**  
+   Launch the database container:
 ```bash
-pnpm dlx shadcn@latest add button -c apps/web
+docker compose up -d
 ```
-Replace `button` with the name of the component you want to add.
+
+2. **Run Migrations**  
+   Apply all migrations to create the database schema:
+```bash
+node apps/web/ace migration:run
+```
+
+3. **Seed the Database**  
+   Populate the database with initial data (e.g., default users and roles):
+```bash
+node apps/web/ace db:seed
+```
 
 ## Running the Development Server
 
-Start the development server for your project:
+Start the development server with the following command:
 ```bash
 pnpm run dev
 ```
-This command will start the AdonisJS server and any related apps.
+
+This command launches the AdonisJS server along with any associated applications.
 
 ## Project Structure
-
-```
-root/
-├── apps/
-│   ├── web/        # Backend and Frontend app using AdonisJS with Inertia.js
-├── packages/       # Shared packages and utilities
-├── pnpm-workspace.yaml # Monorepo configuration
-├── turbo.json      # TurboRepo configuration
+```bash
+    root/
+    ├── apps/
+    │   └── web/        # Backend and frontend application using AdonisJS with Inertia.js
+    ├── packages/       # Shared packages and utilities
+    ├── pnpm-workspace.yaml  # Monorepo configuration
+    └── turbo.json      # TurboRepo configuration
 ```
 
 ## Tools and Technologies
 
-- **TurboRepo**: For monorepo management and build caching.
+- **TurboRepo**: Monorepo management and build caching.
 - **pnpm**: Fast and efficient package management.
 - **ShadCN**: Modern UI component library.
-- **Inertia.js**: Seamless frontend-backend integration.
-- **Tailwind CSS**: Utility-first CSS framework for styling.
-- **PostgreSQL**: High-performance database.
+- **Inertia.js**: Seamless integration between frontend and backend.
+- **Tailwind CSS**: Utility-first CSS framework for rapid styling.
+- **PostgreSQL**: Reliable and high-performance relational database.
+
+## Adding a New Component
+
+To add a new UI component using ShadCN, execute:
+```bash
+pnpm dlx shadcn@latest add button -c apps/web
+```
+Replace `button` with the name of the component you wish to add.
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues and submit pull requests to improve this starter kit.
+Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
+
+## Inspirations
+
+This project draws inspiration from the following sources:
+
+- [ShadCN UI](https://ui.shadcn.com/)
+- [AdonisJS Starter Kit by Batosai](https://github.com/batosai/adonis-starter-kit)
+- [ShadCN Blocks](https://www.shadcnblocks.com/)
+- [ShadCN Admin by Satnaing](https://github.com/satnaing/shadcn-admin)
+- [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
 
 ## License
 
