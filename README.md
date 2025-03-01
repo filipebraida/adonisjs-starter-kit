@@ -2,6 +2,10 @@
 
 AdonisJS Starter Kit is a robust, monorepo-based template for developing full-stack applications with AdonisJS. Leveraging modern tools such as TurboRepo, pnpm, ShadCN, Inertia.js, Tailwind CSS, and PostgreSQL, this starter kit streamlines your development process and enables you to rapidly bootstrap your projects.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/screenshot.png" alt="Screenshot" width="600" />
+</p>
+
 ## Features
 
 - **Monorepo Setup**: Efficient package management and build processes powered by TurboRepo and pnpm.
