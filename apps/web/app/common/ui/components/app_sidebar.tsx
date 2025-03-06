@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react'
 
 import { GalleryVerticalEnd } from 'lucide-react'
 
-import { NavMain, NavMainSection } from '#common/ui/components/nav_main'
+import { NavSidebarMain } from '#common/ui/components/nav_sidebar_main'
 import {
   Sidebar,
   SidebarContent,
@@ -12,11 +12,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@workspace/ui/components/sidebar'
-
-export type NavMainSections = NavMainSection[]
+import { NavMainItem } from '#common/ui/types/nav_main'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  navMain: NavMainSections
+  navMain: NavMainItem[]
 }
 
 export function AppSidebar({ navMain, ...props }: AppSidebarProps) {
@@ -39,7 +38,7 @@ export function AppSidebar({ navMain, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} />
+        <NavSidebarMain items={navMain} />
       </SidebarContent>
     </Sidebar>
   )

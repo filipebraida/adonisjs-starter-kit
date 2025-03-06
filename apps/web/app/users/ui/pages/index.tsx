@@ -2,7 +2,7 @@ import { InferPageProps } from '@adonisjs/inertia/types'
 
 import type UsersController from '#users/controllers/users_controller'
 
-import AppLayout from '#common/ui/components/app_sidebar_layout'
+import AppLayout from '#common/ui/components/app_layout'
 import { Main } from '#common/ui/components/main'
 import Heading from '#common/ui/components/heading'
 

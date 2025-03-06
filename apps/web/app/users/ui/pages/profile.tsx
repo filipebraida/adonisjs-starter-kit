@@ -2,7 +2,7 @@ import { InferPageProps } from '@adonisjs/inertia/types'
 
 import type ProfileController from '#users/controllers/profile_controller'
 
-import AppLayout from '#common/ui/components/app_sidebar_layout'
+import AppLayout from '#common/ui/components/app_layout'
 import HeadingSmall from '#common/ui/components/heading_small'
 import { ProfileForm } from '#users/ui/components/profile_form'
 import SettingsLayout from '#users/ui/components/settings_layout'

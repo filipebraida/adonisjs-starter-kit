@@ -1,4 +1,4 @@
-import AppLayout from '#common/ui/components/app_sidebar_layout'
+import AppLayout from '#common/ui/components/app_layout'
 
 import { Main } from '#common/ui/components/main'
 
