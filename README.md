@@ -63,14 +63,14 @@ docker compose up -d
    Apply all migrations to create the database schema:
 
 ```bash
-node apps/web/ace migration:run
+pnpm --filter web exec node ace migration:run
 ```
 
 3. **Seed the Database**  
    Populate the database with initial data (e.g., default users and roles):
 
 ```bash
-node apps/web/ace db:seed
+pnpm --filter web exec node ace db:seed
 ```
 
 ## Running the Development Server
