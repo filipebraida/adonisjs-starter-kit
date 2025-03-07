@@ -24,28 +24,8 @@ interface AppLayoutProps extends React.PropsWithChildren {
 
 const navMain: NavMainItem[] = [
   {
-    title: 'oi',
+    title: 'Dashboard',
     url: '/oi',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Plattaform',
-    items: [
-      {
-        title: 'Dashboard',
-        url: '/dashboard',
-      },
-      {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-      },
-      {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-      },
-    ],
   },
   {
     title: 'Administration',
