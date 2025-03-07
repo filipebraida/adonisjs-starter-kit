@@ -18,6 +18,7 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **Password Recovery**: Built-in functionality for password reset and recovery.
 - **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
 - **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
+- **Multiple Layouts**: Choose between two distinct layouts: sidebar for enhanced navigation and Header for a streamlined top-bar interface.
 
 ## Installation
 
@@ -112,6 +113,26 @@ pnpm dlx shadcn@latest add button -c apps/web
 ```
 
 Replace `button` with the name of the component you wish to add.
+
+## Layouts
+
+AdonisJS Starter Kit offers two distinct layouts so you can choose the interface that best fits your application's needs.
+
+### Header Layout
+
+A minimalist design with top-aligned navigation, providing a clean and intuitive user experience.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/header.png" alt="Header Layout" width="600" />
+</p>
+
+### Sidebar Layout
+
+A layout featuring side navigation, ideal for applications that require quick and organized access to various sections.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/sidebar.png" alt="Sidebar Layout" width="600" />
+</p>
 
 ## Contributing
 
