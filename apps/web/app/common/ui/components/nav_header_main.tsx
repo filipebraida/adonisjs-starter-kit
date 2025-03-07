@@ -37,7 +37,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
                 <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
 
                 <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 w-[400px]">
+                  <ul className="grid gap-3 p-3 w-[400px]">
                     {visibleItems.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <NavigationMenuLink asChild>
