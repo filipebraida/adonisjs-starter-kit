@@ -33,12 +33,14 @@ pnpm create adonisjs@latest -K="filipebraida/adonisjs-starter-kit"
 
 1. **Copy the Example Environment File**  
    Duplicate the example file to create your own environment configuration.
+
 ```bash
 cp apps/web/.env.example apps/web/.env
 ```
 
 2. **Generate the App Key**  
    Generate a cryptographically secure key and assign it to the `APP_KEY` environment variable.
+
 ```bash
 node apps/web/ace generate:key
 ```
@@ -52,18 +54,21 @@ The project includes a Dockerfile that automatically initializes the necessary c
 
 1. **Start the Database with Docker**  
    Launch the database container:
+
 ```bash
 docker compose up -d
 ```
 
 2. **Run Migrations**  
    Apply all migrations to create the database schema:
+
 ```bash
 node apps/web/ace migration:run
 ```
 
 3. **Seed the Database**  
    Populate the database with initial data (e.g., default users and roles):
+
 ```bash
 node apps/web/ace db:seed
 ```
@@ -71,6 +76,7 @@ node apps/web/ace db:seed
 ## Running the Development Server
 
 Start the development server with the following command:
+
 ```bash
 pnpm run dev
 ```
@@ -78,6 +84,7 @@ pnpm run dev
 This command launches the AdonisJS server along with any associated applications.
 
 ## Project Structure
+
 ```bash
     root/
     ├── apps/
@@ -99,9 +106,11 @@ This command launches the AdonisJS server along with any associated applications
 ## Adding a New Component
 
 To add a new UI component using ShadCN, execute:
+
 ```bash
 pnpm dlx shadcn@latest add button -c apps/web
 ```
+
 Replace `button` with the name of the component you wish to add.
 
 ## Contributing
