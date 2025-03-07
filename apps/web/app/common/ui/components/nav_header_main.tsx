@@ -1,18 +1,8 @@
 import { Link } from '@inertiajs/react'
 
 import { isSection, NavMainItem } from '#common/ui/types/nav_main'
+import HeaderDropdown from '#common/ui/components/header_dropdown'
 import { useAbility } from '#users/ui/context/abilities_context'
-
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from '@workspace/ui/components/navigation-menu'
-import { cn } from '@workspace/ui/lib/utils'
 
 export interface NavHeaderMainProps {
   items: NavMainItem[]
@@ -22,63 +12,54 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
   const abilities = useAbility()
 
   return (
-    <NavigationMenu className="flex h-full items-stretch">
-      <NavigationMenuList className="flex h-full items-stretch space-x-2">
-        {items.map((item, index) => {
-          if (isSection(item)) {
-            const visibleItems = item.items.filter(
-              (subItem) => !subItem.subject || abilities.can('read', subItem.subject)
-            )
+    <nav className="flex items-center space-x-4">
+      {items.map((item, index) => {
+        if (isSection(item)) {
+          const visibleItems = item.items.filter(
+            (subItem) => !subItem.subject || abilities.can('read', subItem.subject)
+          )
 
-            if (visibleItems.length === 0) return null
-
+          if (visibleItems.length === 0) {
+            return null
+          }
+          return (
+            <HeaderDropdown
+              key={index}
+              trigger={<div className="flex items-center">{item.title}</div>}
+              width={visibleItems.length > 5 ? 'w-[220px]' : 'w-[180px]'}
+              content={
+                <div className="grid gap-1 p-2">
+                  {visibleItems.map((subItem, subIndex) => (
+                    <Link
+                      key={subIndex}
+                      href={subItem.url}
+                      className="flex select-none items-center space-x-2 rounded-md px-2 py-1.5 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    >
+                      {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
+                      <span>{subItem.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              }
+            />
+          )
+        } else {
+          if (!item.subject || abilities.can('read', item.subject)) {
             return (
-              <NavigationMenuItem key={index} className="relative flex h-full items-center">
-                <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-3 w-[400px]">
-                    {visibleItems.map((subItem, subIndex) => (
-                      <li key={subIndex}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={subItem.url}
-                            className="flex items-center space-x-2 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
-                            <div className="text-sm font-medium leading-none">{subItem.title}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+              <Link
+                key={index}
+                href={item.url}
+                className="flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                {item.icon && <item.icon className="mr-2 h-4 w-4 shrink-0" />}
+                {item.title}
+              </Link>
             )
           } else {
-            if (!item.subject || abilities.can('read', item.subject)) {
-              return (
-                <NavigationMenuItem key={index} className="relative flex h-full items-center">
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={item.url}
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        'flex items-center space-x-2 gap-2'
-                      )}
-                    >
-                      {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
-                      {item.title}
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              )
-            } else {
-              return null
-            }
+            return null
           }
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+        }
+      })}
+    </nav>
   )
 }
