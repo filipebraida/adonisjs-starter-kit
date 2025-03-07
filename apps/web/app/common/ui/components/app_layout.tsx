@@ -10,7 +10,7 @@ import AbilityProvider from '#users/ui/context/abilities_context'
 
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { Toaster } from '@workspace/ui/components/toaster'
-import { LayoutGrid, LogOut, Settings, Users } from 'lucide-react'
+import { LogOut, Settings, Users } from 'lucide-react'
 
 interface BreadcrumbItemProps {
   label: string
