@@ -118,6 +118,16 @@ Replace `button` with the name of the component you wish to add.
 
 AdonisJS Starter Kit offers two distinct layouts so you can choose the interface that best fits your application's needs.
 
+```typescript
+export default function ListUsersPage({ users, roles }: InferPageProps<UsersController, 'index'>) {
+  return (
+    <AppLayout breadcrumbs={[{ label: 'Users' }]} layout="sidebar">
+      // code ...
+    </AppLayout>
+  )
+}
+```
+
 ### Header Layout
 
 A minimalist design with top-aligned navigation, providing a clean and intuitive user experience.
