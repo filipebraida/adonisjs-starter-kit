@@ -10,13 +10,17 @@ export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'form'>) {
-  const { data, setData, errors, post } = useForm({
+  const { data, setData, errors, post, reset } = useForm({
     email: '',
   })
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    post('/forgot-password')
+    post('/forgot-password', {
+      onSuccess: () => {
+        reset()
+      }
+    })
   }
 
   return (

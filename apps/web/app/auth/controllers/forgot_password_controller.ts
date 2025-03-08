@@ -5,6 +5,7 @@ import { inject } from '@adonisjs/core/container'
 import User from '#users/models/user'
 
 import { forgotPasswordValidator } from '#auth/validators'
+
 import PasswordResetService from '#users/services/password_reset_service'
 
 @inject()
@@ -32,7 +33,7 @@ export default class ForgotPasswordController {
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
-    const { token } = await this.passwordResetService.generatetoken(user.id)
+    const { token } = await this.passwordResetService.generateToken(user)
 
     /**
      * Send an email with the signed URL.

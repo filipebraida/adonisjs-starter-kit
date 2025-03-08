@@ -1,15 +1,17 @@
 import { TokenUtils } from '#common/utils/token_utils'
 import ResetPasswordToken from '#users/models/reset_password_token'
-import { inject } from '@adonisjs/core/container'
+import User from '#users/models/user'
 import { DateTime } from 'luxon'
 
-@inject()
 export default class PasswordResetService {
-  async generatetoken(userId: number) {
+  async generateToken(user: User) {
     const token = TokenUtils.generateToken()
     const expiresAt = DateTime.now().plus({ hours: 1 })
+
+    await this.deleteTokens(user)
+
     const resetToken = await ResetPasswordToken.updateOrCreate(
-      { userId },
+      { userId: user.id },
       {
         token,
         expiresAt,
@@ -24,5 +26,9 @@ export default class PasswordResetService {
       .andWhere('expires_at', '>', DateTime.now().toSQL())
       .first()
     return resetToken
+  }
+
+  async deleteTokens(user: User) {
+    await ResetPasswordToken.query().where('userId', user.id).delete()
   }
 }
