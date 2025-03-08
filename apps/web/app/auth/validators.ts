@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { DateTime } from 'luxon'
 
 export const signUpValidator = vine.compile(
   vine.object({
@@ -17,12 +18,13 @@ export const signInValidator = vine.compile(
 
 export const forgotPasswordValidator = vine.compile(
   vine.object({
-    email: vine.string().email().trim().normalizeEmail(),
+    email: vine.string().email().trim().normalizeEmail({ gmail_remove_dots: false }),
   })
 )
 
 export const resetPasswordValidator = vine.compile(
   vine.object({
+    token: vine.string(),
     password: vine.string().minLength(1).confirmed({ confirmationField: 'passwordConfirmation' }),
   })
 )
