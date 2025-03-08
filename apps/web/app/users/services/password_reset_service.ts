@@ -1,7 +1,8 @@
 import { TokenUtils } from '#common/utils/token_utils'
-import ResetPasswordToken from '#users/models/reset_password_token'
-import User from '#users/models/user'
 import { DateTime } from 'luxon'
+
+import User from '#users/models/user'
+import ResetPasswordToken from '#users/models/reset_password_token'
 
 export default class PasswordResetService {
   async generateToken(user: User) {
