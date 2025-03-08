@@ -11,8 +11,7 @@ export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'form'>) {
-  
-    const { data, setData, errors, post } = useForm({
+    const { data, setData, errors, post, reset } = useForm({
     email: '',
   })
 
@@ -20,13 +19,13 @@ export function ForgotPasswordForm({
     e.preventDefault()
     post('/forgot-password', {
         onSuccess: () => {
+            reset()
             toast({
                 title: 'Email enviado',
                 description: 'Enviamos o link para recuperação da sua senha.',
             })
         }
     })
-
   }
 
   return (
