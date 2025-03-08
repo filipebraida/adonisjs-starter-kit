@@ -14,10 +14,11 @@ export default function SignInPage() {
   useEffect(() => {
     if (success) {
       toast({
-        title: 'Email enviado',
-        description: 'Enviamos o link para recuperação da sua senha.',
+        title: 'Email sent',
+        description: 'We have sent the link for password recovery.',
       })
     }
+
     if (resetPasswordError) {
       toast({
         title: 'Something went wrong',

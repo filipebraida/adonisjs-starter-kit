@@ -10,11 +10,14 @@ import { inject } from '@adonisjs/core/container'
 export default class ResetPasswordController {
   constructor(private passwordResetService: PasswordResetService) {}
 
-  async show({ request, inertia, response }: HttpContext) {
+  async show({ params, inertia, response, session }: HttpContext) {
     /**
      * Verify the request signature before proceeding.
      */
-    if (!request.hasValidSignature('reset_password')) {
+    const token = await this.passwordResetService.getToken(params.token)
+
+    if (!token) {
+      session.flash('resetPasswordError', 'true')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
@@ -26,9 +29,12 @@ export default class ResetPasswordController {
 
   async handle({ request, params, response, session }: HttpContext) {
     /**
-     * Verify the request signature before proceeding.
+     * Validate the token validity
      */
-    if (!request.hasValidSignature('reset_password')) {
+    const token = await this.passwordResetService.getToken(params.token)
+
+    if (!token) {
+      session.flash('resetPasswordError', 'true')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
@@ -38,21 +44,13 @@ export default class ResetPasswordController {
     const validatedData = await request.validateUsing(resetPasswordValidator)
 
     /**
-     * Validate the token validity
-     */
-    const token = await this.passwordResetService.getToken(params.token)
-    if (!token) {
-      session.flash('resetPasswordError', 'true')
-      return response.redirect().toRoute('auth.forgot_password.show')
-    }
-
-    /**
      * Handle the password reset request.
      */
-    const user = await User.findByOrFail('id', token.userId)
+    const user = await User.findOrFail(token.userId)
     user.password = validatedData.password
     await user.save()
-    await token.delete()
+
+    await this.passwordResetService.deleteTokens(user)
 
     /**
      * Redirect to the login page.
