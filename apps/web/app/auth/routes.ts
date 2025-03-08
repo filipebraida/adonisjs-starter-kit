@@ -29,11 +29,11 @@ router
   .use(middleware.guest())
 router.post('/forgot-password', [ForgotPasswordController]).as('auth.forgot_password.handle')
 router
-  .get('/reset-password/:email', [ResetPasswordController, 'show'])
+  .get('/reset-password/:token', [ResetPasswordController, 'show'])
   .use(middleware.guest())
   .as('auth.reset_password.show')
 router
-  .post('/reset-password/:email', [ResetPasswordController])
+  .post('/reset-password/:token', [ResetPasswordController])
   .use(middleware.guest())
   .as('auth.reset_password.handle')
 

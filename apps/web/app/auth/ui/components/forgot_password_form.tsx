@@ -16,7 +16,6 @@ export function ForgotPasswordForm({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     post('/forgot-password')
   }
 
