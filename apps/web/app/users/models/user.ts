@@ -1,8 +1,8 @@
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import { belongsTo, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 
 import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
 import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
@@ -11,6 +11,7 @@ import BaseModel from '#common/models/base_model'
 import Role from '#users/models/role'
 
 import Roles from '#users/enums/role'
+import ResetPasswordToken from '#users/models/reset_password_tokens'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -41,6 +42,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>
+
+  @hasMany(() => ResetPasswordToken)
+  declare resetPasswordTokens: HasMany<typeof ResetPasswordToken>
 
   @computed()
   get isAdmin() {
