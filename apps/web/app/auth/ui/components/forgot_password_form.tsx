@@ -5,6 +5,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+import { toast } from '@workspace/ui/hooks/use-toast'
 
 export function ForgotPasswordForm({
   className,
@@ -16,10 +17,16 @@ export function ForgotPasswordForm({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
     post('/forgot-password', {
       onSuccess: () => {
         reset()
-      }
+
+        toast({
+          title: 'Email sent',
+          description: 'We have sent the link for password recovery.',
+        })
+      },
     })
   }
 
