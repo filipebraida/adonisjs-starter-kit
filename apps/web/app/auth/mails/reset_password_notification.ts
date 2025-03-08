@@ -8,7 +8,10 @@ export default class ResetPasswordNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
   subject = `Reset your password for app`
 
-  constructor(private user: User) {
+  constructor(
+    private user: User,
+    private token: string
+  ) {
     super()
   }
 
@@ -23,12 +26,12 @@ export default class ResetPasswordNotification extends BaseMail {
      */
     const signedUrl = router.makeSignedUrl(
       'auth.reset_password.show',
-      { email: this.user.email },
+      { token: this.token },
       { expiresIn: '30m', prefixUrl: env.get('APP_URL'), purpose: 'reset_password' }
     )
 
     this.message.to(this.user.email)
 
-    this.message.htmlView('auth::emails/forgot_password', { user: this.user, signedUrl })
+    this.message.htmlView('auth::emails/forgot_password', { signedUrl })
   }
 }

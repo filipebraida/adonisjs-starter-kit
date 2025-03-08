@@ -9,6 +9,7 @@ import AuthLayout from '#auth/ui/components/layout'
 
 export default function SignInPage() {
   const success = useFlashMessage('success')
+  const resetPasswordError = useFlashMessage('resetPasswordError')
 
   useEffect(() => {
     if (success) {
@@ -17,7 +18,13 @@ export default function SignInPage() {
         description: 'Enviamos o link para recuperação da sua senha.',
       })
     }
-  }, [success])
+    if (resetPasswordError) {
+      toast({
+        title: 'Something went wrong',
+        description: 'Please enter your email to generate a new password reset link.',
+      })
+    }
+  }, [success, resetPasswordError])
 
   return (
     <AuthLayout>
