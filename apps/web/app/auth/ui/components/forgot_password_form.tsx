@@ -5,19 +5,28 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+import { toast } from '@workspace/ui/hooks/use-toast';
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'form'>) {
-  const { data, setData, errors, post } = useForm({
+  
+    const { data, setData, errors, post } = useForm({
     email: '',
   })
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    post('/forgot-password', {
+        onSuccess: () => {
+            toast({
+                title: 'Email enviado',
+                description: 'Enviamos o link para recuperação da sua senha.',
+            })
+        }
+    })
 
-    post('/forgot-password')
   }
 
   return (

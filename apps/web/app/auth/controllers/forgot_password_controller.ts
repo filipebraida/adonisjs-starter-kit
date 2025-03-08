@@ -22,7 +22,6 @@ export default class ForgotPasswordController {
      */
     const user = await User.findBy('email', validatedData.email)
     if (!user) {
-      session.flash('success', 'true')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
@@ -34,7 +33,6 @@ export default class ForgotPasswordController {
     /**
      * Redirect back with a success message.
      */
-    session.flash('success', 'true')
     return response.redirect().toRoute('auth.forgot_password.show')
   }
 }
