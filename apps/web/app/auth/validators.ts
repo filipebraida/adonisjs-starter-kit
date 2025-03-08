@@ -17,7 +17,7 @@ export const signInValidator = vine.compile(
 
 export const forgotPasswordValidator = vine.compile(
   vine.object({
-    email: vine.string().email().trim().normalizeEmail(),
+    email: vine.string().email().trim().normalizeEmail({ gmail_remove_dots: false }),
   })
 )
 
