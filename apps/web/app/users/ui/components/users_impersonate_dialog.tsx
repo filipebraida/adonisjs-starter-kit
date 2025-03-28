@@ -5,7 +5,8 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
-import UserDto from '#users/dtos/user'
+
+import type UserDto from '#users/dtos/user'
 
 interface Props {
   open: boolean

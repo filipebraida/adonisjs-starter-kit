@@ -9,8 +9,8 @@ import { Input } from '@workspace/ui/components/input'
 import User from '#users/dtos/user'
 import Role from '#users/dtos/role'
 
-import { DataTableRowActions } from './users_row_actions'
-import { userRoles } from './users_types'
+import { DataTableRowActions } from '#users/ui/components/users_row_actions'
+import { userRoles } from '#users/ui/components/users_types'
 
 interface DataTableProps {
   users: User[]

@@ -4,7 +4,7 @@ import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 import { UsersInviteDialog } from '#users/ui/components/users_invite_dialog'
 import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'
 
-import RoleDto from '#users/dtos/role'
+import type RoleDto from '#users/dtos/role'
 
 export function UsersDialogs({ roles }: { roles: RoleDto[] }) {
   const { open, setOpen, currentRow, setCurrentRow } = useUsers()

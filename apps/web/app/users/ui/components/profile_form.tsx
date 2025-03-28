@@ -7,9 +7,9 @@ import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import { Progress } from '@workspace/ui/components/progress'
-
-import UserDto from '#users/dtos/user'
 import { toast } from '@workspace/ui/hooks/use-toast'
+
+import type UserDto from '#users/dtos/user'
 
 interface Props {
   user: UserDto

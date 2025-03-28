@@ -8,7 +8,8 @@ import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
-import UserDto from '#users/dtos/user'
+
+import type UserDto from '#users/dtos/user'
 
 interface Props {
   open: boolean
@@ -62,14 +63,11 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             undone.
           </p>
 
-          <Label className="my-2">
-            Email:
-            <Input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Enter username to confirm deletion."
-            />
-          </Label>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Enter email to confirm deletion."
+          />
 
           <Alert variant="destructive">
             <AlertTitle>Warning!</AlertTitle>

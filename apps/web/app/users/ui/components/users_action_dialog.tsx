@@ -26,8 +26,8 @@ import {
   SelectItem,
 } from '@workspace/ui/components/select'
 
-import RoleDto from '#users/dtos/role'
-import UserDto from '#users/dtos/user'
+import type RoleDto from '#users/dtos/role'
+import type UserDto from '#users/dtos/user'
 
 import Roles from '#users/enums/role'
 
@@ -209,7 +209,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
         </ScrollArea>
         <DialogFooter className="gap-y-2">
           <DialogClose asChild>
-            <Button variant="outline">Cancelar</Button>
+            <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button type="submit" form="user-form">
             {isEdit ? 'Save' : 'Add'}

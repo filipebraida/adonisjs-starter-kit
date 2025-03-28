@@ -12,9 +12,9 @@ import {
 import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
 
 import { useUsers } from '#users/ui/context/users_context'
+import useUser from '#auth/ui/hooks/use_user'
 
 import type UserDto from '#users/dtos/user'
-import useUser from '#auth/ui/hooks/use_user'
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps<UserDto>) {
   const { setOpen, setCurrentRow } = useUsers()
