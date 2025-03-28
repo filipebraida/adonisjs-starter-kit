@@ -31,7 +31,7 @@ import type UserDto from '#users/dtos/user'
 
 import Roles from '#users/enums/role'
 
-import { userRoles } from './users_types'
+import { userRoles } from '#users/ui/components/users_types'
 
 interface Props {
   roles: RoleDto[]
