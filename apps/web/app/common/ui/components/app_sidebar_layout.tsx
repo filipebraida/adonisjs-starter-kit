@@ -34,9 +34,11 @@ export default function AppLayout({
       <AppSidebar navMain={navMain} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
-          <SidebarTrigger className="-ml-1" />
+          <div className="flex flex-row items-center gap-2">
+            <SidebarTrigger className="-ml-1" />
 
-          <Breadcrumb breadcrumbs={breadcrumbs} />
+            <Breadcrumb breadcrumbs={breadcrumbs} />
+          </div>
 
           <div className="flex flex-row items-center gap-2 ml-auto">
             <ToggleTheme />
