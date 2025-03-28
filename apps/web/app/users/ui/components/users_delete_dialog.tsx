@@ -5,7 +5,6 @@ import { AlertTriangleIcon } from 'lucide-react'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 
