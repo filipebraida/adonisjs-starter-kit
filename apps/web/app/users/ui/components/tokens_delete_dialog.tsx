@@ -63,7 +63,7 @@ export function TokensDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <Input
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Enter username to confirm deletion."
+            placeholder="Enter the token name to confirm."
           />
 
           <Alert variant="destructive">
