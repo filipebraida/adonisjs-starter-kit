@@ -27,6 +27,12 @@ export const updateProfileValidator = vine.compile(
   })
 )
 
+export const createTokenValidator = vine.compile(
+  vine.object({
+    name: vine.string().trim().minLength(3).maxLength(255).optional(),
+  })
+)
+
 export const inviteUserValidator = vine.compile(
   vine.object({
     email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),

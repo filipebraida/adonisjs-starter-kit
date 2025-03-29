@@ -3,6 +3,7 @@ import { compose } from '@adonisjs/core/helpers'
 import { belongsTo, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
 import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
 import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
@@ -63,4 +64,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
     await attachmentManager.computeUrl(models.avatar)
   }
+
+  static accessTokens = DbAccessTokensProvider.forModel(User)
 }

@@ -5,7 +5,7 @@ import { Main } from '#common/ui/components/main'
 import SidebarNav from '#common/ui/components/sidebar_nav'
 
 import { Separator } from '@workspace/ui/components/separator'
-import { KeyRound, User } from 'lucide-react'
+import { KeyRound, Ticket, User } from 'lucide-react'
 
 const sidebarNavItems = [
   {
@@ -17,6 +17,11 @@ const sidebarNavItems = [
     title: 'Password',
     icon: <KeyRound size={18} />,
     href: '/settings/password',
+  },
+  {
+    title: 'Tokens',
+    icon: <Ticket size={18} />,
+    href: '/settings/tokens',
   },
 ]
 
