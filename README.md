@@ -18,6 +18,7 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **Password Recovery**: Built-in functionality for password reset and recovery.
 - **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
 - **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
+- **API Tokens**: Users can generate and revoke personal access tokens for use in APIs.
 - **Multiple Layouts**: Choose between two distinct layouts: sidebar for enhanced navigation and Header for a streamlined top-bar interface.
 
 ## Installation
