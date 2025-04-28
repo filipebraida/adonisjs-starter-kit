@@ -1,4 +1,5 @@
 {
-  "extends": "@workspace/typescript-config/base.json"
+  "extends": "@workspace/typescript-config/base.json",
+  "exclude": ["apps/**/*"]
 }
 
