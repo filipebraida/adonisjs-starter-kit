@@ -14,6 +14,6 @@ export default class ImpersonatesController {
     session.put('originalUserId', auth.user!.id)
     await auth.use('web').login(impersonatedUser)
 
-    response.redirect().toRoute(afterAuthRedirectRoute)
+    return response.redirect().toRoute(afterAuthRedirectRoute)
   }
 }
