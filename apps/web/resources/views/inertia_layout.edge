@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>
-      AdonisJS x Inertia x React
-    </title>
-    @viteReactRefresh()
-    @inertiaHead()
-    @vite([
-    'app/core/ui/app/app.tsx',
-    `app/${page.component.split('/')[0]}/ui/pages/${page.component.split('/').splice(1).join('/')}.tsx`
-    ])
-  </head>
+  <title inertia>AdonisJS x Inertia x React</title>
 
-  <body class="min-h-screen bg-background antialiased font-mono">
-    @inertia()
-  </body>
+  @stack('dumper')
+  @viteReactRefresh()
+  @inertiaHead()
+  @vite([
+  'app/core/ui/app/app.tsx',
+  `app/${page.component.split('/')[0]}/ui/pages/${page.component.split('/').splice(1).join('/')}.tsx`
+  ])
+</head>
+
+<body class="min-h-screen w-screen font-sans">
+  @inertia()
+</body>
 
 </html>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
 
-import { Toaster } from '@workspace/ui/components/toaster'
+import { Toaster } from '@workspace/ui/components/sonner'
 
 import { GalleryVerticalEnd } from 'lucide-react'
 

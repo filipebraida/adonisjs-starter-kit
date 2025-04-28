@@ -9,7 +9,7 @@ import useUser from '#auth/ui/hooks/use_user'
 import AbilityProvider from '#users/ui/context/abilities_context'
 
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
-import { Toaster } from '@workspace/ui/components/toaster'
+import { Toaster } from '@workspace/ui/components/sonner'
 import { LogOut, Settings, Users } from 'lucide-react'
 
 interface BreadcrumbItemProps {
