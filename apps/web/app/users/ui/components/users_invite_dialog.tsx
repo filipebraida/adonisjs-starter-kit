@@ -65,12 +65,13 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
           reset()
           clearErrors()
         }, 500)
-        toast({
-          title: 'You submitted the following values:',
+        toast('You submitted the following values:', {
           description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-            </pre>
+            <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
+              <pre className="text-white whitespace-pre-wrap break-words">
+                <code>{JSON.stringify(data, null, 2)}</code>
+              </pre>
+            </div>
           ),
         })
       },

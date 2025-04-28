@@ -43,8 +43,7 @@ export function ProfileForm({ user }: Props) {
       onSuccess: () => {
         setPreviewUrl(null)
 
-        toast({
-          title: 'Success',
+        toast('Success', {
           description: 'Profile updated successfully',
         })
       },

@@ -22,8 +22,7 @@ export function PasswordForm() {
       onSuccess: () => {
         reset()
 
-        toast({
-          title: 'Success',
+        toast('Success', {
           description: 'Password updated successfully',
         })
       },

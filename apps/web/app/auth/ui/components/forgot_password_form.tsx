@@ -22,8 +22,7 @@ export function ForgotPasswordForm({
       onSuccess: () => {
         reset()
 
-        toast({
-          title: 'Email sent',
+        toast('Email sent', {
           description: 'We have sent the link for password recovery.',
         })
       },
