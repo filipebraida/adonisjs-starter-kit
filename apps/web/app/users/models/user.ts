@@ -35,7 +35,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ serializeAs: null })
   declare password: string | null
 
-  @attachment({ preComputeUrl: false })
+  @attachment({ preComputeUrl: false, variants: ['thumbnail'] })
   declare avatar: Attachment
 
   @column()
@@ -62,7 +62,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
       return
     }
 
-    await attachmentManager.computeUrl(models.avatar)
+    const thumbnail = models.avatar.getVariant('thumbnail')
+
+    if (thumbnail) {
+      await attachmentManager.computeUrl(thumbnail)
+    }
   }
 
   static accessTokens = DbAccessTokensProvider.forModel(User)

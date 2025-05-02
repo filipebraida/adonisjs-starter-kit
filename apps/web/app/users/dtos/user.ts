@@ -22,8 +22,10 @@ export default class UserDto extends BaseModelDto {
     this.role = user.role?.name
     this.fullName = user.fullName
     this.email = user.email
-    this.avatarUrl = user.avatar && user.avatar.url ? user.avatar.url : user.avatarUrl
     this.createdAt = user.createdAt.toISO()!
     this.updatedAt = user.updatedAt ? user.updatedAt.toISO()! : ''
+
+    const thumbnail = user.avatar?.getVariant('thumbnail')?.url
+    this.avatarUrl = thumbnail ? thumbnail : user.avatarUrl
   }
 }
