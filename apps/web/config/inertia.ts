@@ -1,5 +1,7 @@
 import { defineConfig } from '@adonisjs/inertia'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
+import logger from '@adonisjs/core/services/logger'
+import { isSSREnableForPage } from '#config/ssr'
 
 import AbilitiesService from '#users/services/abilities_service'
 import User from '#users/models/user'
@@ -36,8 +38,13 @@ const inertiaConfig = defineConfig({
    * Options for the server-side rendering
    */
   ssr: {
-    enabled: false,
+    enabled: true,
     entrypoint: 'app/core/ui/app/ssr.tsx',
+    pages: (_, page) => {
+      const ssrEnabled = isSSREnableForPage(page)
+      logger.debug(`Page "${page}" SSR enabled: ${ssrEnabled}`)
+      return ssrEnabled
+    },
   },
 })
 

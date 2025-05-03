@@ -20,6 +20,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${getDirname(import.meta.url)}/app/core/ui/`,
+      'config/ssr': `${getDirname(import.meta.url)}/config/ssr.ts`,
     },
   },
 })

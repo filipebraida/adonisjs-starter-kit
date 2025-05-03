@@ -2,9 +2,11 @@
 /// <reference path="../../../../config/inertia.ts" />
 
 import '../css/app.css'
-import { hydrateRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+
+import { isSSREnableForPage } from 'config/ssr'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS Starter Kit'
 
@@ -23,6 +25,13 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    hydrateRoot(el, <App {...props} />)
+    const componentName = props.initialPage.component
+    const isSSREnabled = isSSREnableForPage(componentName)
+
+    if (isSSREnabled) {
+      hydrateRoot(el, <App {...props} />)
+    } else {
+      createRoot(el).render(<App {...props} />)
+    }
   },
 })

@@ -3,7 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "module": "ESNext",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "config/ssr": ["../../../config/ssr"]
+    },
   },
   "include": ["./**/*.ts", "./**/*.tsx"]
 }
