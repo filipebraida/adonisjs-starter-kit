@@ -1,10 +1,10 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { GalleryVerticalEnd } from 'lucide-react'
 
 export function AppLogo() {
   return (
-    <Link href="/" prefetch className="flex items-center space-x-2">
+    <Link route="marketing.show" prefetch className="flex items-center space-x-2">
       <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
         <GalleryVerticalEnd className="size-4" />
       </div>

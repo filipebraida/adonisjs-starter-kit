@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useForm } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
+import { Link, useTuyau } from '@tuyau/inertia/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -12,6 +13,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     email: '',
     password: '',
   })
+
+  const tuyau = useTuyau()
 
   const [invalidCreditials, setInvalidCreditials] = useState(false)
 
@@ -65,7 +68,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
             <Link
-              href="/forgot-password"
+              route="auth.forgot_password.show"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
@@ -102,7 +105,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           </span>
         </div>
         <Button variant="outline" className="w-full" asChild>
-          <a href="/google/redirect">
+          <a href={tuyau?.$url('social.create', { params: { provider: 'google' } })}>
             <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
@@ -126,8 +129,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don't have an account?{' '}
-        <Link href="/sign-up" className="underline underline-offset-4">
+        <span>Don't have an account? </span>
+        <Link route="auth.sign_up.show" className="underline underline-offset-4">
           Sign up
         </Link>
       </div>

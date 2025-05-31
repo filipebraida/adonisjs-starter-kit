@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, useForm } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -60,7 +61,7 @@ export function ForgotPasswordForm({
       </div>
       <div className="text-center text-sm">
         Remember your password?{' '}
-        <Link href="/login" className="underline underline-offset-4">
+        <Link route="auth.sign_in.show" className="underline underline-offset-4">
           Log in
         </Link>
       </div>

@@ -77,6 +77,15 @@ importers:
       '@jrmc/adonis-attachment':
         specifier: ^3.2.2
         version: 3.2.2(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))(@adonisjs/drive@3.4.1(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1)))(@adonisjs/lucid@21.6.1(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))(@vinejs/vine@3.0.1)(luxon@3.6.1)(pg@8.15.6))
+      '@tuyau/client':
+        specifier: ^0.2.8
+        version: 0.2.8
+      '@tuyau/core':
+        specifier: ^0.4.0
+        version: 0.4.0(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))
+      '@tuyau/inertia':
+        specifier: ^0.0.13
+        version: 0.0.13(@inertiajs/react@2.0.11(react@19.0.0))(@tuyau/client@0.2.8)(react@19.0.0)
       '@vinejs/vine':
         specifier: ^3.0.1
         version: 3.0.1
@@ -135,6 +144,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.4
         version: 4.1.4(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2))
+      '@tuyau/utils':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@types/luxon':
         specifier: ^3.6.2
         version: 3.6.2
@@ -2181,6 +2193,9 @@ packages:
   '@ts-morph/common@0.24.0':
     resolution: {integrity: sha512-c1xMmNHWpNselmpIqursHeOHHBTIsJLbB+NuovbTTRCNiTLEr/U9dbJ8qy0jd/O2x5pc3seWuOUN5R2IoOTp8A==}
 
+  '@ts-morph/common@0.26.1':
+    resolution: {integrity: sha512-Sn28TGl/4cFpcM+jwsH1wLncYq3FtN/BIpem+HOygfBWPT5pAeS5dB4VFVzV8FbnOKHpDLZmvAl4AjPEev5idA==}
+
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
 
@@ -2200,6 +2215,33 @@ packages:
   '@turbo/workspaces@2.4.2':
     resolution: {integrity: sha512-HdXoW7LxCL+cvoEx8SBdg98o7DupN48hEvoEeUJ08R0ud8cLHCO8/2heyG/X/Y60pY9uxhpwjsmn9l5Dx75uMA==}
     hasBin: true
+
+  '@tuyau/client@0.2.8':
+    resolution: {integrity: sha512-5CSn03iEWedcmpqeoiJP2EKybPM+O1LJ0M3rNrU2LpMl8yExWDwsajZCFTTsEq8XAWaqS9v/ee2bwqmLymtk+A==}
+
+  '@tuyau/core@0.4.0':
+    resolution: {integrity: sha512-Es087jggoHErM3LPOquILsjDiiWaJthEDiw86BfFkwdsf4cJs2YmzC4uRhwDrpxPnyb/02GmgYJGAzyuJ5DIRw==}
+    engines: {node: '>=20.6.0'}
+    peerDependencies:
+      '@adonisjs/core': ^6.2.0
+
+  '@tuyau/inertia@0.0.13':
+    resolution: {integrity: sha512-fwhNnwlCSN190sVamFQr5vh0tLGhnkVSpH4BE7Q06u0v02duX3p134EyyM1dtb/0RSOg5G+FyavwpfsSvT9KYw==}
+    peerDependencies:
+      '@inertiajs/react': ^1.0.0 || ^2.0.0
+      '@inertiajs/vue3': ^1.0.0 || ^2.0.0
+      '@tuyau/client': 0.2.8
+      react: ^18.0.0 || ^19.0.0
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      '@inertiajs/react':
+        optional: true
+      '@inertiajs/vue3':
+        optional: true
+      react:
+        optional: true
+      vue:
+        optional: true
 
   '@tuyau/utils@0.0.7':
     resolution: {integrity: sha512-Y1JgQoshbcxEwmajeWpJibBmoBlGuEq38ICKmWQ5dS+ESqY0J0757rWcHAQgiB74J1vf/DxHkt8veBRSKTAjJQ==}
@@ -4410,6 +4452,9 @@ packages:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
     engines: {node: '>= 0.4'}
 
+  object-to-formdata@4.5.1:
+    resolution: {integrity: sha512-QiM9D0NiU5jV6J6tjE1g7b4Z2tcUnKs1OPUi4iMb2zH+7jwlcUrASghgkFk9GtzqNNq8rTQJtT8AzjBAvLoNMw==}
+
   object.assign@4.1.7:
     resolution: {integrity: sha512-nK28WOo+QIjBkDduTINE4JkF/UJJKyf2EJxvJKfblDpyg0Q+pkOHNTL0Qwy6NP6FhE/EnzV73BxxqcJaXY9anw==}
     engines: {node: '>= 0.4'}
@@ -5352,6 +5397,9 @@ packages:
 
   ts-morph@23.0.0:
     resolution: {integrity: sha512-FcvFx7a9E8TUe6T3ShihXJLiJOiqyafzFKUO4aqIHDUCIvADdGNShcbc2W5PMr3LerXRv7mafvFZ9lRENxJmug==}
+
+  ts-morph@25.0.1:
+    resolution: {integrity: sha512-QJEiTdnz1YjrB3JFhd626gX4rKHDLSjSVMvGGG4v7ONc3RBwa0Eei98G9AT9uNFDMtV54JyuXsFeC+OH0n6bXQ==}
 
   ts-node-maintained@10.9.5:
     resolution: {integrity: sha512-p8LJFxBTE3YZYGcOMxWKEpaY2nz55NyOg+mTDIOW/MrOIUTAAb7+UkleRu5z90P/fCVVv5pXN1/nb92G/tSNyw==}
@@ -7536,6 +7584,12 @@ snapshots:
       mkdirp: 3.0.1
       path-browserify: 1.0.1
 
+  '@ts-morph/common@0.26.1':
+    dependencies:
+      fast-glob: 3.3.3
+      minimatch: 9.0.5
+      path-browserify: 1.0.1
+
   '@tsconfig/node10@1.0.11': {}
 
   '@tsconfig/node12@1.0.11': {}
@@ -7577,6 +7631,25 @@ snapshots:
       picocolors: 1.0.1
       semver: 7.6.2
       update-check: 1.5.4
+
+  '@tuyau/client@0.2.8':
+    dependencies:
+      '@tuyau/utils': 0.0.7
+      ky: 1.8.1
+      object-to-formdata: 4.5.1
+
+  '@tuyau/core@0.4.0(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))':
+    dependencies:
+      '@adonisjs/core': 6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1)
+      '@tuyau/utils': 0.0.7
+      ts-morph: 25.0.1
+
+  '@tuyau/inertia@0.0.13(@inertiajs/react@2.0.11(react@19.0.0))(@tuyau/client@0.2.8)(react@19.0.0)':
+    dependencies:
+      '@tuyau/client': 0.2.8
+    optionalDependencies:
+      '@inertiajs/react': 2.0.11(react@19.0.0)
+      react: 19.0.0
 
   '@tuyau/utils@0.0.7': {}
 
@@ -9937,6 +10010,8 @@ snapshots:
 
   object-keys@1.1.1: {}
 
+  object-to-formdata@4.5.1: {}
+
   object.assign@4.1.7:
     dependencies:
       call-bind: 1.0.8
@@ -10975,6 +11050,11 @@ snapshots:
   ts-morph@23.0.0:
     dependencies:
       '@ts-morph/common': 0.24.0
+      code-block-writer: 13.0.3
+
+  ts-morph@25.0.1:
+    dependencies:
+      '@ts-morph/common': 0.26.1
       code-block-writer: 13.0.3
 
   ts-node-maintained@10.9.5(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@22.15.3)(typescript@5.7.3):

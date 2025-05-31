@@ -18,7 +18,7 @@ const SocialController = () => import('#auth/controllers/social_controller')
 
 router.get('/login', [SignInController, 'show']).use(middleware.guest()).as('auth.sign_in.show')
 router.post('/login', [SignInController])
-router.get('/logout', [SignOutController])
+router.get('/logout', [SignOutController]).as('auth.sign_out.show')
 
 router.get('/sign-up', [SignUpController, 'show']).use(middleware.guest()).as('auth.sign_up.show')
 

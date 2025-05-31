@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { GalleryVerticalEnd, MenuIcon } from 'lucide-react'
 
@@ -15,38 +15,38 @@ export default function HeaderSection() {
           } md:hidden`}
         >
           <div className="flex flex-col w-full pt-8 gap-1 -mx-3">
-            <Link
+            <a
               className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
               href="/#features"
             >
               Features
-            </Link>
+            </a>
             <Link
+              route="auth.sign_in.show"
               className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
-              href="/login"
             >
               Login
             </Link>
           </div>
         </div>
-        <Link href="/" className="flex items-center gap-2.5 relative z-50">
+        <Link route="marketing.show" className="flex items-center gap-2.5 relative z-50">
           <GalleryVerticalEnd className="h-6 w-6 mr-2" />
           <span className="font-semibold">AdonisJS Starter Kit</span>
         </Link>
 
         <div className="hidden md:flex items-center justify-center gap-8">
-          <Link
+          <a
             className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
             href="/#features"
           >
             Features
-          </Link>
+          </a>
         </div>
 
         <div className="flex justify-end relative z-50">
           <Link
+            route="auth.sign_in.show"
             className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted hidden md:block"
-            href="/login"
           >
             Login
           </Link>

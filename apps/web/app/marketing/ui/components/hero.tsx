@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { Button } from '@workspace/ui/components/button'
 
@@ -29,7 +29,7 @@ export default function HeroSection() {
             </p>
             <div className="flex flex-col items-center justify-center gap-3 pb-12 pt-3">
               <Button size="lg" asChild>
-                <Link href="/login">Get Started</Link>
+                <Link route="auth.sign_in.show">Get Started</Link>
               </Button>
               <div className="text-xs text-muted-foreground">
                 The Ultimate Starter Kit for AdonisJS

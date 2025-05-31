@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { Toaster } from '@workspace/ui/components/sonner'
 
@@ -15,7 +15,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <div className="grid min-h-screen lg:grid-cols-2">
         <div className="flex flex-col gap-4 p-6 md:p-10">
           <div className="flex justify-center gap-2 md:justify-start">
-            <Link href="/" className="flex items-center gap-2 font-medium">
+            <Link route="marketing.show" className="flex items-center gap-2 font-medium">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <GalleryVerticalEnd className="size-4" />
               </div>

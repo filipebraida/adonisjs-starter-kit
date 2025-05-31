@@ -20,6 +20,7 @@ router
   .resource('/users', UsersController)
   .only(['index', 'store', 'update', 'destroy'])
   .use('*', middleware.auth())
+  .as('users')
 
 router.post('/users/invite', [InviteController]).middleware(middleware.auth())
 router
@@ -31,6 +32,7 @@ router
     return response.redirect().toRoute('profile.show')
   })
   .middleware(middleware.auth())
+  .as('settings.index')
 
 router.put('/settings/profile', [ProfileController]).middleware(middleware.auth())
 router

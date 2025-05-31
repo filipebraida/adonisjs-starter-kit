@@ -5,6 +5,8 @@ import '../css/app.css'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { TuyauProvider } from '@tuyau/inertia/react'
+import { tuyau } from './tuyau'
 
 import { isSSREnableForPage } from 'config/ssr'
 
@@ -29,9 +31,18 @@ createInertiaApp({
     const isSSREnabled = isSSREnableForPage(componentName)
 
     if (isSSREnabled) {
-      hydrateRoot(el, <App {...props} />)
+      hydrateRoot(
+        el,
+        <TuyauProvider client={tuyau}>
+          <App {...props} />
+        </TuyauProvider>
+      )
     } else {
-      createRoot(el).render(<App {...props} />)
+      createRoot(el).render(
+        <TuyauProvider client={tuyau}>
+          <App {...props} />
+        </TuyauProvider>
+      )
     }
   },
 })

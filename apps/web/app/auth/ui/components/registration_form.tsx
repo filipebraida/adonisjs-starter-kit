@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, useForm } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
+import { Link } from '@tuyau/inertia/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -95,8 +96,8 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
         </Button>
       </div>
       <div className="text-center text-sm">
-        Already have an account?{' '}
-        <Link href="/login" className="underline underline-offset-4">
+        <span>Already have an account? </span>
+        <Link route="auth.sign_in.show" className="underline underline-offset-4">
           Log in
         </Link>
       </div>
