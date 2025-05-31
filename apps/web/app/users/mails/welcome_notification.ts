@@ -27,7 +27,7 @@ export default class WelcomeNotification extends BaseMail {
     const welcomeUrl = router.makeUrl(
       'marketing.show',
       { email: this.user.email },
-      { prefixUrl: env.get('APP_URL') }
+      { prefixUrl: env.get('VITE_API_URL') }
     )
 
     this.message.to(this.user.email)
