@@ -1,6 +1,7 @@
 import { defineConfig } from '@adonisjs/inertia'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import logger from '@adonisjs/core/services/logger'
+import i18nManager from '@adonisjs/i18n/services/main'
 import { isSSREnableForPage } from '#config/ssr'
 
 import AbilitiesService from '#users/services/abilities_service'
@@ -17,7 +18,7 @@ const inertiaConfig = defineConfig({
    * Data that should be shared with all rendered pages
    */
   sharedData: {
-    locale: (ctx: any) => ctx.inertia.always(() => ctx.i18n?.locale),
+    locale: (ctx) => ctx.inertia.always(() => ctx.i18n?.locale || i18nManager.config.defaultLocale),
     fallbackLocale: (ctx: any) => ctx.inertia.always(() => ctx.i18n?.fallbackLocale || 'en'),
     user: async (ctx) => {
       if (ctx.auth?.user) {
