@@ -1,3 +1,7 @@
 {
-  "greeting": "Olá mundo"
+  "title": "Lista de Usuários",
+  "description": "Gerencie seus usuários e seus papéis aqui.",
+  "breadcrumbs": {
+    "users": "Usuários"
+  }
 }
