@@ -21,6 +21,7 @@ export default function ProfilePage({ profile }: InferPageProps<ProfileControlle
             title={t('users.profile.title')}
             description={t('users.profile.description')}
           />
+
           <ProfileForm user={profile} />
         </div>
       </SettingsLayout>

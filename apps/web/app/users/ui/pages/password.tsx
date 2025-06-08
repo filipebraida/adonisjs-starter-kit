@@ -21,6 +21,7 @@ export default function PasswordPage({}: InferPageProps<PasswordController, 'sho
             title={t('users.password.title')}
             description={t('users.password.description')}
           />
+
           <PasswordForm />
         </div>
       </SettingsLayout>
