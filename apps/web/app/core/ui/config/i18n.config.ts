@@ -2,10 +2,32 @@ import i18n from 'i18next'
 import ICU from 'i18next-icu'
 import { initReactI18next } from 'react-i18next'
 
-import USERS_EN from '../../../users/resources/lang/en/users.json' with { type: 'json' }
-import USERS_PT from '../../../users/resources/lang/pt/users.json' with { type: 'json' }
-
 let i18nInstance: typeof i18n | null = null
+
+const localeFiles = import.meta.glob('/app/**/resources/lang/*/*.json', {
+  eager: true,
+}) as Record<string, any>
+
+function buildResources(): Record<string, any> {
+  const resources: Record<string, any> = {}
+
+  for (const path in localeFiles) {
+    const match = path.match(/app\/([^/]+)\/resources\/lang\/([^/]+)\/([^/]+)\.json$/)
+    if (!match) continue
+
+    const [, moduleName, lang] = match
+    const json = localeFiles[path].default ?? localeFiles[path]
+
+    resources[lang] ??= { translation: {} }
+
+    resources[lang].translation[moduleName] = {
+      ...resources[lang].translation[moduleName],
+      ...json,
+    }
+  }
+
+  return resources
+}
 
 export const setupI18n = ({
   locale,
@@ -22,36 +44,29 @@ export const setupI18n = ({
     return i18nInstance
   }
 
+  const resources = buildResources()
+  const supportedLngs = Object.keys(resources)
+
+  console.log('i18n resources:', resources)
+
   const config = {
-    resources: {
-      pt: {
-        translation: {
-          users: USERS_PT,
-        },
-      },
-      en: {
-        translation: {
-          users: USERS_EN,
-        },
-      },
-    },
+    resources,
     lng: locale,
     fallbackLng: fallbackLocale,
-    debug: false,
+    supportedLngs,
+    debug: true,
     interpolation: {
       escapeValue: false,
     },
     load: 'currentOnly',
     returnNull: false,
     returnEmptyString: false,
-    supportedLngs: ['pt', 'en'],
     react: {
       useSuspense: false,
     },
   } as const
 
   i18nInstance = i18n.createInstance().use(ICU).use(initReactI18next)
-
   i18nInstance.init(config)
 
   return i18nInstance
