@@ -37,7 +37,7 @@ export const setupI18n = ({
     },
     lng: locale,
     fallbackLng: fallbackLocale,
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },
