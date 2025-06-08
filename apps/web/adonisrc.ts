@@ -18,6 +18,7 @@ export default defineConfig({
     () => import('@adonisjs/bouncer/commands'),
     () => import('@jrmc/adonis-attachment/commands'),
     () => import('@tuyau/core/commands'),
+    () => import('@adonisjs-community/modules/commands'),
   ],
 
   /*

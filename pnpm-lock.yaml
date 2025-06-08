@@ -29,6 +29,9 @@ importers:
       '@adocasts.com/dto':
         specifier: ^0.0.9
         version: 0.0.9(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))(@adonisjs/lucid@21.6.1(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))(@vinejs/vine@3.0.1)(luxon@3.6.1)(pg@8.16.0))(@japa/assert@4.0.1(@japa/runner@4.2.0))(@japa/runner@4.2.0)
+      '@adonisjs-community/modules':
+        specifier: ^1.0.0
+        version: 1.0.0(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))
       '@adonisjs/ally':
         specifier: ^5.1.0
         version: 5.1.0(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))
@@ -342,6 +345,12 @@ packages:
     peerDependencies:
       '@adonisjs/core': ^6.2.0
       '@adonisjs/lucid': ^21.1.0
+
+  '@adonisjs-community/modules@1.0.0':
+    resolution: {integrity: sha512-1LWY/wSsMUwNzAfQ8pv0FmSrsNnx4c5JTkwapsUCe688Rf/E7s6ZBX9TYzECHPj9SYtzobPZJRtocJVnOQ28BA==}
+    engines: {node: '>=20.6.0'}
+    peerDependencies:
+      '@adonisjs/core': ^6.2.0
 
   '@adonisjs/ace@13.3.0':
     resolution: {integrity: sha512-68dveDFd766p69cBvK/MtOrOP0+YKYLeHspa9KLEWcWk9suPf3pbGkHQ2pwDnvLJxBPHk4932KbbSSzzpGNZGw==}
@@ -5529,6 +5538,10 @@ snapshots:
     transitivePeerDependencies:
       - '@japa/assert'
       - '@japa/runner'
+
+  '@adonisjs-community/modules@1.0.0(@adonisjs/core@6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1))':
+    dependencies:
+      '@adonisjs/core': 6.18.0(@adonisjs/assembler@7.8.2(typescript@5.7.3))(@vinejs/vine@3.0.1)(edge.js@6.2.1)
 
   '@adonisjs/ace@13.3.0':
     dependencies:
