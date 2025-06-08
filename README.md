@@ -96,6 +96,74 @@ This command launches the AdonisJS server along with any associated applications
     └── turbo.json      # TurboRepo configuration
 ```
 
+This project follows a monorepo architecture using **TurboRepo**. Here's a quick breakdown of the structure:
+
+- **apps/** contains runnable applications. In this case, `web/` is the full-stack AdonisJS application, including both backend and frontend (via Inertia.js).
+- **packages/** holds shared libraries, components, or utilities that can be reused across apps.
+- **pnpm-workspace.yaml** defines the workspace boundaries.
+- **turbo.json** configures TurboRepo pipelines for tasks like build, lint, test, and dev.
+
+This modular design allows you to isolate features, enforce code reuse, and scale your architecture with clarity. For example, you can add more apps in `apps/` or extract common logic into `packages/` as your project grows.
+
+## Modular Structure
+
+This starter kit supports a modular architecture powered by [@adonisjs-community/modules](https://github.com/adonisjs-community/modules), allowing you to scaffold your application into feature-based subdirectories for better organization, maintainability, and scalability.
+
+### Enabling Modules
+
+To get started, install the modules package:
+
+```bash
+node ace add @adonisjs-community/modules
+```
+
+### Creating a Module
+
+You can generate a new module using the following command:
+
+```bash
+node ace make:module users
+```
+
+This creates a new module in the `app/` directory:
+
+```
+├── apps/
+│   └── web/
+│       └── app/
+│           └── users/
+│               ├── controllers/
+│               ├── models/
+│               ├── services/
+│               ├── validators/
+│               └── ...
+```
+
+Additionally, an alias will be added to `package.json` for module path resolution:
+
+```json
+{
+  "imports": {
+    "#users/*": "./app/users/*.js"
+  }
+}
+```
+
+### Generating Files Inside a Module
+
+After creating a module, you can use the standard AdonisJS `make` commands with the `--module` (`-m`) flag to generate scoped resources:
+
+```bash
+node ace make:controller profile -m=users
+node ace make:model user -m=users
+node ace make:validator create_user -m=users
+```
+
+This will generate the files inside the appropriate subfolders of the specified module.
+
+> 💡 Using modules makes your codebase easier to scale by grouping related files together, especially for large applications with many features.
+
+
 ## Tools and Technologies
 
 - **TurboRepo**: Monorepo management and build caching.
