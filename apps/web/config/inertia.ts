@@ -17,6 +17,8 @@ const inertiaConfig = defineConfig({
    * Data that should be shared with all rendered pages
    */
   sharedData: {
+    locale: (ctx: any) => ctx.inertia.always(() => ctx.i18n?.locale),
+    fallbackLocale: (ctx: any) => ctx.inertia.always(() => ctx.i18n?.fallbackLocale || 'en'),
     user: async (ctx) => {
       if (ctx.auth?.user) {
         await User.preComputeUrls(ctx.auth?.user)

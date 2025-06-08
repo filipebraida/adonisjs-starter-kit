@@ -32,7 +32,12 @@ createInertiaApp({
     const componentName = props.initialPage.component
     const isSSREnabled = isSSREnableForPage(componentName)
 
-    const i18nInstance = setupI18n({ locale: 'pt' })
+    const { locale, fallbackLocale } = props.initialPage.props as unknown as {
+      locale: string
+      fallbackLocale?: string
+    }
+
+    const i18nInstance = setupI18n({ locale, fallbackLocale })
 
     if (isSSREnabled) {
       hydrateRoot(
