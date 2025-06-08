@@ -21,6 +21,15 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **API Tokens**: Users can generate and revoke personal access tokens for use in APIs.
 - **Multiple Layouts**: Choose between two distinct layouts: sidebar for enhanced navigation and Header for a streamlined top-bar interface.
 
+## Tools and Technologies
+
+- **TurboRepo**: Monorepo management and build caching.
+- **pnpm**: Fast and efficient package management.
+- **ShadCN**: Modern UI component library.
+- **Inertia.js**: Seamless integration between frontend and backend.
+- **Tailwind CSS**: Utility-first CSS framework for rapid styling.
+- **PostgreSQL**: Reliable and high-performance relational database.
+
 ## Installation
 
 ### Cloning the Repository
@@ -163,16 +172,6 @@ This will generate the files inside the appropriate subfolders of the specified 
 
 > 💡 Using modules makes your codebase easier to scale by grouping related files together, especially for large applications with many features.
 
-
-## Tools and Technologies
-
-- **TurboRepo**: Monorepo management and build caching.
-- **pnpm**: Fast and efficient package management.
-- **ShadCN**: Modern UI component library.
-- **Inertia.js**: Seamless integration between frontend and backend.
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling.
-- **PostgreSQL**: Reliable and high-performance relational database.
-
 ## Adding a New Component
 
 To add a new UI component using ShadCN, execute:
@@ -213,9 +212,14 @@ A layout featuring side navigation, ideal for applications that require quick an
   <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/sidebar.png" alt="Sidebar Layout" width="600" />
 </p>
 
-## Contributing
+## Libraries Used
 
-Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
+This starter kit makes use of the following libraries to support modular design, file handling, SPA integration, and structured data flow. Refer to their documentation for more details:
+
+- [@adonisjs-community/modules](https://github.com/adonisjs-community/modules)
+- [@jrmc/adonis-attachment](https://github.com/batosai/adonis-attachment)
+- [@tuyau/inertia](https://github.com/Julien-R44/tuyau)
+- [@adocasts.com/dto](https://github.com/adocasts/package-dto)
 
 ## Inspirations
 
@@ -226,6 +230,10 @@ This project draws inspiration from the following sources:
 - [ShadCN Blocks](https://www.shadcnblocks.com/)
 - [ShadCN Admin by Satnaing](https://github.com/satnaing/shadcn-admin)
 - [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
+
+## Contributing
+
+Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
 
 ## License
 
