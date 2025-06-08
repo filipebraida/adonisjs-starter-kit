@@ -7,16 +7,19 @@ import HeadingSmall from '#common/ui/components/heading_small'
 import { ProfileForm } from '#users/ui/components/profile_form'
 import SettingsLayout from '#users/ui/components/settings_layout'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 export default function ProfilePage({ profile }: InferPageProps<ProfileController, 'show'>) {
+  const { t } = useTranslation()
   const currentPath = '/settings/profile'
 
   return (
-    <AppLayout breadcrumbs={[{ label: 'Users' }]}>
+    <AppLayout breadcrumbs={[{ label: t('users.profile.breadcrumbs.settings') }]}>
       <SettingsLayout currentPath={currentPath}>
         <div className="space-y-6">
           <HeadingSmall
-            title="Profile information"
-            description="Update your name and email address"
+            title={t('users.profile.title')}
+            description={t('users.profile.description')}
           />
           <ProfileForm user={profile} />
         </div>

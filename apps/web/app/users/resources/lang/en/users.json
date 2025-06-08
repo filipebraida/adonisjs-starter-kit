@@ -1,7 +1,30 @@
 {
-  "title": "User List",
-  "description": "Manage your users and their roles here.",
-  "breadcrumbs": {
-    "users": "Users"
+  "index": {
+    "breadcrumbs": {
+      "users": "Users"
+    },
+    "title": "Users",
+    "description": "Manage the users of your application"
+  },
+  "password": {
+    "breadcrumbs": {
+      "settings": "Settings"
+    },
+    "title": "Update password",
+    "description": "Ensure your account is using a long, random password to stay secure"
+  },
+  "profile": {
+    "breadcrumbs": {
+      "settings": "Settings"
+    },
+    "title": "Profile information",
+    "description": "Update your name and email address"
+  },
+  "tokens": {
+    "breadcrumbs": {
+      "settings": "Settings"
+    },
+    "title": "Tokens",
+    "description": "Manage your API tokens here."
   }
 }

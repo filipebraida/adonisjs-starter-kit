@@ -1,7 +1,30 @@
 {
-  "title": "Lista de Usuários",
-  "description": "Gerencie seus usuários e seus papéis aqui.",
-  "breadcrumbs": {
-    "users": "Usuários"
+  "index": {
+    "breadcrumbs": {
+      "users": "Usuários"
+    },
+    "title": "Usuários",
+    "description": "Gerencie os usuários da sua aplicação"
+  },
+  "password": {
+    "breadcrumbs": {
+      "settings": "Configurações"
+    },
+    "title": "Atualizar senha",
+    "description": "Garanta que sua conta esteja usando uma senha longa e aleatória para manter-se segura"
+  },
+  "profile": {
+    "breadcrumbs": {
+      "settings": "Configurações"
+    },
+    "title": "Informações do perfil",
+    "description": "Atualize seu nome e endereço de e-mail"
+  },
+  "tokens": {
+    "breadcrumbs": {
+      "settings": "Configurações"
+    },
+    "title": "Tokens",
+    "description": "Gerencie aqui seus tokens de API."
   }
 }
