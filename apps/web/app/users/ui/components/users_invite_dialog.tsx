@@ -107,7 +107,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
               </Label>
               <Input
                 id="email"
-                placeholder="Digite o email do usuário"
+                placeholder="Enter the user's email"
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-red-500' : ''}`}

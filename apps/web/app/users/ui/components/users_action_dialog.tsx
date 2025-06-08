@@ -123,7 +123,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </Label>
               <Input
                 id="email"
-                placeholder="Digite o email do usuário"
+                placeholder="Enter the user's email"
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-red-500' : ''}`}
