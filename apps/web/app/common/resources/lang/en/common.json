@@ -1,0 +1,13 @@
+{
+  "layout": {
+    "navMain": {
+      "dashboard": "Dashboard",
+      "administration": "Administration",
+      "users": "Users"
+    },
+    "navUser": {
+      "settings": "Settings",
+      "logout": "Log out"
+    }
+  }
+}

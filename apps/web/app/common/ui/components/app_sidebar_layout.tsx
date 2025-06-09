@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { ToggleTheme } from '#common/ui/components/toggle_theme'
-import { NavUser, NavUserOptionsGroup } from '#common/ui/components/nav_user'
+import { NavUser } from '#common/ui/components/nav_user'
 import { AppSidebar } from '#common/ui/components/app_sidebar'
-import { NavMainItem } from '#common/ui/types/nav_main'
 import Breadcrumb from '#common/ui/components/breadcrumbs'
+
+import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
 
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@workspace/ui/components/sidebar'
 

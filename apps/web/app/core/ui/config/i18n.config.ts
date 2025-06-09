@@ -47,14 +47,12 @@ export const setupI18n = ({
   const resources = buildResources()
   const supportedLngs = Object.keys(resources)
 
-  console.log('i18n resources:', resources)
-
   const config = {
     resources,
     lng: locale,
     fallbackLng: fallbackLocale,
     supportedLngs,
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },

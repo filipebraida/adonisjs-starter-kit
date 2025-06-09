@@ -10,7 +10,7 @@ import {
 } from '@workspace/ui/components/sheet'
 
 import { AppLogo } from '#common/ui/components/app_logo'
-import { isSection, NavMainItem } from '#common/ui/types/nav_main'
+import { isSection, type NavMainItem } from '#common/ui/types/navigation'
 import { useAbility } from '#users/ui/context/abilities_context'
 
 const sidebarMenuButtonVariants =

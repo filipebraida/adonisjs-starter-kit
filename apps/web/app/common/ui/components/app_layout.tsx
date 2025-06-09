@@ -1,16 +1,16 @@
 import React from 'react'
 
-import { NavUserOptionsGroup } from '#common/ui/components/nav_user'
 import AppSidebarLayout from '#common/ui/components/app_sidebar_layout'
 import AppHeaderLayout from '#common/ui/components/app_header_layout'
-import { NavMainItem } from '#common/ui/types/nav_main'
 
 import useUser from '#auth/ui/hooks/use_user'
 import AbilityProvider from '#users/ui/context/abilities_context'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { Toaster } from '@workspace/ui/components/sonner'
-import { LogOut, Settings, Users } from 'lucide-react'
+
+import { getNavMain, getNavUser } from '#common/ui/config/navigation.config'
 
 interface BreadcrumbItemProps {
   label: string
@@ -22,47 +22,17 @@ interface AppLayoutProps extends React.PropsWithChildren {
   layout?: 'sidebar' | 'header'
 }
 
-const navMain: NavMainItem[] = [
-  {
-    title: 'Dashboard',
-    url: '/dashboard',
-  },
-  {
-    title: 'Administration',
-    items: [
-      {
-        title: 'Users',
-        url: '/users',
-        icon: Users,
-        subject: 'users',
-      },
-    ],
-  },
-]
-
-export const navUser: NavUserOptionsGroup[] = [
-  [
-    {
-      title: 'Settings',
-      url: '/settings',
-      icon: Settings,
-    },
-  ],
-  [
-    {
-      title: 'Log out',
-      url: '/logout',
-      icon: LogOut,
-    },
-  ],
-]
-
 export default function AppLayout({
   children,
   breadcrumbs = [],
   layout = 'header',
 }: AppLayoutProps) {
   const user = useUser()
+
+  const { t } = useTranslation()
+
+  const navMain = getNavMain(t)
+  const navUser = getNavUser(t)
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
