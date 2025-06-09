@@ -8,8 +8,9 @@ export function AppLogo() {
       <div className="flex aspect-square size-8 items-center justify-center">
         <img src={logo} alt="Logo" className="size-8" />
       </div>
-      <div className="ml-1 grid flex-1 text-left text-sm">
-        <span className="mb-0.5 truncate leading-none font-semibold">AdonisJS Starter Kit</span>
+      <div className="ml-1 grid flex-1 text-left leading-tight text-sm">
+        <span className="font-semibold">Starter Kit</span>
+        <span className="text-muted-foreground text-xs">AdonisJS</span>
       </div>
     </Link>
   )
