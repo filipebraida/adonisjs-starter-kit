@@ -10,7 +10,10 @@ export default defineConfig({
     tailwindcss(),
     inertia({ ssr: { enabled: true, entrypoint: 'app/core/ui/app/ssr.tsx' } }),
     react(),
-    adonisjs({ entrypoints: ['app/core/ui/app/app.tsx'], reload: ['resources/views/**/*.edge'] }),
+    adonisjs({
+      entrypoints: ['resources/js/app.js', 'app/core/ui/app/app.tsx'],
+      reload: ['resources/views/**/*.edge'],
+    }),
   ],
 
   /**

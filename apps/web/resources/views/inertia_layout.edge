@@ -5,14 +5,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('resources/images/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('resources/images/favicon-16x16.png')}}">
+
+    <!-- SEO -->
+    <meta name="description" content="A modern AdonisJS Starter Kit with Inertia.js, React, Tailwind CSS, and Vite — designed for building fullstack monorepo apps fast." />
+    <meta name="keywords" content="AdonisJS, InertiaJS, React, Tailwind CSS, Starter Kit, Vite, Monorepo, Fullstack, JavaScript, TypeScript" />
+    <meta name="author" content="Filipe Braida" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/filipebraida/adonisjs-starter-kit" />
+    <meta property="og:title" content="AdonisJS Starter Kit" />
+    <meta property="og:description" content="A full-featured starter kit using AdonisJS, Inertia, React, Tailwind, and Vite." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/screenshot.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AdonisJS Starter Kit" />
+    <meta name="twitter:description" content="A full-featured starter kit using AdonisJS, Inertia, React, Tailwind, and Vite." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/screenshot.png" />
+
     <title inertia>
-      AdonisJS x Inertia x React
+      StarterKit
     </title>
 
     @stack('dumper')
     @viteReactRefresh()
     @inertiaHead()
     @vite([
+    'resources/js/app.js',
     'app/core/ui/app/app.tsx',
     `app/${page.component.split('/')[0]}/ui/pages/${page.component.split('/').splice(1).join('/')}.tsx`
     ])
