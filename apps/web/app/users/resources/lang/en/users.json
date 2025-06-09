@@ -103,5 +103,17 @@
     "toast": {
       "title": "The following user has been deleted:"
     }
+  },
+  "impersonate": {
+    "title": "Impersonate User",
+    "description": "Are you sure you want to impersonate <strong1>{{email}}</strong1>? This action will allow you to act as this user (Role: <strong2>{{role}}</strong2>) in the system.",
+    "confirm_button": "Impersonate",
+    "alert": {
+      "title": "Note",
+      "description": "You can revert to your original account at any time by logging out."
+    },
+    "toast": {
+      "title": "You are now impersonating the following user:"
+    }
   }
 }

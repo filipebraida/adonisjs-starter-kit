@@ -1,8 +1,10 @@
 import { useForm } from '@inertiajs/react'
 
+import { Trans } from 'react-i18next'
 import { UserIcon } from 'lucide-react'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 
@@ -17,12 +19,14 @@ interface Props {
 export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props) {
   const { post } = useForm()
 
+  const { t } = useTranslation()
+
   const handleImpersonate = () => {
     post(`/users/impersonate/${currentRow?.id}`, {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)
-        toast('You are now impersonating the following user:', {
+        toast(t('users.impersonate.toast.title'), {
           description: (
             <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
               <pre className="text-white whitespace-pre-wrap break-words">
@@ -43,28 +47,32 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
       title={
         <span className="flex items-center gap-2">
           <UserIcon className="mr-1 inline-block" size={18} />
-          <span>Impersonate User</span>
+          <span>{t('users.impersonate.title')}</span>
         </span>
       }
       desc={
         <div className="space-y-4">
           <p className="mb-2">
-            Are you sure you want to impersonate{' '}
-            <span className="font-bold">{currentRow.email}</span>?
-            <br />
-            This action will allow you to act as this user (Role:{' '}
-            <span className="font-bold">{currentRow.role}</span>) in the system.
+            <Trans
+              i18nKey="users.impersonate.description"
+              values={{
+                email: currentRow.email,
+                role: currentRow.role,
+              }}
+              components={{
+                strong1: <span className="font-bold" />,
+                strong2: <span className="font-bold" />,
+              }}
+            />
           </p>
 
           <Alert>
-            <AlertTitle>Note</AlertTitle>
-            <AlertDescription>
-              You can revert to your original account at any time by logging out.
-            </AlertDescription>
+            <AlertTitle>{t('users.impersonate.alert.title')}</AlertTitle>
+            <AlertDescription>{t('users.impersonate.alert.description')}</AlertDescription>
           </Alert>
         </div>
       }
-      confirmText="Impersonate"
+      confirmText={t('users.impersonate.confirm_button')}
     />
   )
 }

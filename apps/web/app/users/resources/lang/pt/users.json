@@ -103,5 +103,17 @@
     "toast": {
       "title": "O seguinte usuário foi excluído:"
     }
+  },
+  "impersonate": {
+    "title": "Assumir Usuário",
+    "description": "Tem certeza de que deseja assumir <strong1>{{email}}</strong1>? Esta ação permitirá que você atue como este usuário (Função: <strong2>{{role}}</strong2>) no sistema.",
+    "confirm_button": "Assumir",
+    "alert": {
+      "title": "Atenção",
+      "description": "Você pode voltar para sua conta original a qualquer momento fazendo logout."
+    },
+    "toast": {
+      "title": "Você agora está assumindo o seguinte usuário:"
+    }
   }
 }
