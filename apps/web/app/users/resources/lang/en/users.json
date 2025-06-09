@@ -1,23 +1,47 @@
 {
   "index": {
-    "breadcrumbs": {
-      "users": "Users"
+    "page": {
+      "title": "Users",
+      "description": "Manage the users of your application",
+      "breadcrumbs": {
+        "users": "Users"
+      }
     },
-    "title": "Users",
-    "description": "Manage the users of your application"
+    "table": {
+      "columns": {
+        "full_name": "Full Name",
+        "email": "Email",
+        "role": "Role"
+      },
+      "filters": {
+        "search_placeholder": "Search...",
+        "role": "Role"
+      },
+      "row_actions": {
+        "impersonate": "Impersonate",
+        "edit": "Edit",
+        "delete": "Delete",
+        "open_menu": "Open menu"
+      },
+      "not_provided": "Not provided"
+    },
+    "toolbar": {
+      "invite": "Invite",
+      "add": "Add"
+    }
   },
   "password": {
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Update password",
-    "description": "Ensure your account is using a long, random password to stay secure"
+    "title": "Update Password",
+    "description": "Make sure your account is using a long, random password to stay secure"
   },
   "profile": {
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Profile information",
+    "title": "Profile Information",
     "description": "Update your name and email address"
   },
   "tokens": {

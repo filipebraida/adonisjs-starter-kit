@@ -17,10 +17,13 @@ export default function ListUsersPage({ users, roles }: InferPageProps<UsersCont
   const { t } = useTranslation()
 
   return (
-    <AppLayout breadcrumbs={[{ label: t('users.index.breadcrumbs.users') }]}>
+    <AppLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
       <UsersProvider>
         <Main>
-          <Heading title={t('users.index.title')} description={t('users.index.description')}>
+          <Heading
+            title={t('users.index.page.title')}
+            description={t('users.index.page.description')}
+          >
             <UsersPrimaryButtons />
           </Heading>
 

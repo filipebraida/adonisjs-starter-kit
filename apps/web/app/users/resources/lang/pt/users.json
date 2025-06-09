@@ -1,10 +1,34 @@
 {
   "index": {
-    "breadcrumbs": {
-      "users": "Usuários"
+    "page": {
+      "title": "Usuários",
+      "description": "Gerencie os usuários da sua aplicação",
+      "breadcrumbs": {
+        "users": "Usuários"
+      }
     },
-    "title": "Usuários",
-    "description": "Gerencie os usuários da sua aplicação"
+    "table": {
+      "columns": {
+        "full_name": "Nome completo",
+        "email": "E-mail",
+        "role": "Papel"
+      },
+      "filters": {
+        "search_placeholder": "Pesquisar...",
+        "role": "Papel"
+      },
+      "row_actions": {
+        "impersonate": "Entrar como",
+        "edit": "Editar",
+        "delete": "Excluir",
+        "open_menu": "Abrir menu"
+      },
+      "not_provided": "Não informado"
+    },
+    "toolbar": {
+      "invite": "Convidar",
+      "add": "Adicionar"
+    }
   },
   "password": {
     "breadcrumbs": {
