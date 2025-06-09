@@ -5,7 +5,6 @@ import { LogOut, Settings, Users } from 'lucide-react'
 import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
 
 export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
-  console.log('getNavUser called')
   return [
     [
       {
@@ -25,7 +24,6 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
 }
 
 export function getNavMain(t: SimpleTFunction): NavMainItem[] {
-  console.log('getNavMain called')
   return [
     {
       title: t('common.layout.navMain.dashboard'),
