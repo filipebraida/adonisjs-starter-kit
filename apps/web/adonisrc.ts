@@ -53,6 +53,7 @@ export default defineConfig({
     () => import('@jrmc/adonis-attachment/attachment_provider'),
     () => import('@adonisjs/drive/drive_provider'),
     () => import('@tuyau/core/tuyau_provider'),
+    () => import('@adonisjs/i18n/i18n_provider'),
   ],
 
   /*
@@ -124,6 +125,10 @@ export default defineConfig({
     },
     {
       pattern: 'public/**',
+      reloadServer: false,
+    },
+    {
+      pattern: 'resources/lang/**/*.{json,yaml,yml}',
       reloadServer: false,
     },
   ],

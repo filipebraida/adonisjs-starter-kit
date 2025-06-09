@@ -20,6 +20,7 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
 - **API Tokens**: Users can generate and revoke personal access tokens for use in APIs.
 - **Multiple Layouts**: Choose between two distinct layouts: sidebar for enhanced navigation and Header for a streamlined top-bar interface.
+- **i18n Support**: Built-in internationalization with default support for English and Portuguese using [@adonisjs/i18n](https://docs.adonisjs.com/guides/i18n).
 
 ## Tools and Technologies
 

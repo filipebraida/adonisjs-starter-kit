@@ -11,15 +11,21 @@ import { TokensDialogs } from '#users/ui/components/tokens_dialogs'
 import TokensProvider from '#users/ui/context/tokens_context'
 import { TokensPrimaryButtons } from '#users/ui/components/tokens_primary_buttons'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 export default function TokensPage({ tokens }: InferPageProps<TokensController, 'index'>) {
+  const { t } = useTranslation()
   const currentPath = '/settings/tokens'
 
   return (
-    <AppLayout breadcrumbs={[{ label: 'Tokens' }]}>
+    <AppLayout breadcrumbs={[{ label: t('users.tokens.breadcrumbs.settings') }]}>
       <SettingsLayout currentPath={currentPath}>
         <TokensProvider>
           <div className="space-y-6">
-            <HeadingSmall title="Tokens" description="Manage your API tokens here.">
+            <HeadingSmall
+              title={t('users.tokens.title')}
+              description={t('users.tokens.description')}
+            >
               <TokensPrimaryButtons />
             </HeadingSmall>
 

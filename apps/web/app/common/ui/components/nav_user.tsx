@@ -2,8 +2,7 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 
 import { UserAvatar } from '#common/ui/components/user_avatar'
-
-import { LucideIcon } from 'lucide-react'
+import type { NavUserProps } from '#common/ui/types/navigation'
 
 import {
   DropdownMenu,
@@ -14,20 +13,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
-
-import UserDto from '#users/dtos/user'
-
-export type NavUserOptionsGroup = {
-  title: string
-  url: string
-  icon: LucideIcon
-  shortcut?: string
-}[]
-
-export interface NavUserProps {
-  user: UserDto
-  options: NavUserOptionsGroup[]
-}
 
 export function NavUser({ user, options }: NavUserProps) {
   return (

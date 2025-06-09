@@ -11,6 +11,7 @@ import Role from '#users/dtos/role'
 
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import { userRoles } from '#users/ui/components/users_types'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 interface DataTableProps {
   users: User[]
@@ -18,28 +19,29 @@ interface DataTableProps {
 }
 
 export default function UsersTable({ users, roles }: DataTableProps) {
+  const { t } = useTranslation()
+
   const columns: ColumnDef<User>[] = [
     {
-      header: 'Full Name',
+      header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
-      cell: ({ row }) => {
-        return row.original.fullName ? (
+      cell: ({ row }) =>
+        row.original.fullName ? (
           row.original.fullName
         ) : (
           <span className="text-muted-foreground">
-            <i>Not provided</i>
+            <i>{t('users.index.table.not_provided')}</i>
           </span>
-        )
-      },
+        ),
     },
     {
-      header: 'Email',
+      header: t('users.index.table.columns.email'),
       accessorKey: 'email',
     },
     {
       accessorKey: 'roleId',
       accessorFn: (user) => String(user.roleId),
-      header: 'Role',
+      header: t('users.index.table.columns.role'),
       cell: ({ row }) => {
         const { roleId } = row.original
         const role = roles.find((role) => role.id === roleId)
@@ -76,7 +78,7 @@ export default function UsersTable({ users, roles }: DataTableProps) {
           additionalFilters={
             <>
               <Input
-                placeholder={'Search...'}
+                placeholder={t('users.index.table.filters.search_placeholder')}
                 value={(props.table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
                 onChange={(event) =>
                   props.table.getColumn('fullName')?.setFilterValue(event.target.value)
@@ -85,7 +87,7 @@ export default function UsersTable({ users, roles }: DataTableProps) {
               />
               <DataTableFacetedFilter
                 column={props.table.getColumn('roleId')}
-                title="Role"
+                title={t('users.index.table.filters.role')}
                 options={roles.map((role) => ({
                   value: String(role.id),
                   label: role.name,

@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { NavSidebarMain } from '#common/ui/components/nav_sidebar_main'
-import { NavMainItem } from '#common/ui/types/nav_main'
 import { AppLogo } from '#common/ui/components/app_logo'
+
+import type { NavMainItem } from '#common/ui/types/navigation'
 
 import {
   Sidebar,

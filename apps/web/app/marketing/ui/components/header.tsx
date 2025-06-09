@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from '@tuyau/inertia/react'
 
-import { GalleryVerticalEnd, MenuIcon } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
+
+import { AppLogo } from '#common/ui/components/app_logo'
 
 export default function HeaderSection() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -29,10 +31,8 @@ export default function HeaderSection() {
             </Link>
           </div>
         </div>
-        <Link route="marketing.show" className="flex items-center gap-2.5 relative z-50">
-          <GalleryVerticalEnd className="h-6 w-6 mr-2" />
-          <span className="font-semibold">AdonisJS Starter Kit</span>
-        </Link>
+
+        <AppLogo />
 
         <div className="hidden md:flex items-center justify-center gap-8">
           <a
