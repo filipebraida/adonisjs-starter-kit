@@ -6,13 +6,17 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const { data, setData, errors, post } = useForm({
     email: '',
     password: '',
   })
+
+  const { t } = useTranslation()
 
   const tuyau = useTuyau()
 
@@ -41,21 +45,19 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   return (
     <form onSubmit={handleSubmit} className={cn('flex flex-col gap-6', className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Sign in to your account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to access your account
-        </p>
+        <h1 className="text-2xl font-bold">{t('auth.signin.title')}</h1>
+        <p className="text-balance text-sm text-muted-foreground">{t('auth.signin.description')}</p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('auth.signin.form.email.label')}</Label>
           <div>
             <Input
               id="email"
               type="email"
               value={data.email}
-              onChange={(element) => setData('email', element.target.value)}
-              placeholder="m@ufrrj.br"
+              onChange={(e) => setData('email', e.target.value)}
+              placeholder={t('auth.signin.form.email.placeholder')}
               className={`${errors?.email || invalidCreditials ? 'border-red-500' : ''}`}
               required
             />
@@ -66,12 +68,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         </div>
         <div className="grid gap-2">
           <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('auth.signin.form.password.label')}</Label>
             <Link
               route="auth.forgot_password.show"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
-              Forgot your password?
+              {t('auth.signin.actions.forgot_password')}
             </Link>
           </div>
           <div>
@@ -79,7 +81,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               id="password"
               type="password"
               value={data.password}
-              onChange={(element) => setData('password', element.target.value)}
+              onChange={(e) => setData('password', e.target.value)}
+              placeholder={t('auth.signin.form.password.placeholder')}
               className={`${errors?.password || invalidCreditials ? 'border-red-500' : ''}`}
               required
             />
@@ -90,18 +93,18 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         </div>
         <div>
           <Button type="submit" className="w-full">
-            Sign In
+            {t('auth.signin.actions.submit')}
           </Button>
           {invalidCreditials && (
             <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-              Invalid email or password
+              {t('auth.signin.error.invalid')}
             </p>
           )}
         </div>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
-            Or continue with
+            {t('auth.signin.divider')}
           </span>
         </div>
         <Button variant="outline" className="w-full" asChild>
@@ -124,14 +127,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 fill="#34A853"
               />
             </svg>
-            Sign in with Google
+            {t('auth.signin.actions.google')}
           </a>
         </Button>
       </div>
       <div className="text-center text-sm">
-        <span>Don't have an account? </span>
+        <span>{t('auth.signin.no_account.text')} </span>
         <Link route="auth.sign_up.show" className="underline underline-offset-4">
-          Sign up
+          {t('auth.signin.no_account.sign_up')}
         </Link>
       </div>
     </form>
