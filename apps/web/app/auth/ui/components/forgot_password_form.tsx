@@ -8,6 +8,8 @@ import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 export function ForgotPasswordForm({
   className,
   ...props
@@ -16,6 +18,8 @@ export function ForgotPasswordForm({
     email: '',
   })
 
+  const { t } = useTranslation()
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -23,8 +27,8 @@ export function ForgotPasswordForm({
       onSuccess: () => {
         reset()
 
-        toast('Email sent', {
-          description: 'We have sent the link for password recovery.',
+        toast(t('auth.forgot_password.toast.title'), {
+          description: t('auth.forgot_password.toast.description'),
         })
       },
     })
@@ -33,21 +37,21 @@ export function ForgotPasswordForm({
   return (
     <form onSubmit={handleSubmit} className={cn('flex flex-col gap-6', className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Forgot your password?</h1>
+        <h1 className="text-2xl font-bold">{t('auth.forgot_password.title')}</h1>
         <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to receive the recovery link.
+          {t('auth.forgot_password.description')}
         </p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t('auth.forgot_password.form.email.label')}</Label>
           <div>
             <Input
               id="email"
               type="email"
               value={data.email}
               onChange={(element) => setData('email', element.target.value)}
-              placeholder="user@ufrrj.br"
+              placeholder={t('auth.forgot_password.form.email.placeholder')}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
@@ -56,13 +60,13 @@ export function ForgotPasswordForm({
           </div>
         </div>
         <Button type="submit" className="w-full">
-          Send
+          {t('auth.forgot_password.actions.submit')}
         </Button>
       </div>
       <div className="text-center text-sm">
-        Remember your password?{' '}
+        {t('auth.forgot_password.back_to_login.text')}{' '}
         <Link route="auth.sign_in.show" className="underline underline-offset-4">
-          Log in
+          {t('auth.forgot_password.back_to_login.login')}
         </Link>
       </div>
     </form>
