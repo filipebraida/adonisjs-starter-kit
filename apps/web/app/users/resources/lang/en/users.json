@@ -50,5 +50,45 @@
     },
     "title": "Tokens",
     "description": "Manage your API tokens here."
+  },
+  "action": {
+    "create": {
+      "title": "Create User",
+      "description": "Fill in the details below to add a new user. Click add when you're done."
+    },
+    "edit": {
+      "title": "Edit User",
+      "description": "Update the user here. Click save when you're done."
+    },
+    "form": {
+      "full_name": {
+        "label": "Full Name",
+        "placeholder": "Enter user's full name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter the user's email"
+      },
+      "role": {
+        "label": "Role",
+        "placeholder": "Select a role"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "e.g., S3cur3P@ssw0rd"
+      },
+      "password_confirmation": {
+        "label": "Confirm Password",
+        "placeholder": "e.g., S3cur3P@ssw0rd"
+      }
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "create_submit": "Add",
+      "edit_submit": "Save"
+    },
+    "toast": {
+      "title": "You submitted the following values:"
+    }
   }
 }

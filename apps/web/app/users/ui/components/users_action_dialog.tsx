@@ -25,6 +25,7 @@ import {
   SelectGroup,
   SelectItem,
 } from '@workspace/ui/components/select'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import type RoleDto from '#users/dtos/role'
 import type UserDto from '#users/dtos/user'
@@ -41,6 +42,8 @@ interface Props {
 }
 
 export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Props) {
+  const { t } = useTranslation()
+
   const isEdit = !!currentRow
 
   const { data, setData, errors, post, put, progress, clearErrors, reset } = useForm({
@@ -65,7 +68,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
           reset()
           clearErrors()
         }, 500)
-        toast('You submitted the following values:', {
+        toast(t('users.action.toast.title'), {
           description: (
             <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
               <pre className="text-white whitespace-pre-wrap break-words">
@@ -92,22 +95,21 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-left">
           <DialogTitle className="flex items-center gap-2">
-            {isEdit ? 'Edit User' : 'Add User'}
+            {t(isEdit ? 'users.action.edit.title' : 'users.action.create.title')}
           </DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Update the user here. ' : ' Fill in the details below to add a new user. '}
-            Click save when you&apos;re done.
+            {t(isEdit ? 'users.action.edit.description' : 'users.action.create.description')}
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="w-full pr-4 -mr-4 py-1">
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
             <div>
               <Label htmlFor="name" className="mb-1 text-gray-700">
-                Full Name
+                {t('users.action.form.full_name.label')}
               </Label>
               <Input
                 id="fullName"
-                placeholder="Enter user's full name"
+                placeholder={t('users.action.form.full_name.placeholder')}
                 value={data.fullName}
                 onChange={(element) => setData('fullName', element.target.value)}
                 className={`${errors?.fullName ? 'border-red-500' : ''}`}
@@ -119,11 +121,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
             <div>
               <Label htmlFor="email" className="mb-1 text-gray-700">
-                Email
+                {t('users.action.form.email.label')}
               </Label>
               <Input
                 id="email"
-                placeholder="Enter the user's email"
+                placeholder={t('users.action.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-red-500' : ''}`}
@@ -135,11 +137,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
             <div>
               <Label htmlFor="role" className="mb-1 text-gray-700">
-                Role
+                {t('users.action.form.role.label')}
               </Label>
-              <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
+              <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
                 <SelectTrigger className={`${errors?.roleId ? 'border-red-500' : ''}`}>
-                  <SelectValue placeholder="Select uma role" />
+                  <SelectValue placeholder={t('users.action.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -168,14 +170,14 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
             <div>
               <Label htmlFor="password" className="mb-1 text-gray-700">
-                Password
+                {t('users.action.form.password.label')}
               </Label>
               <PasswordInput
                 id="password"
-                placeholder="e.g., S3cur3P@ssw0rd"
+                placeholder={t('users.action.form.password.placeholder')}
                 value={data.password}
-                onChange={(element) => setData('password', element.target.value)}
-                className={`${errors?.password ? 'border-red-500' : ''}`}
+                onChange={(e) => setData('password', e.target.value)}
+                className={errors?.password ? 'border-red-500' : ''}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.password}
@@ -184,12 +186,12 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
             <div>
               <Label htmlFor="passwordConfirmation" className="mb-1 text-gray-700">
-                Confirm Password
+                {t('users.action.form.password_confirmation.label')}
               </Label>
               <PasswordInput
                 id="passwordConfirmation"
                 disabled={data.password === ''}
-                placeholder="e.g., S3cur3P@ssw0rd"
+                placeholder={t('users.action.form.password_confirmation.placeholder')}
                 value={data.passwordConfirmation}
                 onChange={(element) => setData('passwordConfirmation', element.target.value)}
                 className={`${errors?.passwordConfirmation ? 'border-red-500' : ''}`}
@@ -210,10 +212,10 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
         </ScrollArea>
         <DialogFooter className="gap-y-2">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{t('users.action.actions.cancel')}</Button>
           </DialogClose>
           <Button type="submit" form="user-form">
-            {isEdit ? 'Save' : 'Add'}
+            {t(isEdit ? 'users.action.actions.edit_submit' : 'users.action.actions.create_submit')}
           </Button>
         </DialogFooter>
       </DialogContent>

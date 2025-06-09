@@ -50,5 +50,45 @@
     },
     "title": "Tokens",
     "description": "Gerencie aqui seus tokens de API."
+  },
+  "action": {
+    "create": {
+      "title": "Criar Usuário",
+      "description": "Preencha os dados abaixo para adicionar um novo usuário. Clique em adicionar quando terminar."
+    },
+    "edit": {
+      "title": "Editar Usuário",
+      "description": "Atualize os dados do usuário abaixo. Clique em salvar quando terminar."
+    },
+    "form": {
+      "full_name": {
+        "label": "Nome Completo",
+        "placeholder": "Digite o nome completo do usuário"
+      },
+      "email": {
+        "label": "E-mail",
+        "placeholder": "Digite o e-mail do usuário"
+      },
+      "role": {
+        "label": "Função",
+        "placeholder": "Selecione uma função"
+      },
+      "password": {
+        "label": "Senha",
+        "placeholder": "ex.: S3gur@nc@123"
+      },
+      "password_confirmation": {
+        "label": "Confirmar Senha",
+        "placeholder": "ex.: S3gur@nc@123"
+      }
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "create_submit": "Adicionar",
+      "edit_submit": "Salvar"
+    },
+    "toast": {
+      "title": "Você enviou os seguintes dados:"
+    }
   }
 }
