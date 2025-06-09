@@ -115,5 +115,30 @@
     "toast": {
       "title": "Você agora está assumindo o seguinte usuário:"
     }
+  },
+  "invite": {
+    "title": "Convidar Usuário",
+    "description": "Convide um novo usuário para sua equipe enviando um convite por e-mail. Atribua uma função para definir o nível de acesso.",
+    "form": {
+      "email": {
+        "label": "E-mail",
+        "placeholder": "Digite o e-mail do usuário"
+      },
+      "role": {
+        "label": "Função",
+        "placeholder": "Selecione uma função"
+      },
+      "description": {
+        "label": "Descrição (opcional)",
+        "placeholder": "Adicione uma mensagem pessoal ao convite (opcional)"
+      }
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "submit": "Enviar Convite"
+    },
+    "toast": {
+      "title": "Você enviou os seguintes valores:"
+    }
   }
 }

@@ -28,6 +28,8 @@ import {
   SelectItem,
 } from '@workspace/ui/components/select'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 import type RoleDto from '#users/dtos/role'
 import type UserDto from '#users/dtos/user'
 
@@ -54,6 +56,8 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
     description: '',
   })
 
+  const { t } = useTranslation()
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -65,7 +69,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
           reset()
           clearErrors()
         }, 500)
-        toast('You submitted the following values:', {
+        toast(t('users.invite.toast.title'), {
           description: (
             <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
               <pre className="text-white whitespace-pre-wrap break-words">
@@ -92,22 +96,19 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-left">
           <DialogTitle className="flex items-center gap-2">
-            <MailPlus /> Invite User
+            <MailPlus /> {t('users.invite.title')}
           </DialogTitle>
-          <DialogDescription>
-            Invite new user to join your team by sending them an email invitation. Assign a role to
-            define their access level.
-          </DialogDescription>
+          <DialogDescription>{t('users.invite.description')}</DialogDescription>
         </DialogHeader>
         <ScrollArea className="w-full pr-4 -mr-4 py-1">
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
             <div>
               <Label htmlFor="email" className="mb-1 text-gray-700">
-                Email
+                {t('users.invite.form.email.label')}
               </Label>
               <Input
                 id="email"
-                placeholder="Enter the user's email"
+                placeholder={t('users.invite.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-red-500' : ''}`}
@@ -119,11 +120,11 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
 
             <div>
               <Label htmlFor="role" className="mb-1 text-gray-700">
-                Role
+                {t('users.invite.form.role.label')}
               </Label>
               <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
-                <SelectTrigger className={`${errors?.roleId ? 'border-red-500' : ''}`}>
-                  <SelectValue placeholder="Select uma role" />
+                <SelectTrigger className={errors?.roleId ? 'border-red-500' : ''}>
+                  <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -151,12 +152,12 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
             </div>
 
             <div>
-              <Label htmlFor="password" className="mb-1 text-gray-700">
-                Description (optional)
+              <Label htmlFor="description" className="mb-1 text-gray-700">
+                {t('users.invite.form.description.label')}
               </Label>
               <Textarea
                 id="description"
-                placeholder="Add a personal note to your invitation (optional)"
+                placeholder={t('users.invite.form.description.placeholder')}
                 value={data.description ?? ''}
                 onChange={(element) => setData('description', element.target.value)}
                 className={cn('resize-none', `${errors?.description ? 'border-red-500' : ''}`)}
@@ -177,10 +178,10 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
         </ScrollArea>
         <DialogFooter className="gap-y-2">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{t('users.invite.actions.cancel')}</Button>
           </DialogClose>
           <Button type="submit" form="user-form">
-            Invite <Send />
+            {t('users.invite.actions.submit')} <Send />
           </Button>
         </DialogFooter>
       </DialogContent>
