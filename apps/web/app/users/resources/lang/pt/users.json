@@ -90,5 +90,18 @@
     "toast": {
       "title": "Você enviou os seguintes dados:"
     }
+  },
+  "delete": {
+    "title": "Excluir Usuário",
+    "description": "Você tem certeza de que deseja excluir <strong1>{{email}}</strong1>? Esta ação removerá permanentemente o usuário com o cargo de <strong2>{{role}}</strong2> do sistema. Esta operação não pode ser desfeita.",
+    "confirm_placeholder": "Digite o e-mail para confirmar a exclusão.",
+    "confirm_button": "Excluir",
+    "alert": {
+      "title": "Atenção!",
+      "description": "Tenha cuidado, esta operação não poderá ser desfeita."
+    },
+    "toast": {
+      "title": "O seguinte usuário foi excluído:"
+    }
   }
 }

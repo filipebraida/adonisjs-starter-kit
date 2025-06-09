@@ -90,5 +90,18 @@
     "toast": {
       "title": "You submitted the following values:"
     }
+  },
+  "delete": {
+    "title": "Delete User",
+    "description": "Are you sure you want to delete <strong1>{{email}}</strong1>? This action will permanently remove the user with the role of <strong2>{{role}}</strong2> from the system. This cannot be undone.",
+    "confirm_placeholder": "Enter email to confirm deletion.",
+    "confirm_button": "Delete",
+    "alert": {
+      "title": "Warning!",
+      "description": "Please be carefull, this operation can not be rolled back."
+    },
+    "toast": {
+      "title": "The following user has been deleted:"
+    }
   }
 }
