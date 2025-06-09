@@ -19,7 +19,7 @@ createInertiaApp({
 
   title: (title) => (title ? `${title} - ${appName}` : appName),
 
-  resolve: async (name) => {
+  resolve: (name) => {
     const firstPart = name.split('/')[0]
     const rest = name.split('/').slice(1).join('/')
     return resolvePageComponent(
