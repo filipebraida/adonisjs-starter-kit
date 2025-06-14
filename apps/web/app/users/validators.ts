@@ -1,5 +1,6 @@
 import vine from '@vinejs/vine'
-import User from './models/user.js'
+
+import User from '#users/models/user'
 
 export const createUserValidator = vine.compile(
   vine.object({
