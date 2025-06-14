@@ -2,12 +2,12 @@ import { ReactNode } from 'react'
 
 import Heading from '#common/ui/components/heading'
 import { Main } from '#common/ui/components/main'
-import SidebarNav from '#common/ui/components/sidebar_nav'
+import SidebarNav, { type SidebarNavItem } from '#common/ui/components/sidebar_nav'
 
 import { Separator } from '@workspace/ui/components/separator'
 import { KeyRound, Ticket, User } from 'lucide-react'
 
-const sidebarNavItems = [
+const sidebarNavItems: SidebarNavItem[] = [
   {
     title: 'Profile',
     icon: <User size={18} />,
@@ -22,6 +22,7 @@ const sidebarNavItems = [
     title: 'Tokens',
     icon: <Ticket size={18} />,
     href: '/settings/tokens',
+    subject: 'token',
   },
 ]
 

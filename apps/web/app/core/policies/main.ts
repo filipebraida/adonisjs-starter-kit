@@ -13,6 +13,8 @@
 */
 
 export const policies = {
+  // User policies
   UserPolicy: () => import('#users/policies/user_policy'),
   ImpersonatePolicy: () => import('#users/policies/impersonate_policy'),
+  TokenPolicy: () => import('#users/policies/token_policy'),
 }

@@ -3,8 +3,11 @@ import { PureAbility, AbilityBuilder } from '@casl/ability'
 
 import usePageProps from '#common/ui/hooks/use_page_props'
 
-export type Actions = 'create' | 'read' | 'update' | 'delete' | 'manage'
-export type Subjects = 'users' | 'all'
+type Actions = 'create' | 'read' | 'update' | 'delete' | 'manage'
+import type { Subjects } from '#users/services/abilities_service'
+
+export type { Subjects, Actions }
+
 export type AppAbility = PureAbility<[Actions, Subjects]>
 
 interface AbilityContextType {

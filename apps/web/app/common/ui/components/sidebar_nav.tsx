@@ -12,22 +12,31 @@ import {
   SelectValue,
 } from '@workspace/ui/components/select'
 
+import { Subjects, useAbility } from '#users/ui/context/abilities_context'
+
+export interface SidebarNavItem {
+  href: string
+  title: string
+  icon: JSX.Element
+  subject?: Subjects
+}
+
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   currentPath: string
-  items: {
-    href: string
-    title: string
-    icon: JSX.Element
-  }[]
+  items: SidebarNavItem[]
 }
 
 export default function SidebarNav({ className, currentPath, items, ...props }: SidebarNavProps) {
   const [val, setVal] = useState(currentPath)
 
+  const abilities = useAbility()
+
   const handleSelect = (e: string) => {
     setVal(e)
     router.visit(e)
   }
+
+  const visibleItems = items.filter((item) => !item.subject || abilities.can('read', item.subject))
 
   return (
     <>
@@ -37,7 +46,7 @@ export default function SidebarNav({ className, currentPath, items, ...props }: 
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {items.map((item) => (
+            {visibleItems.map((item) => (
               <SelectItem key={item.href} value={item.href}>
                 <div className="flex gap-x-4 px-2 py-1">
                   <span className="scale-125">{item.icon}</span>
@@ -54,7 +63,7 @@ export default function SidebarNav({ className, currentPath, items, ...props }: 
           className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)}
           {...props}
         >
-          {items.map((item) => (
+          {visibleItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}

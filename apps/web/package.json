@@ -68,6 +68,7 @@
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
     "@casl/ability": "^6.7.3",
+    "@casl/react": "^5.0.0",
     "@inertiajs/react": "^2.0.11",
     "@jrmc/adonis-attachment": "^4.0.1",
     "@tuyau/client": "^0.2.8",
