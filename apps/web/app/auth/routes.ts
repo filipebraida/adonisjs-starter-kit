@@ -42,3 +42,4 @@ router
   .where('provider', /google/)
   .as('social.create')
 router.get('/:provider/callback', [SocialController, 'callback']).where('provider', /google/)
+router.get('/switch/:locale', () => {}).use(middleware.switchLocale())

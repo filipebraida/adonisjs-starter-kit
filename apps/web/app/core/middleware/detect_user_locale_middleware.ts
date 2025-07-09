@@ -26,8 +26,25 @@ export default class DetectUserLocaleMiddleware {
    * Feel free to use different mechanism for finding user language.
    */
   protected getRequestLocale(ctx: HttpContext) {
+    // Retrieve supported languages
+    const supportedLocales = i18nManager.supportedLocales()
+
+    // First, try to read the language from a custom header
+    const customHeaderLocale = ctx.request.header('X-User-Language')
+    // If the custom header exists and is a valid locale, use it
+    if (customHeaderLocale && supportedLocales.includes(customHeaderLocale)) {
+      return customHeaderLocale
+    }
+
+    // Then check the cookie
+    const cookieLocale = ctx.request.cookie('user-locale')
+    if (cookieLocale && supportedLocales.includes(cookieLocale)) {
+      return cookieLocale
+    }
+
+    // Fallback to the Accept-Language header if no valid custom header or cookie
     const userLanguages = ctx.request.languages()
-    return i18nManager.getSupportedLocaleFor(userLanguages)
+    return i18nManager.getSupportedLocaleFor(userLanguages) ?? i18nManager.defaultLocale
   }
 
   async handle(ctx: HttpContext, next: NextFn) {
@@ -35,7 +52,15 @@ export default class DetectUserLocaleMiddleware {
      * Finding user language
      */
     const language = this.getRequestLocale(ctx)
-
+    // Update the cookie if necessary
+    if (!ctx.request.cookie('user-locale') || ctx.request.cookie('user-locale') !== language) {
+      ctx.response.cookie('user-locale', language, {
+        httpOnly: true,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30, // Example duration: 30 days
+        sameSite: true, // Improve cookie security
+      })
+    }
     /**
      * Assigning i18n property to the HTTP context
      */
