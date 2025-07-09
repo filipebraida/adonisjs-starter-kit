@@ -1,4 +1,11 @@
 {
+  "layout": {
+    "title": "Settings",
+    "description": "Manage your profile and account settings",
+    "profile": "Profile",
+    "password": "Password",
+    "tokens": "Tokens"
+  },
   "index": {
     "page": {
       "title": "Users",
@@ -85,10 +92,13 @@
     "actions": {
       "cancel": "Cancel",
       "create_submit": "Add",
-      "edit_submit": "Save"
+      "edit_submit": "Save",
+      "change_avatar": "Change avatar"
     },
     "toast": {
-      "title": "You submitted the following values:"
+      "title": "You submitted the following values:",
+      "type_success": "Success",
+      "settings_updated": "{setting} updated successfully"
     }
   },
   "delete": {
@@ -139,6 +149,14 @@
     },
     "toast": {
       "title": "You submitted the following values:"
+    }
+  },
+  "emails": {
+    "welcome": {
+      "title": "Welcome {full_name}!",
+      "subtitle": "We're thrilled to have you on board.",
+      "action_btn": "Get Started",
+      "default_message": "Thank you for joining our community. Explore our features and start your journey with us. If you have any questions, feel free to reach out!"
     }
   }
 }

@@ -1,4 +1,11 @@
 {
+  "layout": {
+    "title": "Configurações",
+    "description": "Gerencie seu perfil e as configurações da conta",
+    "profile": "Perfil",
+    "password": "Senha",
+    "tokens": "Tokens"
+  },
   "index": {
     "page": {
       "title": "Usuários",
@@ -85,10 +92,13 @@
     "actions": {
       "cancel": "Cancelar",
       "create_submit": "Adicionar",
-      "edit_submit": "Salvar"
+      "edit_submit": "Salvar",
+      "change_avatar": "Mudar avatar"
     },
     "toast": {
-      "title": "Você enviou os seguintes dados:"
+      "title": "Você enviou os seguintes dados:",
+      "type_success": "Sucesso",
+      "settings_updated": "{setting} atualizado com sucesso"
     }
   },
   "delete": {
@@ -139,6 +149,14 @@
     },
     "toast": {
       "title": "Você enviou os seguintes valores:"
+    }
+  },
+  "emails": {
+    "welcome": {
+      "title": "Bem-vindo {full_name}!",
+      "subtitle": "Estamos muito felizes em ter você conosco.",
+      "action_btn": "Comece agora",
+      "default_message": "Obrigado por se juntar à nossa comunidade. Explore nossos recursos e comece sua jornada conosco. Se tiver alguma dúvida, entre em contato!"
     }
   }
 }
