@@ -3,6 +3,7 @@ import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 
 import User from '#users/models/user'
+import { WelcomeTranslation } from '#users/models/welcome_translation'
 
 export default class WelcomeNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
@@ -10,6 +11,7 @@ export default class WelcomeNotification extends BaseMail {
 
   constructor(
     private user: User,
+    private translations: WelcomeTranslation,
     private welcomeMessage?: string
   ) {
     super()
@@ -32,8 +34,12 @@ export default class WelcomeNotification extends BaseMail {
 
     this.message.to(this.user.email)
 
+    const { title, subtitle, actionBtn, defaultMessage } = this.translations
     this.message.htmlView('users::emails/welcome', {
-      user: this.user,
+      title: title,
+      subtitle: subtitle,
+      actionBtn: actionBtn,
+      defaultMessage: defaultMessage,
       welcomeUrl,
       welcomeMessage: this.welcomeMessage,
     })
