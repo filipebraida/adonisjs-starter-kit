@@ -1,5 +1,9 @@
 import vine from '@vinejs/vine'
 
+import i18nManager from '@adonisjs/i18n/services/main'
+const i18n = i18nManager.locale('fr')
+vine.messagesProvider = i18n.createMessagesProvider()
+
 export const signUpValidator = vine.compile(
   vine.object({
     fullName: vine.string().trim().minLength(3).maxLength(255),

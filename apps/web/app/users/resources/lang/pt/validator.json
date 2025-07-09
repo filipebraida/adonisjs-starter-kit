@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "fields": {
+      "first_name": "Primeiro nome",
+      "full_name": "Nome Completo",
+      "email": "E-mail",
+      "role": "Função",
+      "password": "Senha",
+      "password_confirmation": "Confirmar Senha"
+    },
+    "messages": {
+      "required": "Preencha o campo {field}",
+      "username.required": "Escolha um nome de usuário para sua conta",
+      "email": "O e-mail deve ser válido"
+    }
+  }
+}
