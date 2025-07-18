@@ -22,13 +22,15 @@
       },
       "filters": {
         "search_placeholder": "Search...",
-        "role": "Role"
+        "role": "Role",
+        "clear_filters": "Clear filters"
       },
       "row_actions": {
         "impersonate": "Impersonate",
         "edit": "Edit",
         "delete": "Delete",
-        "open_menu": "Open menu"
+        "open_menu": "Open menu",
+        "clear": "Clear"
       },
       "not_provided": "Not provided"
     },
@@ -56,7 +58,17 @@
       "settings": "Settings"
     },
     "title": "Tokens",
-    "description": "Manage your API tokens here."
+    "description": "Manage your API tokens here.",
+    "dialogs": {
+      "add": {
+        "title": "Add Token",
+        "description": "Fill in the details below to add a new token. Click save when you're done."
+      },
+      "generated": {
+        "title": "Token Generated",
+        "description": "You can now use the generated token to authenticate API requests. Make sure to store it securely, as it will not be shown again."
+      }
+    }
   },
   "action": {
     "create": {
@@ -87,12 +99,17 @@
       "password_confirmation": {
         "label": "Confirm Password",
         "placeholder": "e.g., S3cur3P@ssw0rd"
+      },
+      "token": {
+        "label": "Token name",
+        "placeholder": "Enter token name"
       }
     },
     "actions": {
       "cancel": "Cancel",
-      "create_submit": "Add",
-      "edit_submit": "Save",
+      "add": "Add",
+      "save": "Save",
+      "close": "Close",
       "change_avatar": "Change avatar"
     },
     "toast": {
@@ -112,6 +129,19 @@
     },
     "toast": {
       "title": "The following user has been deleted:"
+    }
+  },
+  "delete_token": {
+    "title": "Delete Token",
+    "description": "Are you sure you want to delete <strong1>{{token_name}}</strong1>? This action will permanently remove the token from the system. This cannot be undone.",
+    "confirm_placeholder": "Enter the token name to confirm deletion.",
+    "confirm_button": "Delete",
+    "alert": {
+      "title": "Warning!",
+      "description": "Please be carefull, this operation can not be rolled back."
+    },
+    "toast": {
+      "title": "The following token has been deleted:"
     }
   },
   "impersonate": {

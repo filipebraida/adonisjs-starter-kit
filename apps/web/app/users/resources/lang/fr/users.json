@@ -22,13 +22,15 @@
       },
       "filters": {
         "search_placeholder": "Recherche...",
-        "role": "Rôle"
+        "role": "Rôle",
+        "clear_filters": "Effacer les filtres"
       },
       "row_actions": {
         "impersonate": "Imiter",
         "edit": "Modifier",
         "delete": "Supprimer",
-        "open_menu": "Ouvrir menu"
+        "open_menu": "Ouvrir menu",
+        "clear": "Effacer"
       },
       "not_provided": "Non fourni"
     },
@@ -56,16 +58,26 @@
       "settings": "Paramètres"
     },
     "title": "Jetons",
-    "description": "Gérez vos jetons API ici."
+    "description": "Gérez vos jetons API ici.",
+    "dialogs": {
+      "add": {
+        "title": "Ajouter un jeton",
+        "description": "Renseignez les informations ci-dessous pour ajouter un nouveau jeton. Cliquez sur Enregistrer lorsque vous avez terminé."
+      },
+      "generated": {
+        "title": "Jeton généré",
+        "description": "Vous pouvez désormais utiliser le jeton généré pour authentifier les requêtes API. Assurez-vous de le conserver en lieu sûr, car il ne sera plus affiché."
+      }
+    }
   },
   "action": {
     "create": {
       "title": "Créer un utilisateur",
-      "description": "Remplissez les informations ci-dessous pour ajouter un nouvel utilisateur. Cliquez sur « Ajouter » lorsque vous avez terminé."
+      "description": "Remplissez les informations ci-dessous pour ajouter un nouvel utilisateur. Cliquez sur « Ajouter » lorsque vous avez terminé."
     },
     "edit": {
       "title": "Modifier Utilisateur",
-      "description": "Mettez à jour l'utilisateur ici. Cliquez sur « Enregistrer » lorsque vous avez terminé."
+      "description": "Mettez à jour l'utilisateur ici. Cliquez sur « Enregistrer » lorsque vous avez terminé."
     },
     "form": {
       "full_name": {
@@ -87,23 +99,28 @@
       "password_confirmation": {
         "label": "Confirmez le mot de passe",
         "placeholder": "e.g., S3cur3P@ssw0rd"
+      },
+      "token": {
+        "label": "Nom du jeton",
+        "placeholder": "Saisir le nom du jeton"
       }
     },
     "actions": {
       "cancel": "Annuler",
-      "create_submit": "Ajouter",
-      "edit_submit": "Enregistrer",
+      "add": "Ajouter",
+      "save": "Enregistrer",
+      "close": "Fermer",
       "change_avatar": "Changer d'avatar"
     },
     "toast": {
-      "title": "Vous avez soumis les valeurs suivantes :",
+      "title": "Vous avez soumis les valeurs suivantes :",
       "type_success": "Succès",
       "settings_updated": "{setting} modifié avec succès"
     }
   },
   "delete": {
     "title": "Supprimer Utilisateur",
-    "description": "Êtes-vous sûr de vouloir supprimer <strong1>{{email}}</strong1> ? Cette action supprimera définitivement l'utilisateur ayant le rôle <strong2>{{role}}</strong2> du système. Cette opération est irréversible.",
+    "description": "Êtes-vous sûr de vouloir supprimer <strong1>{{email}}</strong1> ? Cette action supprimera définitivement l'utilisateur ayant le rôle <strong2>{{role}}</strong2> du système. Cette opération est irréversible.",
     "confirm_placeholder": "Saisissez votre adresse e-mail pour confirmer la suppression.",
     "confirm_button": "Supprimer",
     "alert": {
@@ -111,19 +128,32 @@
       "description": "Soyez prudent, cette opération ne peut pas être annulée."
     },
     "toast": {
-      "title": "L'utilisateur suivant a été supprimé :"
+      "title": "L'utilisateur suivant a été supprimé :"
+    }
+  },
+  "delete_token": {
+    "title": "Supprimer le jeton",
+    "description": "Êtes-vous sûr de vouloir supprimer <strong1>{{token_name}}</strong1> ? Cette action supprimera définitivement le jeton du système. Cette opération est irréversible.",
+    "confirm_placeholder": "Saisissez le nom du jeton pour confirmer la suppression.",
+    "confirm_button": "Supprimer",
+    "alert": {
+      "title": "Attention!",
+      "description": "Soyez prudent, cette opération ne peut pas être annulée."
+    },
+    "toast": {
+      "title": "Le jeton suivant a été supprimé :"
     }
   },
   "impersonate": {
     "title": "Imiter l'utilisateur",
-    "description": "Êtes-vous sûr de vouloir vous faire passer pour <strong1>{{email}}</strong1> ? Cette action vous permettra d'agir comme cet utilisateur (Rôle : <strong2>{{role}}</strong2>) dans le système.",
+    "description": "Êtes-vous sûr de vouloir vous faire passer pour <strong1>{{email}}</strong1> ? Cette action vous permettra d'agir comme cet utilisateur (Rôle : <strong2>{{role}}</strong2>) dans le système.",
     "confirm_button": "Imiter",
     "alert": {
       "title": "Note",
       "description": "Vous pouvez revenir à votre compte d'origine à tout moment en vous déconnectant."
     },
     "toast": {
-      "title": "Vous vous faites désormais passer pour l'utilisateur suivant :"
+      "title": "Vous vous faites désormais passer pour l'utilisateur suivant :"
     }
   },
   "invite": {
@@ -148,7 +178,7 @@
       "submit": "Envoyer l'invitation"
     },
     "toast": {
-      "title": "Vous avez soumis les valeurs suivantes :"
+      "title": "Vous avez soumis les valeurs suivantes :"
     }
   },
   "emails": {

@@ -16,6 +16,8 @@ import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -24,6 +26,7 @@ interface Props {
 export function TokensActionDialog({ open, onOpenChange }: Props) {
   const [token, setToken] = useState<string | null>(null)
   const [name, setName] = useState<string>('')
+  const { t } = useTranslation()
 
   async function closeAndClean() {
     onOpenChange(false)
@@ -52,7 +55,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
       setToken(result.token)
     }
 
-    toast('You submitted the following values:', {
+    toast(t('users.action.toast.title'), {
       description: (
         <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
           <pre className="text-white whitespace-pre-wrap break-words">
@@ -77,20 +80,18 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
         {!token ? (
           <>
             <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">Add Token</DialogTitle>
-              <DialogDescription>
-                Fill in the details below to add a new token. Click save when you&apos;re done.
-              </DialogDescription>
+              <DialogTitle className="flex items-center gap-2">{t('users.tokens.dialogs.add.title')}</DialogTitle>
+              <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>
             </DialogHeader>
             <ScrollArea className="w-full pr-4 -mr-4 py-1">
               <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
                 <div>
                   <Label htmlFor="name" className="mb-1 text-gray-700">
-                    Name
+                    {t('users.action.form.token.label')}
                   </Label>
                   <Input
                     id="name"
-                    placeholder="Enter token name"
+                    placeholder={t('users.action.form.token.placeholder')}
                     value={name}
                     onChange={(element) => setName(element.target.value)}
                   />
@@ -99,21 +100,18 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
             </ScrollArea>
             <DialogFooter className="gap-y-2">
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">{t('users.action.actions.cancel')}</Button>
               </DialogClose>
               <Button type="submit" form="user-form">
-                Add
+                {t('users.action.actions.add')}
               </Button>
             </DialogFooter>
           </>
         ) : (
           <>
             <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">Token Generated</DialogTitle>
-              <DialogDescription>
-                You can now use the generated token to authenticate API requests. Make sure to store
-                it securely, as it will not be shown again.
-              </DialogDescription>
+              <DialogTitle className="flex items-center gap-2">{t('users.tokens.dialogs.generated.title')}</DialogTitle>
+              <DialogDescription>{t('users.tokens.dialogs.generated.description')}</DialogDescription>
             </DialogHeader>
             <ScrollArea className="w-full pr-4 -mr-4 py-1">
               <div className="space-y-4 p-0.5">
@@ -122,7 +120,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
             </ScrollArea>
             <DialogFooter className="gap-y-2">
               <Button onClick={closeAndClean} variant="outline">
-                Close
+                {t('users.action.actions.close')}
               </Button>
             </DialogFooter>
           </>

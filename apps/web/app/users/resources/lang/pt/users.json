@@ -22,13 +22,15 @@
       },
       "filters": {
         "search_placeholder": "Pesquisar...",
-        "role": "Papel"
+        "role": "Papel",
+        "clear_filters": "Limpar os filtros"
       },
       "row_actions": {
         "impersonate": "Entrar como",
         "edit": "Editar",
         "delete": "Excluir",
-        "open_menu": "Abrir menu"
+        "open_menu": "Abrir menu",
+        "clear": "Limpar"
       },
       "not_provided": "Não informado"
     },
@@ -56,7 +58,17 @@
       "settings": "Configurações"
     },
     "title": "Tokens",
-    "description": "Gerencie aqui seus tokens de API."
+    "description": "Gerencie aqui seus tokens de API.",
+    "dialogs": {
+      "add": {
+        "title": "Adicionar Token",
+        "description": "Preencha os detalhes abaixo para adicionar um novo token. Clique em salvar quando terminar."
+      },
+      "generated": {
+        "title": "Token Gerado",
+        "description": "Agora você pode usar o token gerado para autenticar solicitações de API. Certifique-se de armazená-lo com segurança, pois ele não será exibido novamente."
+      }
+    }
   },
   "action": {
     "create": {
@@ -87,13 +99,18 @@
       "password_confirmation": {
         "label": "Confirmar Senha",
         "placeholder": "ex.: S3gur@nc@123"
+      },
+      "token": {
+        "label": "Nome do token",
+        "placeholder": "Digite o nome do token"
       }
     },
     "actions": {
       "cancel": "Cancelar",
-      "create_submit": "Adicionar",
-      "edit_submit": "Salvar",
-      "change_avatar": "Mudar avatar"
+      "add": "Adicionar",
+      "save": "Salvar",
+      "close": "Fechar",
+      "change_avatar": "Alterar avatar"
     },
     "toast": {
       "title": "Você enviou os seguintes dados:",
@@ -112,6 +129,19 @@
     },
     "toast": {
       "title": "O seguinte usuário foi excluído:"
+    }
+  },
+  "delete_token": {
+    "title": "Excluir Token",
+    "description": "Você tem certeza de que deseja excluir <strong1>{{token_name}}</strong1>? Esta ação removerá permanentemente o token do sistema. Esta operação não pode ser desfeita.",
+    "confirm_placeholder": "Digite o nome do token para confirmar a exclusão.",
+    "confirm_button": "Excluir",
+    "alert": {
+      "title": "Atenção!",
+      "description": "Tenha cuidado, esta operação não poderá ser desfeita."
+    },
+    "toast": {
+      "title": "O seguinte token foi excluído:"
     }
   },
   "impersonate": {

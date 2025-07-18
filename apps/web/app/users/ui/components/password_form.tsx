@@ -79,7 +79,7 @@ export function PasswordForm() {
       )}
 
       <div className="pt-2">
-        <Button type="submit">{t('users.action.actions.edit_submit')}</Button>
+        <Button type="submit">{t('users.action.actions.save')}</Button>
       </div>
     </form>
   )
