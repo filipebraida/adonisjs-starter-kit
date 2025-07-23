@@ -49,7 +49,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   SMTP_PORT: Env.schema.number(),
   SMTP_USERNAME: Env.schema.string(),
   SMTP_PASSWORD: Env.schema.string(),
-
+  SMTP_SECURE: Env.schema.boolean(),
+  SMTP_REJECTUNAUTHORIZED: Env.schema.boolean(),
   /*
   |----------------------------------------------------------
   | Variables for configuring ally package
