@@ -21,6 +21,7 @@ export default class InviteController {
     await user.save()
 
     const translations = {
+      subject: i18n.t('users.emails.welcome.subject'),
       title: i18n.t('users.emails.welcome.title', { full_name: user.fullName }),
       subtitle: i18n.t('users.emails.welcome.subtitle'),
       actionBtn: i18n.t('users.emails.welcome.action_btn'),

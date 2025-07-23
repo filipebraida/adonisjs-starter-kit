@@ -183,6 +183,7 @@
   },
   "emails": {
     "welcome": {
+      "subject": "Welcome!",
       "title": "Welcome {full_name}!",
       "subtitle": "We're thrilled to have you on board.",
       "action_btn": "Get Started",

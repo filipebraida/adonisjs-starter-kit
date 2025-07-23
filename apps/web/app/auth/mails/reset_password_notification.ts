@@ -3,6 +3,7 @@ import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 
 import User from '#users/models/user'
+import { MailBasicTranslation } from '#common/models/mail_basic_translation'
 
 export default class ResetPasswordNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
@@ -10,7 +11,8 @@ export default class ResetPasswordNotification extends BaseMail {
 
   constructor(
     private user: User,
-    private token: string
+    private token: string,
+    private translations: MailBasicTranslation
   ) {
     super()
   }
@@ -30,8 +32,15 @@ export default class ResetPasswordNotification extends BaseMail {
       { expiresIn: '30m', prefixUrl: env.get('VITE_API_URL'), purpose: 'reset_password' }
     )
 
-    this.message.to(this.user.email)
+    const { subject, title, subtitle, actionBtn, defaultMessage } = this.translations
+    this.message.to(this.user.email).subject(subject)
 
-    this.message.htmlView('auth::emails/forgot_password', { signedUrl })
+    this.message.htmlView('auth::emails/forgot_password', {
+      title,
+      subtitle,
+      actionBtn,
+      defaultMessage,
+      signedUrl,
+    })
   }
 }

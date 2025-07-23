@@ -3,7 +3,7 @@ import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 
 import User from '#users/models/user'
-import { WelcomeTranslation } from '#users/models/welcome_translation'
+import { MailBasicTranslation } from '#common/models/mail_basic_translation'
 
 export default class WelcomeNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
@@ -11,10 +11,11 @@ export default class WelcomeNotification extends BaseMail {
 
   constructor(
     private user: User,
-    private translations: WelcomeTranslation,
+    private translations: MailBasicTranslation,
     private welcomeMessage?: string
   ) {
     super()
+    this.subject = this.translations.subject
   }
 
   /**
@@ -32,9 +33,10 @@ export default class WelcomeNotification extends BaseMail {
       { prefixUrl: env.get('VITE_API_URL') }
     )
 
-    this.message.to(this.user.email)
+    const { subject, title, subtitle, actionBtn, defaultMessage } = this.translations
 
-    const { title, subtitle, actionBtn, defaultMessage } = this.translations
+    this.message.to(this.user.email).subject(subject)
+
     this.message.htmlView('users::emails/welcome', {
       title: title,
       subtitle: subtitle,

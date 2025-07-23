@@ -1,4 +1,5 @@
-export interface WelcomeTranslation {
+export interface MailBasicTranslation {
+  subject: string
   title: string
   subtitle: string
   actionBtn: string
