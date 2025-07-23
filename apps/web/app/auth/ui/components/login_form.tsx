@@ -15,31 +15,26 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     email: '',
     password: '',
   })
-
   const { t } = useTranslation()
 
   const tuyau = useTuyau()
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const [invalidCreditials, setInvalidCreditials] = useState(false)
-
-  const messages = useFlashMessage('errors')
-
+  const messages = useFlashMessage('errorsBag')
   useEffect(() => {
     if (messages) {
-      setInvalidCreditials(true)
+      let msg = ''
+      for(let error of Object.entries(messages)){
+        msg += error[1]
+      } 
+      setErrorMessage(msg)
     }
   }, [messages])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    post('/login', {
-      onError: (errors) => {
-        if ('E_INVALID_CREDENTIALS' in errors) {
-          setInvalidCreditials(true)
-        }
-      },
-    })
+    post('/login')
   }
 
   return (
@@ -58,7 +53,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}
               placeholder={t('auth.signin.form.email.placeholder')}
-              className={`${errors?.email || invalidCreditials ? 'border-red-500' : ''}`}
+              className={`${errors?.email ? 'border-red-500' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
@@ -83,7 +78,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.signin.form.password.placeholder')}
-              className={`${errors?.password || invalidCreditials ? 'border-red-500' : ''}`}
+              className={`${errors?.password  ? 'border-red-500' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
@@ -91,16 +86,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             </p>
           </div>
         </div>
-        <div>
           <Button type="submit" className="w-full">
             {t('auth.signin.actions.submit')}
           </Button>
-          {invalidCreditials && (
+          {errorMessage && (
             <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-              {t('auth.signin.error.invalid')}
+              {errorMessage}
             </p>
           )}
-        </div>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

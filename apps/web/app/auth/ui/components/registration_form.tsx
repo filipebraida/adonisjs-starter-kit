@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from '@inertiajs/react'
 import { Link } from '@tuyau/inertia/react'
 
@@ -8,6 +8,7 @@ import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import useFlashMessage from '#common/ui/hooks/use_flash_message'
 
 export function RegistrationForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const { data, setData, errors, post } = useForm({
@@ -18,7 +19,18 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
   })
 
   const { t } = useTranslation()
+  const [errorMessage, setErrorMessage] = useState('')
 
+  const messages = useFlashMessage('errorsBag')
+  useEffect(() => {
+    if (messages) {
+      let msg = ''
+      for(let error of Object.entries(messages)){
+        msg += error[1]
+      } 
+      setErrorMessage(msg)
+    }
+  }, [messages])
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -100,6 +112,11 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
         <Button type="submit" className="w-full">
           {t('auth.registration.actions.submit')}
         </Button>
+        {errorMessage && (
+          <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
+            {errorMessage}
+          </p>
+        )}
       </div>
       <div className="text-center text-sm">
         <span>{t('auth.registration.already_account.text')} </span>

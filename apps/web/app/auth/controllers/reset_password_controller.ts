@@ -51,7 +51,7 @@ export default class ResetPasswordController {
     await user.save()
 
     await this.passwordResetService.deleteTokens(user)
-
+    await this.passwordResetService.clearRateLimits(request.ip(), user.email)
     /**
      * Redirect to the login page.
      */
