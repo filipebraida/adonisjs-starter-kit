@@ -23,7 +23,9 @@
       "filters": {
         "search_placeholder": "Search...",
         "role": "Role",
-        "clear_filters": "Clear filters"
+        "clear_filters": "Clear filters",
+        "no_results": "No results found.",
+        "nb_selected": "selected"
       },
       "row_actions": {
         "impersonate": "Impersonate",
@@ -32,7 +34,15 @@
         "open_menu": "Open menu",
         "clear": "Clear"
       },
-      "not_provided": "Not provided"
+      "not_provided": "Not provided",
+      "pagination": {
+        "rows_per_page": "Rows per page",
+        "go_first_page": "Go to first page",
+        "go_previous_page": "Go to previous page",
+        "go_next_page": "Go to next page",
+        "go_last_page": "Go to last page",
+        "page_of": "Page {current} of {total}"
+      }
     },
     "toolbar": {
       "invite": "Invite",
