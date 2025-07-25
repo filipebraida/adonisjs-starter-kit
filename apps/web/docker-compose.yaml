@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
       - pgsql:/var/lib/postgresql/data
-      - ./dockerConfig/postgres-dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
+      - ./config/postgres-dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
     ports:
       - "5432:5432"
     restart: always
@@ -21,8 +21,8 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     environment:
-      - PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL}'
-      - PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL}'
+      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
     ports:
       - "5050:80"
     restart: always
