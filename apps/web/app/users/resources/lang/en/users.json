@@ -199,5 +199,15 @@
       "action_btn": "Get Started",
       "default_message": "Thank you for joining our community. Explore our features and start your journey with us. If you have any questions, feel free to reach out!"
     }
+  },
+  "roles": {
+    "1":{
+      "name": "User",
+      "description": "Authenticated User"
+    },
+    "2":{
+      "name": "Administrator",
+      "description": "Super User"
+    }
   }
 }

@@ -199,5 +199,15 @@
       "action_btn": "Commencer",
       "default_message": "Merci de rejoindre notre communauté. Découvrez nos fonctionnalités et commencez votre aventure avec nous. Pour toute question, n'hésitez pas à nous contacter !"
     }
+  },
+  "roles": {
+    "1":{
+      "name": "Utilisateur",
+      "description": "Utilisateur Authentifié"
+    },
+    "2":{
+      "name": "Administrateur",
+      "description": "Super Utilisateur"
+    }
   }
 }

@@ -199,5 +199,15 @@
       "action_btn": "Comece agora",
       "default_message": "Obrigado por se juntar à nossa comunidade. Explore nossos recursos e comece sua jornada conosco. Se tiver alguma dúvida, entre em contato!"
     }
+  },
+  "roles": {
+    "1":{
+      "name": "Usuários",
+      "description": "Usuários Autenticado"
+    },
+    "2":{
+      "name": "Administrador",
+      "description": "Superusuários"
+    }
   }
 }
