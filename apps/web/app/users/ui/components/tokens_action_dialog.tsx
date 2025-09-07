@@ -114,7 +114,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
               </DialogDescription>
             </DialogHeader>
             <ScrollArea>
-              <div className="space-y-4">
+              <div className="m-1">
                 <Input value={token} readOnly />
               </div>
             </ScrollArea>
