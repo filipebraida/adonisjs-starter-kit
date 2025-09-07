@@ -82,12 +82,10 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
                 Fill in the details below to add a new token. Click save when you&apos;re done.
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea className="w-full pr-4 -mr-4 py-1">
-              <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-                <div>
-                  <Label htmlFor="name" className="mb-1 text-gray-700">
-                    Name
-                  </Label>
+            <ScrollArea>
+              <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2 m-1">
+                  <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
                     placeholder="Enter token name"
@@ -115,8 +113,8 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
                 it securely, as it will not be shown again.
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea className="w-full pr-4 -mr-4 py-1">
-              <div className="space-y-4 p-0.5">
+            <ScrollArea>
+              <div className="space-y-4">
                 <Input value={token} readOnly />
               </div>
             </ScrollArea>

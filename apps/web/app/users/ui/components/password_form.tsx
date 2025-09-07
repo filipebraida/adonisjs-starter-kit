@@ -33,11 +33,9 @@ export function PasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-0.5">
-      <div>
-        <Label htmlFor="password" className="mb-1 text-gray-700">
-          Password
-        </Label>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2 m-1">
+        <Label htmlFor="password">Password</Label>
         <PasswordInput
           id="password"
           placeholder="e.g., S3cur3P@ssw0rd"
@@ -51,9 +49,7 @@ export function PasswordForm() {
       </div>
 
       <div>
-        <Label htmlFor="passwordConfirmation" className="mb-1 text-gray-700">
-          Confirm Password
-        </Label>
+        <Label htmlFor="passwordConfirmation">Confirm Password</Label>
         <PasswordInput
           id="passwordConfirmation"
           disabled={data.password === ''}
@@ -68,11 +64,7 @@ export function PasswordForm() {
       </div>
 
       {progress && (
-        <Progress
-          value={progress.percentage}
-          max={100}
-          className="w-full h-2 bg-gray-200 rounded mt-2"
-        />
+        <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
       )}
 
       <div className="pt-2">

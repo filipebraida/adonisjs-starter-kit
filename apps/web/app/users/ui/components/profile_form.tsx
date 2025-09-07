@@ -51,7 +51,7 @@ export function ProfileForm({ user }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-0.5" encType="multipart/form-data">
+    <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
       <div className="col-span-full flex items-center gap-x-8">
         <UserAvatar
           user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
@@ -79,10 +79,8 @@ export function ProfileForm({ user }: Props) {
         <p className="text-[0.8rem] font-medium text-destructive">{errors.avatar}</p>
       )}
 
-      <div>
-        <Label htmlFor="fullName" className="mb-1 text-gray-700">
-          Full Name
-        </Label>
+      <div className="space-y-2 m-1">
+        <Label htmlFor="fullName">Full Name</Label>
         <Input
           id="fullName"
           placeholder="Enter user's full name"
@@ -96,18 +94,12 @@ export function ProfileForm({ user }: Props) {
       </div>
 
       <div>
-        <Label htmlFor="email" className="mb-1 text-gray-700">
-          Email
-        </Label>
+        <Label htmlFor="email">Email</Label>
         <p>{user.email}</p>
       </div>
 
       {progress && (
-        <Progress
-          value={progress.percentage}
-          max={100}
-          className="w-full h-2 bg-gray-200 rounded mt-2"
-        />
+        <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
       )}
 
       <div className="pt-2">

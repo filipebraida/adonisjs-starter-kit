@@ -101,12 +101,10 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
             {t(isEdit ? 'users.action.edit.description' : 'users.action.create.description')}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="w-full pr-4 -mr-4 py-1">
+        <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-            <div>
-              <Label htmlFor="name" className="mb-1 text-gray-700">
-                {t('users.action.form.full_name.label')}
-              </Label>
+            <div className="space-y-2 m-1">
+              <Label htmlFor="name">{t('users.action.form.full_name.label')}</Label>
               <Input
                 id="fullName"
                 placeholder={t('users.action.form.full_name.placeholder')}
@@ -119,10 +117,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="email" className="mb-1 text-gray-700">
-                {t('users.action.form.email.label')}
-              </Label>
+            <div className="space-y-2 m-1">
+              <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
               <Input
                 id="email"
                 placeholder={t('users.action.form.email.placeholder')}
@@ -135,10 +131,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="role" className="mb-1 text-gray-700">
-                {t('users.action.form.role.label')}
-              </Label>
+            <div className="space-y-2 m-1">
+              <Label htmlFor="role">{t('users.action.form.role.label')}</Label>
               <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
                 <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={t('users.action.form.role.placeholder')} />
@@ -168,10 +162,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="password" className="mb-1 text-gray-700">
-                {t('users.action.form.password.label')}
-              </Label>
+            <div className="space-y-2 m-1">
+              <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
               <PasswordInput
                 id="password"
                 placeholder={t('users.action.form.password.placeholder')}
@@ -184,8 +176,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="passwordConfirmation" className="mb-1 text-gray-700">
+            <div className="space-y-2 m-1">
+              <Label htmlFor="passwordConfirmation">
                 {t('users.action.form.password_confirmation.label')}
               </Label>
               <PasswordInput
@@ -202,11 +194,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
             </div>
 
             {progress && (
-              <Progress
-                value={progress.percentage}
-                max={100}
-                className="w-full h-2 bg-gray-200 rounded mt-2"
-              />
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
             )}
           </form>
         </ScrollArea>
