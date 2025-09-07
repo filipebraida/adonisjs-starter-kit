@@ -14,6 +14,7 @@ import {
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+import { CopyButton } from '@workspace/ui/components/copy-button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 interface Props {
@@ -114,8 +115,9 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
               </DialogDescription>
             </DialogHeader>
             <ScrollArea>
-              <div className="m-1">
+              <div className="flex flex-row gap-2 m-1">
                 <Input value={token} readOnly />
+                <CopyButton content={token} />
               </div>
             </ScrollArea>
             <DialogFooter className="gap-y-2">
