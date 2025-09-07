@@ -1,14 +1,29 @@
 import React from 'react'
-import { PureAbility, AbilityBuilder } from '@casl/ability'
+import {
+  AbilityBuilder,
+  createMongoAbility,
+  type MongoAbility,
+  type MongoQuery,
+} from '@casl/ability'
 
 import usePageProps from '#common/ui/hooks/use_page_props'
+import type { Rule, Subjects } from '#users/services/abilities_service'
 
 type Actions = 'create' | 'read' | 'update' | 'delete' | 'manage'
-import type { Subjects } from '#users/services/abilities_service'
-
 export type { Subjects, Actions }
 
-export type AppAbility = PureAbility<[Actions, Subjects]>
+const adminSubjects: Subjects[] = ['token']
+
+export function hasAdminAccess(): boolean {
+  const ability = useAbility()
+
+  return adminSubjects.some((subject) => ability.can('read', subject))
+}
+
+type PossibleAbilities = [Actions, Subjects]
+type Conditions = MongoQuery<Record<string, any>>
+
+type AppAbility = MongoAbility<PossibleAbilities, Conditions>
 
 interface AbilityContextType {
   ability: AppAbility
@@ -20,22 +35,22 @@ interface AbilitiesProviderProps {
   children: React.ReactNode
 }
 
-function defineAbilityFor(roles: Record<string, string[]>): AppAbility {
-  const { can, rules } = new AbilityBuilder<PureAbility<[Actions, Subjects]>>(PureAbility)
+function defineAbilityFor(roles: Rule[]): AppAbility {
+  const { can, rules } = new AbilityBuilder<AppAbility>(createMongoAbility)
 
-  for (const [subject, permissions] of Object.entries(roles)) {
-    if (Array.isArray(permissions)) {
-      for (const action of permissions) {
-        can(action as Actions, subject as Subjects)
-      }
-    }
+  for (const { action, subject, fields, conditions } of roles) {
+    if (fields?.length && conditions) can(action, subject, fields, conditions)
+    else if (fields?.length) can(action, subject, fields)
+    else if (conditions) can(action, subject, conditions)
+    else can(action, subject)
   }
 
-  return new PureAbility<[Actions, Subjects]>(rules)
+  return createMongoAbility<PossibleAbilities, Conditions>(rules)
 }
 
 export default function AbilityProvider({ children }: AbilitiesProviderProps) {
-  const { abilities } = usePageProps<{ abilities: Record<string, string[]> }>()
+  const { abilities } = usePageProps<{ abilities: Rule[] }>()
+
   const ability = defineAbilityFor(abilities)
 
   return <AbilityContext.Provider value={{ ability }}>{children}</AbilityContext.Provider>
