@@ -35,7 +35,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 type CopyButtonProps = Omit<HTMLMotionProps<"button">, "children" | "onCopy"> &
@@ -71,7 +71,7 @@ function CopyButton({
       setLocalIsCopied(isCopied);
       onCopyChange?.(isCopied);
     },
-    [onCopyChange]
+    [onCopyChange],
   );
 
   const handleCopy = React.useCallback(
@@ -91,7 +91,7 @@ function CopyButton({
       }
       onClick?.(e);
     },
-    [isCopied, content, delay, onClick, onCopy, handleIsCopied]
+    [isCopied, content, delay, onClick, onCopy, handleIsCopied],
   );
 
   return (
