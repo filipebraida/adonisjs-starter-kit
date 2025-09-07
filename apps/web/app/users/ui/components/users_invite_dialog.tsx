@@ -111,7 +111,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 placeholder={t('users.invite.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
-                className={`${errors?.email ? 'border-red-500' : ''}`}
+                className={`${errors?.email ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.email}
@@ -123,7 +123,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 {t('users.invite.form.role.label')}
               </Label>
               <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
-                <SelectTrigger className={errors?.roleId ? 'border-red-500' : ''}>
+                <SelectTrigger className={errors?.roleId ? 'border-destructive' : ''}>
                   <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -160,7 +160,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 placeholder={t('users.invite.form.description.placeholder')}
                 value={data.description ?? ''}
                 onChange={(element) => setData('description', element.target.value)}
-                className={cn('resize-none', `${errors?.description ? 'border-red-500' : ''}`)}
+                className={cn('resize-none', `${errors?.description ? 'border-destructive' : ''}`)}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.description}

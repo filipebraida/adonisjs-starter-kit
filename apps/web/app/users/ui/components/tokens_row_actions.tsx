@@ -32,7 +32,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<TokenDto>)
               setCurrentRow(row.original)
               setOpen('delete')
             }}
-            className="!text-red-500"
+            className="text-destructive"
           >
             Delete
             <DropdownMenuShortcut>

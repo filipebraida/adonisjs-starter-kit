@@ -61,7 +61,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<UserDto>) 
             setCurrentRow(row.original)
             setOpen('delete')
           }}
-          className="!text-red-500"
+          className="text-destructive"
         >
           {t('users.index.table.row_actions.delete')}
           <DropdownMenuShortcut>

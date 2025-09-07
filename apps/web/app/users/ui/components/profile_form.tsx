@@ -88,7 +88,7 @@ export function ProfileForm({ user }: Props) {
           placeholder="Enter user's full name"
           value={data.fullName}
           onChange={(e) => setData('fullName', e.target.value)}
-          className={errors?.fullName ? 'border-red-500' : ''}
+          className={errors?.fullName ? 'border-destructive' : ''}
         />
         {errors?.fullName && (
           <p className="text-[0.8rem] font-medium text-destructive">{errors.fullName}</p>

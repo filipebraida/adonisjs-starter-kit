@@ -43,7 +43,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               value={data.fullName}
               onChange={(e) => setData('fullName', e.target.value)}
               placeholder={t('auth.registration.form.full_name.placeholder')}
-              className={`${errors?.fullName ? 'border-red-500' : ''}`}
+              className={`${errors?.fullName ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive">{errors?.fullName}</p>
@@ -58,7 +58,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}
               placeholder={t('auth.registration.form.email.placeholder')}
-              className={`${errors?.email ? 'border-red-500' : ''}`}
+              className={`${errors?.email ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive">{errors?.email}</p>
@@ -73,7 +73,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.registration.form.password.placeholder')}
-              className={`${errors?.password ? 'border-red-500' : ''}`}
+              className={`${errors?.password ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive">{errors?.password}</p>

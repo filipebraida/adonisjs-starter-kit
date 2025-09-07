@@ -112,7 +112,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 placeholder={t('users.action.form.full_name.placeholder')}
                 value={data.fullName}
                 onChange={(element) => setData('fullName', element.target.value)}
-                className={`${errors?.fullName ? 'border-red-500' : ''}`}
+                className={`${errors?.fullName ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.fullName}
@@ -128,7 +128,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 placeholder={t('users.action.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
-                className={`${errors?.email ? 'border-red-500' : ''}`}
+                className={`${errors?.email ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.email}
@@ -140,7 +140,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 {t('users.action.form.role.label')}
               </Label>
               <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
-                <SelectTrigger className={`${errors?.roleId ? 'border-red-500' : ''}`}>
+                <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={t('users.action.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -177,7 +177,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 placeholder={t('users.action.form.password.placeholder')}
                 value={data.password}
                 onChange={(e) => setData('password', e.target.value)}
-                className={errors?.password ? 'border-red-500' : ''}
+                className={errors?.password ? 'border-destructive' : ''}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.password}
@@ -194,7 +194,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 placeholder={t('users.action.form.password_confirmation.placeholder')}
                 value={data.passwordConfirmation}
                 onChange={(element) => setData('passwordConfirmation', element.target.value)}
-                className={`${errors?.passwordConfirmation ? 'border-red-500' : ''}`}
+                className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.passwordConfirmation}
