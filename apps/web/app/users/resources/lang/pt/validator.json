@@ -1,0 +1,9 @@
+{
+  "shared": {
+    "messages": {
+      "required": "O campo { field } é obrigatório",
+      "string": "O valor do campo { field } deve ser uma string",
+      "email": "O valor não é um endereço de e-mail válido"
+    }
+  }
+}
