@@ -79,7 +79,7 @@ export function ProfileForm({ user }: Props) {
         <p className="text-[0.8rem] font-medium text-destructive">{errors.avatar}</p>
       )}
 
-      <div className="space-y-2 m-1">
+      <div className="space-y-2 mx-1">
         <Label htmlFor="fullName">Full Name</Label>
         <Input
           id="fullName"
@@ -93,7 +93,7 @@ export function ProfileForm({ user }: Props) {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2 mx-1">
         <Label htmlFor="email">Email</Label>
         <p>{user.email}</p>
       </div>

@@ -85,7 +85,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
             </DialogHeader>
             <ScrollArea>
               <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2 m-1">
+                <div className="space-y-2 mx-1 mb-1">
                   <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"

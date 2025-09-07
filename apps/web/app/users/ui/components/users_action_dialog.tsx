@@ -103,7 +103,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
         </DialogHeader>
         <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="name">{t('users.action.form.full_name.label')}</Label>
               <Input
                 id="fullName"
@@ -117,7 +117,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
               <Input
                 id="email"
@@ -131,7 +131,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="role">{t('users.action.form.role.label')}</Label>
               <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
                 <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
@@ -162,7 +162,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
               <PasswordInput
                 id="password"
@@ -176,7 +176,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="passwordConfirmation">
                 {t('users.action.form.password_confirmation.label')}
               </Label>

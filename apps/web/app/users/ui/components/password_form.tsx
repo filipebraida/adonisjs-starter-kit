@@ -34,7 +34,7 @@ export function PasswordForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2 m-1">
+      <div className="space-y-2 mx-1">
         <Label htmlFor="password">Password</Label>
         <PasswordInput
           id="password"
@@ -48,7 +48,7 @@ export function PasswordForm() {
         </p>
       </div>
 
-      <div>
+      <div className="space-y-2 mx-1">
         <Label htmlFor="passwordConfirmation">Confirm Password</Label>
         <PasswordInput
           id="passwordConfirmation"

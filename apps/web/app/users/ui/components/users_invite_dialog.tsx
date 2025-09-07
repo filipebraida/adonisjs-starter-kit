@@ -102,7 +102,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
         </DialogHeader>
         <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="email">{t('users.invite.form.email.label')}</Label>
               <Input
                 id="email"
@@ -116,7 +116,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="role">{t('users.invite.form.role.label')}</Label>
               <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
                 <SelectTrigger className={errors?.roleId ? 'border-destructive' : ''}>
@@ -147,7 +147,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
               </p>
             </div>
 
-            <div className="space-y-2 m-1">
+            <div className="space-y-2 mx-1">
               <Label htmlFor="description">{t('users.invite.form.description.label')}</Label>
               <Textarea
                 id="description"
