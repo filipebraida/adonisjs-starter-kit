@@ -47,7 +47,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
               placeholder="e.g., S3cur3P@ssw0rd"
               value={data.passwordConfirmation}
               onChange={(element) => setData('passwordConfirmation', element.target.value)}
-              className={`${errors?.passwordConfirmation ? 'border-red-500' : ''}`}
+              className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
               {errors?.passwordConfirmation}

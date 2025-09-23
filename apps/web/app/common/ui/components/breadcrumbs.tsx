@@ -18,7 +18,7 @@ export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
     <>
       {breadcrumbs.length > 0 && (
         <div className="flex w-full">
-          <div className="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
+          <div className="mx-auto flex h-12 w-full items-center justify-start px-4 md:max-w-7xl">
             <Breadcrumb>
               <BreadcrumbList>
                 {breadcrumbs.map((item, index) => (

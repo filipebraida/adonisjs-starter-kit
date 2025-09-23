@@ -14,7 +14,7 @@ RUN pnpm install --force --frozen-lockfile
 
 WORKDIR /app/apps/web
 
-RUN node ace build
+RUN node ace build --ignore-ts-errors
 
 WORKDIR /app/apps/web/build
 

@@ -100,30 +100,26 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
           </DialogTitle>
           <DialogDescription>{t('users.invite.description')}</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="w-full pr-4 -mr-4 py-1">
-          <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-            <div>
-              <Label htmlFor="email" className="mb-1 text-gray-700">
-                {t('users.invite.form.email.label')}
-              </Label>
+        <ScrollArea>
+          <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="email">{t('users.invite.form.email.label')}</Label>
               <Input
                 id="email"
                 placeholder={t('users.invite.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
-                className={`${errors?.email ? 'border-red-500' : ''}`}
+                className={`${errors?.email ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.email}
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="role" className="mb-1 text-gray-700">
-                {t('users.invite.form.role.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="role">{t('users.invite.form.role.label')}</Label>
               <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
-                <SelectTrigger className={errors?.roleId ? 'border-red-500' : ''}>
+                <SelectTrigger className={errors?.roleId ? 'border-destructive' : ''}>
                   <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -151,16 +147,14 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="description" className="mb-1 text-gray-700">
-                {t('users.invite.form.description.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="description">{t('users.invite.form.description.label')}</Label>
               <Textarea
                 id="description"
                 placeholder={t('users.invite.form.description.placeholder')}
                 value={data.description ?? ''}
                 onChange={(element) => setData('description', element.target.value)}
-                className={cn('resize-none', `${errors?.description ? 'border-red-500' : ''}`)}
+                className={cn('resize-none', `${errors?.description ? 'border-destructive' : ''}`)}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.description}
@@ -168,11 +162,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
             </div>
 
             {progress && (
-              <Progress
-                value={progress.percentage}
-                max={100}
-                className="w-full h-2 bg-gray-200 rounded mt-2"
-              />
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
             )}
           </form>
         </ScrollArea>

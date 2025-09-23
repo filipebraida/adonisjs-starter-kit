@@ -53,7 +53,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}
               placeholder={t('auth.signin.form.email.placeholder')}
-              className={`${errors?.email ? 'border-red-500' : ''}`}
+              className={`${errors?.email ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
@@ -78,7 +78,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.signin.form.password.placeholder')}
-              className={`${errors?.password  ? 'border-red-500' : ''}`}
+              className={`${errors?.password  ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">

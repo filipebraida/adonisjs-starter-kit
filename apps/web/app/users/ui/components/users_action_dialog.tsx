@@ -101,46 +101,40 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
             {t(isEdit ? 'users.action.edit.description' : 'users.action.create.description')}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="w-full pr-4 -mr-4 py-1">
+        <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-            <div>
-              <Label htmlFor="name" className="mb-1 text-gray-700">
-                {t('users.action.form.full_name.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="name">{t('users.action.form.full_name.label')}</Label>
               <Input
                 id="fullName"
                 placeholder={t('users.action.form.full_name.placeholder')}
                 value={data.fullName}
                 onChange={(element) => setData('fullName', element.target.value)}
-                className={`${errors?.fullName ? 'border-red-500' : ''}`}
+                className={`${errors?.fullName ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.fullName}
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="email" className="mb-1 text-gray-700">
-                {t('users.action.form.email.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
               <Input
                 id="email"
                 placeholder={t('users.action.form.email.placeholder')}
                 value={data.email}
                 onChange={(element) => setData('email', element.target.value)}
-                className={`${errors?.email ? 'border-red-500' : ''}`}
+                className={`${errors?.email ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.email}
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="role" className="mb-1 text-gray-700">
-                {t('users.action.form.role.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="role">{t('users.action.form.role.label')}</Label>
               <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
-                <SelectTrigger className={`${errors?.roleId ? 'border-red-500' : ''}`}>
+                <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={t('users.action.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -168,24 +162,22 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="password" className="mb-1 text-gray-700">
-                {t('users.action.form.password.label')}
-              </Label>
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
               <PasswordInput
                 id="password"
                 placeholder={t('users.action.form.password.placeholder')}
                 value={data.password}
                 onChange={(e) => setData('password', e.target.value)}
-                className={errors?.password ? 'border-red-500' : ''}
+                className={errors?.password ? 'border-destructive' : ''}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.password}
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="passwordConfirmation" className="mb-1 text-gray-700">
+            <div className="space-y-2 mx-1">
+              <Label htmlFor="passwordConfirmation">
                 {t('users.action.form.password_confirmation.label')}
               </Label>
               <PasswordInput
@@ -194,7 +186,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 placeholder={t('users.action.form.password_confirmation.placeholder')}
                 value={data.passwordConfirmation}
                 onChange={(element) => setData('passwordConfirmation', element.target.value)}
-                className={`${errors?.passwordConfirmation ? 'border-red-500' : ''}`}
+                className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
               />
               <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
                 {errors?.passwordConfirmation}
@@ -202,11 +194,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
             </div>
 
             {progress && (
-              <Progress
-                value={progress.percentage}
-                max={100}
-                className="w-full h-2 bg-gray-200 rounded mt-2"
-              />
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
             )}
           </form>
         </ScrollArea>

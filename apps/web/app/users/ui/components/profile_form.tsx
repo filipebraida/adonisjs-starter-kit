@@ -46,14 +46,16 @@ export function ProfileForm({ user }: Props) {
         setPreviewUrl(null)
 
         toast(t('users.action.toast.type_success'), {
-          description: t('users.action.toast.settings_updated', {setting: t('users.layout.profile')}),
+          description: t('users.action.toast.settings_updated', {
+            setting: t('users.layout.profile'),
+          }),
         })
       },
     })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-0.5" encType="multipart/form-data">
+    <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
       <div className="col-span-full flex items-center gap-x-8">
         <UserAvatar
           user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
@@ -81,7 +83,7 @@ export function ProfileForm({ user }: Props) {
         <p className="text-[0.8rem] font-medium text-destructive">{errors.avatar}</p>
       )}
 
-      <div>
+      <div className="space-y-2 mx-1">
         <Label htmlFor="fullName" className="mb-1 text-gray-700">
           {t('users.action.form.full_name.label')}
         </Label>
@@ -90,14 +92,14 @@ export function ProfileForm({ user }: Props) {
           placeholder={t('users.action.form.full_name.placeholder')}
           value={data.fullName}
           onChange={(e) => setData('fullName', e.target.value)}
-          className={errors?.fullName ? 'border-red-500' : ''}
+          className={errors?.fullName ? 'border-destructive' : ''}
         />
         {errors?.fullName && (
           <p className="text-[0.8rem] font-medium text-destructive">{errors.fullName}</p>
         )}
       </div>
 
-      <div>
+      <div className="space-y-2 mx-1">
         <Label htmlFor="email" className="mb-1 text-gray-700">
           {t('users.action.form.email.label')}
         </Label>
@@ -105,11 +107,7 @@ export function ProfileForm({ user }: Props) {
       </div>
 
       {progress && (
-        <Progress
-          value={progress.percentage}
-          max={100}
-          className="w-full h-2 bg-gray-200 rounded mt-2"
-        />
+        <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
       )}
 
       <div className="pt-2">

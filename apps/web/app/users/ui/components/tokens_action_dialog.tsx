@@ -14,6 +14,7 @@ import {
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+import { CopyButton } from '@workspace/ui/components/copy-button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
@@ -85,7 +86,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
             </DialogHeader>
             <ScrollArea className="w-full pr-4 -mr-4 py-1">
               <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-                <div>
+                <div className="space-y-2 mx-1 mb-1">
                   <Label htmlFor="name" className="mb-1 text-gray-700">
                     {t('users.action.form.token.label')}
                   </Label>
@@ -113,9 +114,10 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
               <DialogTitle className="flex items-center gap-2">{t('users.tokens.dialogs.generated.title')}</DialogTitle>
               <DialogDescription>{t('users.tokens.dialogs.generated.description')}</DialogDescription>
             </DialogHeader>
-            <ScrollArea className="w-full pr-4 -mr-4 py-1">
-              <div className="space-y-4 p-0.5">
+            <ScrollArea>
+              <div className="flex flex-row gap-2 m-1">
                 <Input value={token} readOnly />
+                <CopyButton content={token} />
               </div>
             </ScrollArea>
             <DialogFooter className="gap-y-2">

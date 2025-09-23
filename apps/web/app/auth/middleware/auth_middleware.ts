@@ -1,6 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import type { Authenticators } from '@adonisjs/auth/types'
+import { errors } from '@adonisjs/auth'
+
+export const returnToKey = 'return_to'
 
 /**
  * Auth middleware is used authenticate HTTP requests and deny
@@ -10,7 +13,7 @@ export default class AuthMiddleware {
   /**
    * The URL to redirect to, when authentication fails
    */
-  redirectTo = '/login'
+  protected redirectTo = '/login'
 
   async handle(
     ctx: HttpContext,
@@ -19,7 +22,18 @@ export default class AuthMiddleware {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    try {
+      await ctx.auth.authenticateUsing(options.guards, {
+        loginRoute: this.redirectTo,
+      })
+    } catch (err) {
+      if (err instanceof errors.E_UNAUTHORIZED_ACCESS) {
+        ctx.session.put(returnToKey, ctx.request.url(true))
+      }
+
+      throw err
+    }
+
     return next()
   }
 }
