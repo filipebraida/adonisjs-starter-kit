@@ -24,9 +24,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   useEffect(() => {
     if (messages) {
       let msg = ''
-      for(let error of Object.entries(messages)){
+      for (let error of Object.entries(messages)) {
         msg += error[1]
-      } 
+      }
       setErrorMessage(msg)
     }
   }, [messages])
@@ -78,7 +78,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.signin.form.password.placeholder')}
-              className={`${errors?.password  ? 'border-destructive' : ''}`}
+              className={`${errors?.password ? 'border-destructive' : ''}`}
               required
             />
             <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
@@ -86,14 +86,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             </p>
           </div>
         </div>
-          <Button type="submit" className="w-full">
-            {t('auth.signin.actions.submit')}
-          </Button>
-          {errorMessage && (
-            <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-              {errorMessage}
-            </p>
-          )}
+        <Button type="submit" className="w-full">
+          {t('auth.signin.actions.submit')}
+        </Button>
+        {errorMessage && (
+          <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

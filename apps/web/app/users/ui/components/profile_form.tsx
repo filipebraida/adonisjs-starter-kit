@@ -84,9 +84,7 @@ export function ProfileForm({ user }: Props) {
       )}
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="fullName" className="mb-1 text-gray-700">
-          {t('users.action.form.full_name.label')}
-        </Label>
+        <Label htmlFor="fullName">{t('users.action.form.full_name.label')}</Label>
         <Input
           id="fullName"
           placeholder={t('users.action.form.full_name.placeholder')}
@@ -100,9 +98,7 @@ export function ProfileForm({ user }: Props) {
       </div>
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="email" className="mb-1 text-gray-700">
-          {t('users.action.form.email.label')}
-        </Label>
+        <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
         <p>{user.email}</p>
       </div>
 

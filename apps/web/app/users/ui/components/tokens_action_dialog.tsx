@@ -81,15 +81,15 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
         {!token ? (
           <>
             <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">{t('users.tokens.dialogs.add.title')}</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                {t('users.tokens.dialogs.add.title')}
+              </DialogTitle>
               <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>
             </DialogHeader>
-            <ScrollArea className="w-full pr-4 -mr-4 py-1">
-              <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
+            <ScrollArea>
+              <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2 mx-1 mb-1">
-                  <Label htmlFor="name" className="mb-1 text-gray-700">
-                    {t('users.action.form.token.label')}
-                  </Label>
+                  <Label htmlFor="name">{t('users.action.form.token.label')}</Label>
                   <Input
                     id="name"
                     placeholder={t('users.action.form.token.placeholder')}
@@ -111,8 +111,12 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
         ) : (
           <>
             <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">{t('users.tokens.dialogs.generated.title')}</DialogTitle>
-              <DialogDescription>{t('users.tokens.dialogs.generated.description')}</DialogDescription>
+              <DialogTitle className="flex items-center gap-2">
+                {t('users.tokens.dialogs.generated.title')}
+              </DialogTitle>
+              <DialogDescription>
+                {t('users.tokens.dialogs.generated.description')}
+              </DialogDescription>
             </DialogHeader>
             <ScrollArea>
               <div className="flex flex-row gap-2 m-1">

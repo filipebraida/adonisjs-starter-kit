@@ -38,11 +38,9 @@ export function PasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-0.5">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2 mx-1">
-        <Label htmlFor="password" className="mb-1 text-gray-700">
-          {t('users.action.form.password.label')}
-        </Label>
+        <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
         <PasswordInput
           id="password"
           placeholder={t('users.action.form.password.placeholder')}
@@ -56,7 +54,7 @@ export function PasswordForm() {
       </div>
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="passwordConfirmation" className="mb-1 text-gray-700">
+        <Label htmlFor="passwordConfirmation">
           {t('users.action.form.password_confirmation.label')}
         </Label>
         <PasswordInput
