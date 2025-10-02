@@ -17,12 +17,12 @@ services:
       test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE:-default}', '-U', '${DB_USER}']
       retries: 3
       timeout: 5s
-    
+
   pgadmin:
     image: dpage/pgadmin4:latest
     environment:
-      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL}'
-      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-root@localhost.com}'
+      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD:-secret}'
     ports:
       - "5050:80"
     restart: always
@@ -44,6 +44,7 @@ services:
         MP_DATABASE: /data/mailpit.db
         MP_SMTP_AUTH_ACCEPT_ANY: 1
         MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
 networks:
   sail:
     driver: bridge
