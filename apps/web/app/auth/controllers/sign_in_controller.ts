@@ -18,7 +18,8 @@ export function isSafeInternalPath(path?: string | null): path is string {
 }
 
 export default class SignInController {
-  loginLimiter: Limiter
+  private loginLimiter: Limiter
+
   constructor() {
     this.loginLimiter = limiter.use({
       requests: 5,
@@ -26,6 +27,7 @@ export default class SignInController {
       blockDuration: '1 min',
     })
   }
+
   async show({ inertia }: HttpContext) {
     return inertia.render('auth/sign_in')
   }
