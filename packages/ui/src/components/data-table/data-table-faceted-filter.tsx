@@ -20,7 +20,6 @@ import {
   PopoverTrigger,
 } from "@workspace/ui/components/popover";
 import { Separator } from "@workspace/ui/components/separator";
-import { useTranslation } from "../../../hooks/use_translation.js";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -30,14 +29,15 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  t,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const { t } = useTranslation()
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -62,7 +62,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValues.size} {t("users.index.table.filters.nb_selectd")}
+                    {selectedValues.size}{" "}
+                    {t("users.index.table.filters.nb_selectd")}
                   </Badge>
                 ) : (
                   options
@@ -86,7 +87,9 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>{t("users.index.table.filters.no_results")}</CommandEmpty>
+            <CommandEmpty>
+              {t("users.index.table.filters.no_results")}
+            </CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -101,7 +104,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       }
                       const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
+                        filterValues.length ? filterValues : undefined
                       );
                     }}
                   >
@@ -110,7 +113,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                         isSelected
                           ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible",
+                          : "opacity-50 [&_svg]:invisible"
                       )}
                     >
                       <Check />

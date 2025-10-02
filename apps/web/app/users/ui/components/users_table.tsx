@@ -72,8 +72,10 @@ export default function UsersTable({ users, roles }: DataTableProps) {
     <DataTable
       columns={columns}
       data={users}
+      t={t}
       Toolbar={(props) => (
         <DataTableToolbar
+          t={t}
           {...props}
           additionalFilters={
             <>
@@ -86,6 +88,7 @@ export default function UsersTable({ users, roles }: DataTableProps) {
                 className="h-8 w-[150px] lg:w-[250px]"
               />
               <DataTableFacetedFilter
+                t={t}
                 column={props.table.getColumn('roleId')}
                 title={t('users.index.table.filters.role')}
                 options={roles.map((role) => ({

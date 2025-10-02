@@ -18,7 +18,6 @@ import {
 } from "@workspace/ui/components/table";
 import { DataTablePagination } from "@workspace/ui/components/data-table/data-table-pagination";
 import { useState } from "react";
-import { useTranslation } from "../../../hooks/use_translation.js";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   Toolbar?: React.ComponentType<{
     table: ReturnType<typeof useReactTable<TData>>;
   }>;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 export interface ColumnMeta {
@@ -40,8 +40,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   Toolbar,
+  t,
 }: DataTableProps<TData, TValue>) {
-  const { t } = useTranslation()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination t={t} table={table} />
     </div>
   );
 }

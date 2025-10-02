@@ -2,18 +2,18 @@ import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
 
 import { Button } from "@workspace/ui/components/button";
-import { useTranslation } from "../../../hooks/use_translation.js";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   additionalFilters?: React.ReactNode;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 export function DataTableToolbar<TData>({
   table,
   additionalFilters,
+  t,
 }: DataTableToolbarProps<TData>) {
-  const { t } = useTranslation()
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (

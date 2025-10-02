@@ -4,11 +4,15 @@ import { DataTable, DataTableToolbar, ColumnDef } from '@workspace/ui/components
 
 import { DataTableRowActions } from './tokens_row_actions'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+
 interface DataTableProps {
   tokens: TokenDto[]
 }
 
 export default function TokensTable({ tokens }: DataTableProps) {
+  const { t } = useTranslation()
+
   const columns: ColumnDef<TokenDto>[] = [
     {
       header: 'Name',
@@ -41,7 +45,8 @@ export default function TokensTable({ tokens }: DataTableProps) {
     <DataTable
       columns={columns}
       data={tokens}
-      Toolbar={(props) => <DataTableToolbar {...props} />}
+      t={t}
+      Toolbar={(props) => <DataTableToolbar {...props} t={t} />}
     />
   )
 }
