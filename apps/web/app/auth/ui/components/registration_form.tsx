@@ -22,15 +22,17 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
   const [errorMessage, setErrorMessage] = useState('')
 
   const messages = useFlashMessage('errorsBag')
+
   useEffect(() => {
     if (messages) {
       let msg = ''
-      for(let error of Object.entries(messages)){
+      for (let error of Object.entries(messages)) {
         msg += error[1]
-      } 
+      }
       setErrorMessage(msg)
     }
   }, [messages])
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -109,14 +111,16 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
             </p>
           </div>
         </div>
-        <Button type="submit" className="w-full">
-          {t('auth.registration.actions.submit')}
-        </Button>
-        {errorMessage && (
-          <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-            {errorMessage}
-          </p>
-        )}
+        <div>
+          <Button type="submit" className="w-full">
+            {t('auth.registration.actions.submit')}
+          </Button>
+          {errorMessage && (
+            <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
+              {errorMessage}
+            </p>
+          )}
+        </div>
       </div>
       <div className="text-center text-sm">
         <span>{t('auth.registration.already_account.text')} </span>
