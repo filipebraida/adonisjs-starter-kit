@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { useForm } from '@inertiajs/react'
+import { Trans } from 'react-i18next'
 
 import { AlertTriangleIcon } from 'lucide-react'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
 
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import type TokenDto from '#users/dtos/token'
+
+import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
+
 import { useTranslation } from '#common/ui/hooks/use_translation'
-import { Trans } from 'react-i18next'
 
 interface Props {
   open: boolean

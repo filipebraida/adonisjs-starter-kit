@@ -12,11 +12,14 @@ export default class SwitchLocaleMiddleware {
       maxAge: 60 * 60 * 24 * 30, // Example duration: 30 days
       sameSite: true, // Improve cookie security
     })
+
     ctx.response.redirect().back()
+
     /**
      * Call next method in the pipeline and return its output
      */
     const output = await next()
+
     return output
   }
 }

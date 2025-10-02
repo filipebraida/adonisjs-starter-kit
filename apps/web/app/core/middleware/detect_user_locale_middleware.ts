@@ -31,6 +31,7 @@ export default class DetectUserLocaleMiddleware {
 
     // First, try to read the language from a custom header
     const customHeaderLocale = ctx.request.header('X-User-Language')
+
     // If the custom header exists and is a valid locale, use it
     if (customHeaderLocale && supportedLocales.includes(customHeaderLocale)) {
       return customHeaderLocale
@@ -38,12 +39,14 @@ export default class DetectUserLocaleMiddleware {
 
     // Then check the cookie
     const cookieLocale = ctx.request.cookie('user-locale')
+
     if (cookieLocale && supportedLocales.includes(cookieLocale)) {
       return cookieLocale
     }
 
     // Fallback to the Accept-Language header if no valid custom header or cookie
     const userLanguages = ctx.request.languages()
+
     return i18nManager.getSupportedLocaleFor(userLanguages) ?? i18nManager.defaultLocale
   }
 
@@ -61,6 +64,7 @@ export default class DetectUserLocaleMiddleware {
         sameSite: true, // Improve cookie security
       })
     }
+
     /**
      * Assigning i18n property to the HTTP context
      */
