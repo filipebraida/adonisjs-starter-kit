@@ -15,7 +15,7 @@ function buildResources(): Record<string, any> {
 
   for (const path in localeFiles) {
     const match = path.match(
-      /app\/([^/]+)\/resources\/lang\/([^/]+)\/([^/]+)\.json$/
+      /app\/([^/]+)\/resources\/lang\/([^/]+)\/([^/]+)\.json$/,
     );
     if (!match) continue;
 
