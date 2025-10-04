@@ -35,7 +35,6 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     post('/sign-up')
   }
 
