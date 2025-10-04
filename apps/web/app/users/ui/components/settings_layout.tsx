@@ -8,7 +8,6 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 import { Separator } from '@workspace/ui/components/separator'
 import { KeyRound, Ticket, User } from 'lucide-react'
 
-
 export default function SettingsLayout({
   children,
   currentPath,
