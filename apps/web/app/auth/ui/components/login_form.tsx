@@ -11,7 +11,9 @@ import {
   Field,
   FieldLabel,
   FieldSeparator,
+  FieldError,
 } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
 import { useTranslation } from '#common/ui/hooks/use_translation'
@@ -24,16 +26,16 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const { t } = useTranslation()
 
   const tuyau = useTuyau()
-  const [errorMessage, setErrorMessage] = useState('')
+
+  const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   const messages = useFlashMessage('errorsBag')
   useEffect(() => {
     if (messages) {
-      let msg = ''
-      for (let error of Object.entries(messages)) {
-        msg += error[1]
-      }
-      setErrorMessage(msg)
+      const msgs = Object.values(messages).flat().filter(Boolean).map(String)
+      setErrorMessages(msgs)
+    } else {
+      setErrorMessages([])
     }
   }, [messages])
 
@@ -63,11 +65,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               className={`${errors?.email ? 'border-destructive' : ''}`}
               required
             />
-            {errors?.email && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.email}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="email" />
           </Field>
           <Field>
             <div className="flex items-center">
@@ -88,22 +86,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               className={`${errors?.password ? 'border-destructive' : ''}`}
               required
             />
-            {errors?.password && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.password}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="password" />
           </Field>
 
           <Field orientation="responsive">
             <Button type="submit">{t('auth.signin.actions.submit')}</Button>
           </Field>
 
-          {errorMessage && (
-            <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-              {errorMessage}
-            </p>
-          )}
+          <FieldError errors={errorMessages.map((m) => ({ message: m }))} />
 
           <FieldSeparator>{t('auth.signin.divider')}</FieldSeparator>
 
