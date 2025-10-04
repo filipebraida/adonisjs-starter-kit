@@ -5,7 +5,7 @@ import { Link } from '@tuyau/inertia/react'
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
+import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
@@ -47,10 +47,13 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
           {t('auth.registration.description')}
         </p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-2">
-          <Label htmlFor="name">{t('auth.registration.form.full_name.label')}</Label>
-          <div>
+
+      <FieldSet>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="fullName">
+              {t('auth.registration.form.full_name.label')}
+            </FieldLabel>
             <Input
               id="fullName"
               type="text"
@@ -60,12 +63,15 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.fullName ? 'border-destructive' : ''}`}
               required
             />
-            <p className="text-[0.8rem] font-medium text-destructive">{errors?.fullName}</p>
-          </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="email">{t('auth.registration.form.email.label')}</Label>
-          <div>
+            {errors?.fullName && (
+              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
+                {errors.fullName}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="email">{t('auth.registration.form.email.label')}</FieldLabel>
             <Input
               id="email"
               type="email"
@@ -75,12 +81,15 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.email ? 'border-destructive' : ''}`}
               required
             />
-            <p className="text-[0.8rem] font-medium text-destructive">{errors?.email}</p>
-          </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="password">{t('auth.registration.form.password.label')}</Label>
-          <div>
+            {errors?.email && (
+              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
+                {errors.email}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="password">{t('auth.registration.form.password.label')}</FieldLabel>
             <Input
               id="password"
               type="password"
@@ -90,14 +99,17 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.password ? 'border-destructive' : ''}`}
               required
             />
-            <p className="text-[0.8rem] font-medium text-destructive">{errors?.password}</p>
-          </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="passwordConfirmation">
-            {t('auth.registration.form.password_confirmation.label')}
-          </Label>
-          <div>
+            {errors?.password && (
+              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
+                {errors.password}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="passwordConfirmation">
+              {t('auth.registration.form.password_confirmation.label')}
+            </FieldLabel>
             <Input
               id="passwordConfirmation"
               type="password"
@@ -106,22 +118,26 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               placeholder={t('auth.registration.form.password_confirmation.placeholder')}
               required
             />
-            <p className="text-[0.8rem] font-medium text-destructive">
-              {errors?.passwordConfirmation}
-            </p>
-          </div>
-        </div>
-        <div>
-          <Button type="submit" className="w-full">
-            {t('auth.registration.actions.submit')}
-          </Button>
-          {errorMessage && (
-            <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-              {errorMessage}
-            </p>
-          )}
-        </div>
-      </div>
+            {errors?.passwordConfirmation && (
+              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
+                {errors.passwordConfirmation}
+              </p>
+            )}
+          </Field>
+
+          <Field orientation="responsive">
+            <Button type="submit" className="w-full">
+              {t('auth.registration.actions.submit')}
+            </Button>
+            {errorMessage && (
+              <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
+                {errorMessage}
+              </p>
+            )}
+          </Field>
+        </FieldGroup>
+      </FieldSet>
+
       <div className="text-center text-sm">
         <span>{t('auth.registration.already_account.text')} </span>
         <Link route="auth.sign_in.show" className="underline underline-offset-4">
