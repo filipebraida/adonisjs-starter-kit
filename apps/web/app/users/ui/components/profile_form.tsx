@@ -6,8 +6,9 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
 import { Progress } from '@workspace/ui/components/progress'
+import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 import type UserDto from '#users/dtos/user'
@@ -56,59 +57,62 @@ export function ProfileForm({ user }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
-      <div className="col-span-full flex items-center gap-x-8">
-        <UserAvatar
-          user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
-          className="size-24 flex-none rounded-lg object-cover"
-        />
+      <FieldSet>
+        <FieldGroup>
+          <Field>
+            <div className="col-span-full flex items-center gap-x-8">
+              <UserAvatar
+                user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
+                className="size-24 flex-none rounded-lg object-cover"
+              />
 
-        <div>
-          <Button type="button" onClick={() => avatarInputRef.current?.click()}>
-            {t('users.action.actions.change_avatar')}
-          </Button>
-          <p className="mt-2 text-xs/5">JPG, GIF or PNG. 1MB max.</p>
-        </div>
-      </div>
+              <div>
+                <Button type="button" onClick={() => avatarInputRef.current?.click()}>
+                  {t('users.action.actions.change_avatar')}
+                </Button>
+                <p className="mt-2 text-xs/5">JPG, GIF or PNG. 1MB max.</p>
+              </div>
+            </div>
 
-      <Input
-        ref={avatarInputRef}
-        id="avatar"
-        type="file"
-        className="hidden"
-        accept="image/*"
-        onChange={handleAvatarChange}
-      />
+            <Input
+              ref={avatarInputRef}
+              id="avatar"
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleAvatarChange}
+            />
+            <FieldErrorBag errors={errors} field="avatar" />
+          </Field>
 
-      {errors?.avatar && (
-        <p className="text-[0.8rem] font-medium text-destructive">{errors.avatar}</p>
-      )}
+          <Field>
+            <FieldLabel htmlFor="fullName">{t('users.action.form.full_name.label')}</FieldLabel>
+            <Input
+              id="fullName"
+              placeholder={t('users.action.form.full_name.placeholder')}
+              value={data.fullName}
+              onChange={(e) => setData('fullName', e.target.value)}
+              className={errors?.fullName ? 'border-destructive' : ''}
+            />
+            <FieldErrorBag errors={errors} field="fullName" />
+          </Field>
 
-      <div className="space-y-2 mx-1">
-        <Label htmlFor="fullName">{t('users.action.form.full_name.label')}</Label>
-        <Input
-          id="fullName"
-          placeholder={t('users.action.form.full_name.placeholder')}
-          value={data.fullName}
-          onChange={(e) => setData('fullName', e.target.value)}
-          className={errors?.fullName ? 'border-destructive' : ''}
-        />
-        {errors?.fullName && (
-          <p className="text-[0.8rem] font-medium text-destructive">{errors.fullName}</p>
-        )}
-      </div>
+          <Field>
+            <FieldLabel htmlFor="email">{t('users.action.form.email.label')}</FieldLabel>
+            <p id="email">{user.email}</p>
+          </Field>
 
-      <div className="space-y-2 mx-1">
-        <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
-        <p>{user.email}</p>
-      </div>
+          {progress && (
+            <Field>
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
+            </Field>
+          )}
 
-      {progress && (
-        <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
-      )}
-
-      <div className="pt-2">
-        <Button type="submit">{t('users.action.actions.save')}</Button>
-      </div>
+          <Field orientation="responsive">
+            <Button type="submit">{t('users.action.actions.save')}</Button>
+          </Field>
+        </FieldGroup>
+      </FieldSet>
     </form>
   )
 }

@@ -2,11 +2,12 @@ import React from 'react'
 import { useForm } from '@inertiajs/react'
 
 import { Button } from '@workspace/ui/components/button'
-import { Label } from '@workspace/ui/components/label'
 import { Progress } from '@workspace/ui/components/progress'
+import { PasswordInput } from '@workspace/ui/components/password-input'
+import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { toast } from '@workspace/ui/hooks/use-toast'
-import { PasswordInput } from '@workspace/ui/components/password-input'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 export function PasswordForm() {
@@ -39,36 +40,36 @@ export function PasswordForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2 mx-1">
-        <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
-        <PasswordInput
-          id="password"
-          placeholder={t('users.action.form.password.placeholder')}
-          value={data.password}
-          onChange={(element) => setData('password', element.target.value)}
-          className={`${errors?.password ? 'border-destructive' : ''}`}
-        />
-        <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-          {errors?.password}
-        </p>
-      </div>
+      <FieldSet>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="password">{t('users.action.form.password.label')}</FieldLabel>
+            <PasswordInput
+              id="password"
+              placeholder={t('users.action.form.password.placeholder')}
+              value={data.password}
+              onChange={(element) => setData('password', element.target.value)}
+              className={`${errors?.password ? 'border-destructive' : ''}`}
+            />
+            <FieldErrorBag errors={errors} field="password" />
+          </Field>
 
-      <div className="space-y-2 mx-1">
-        <Label htmlFor="passwordConfirmation">
-          {t('users.action.form.password_confirmation.label')}
-        </Label>
-        <PasswordInput
-          id="passwordConfirmation"
-          disabled={data.password === ''}
-          placeholder={t('users.action.form.password_confirmation.placeholder')}
-          value={data.passwordConfirmation}
-          onChange={(element) => setData('passwordConfirmation', element.target.value)}
-          className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
-        />
-        <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-          {errors?.passwordConfirmation}
-        </p>
-      </div>
+          <Field>
+            <FieldLabel htmlFor="passwordConfirmation">
+              {t('users.action.form.password_confirmation.label')}
+            </FieldLabel>
+            <PasswordInput
+              id="passwordConfirmation"
+              disabled={data.password === ''}
+              placeholder={t('users.action.form.password_confirmation.placeholder')}
+              value={data.passwordConfirmation}
+              onChange={(element) => setData('passwordConfirmation', element.target.value)}
+              className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
+            />
+            <FieldErrorBag errors={errors} field="passwordConfirmation" />
+          </Field>
+        </FieldGroup>
+      </FieldSet>
 
       {progress && (
         <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
