@@ -6,11 +6,13 @@ import { Button } from "@workspace/ui/components/button";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   additionalFilters?: React.ReactNode;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 export function DataTableToolbar<TData>({
   table,
   additionalFilters,
+  t,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -24,7 +26,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Limpar
+            {t("users.index.table.row_actions.clear")}
             <X />
           </Button>
         )}

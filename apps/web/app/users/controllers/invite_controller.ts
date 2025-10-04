@@ -8,7 +8,7 @@ import UserPolicy from '#users/policies/user_policy'
 import { inviteUserValidator } from '#users/validators'
 
 export default class InviteController {
-  public async handle({ bouncer, request, response }: HttpContext) {
+  public async handle({ i18n, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')
 
     const payload = await request.validateUsing(inviteUserValidator)
@@ -20,7 +20,19 @@ export default class InviteController {
 
     await user.save()
 
-    emitter.emit('user:registered', { user: user, message: payload.description })
+    const translations = {
+      subject: i18n.t('users.emails.welcome.subject'),
+      title: i18n.t('users.emails.welcome.title', { full_name: user.fullName }),
+      subtitle: i18n.t('users.emails.welcome.subtitle'),
+      actionBtn: i18n.t('users.emails.welcome.action_btn'),
+      defaultMessage: i18n.t('users.emails.welcome.default_message'),
+    }
+
+    emitter.emit('user:registered', {
+      user: user,
+      translations: translations,
+      message: payload.description,
+    })
 
     return response.redirect().toRoute('users.index')
   }

@@ -16,7 +16,7 @@ export default class ForgotPasswordController {
     return inertia.render('auth/forgot_password')
   }
 
-  async handle({ request, response }: HttpContext) {
+  async handle({ request, response, i18n }: HttpContext) {
     /**
      * Validate the email input.
      */
@@ -34,10 +34,17 @@ export default class ForgotPasswordController {
 
     const { token } = await this.passwordResetService.generateToken(user)
 
+    const translations = {
+      subject: i18n.t('auth.emails.reset_password.subject'),
+      title: i18n.t('auth.emails.reset_password.title'),
+      subtitle: i18n.t('auth.emails.reset_password.subtitle'),
+      actionBtn: i18n.t('auth.emails.reset_password.action_btn'),
+      defaultMessage: i18n.t('auth.emails.reset_password.default_message'),
+    }
     /**
      * Send an email with the signed URL.
      */
-    emitter.emit('auth:forgot_password', { user, token })
+    emitter.emit('auth:forgot_password', { user, token, translations })
 
     /**
      * Redirect back with a success message.

@@ -54,6 +54,7 @@ export default defineConfig({
     () => import('@adonisjs/drive/drive_provider'),
     () => import('@tuyau/core/tuyau_provider'),
     () => import('@adonisjs/i18n/i18n_provider'),
+    () => import('@adonisjs/limiter/limiter_provider'),
   ],
 
   /*

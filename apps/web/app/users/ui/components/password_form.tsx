@@ -7,8 +7,11 @@ import { Progress } from '@workspace/ui/components/progress'
 
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { PasswordInput } from '@workspace/ui/components/password-input'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 export function PasswordForm() {
+  const { t } = useTranslation()
+
   const { data, setData, errors, put, progress, reset } = useForm({
     password: '',
     passwordConfirmation: '',
@@ -22,8 +25,10 @@ export function PasswordForm() {
       onSuccess: () => {
         reset()
 
-        toast('Success', {
-          description: 'Password updated successfully',
+        toast(t('users.action.toast.type_success'), {
+          description: t('users.action.toast.settings_updated', {
+            setting: t('users.layout.password'),
+          }),
         })
       },
       onError: () => {
@@ -35,10 +40,10 @@ export function PasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2 mx-1">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
         <PasswordInput
           id="password"
-          placeholder="e.g., S3cur3P@ssw0rd"
+          placeholder={t('users.action.form.password.placeholder')}
           value={data.password}
           onChange={(element) => setData('password', element.target.value)}
           className={`${errors?.password ? 'border-destructive' : ''}`}
@@ -49,11 +54,13 @@ export function PasswordForm() {
       </div>
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="passwordConfirmation">Confirm Password</Label>
+        <Label htmlFor="passwordConfirmation">
+          {t('users.action.form.password_confirmation.label')}
+        </Label>
         <PasswordInput
           id="passwordConfirmation"
           disabled={data.password === ''}
-          placeholder="e.g., S3cur3P@ssw0rd"
+          placeholder={t('users.action.form.password_confirmation.placeholder')}
           value={data.passwordConfirmation}
           onChange={(element) => setData('passwordConfirmation', element.target.value)}
           className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
@@ -68,7 +75,7 @@ export function PasswordForm() {
       )}
 
       <div className="pt-2">
-        <Button type="submit">Save</Button>
+        <Button type="submit">{t('users.action.actions.save')}</Button>
       </div>
     </form>
   )

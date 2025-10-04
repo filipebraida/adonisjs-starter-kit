@@ -1,0 +1,213 @@
+{
+  "layout": {
+    "title": "Paramètres",
+    "description": "Gérez votre profil et les paramètres de votre compte",
+    "profile": "Profil",
+    "password": "Mot de Passe",
+    "tokens": "Jetons"
+  },
+  "index": {
+    "page": {
+      "title": "Utilisateurs",
+      "description": "Gérez les utilisateurs de votre application",
+      "breadcrumbs": {
+        "users": "Utilisateurs"
+      }
+    },
+    "table": {
+      "columns": {
+        "full_name": "Nom complet",
+        "email": "Email",
+        "role": "Rôle"
+      },
+      "filters": {
+        "search_placeholder": "Recherche...",
+        "role": "Rôle",
+        "clear_filters": "Effacer les filtres",
+        "no_results": "Aucun résultat trouvé.",
+        "nb_selected": "sélectionné(s)"
+      },
+      "row_actions": {
+        "impersonate": "Imiter",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "open_menu": "Ouvrir menu",
+        "clear": "Effacer"
+      },
+      "not_provided": "Non fourni",
+      "pagination": {
+        "rows_per_page": "Nombre de lignes par page",
+        "go_first_page": "Aller à la première page",
+        "go_previous_page": "Aller à la page précédente",
+        "go_next_page": "Aller à la page suivante",
+        "go_last_page": "Aller à la dernière page",
+        "page_of": "Page {current} sur {total}"
+      }
+    },
+    "toolbar": {
+      "invite": "Inviter",
+      "add": "Ajouter"
+    }
+  },
+  "password": {
+    "breadcrumbs": {
+      "settings": "Paramètres"
+    },
+    "title": "Mettre à jour le mot de passe",
+    "description": "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé"
+  },
+  "profile": {
+    "breadcrumbs": {
+      "settings": "Paramètres"
+    },
+    "title": "Informations sur le profil",
+    "description": "Mettez à jour votre nom et votre adresse e-mail"
+  },
+  "tokens": {
+    "breadcrumbs": {
+      "settings": "Paramètres"
+    },
+    "title": "Jetons",
+    "description": "Gérez vos jetons API ici.",
+    "dialogs": {
+      "add": {
+        "title": "Ajouter un jeton",
+        "description": "Renseignez les informations ci-dessous pour ajouter un nouveau jeton. Cliquez sur Enregistrer lorsque vous avez terminé."
+      },
+      "generated": {
+        "title": "Jeton généré",
+        "description": "Vous pouvez désormais utiliser le jeton généré pour authentifier les requêtes API. Assurez-vous de le conserver en lieu sûr, car il ne sera plus affiché."
+      }
+    }
+  },
+  "action": {
+    "create": {
+      "title": "Créer un utilisateur",
+      "description": "Remplissez les informations ci-dessous pour ajouter un nouvel utilisateur. Cliquez sur « Ajouter » lorsque vous avez terminé."
+    },
+    "edit": {
+      "title": "Modifier Utilisateur",
+      "description": "Mettez à jour l'utilisateur ici. Cliquez sur « Enregistrer » lorsque vous avez terminé."
+    },
+    "form": {
+      "full_name": {
+        "label": "Nom complet",
+        "placeholder": "Entrez le nom complet de l'utilisateur"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Entrez l'e-mail de l'utilisateur"
+      },
+      "role": {
+        "label": "Rôle",
+        "placeholder": "Sélectionnez un rôle"
+      },
+      "password": {
+        "label": "Mot de passe",
+        "placeholder": "e.g., S3cur3P@ssw0rd"
+      },
+      "password_confirmation": {
+        "label": "Confirmez le mot de passe",
+        "placeholder": "e.g., S3cur3P@ssw0rd"
+      },
+      "token": {
+        "label": "Nom du jeton",
+        "placeholder": "Saisir le nom du jeton"
+      }
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "add": "Ajouter",
+      "save": "Enregistrer",
+      "close": "Fermer",
+      "change_avatar": "Changer d'avatar"
+    },
+    "toast": {
+      "title": "Vous avez soumis les valeurs suivantes :",
+      "type_success": "Succès",
+      "settings_updated": "{setting} modifié avec succès"
+    }
+  },
+  "delete": {
+    "title": "Supprimer Utilisateur",
+    "description": "Êtes-vous sûr de vouloir supprimer <strong1>{{email}}</strong1> ? Cette action supprimera définitivement l'utilisateur ayant le rôle <strong2>{{role}}</strong2> du système. Cette opération est irréversible.",
+    "confirm_placeholder": "Saisissez votre adresse e-mail pour confirmer la suppression.",
+    "confirm_button": "Supprimer",
+    "alert": {
+      "title": "Attention!",
+      "description": "Soyez prudent, cette opération ne peut pas être annulée."
+    },
+    "toast": {
+      "title": "L'utilisateur suivant a été supprimé :"
+    }
+  },
+  "delete_token": {
+    "title": "Supprimer le jeton",
+    "description": "Êtes-vous sûr de vouloir supprimer <strong1>{{token_name}}</strong1> ? Cette action supprimera définitivement le jeton du système. Cette opération est irréversible.",
+    "confirm_placeholder": "Saisissez le nom du jeton pour confirmer la suppression.",
+    "confirm_button": "Supprimer",
+    "alert": {
+      "title": "Attention!",
+      "description": "Soyez prudent, cette opération ne peut pas être annulée."
+    },
+    "toast": {
+      "title": "Le jeton suivant a été supprimé :"
+    }
+  },
+  "impersonate": {
+    "title": "Imiter l'utilisateur",
+    "description": "Êtes-vous sûr de vouloir vous faire passer pour <strong1>{{email}}</strong1> ? Cette action vous permettra d'agir comme cet utilisateur (Rôle : <strong2>{{role}}</strong2>) dans le système.",
+    "confirm_button": "Imiter",
+    "alert": {
+      "title": "Note",
+      "description": "Vous pouvez revenir à votre compte d'origine à tout moment en vous déconnectant."
+    },
+    "toast": {
+      "title": "Vous vous faites désormais passer pour l'utilisateur suivant :"
+    }
+  },
+  "invite": {
+    "title": "Inviter un utilisateur",
+    "description": "Invitez de nouveaux utilisateurs à rejoindre votre équipe en leur envoyant une invitation par e-mail. Attribuez-leur un rôle pour définir leur niveau d'accès.",
+    "form": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Entrez l'e-mail de l'utilisateur"
+      },
+      "role": {
+        "label": "Rôle",
+        "placeholder": "Sélectionnez un rôle"
+      },
+      "description": {
+        "label": "Description (optionnel)",
+        "placeholder": "Ajoutez une note personnelle à votre invitation (facultatif)"
+      }
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "submit": "Envoyer l'invitation"
+    },
+    "toast": {
+      "title": "Vous avez soumis les valeurs suivantes :"
+    }
+  },
+  "emails": {
+    "welcome": {
+      "subject": "Bienvenue!",
+      "title": "Bienvenue {full_name}!",
+      "subtitle": "Nous sommes ravis de vous compter parmi nous.",
+      "action_btn": "Commencer",
+      "default_message": "Merci de rejoindre notre communauté. Découvrez nos fonctionnalités et commencez votre aventure avec nous. Pour toute question, n'hésitez pas à nous contacter !"
+    }
+  },
+  "roles": {
+    "1":{
+      "name": "Utilisateur",
+      "description": "Utilisateur Authentifié"
+    },
+    "2":{
+      "name": "Administrateur",
+      "description": "Super Utilisateur"
+    }
+  }
+}

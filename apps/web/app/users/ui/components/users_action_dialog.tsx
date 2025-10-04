@@ -203,7 +203,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
             <Button variant="outline">{t('users.action.actions.cancel')}</Button>
           </DialogClose>
           <Button type="submit" form="user-form">
-            {t(isEdit ? 'users.action.actions.edit_submit' : 'users.action.actions.create_submit')}
+            {t(isEdit ? 'users.action.actions.save' : 'users.action.actions.add')}
           </Button>
         </DialogFooter>
       </DialogContent>

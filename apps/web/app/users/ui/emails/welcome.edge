@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
-      Welcome!
+      {{ subject }}
     </title>
     <style>
       body {
@@ -96,19 +96,19 @@
     <div class="email-wrapper">
       <div class="email-card">
         <div class="title">
-          Welcome!
+          {{ title }}
         </div>
         <div class="subtitle">
-          We're thrilled to have you on board.
+          {{ subtitle }}
         </div>
         <div class="button-wrapper">
-          <a href="{{ welcomeUrl }}" target="_blank">Get Started</a>
+          <a href="{{ welcomeUrl }}" target="_blank">{{ actionBtn }}</a>
         </div>
         <div class="message">
           @if(welcomeMessage)
             {{ welcomeMessage }}
           @else
-            Thank you for joining our community. Explore our features and start your journey with us. If you have any questions, feel free to reach out!
+            {{ defaultMessage }}
           @endif
         </div>
       </div>

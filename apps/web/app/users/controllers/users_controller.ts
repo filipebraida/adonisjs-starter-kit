@@ -12,7 +12,7 @@ import UserPolicy from '#users/policies/user_policy'
 import { createUserValidator, editUserValidator } from '#users/validators'
 
 export default class UsersController {
-  public async index({ bouncer, inertia }: HttpContext) {
+  public async index({ bouncer, inertia, i18n }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
     const users = await User.query().preload('role')
@@ -21,8 +21,19 @@ export default class UsersController {
     await User.preComputeUrls(users)
 
     return inertia.render('users/index', {
-      users: UserDto.fromArray(users),
-      roles: RoleDto.fromArray(roles),
+      users: UserDto.fromArray(users).map((user) => {
+        return {
+          ...user,
+          role: i18n.t(`users.roles.${user.roleId}.name`),
+        }
+      }),
+      roles: RoleDto.fromArray(roles).map((role) => {
+        return {
+          ...role,
+          name: i18n.t(`users.roles.${role.id}.name`),
+          description: i18n.t(`users.roles.${role.id}.description`),
+        }
+      }),
     })
   }
 

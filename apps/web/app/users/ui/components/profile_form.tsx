@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useForm } from '@inertiajs/react'
 
 import { UserAvatar } from '#common/ui/components/user_avatar'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export function ProfileForm({ user }: Props) {
+  const { t } = useTranslation()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const { data, setData, errors, put, progress } = useForm({
@@ -43,8 +45,10 @@ export function ProfileForm({ user }: Props) {
       onSuccess: () => {
         setPreviewUrl(null)
 
-        toast('Success', {
-          description: 'Profile updated successfully',
+        toast(t('users.action.toast.type_success'), {
+          description: t('users.action.toast.settings_updated', {
+            setting: t('users.layout.profile'),
+          }),
         })
       },
     })
@@ -60,7 +64,7 @@ export function ProfileForm({ user }: Props) {
 
         <div>
           <Button type="button" onClick={() => avatarInputRef.current?.click()}>
-            Change avatar
+            {t('users.action.actions.change_avatar')}
           </Button>
           <p className="mt-2 text-xs/5">JPG, GIF or PNG. 1MB max.</p>
         </div>
@@ -80,10 +84,10 @@ export function ProfileForm({ user }: Props) {
       )}
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="fullName">Full Name</Label>
+        <Label htmlFor="fullName">{t('users.action.form.full_name.label')}</Label>
         <Input
           id="fullName"
-          placeholder="Enter user's full name"
+          placeholder={t('users.action.form.full_name.placeholder')}
           value={data.fullName}
           onChange={(e) => setData('fullName', e.target.value)}
           className={errors?.fullName ? 'border-destructive' : ''}
@@ -94,7 +98,7 @@ export function ProfileForm({ user }: Props) {
       </div>
 
       <div className="space-y-2 mx-1">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
         <p>{user.email}</p>
       </div>
 
@@ -103,7 +107,7 @@ export function ProfileForm({ user }: Props) {
       )}
 
       <div className="pt-2">
-        <Button type="submit">Save</Button>
+        <Button type="submit">{t('users.action.actions.save')}</Button>
       </div>
     </form>
   )

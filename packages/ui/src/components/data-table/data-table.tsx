@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   Toolbar?: React.ComponentType<{
     table: ReturnType<typeof useReactTable<TData>>;
   }>;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
 export interface ColumnMeta {
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   Toolbar,
+  t,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -112,14 +114,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results found.
+                  {t("users.index.table.filters.no_results")}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination t={t} table={table} />
     </div>
   );
 }

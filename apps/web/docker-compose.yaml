@@ -1,16 +1,17 @@
 services:
   pgsql:
-    image: 'pgvector/pgvector:0.8.0-pg17'
     container_name: '${COMPOSE_PROJECT_NAME}_pgsql'
-    ports:
-      - '${DB_PORT:-5432}:5432'
+    image: postgres:latest
     environment:
-      PGPASSWORD: '${DB_PASSWORD:-secret}'
       POSTGRES_DB: '${DB_DATABASE:-default}'
       POSTGRES_USER: '${DB_USER?:err}'
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
-      - 'sailpgsql:/var/lib/postgresql/data'
+      - pgsql:/var/lib/postgresql/data
+      - ./../../.github/postgres/dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
+    ports:
+      - "5432:5432"
+    restart: always
     networks:
       - sail
     healthcheck:
@@ -18,9 +19,41 @@ services:
       retries: 3
       timeout: 5s
 
+  pgadmin:
+    container_name: '${COMPOSE_PROJECT_NAME}_pgadmin'
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL:-admin@repo.com}'
+      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+      PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
+    ports:
+      - "5050:80"
+    restart: always
+    volumes:
+      - pgadmin:/root/.pgadmin
+      - ./../../.github/pgadmin/servers.json:/pgadmin4/servers.json
+    networks:
+      - sail
+
+  mailpit:
+    container_name: '${COMPOSE_PROJECT_NAME}_mailpit'
+    image: axllent/mailpit
+    restart: unless-stopped
+    volumes:
+        - ./tmp/mailpit:/data
+    ports:
+        - 8025:8025
+        - 1025:1025
+    environment:
+        MP_MAX_MESSAGES: 5000
+        MP_DATABASE: /data/mailpit.db
+        MP_SMTP_AUTH_ACCEPT_ANY: 1
+        MP_SMTP_AUTH_ALLOW_INSECURE: 1
 networks:
   sail:
     driver: bridge
 
 volumes:
-  sailpgsql:
+  pgsql:
+  pgadmin:

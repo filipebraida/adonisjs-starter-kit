@@ -30,6 +30,8 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **Inertia.js**: Seamless integration between frontend and backend.
 - **Tailwind CSS**: Utility-first CSS framework for rapid styling.
 - **PostgreSQL**: Reliable and high-performance relational database.
+- **Mailpit**: Small, fast, low memory, zero-dependency, multi-platform email testing tool & API for developers.
+- **PgAdmin**: Most popular and feature rich Open Source administration and development platform for PostgreSQL.
 
 ## Installation
 
