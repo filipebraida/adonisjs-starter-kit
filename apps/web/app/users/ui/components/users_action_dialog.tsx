@@ -14,7 +14,7 @@ import {
 } from '@workspace/ui/components/dialog'
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
+import { Field, FieldLabel } from '@workspace/ui/components/field'
 import { Progress } from '@workspace/ui/components/progress'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import {
@@ -25,6 +25,7 @@ import {
   SelectGroup,
   SelectItem,
 } from '@workspace/ui/components/select'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import type RoleDto from '#users/dtos/role'
@@ -103,8 +104,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
         </DialogHeader>
         <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4 p-0.5">
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="name">{t('users.action.form.full_name.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="fullName">{t('users.action.form.full_name.label')}</FieldLabel>
               <Input
                 id="fullName"
                 placeholder={t('users.action.form.full_name.placeholder')}
@@ -112,13 +113,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 onChange={(element) => setData('fullName', element.target.value)}
                 className={`${errors?.fullName ? 'border-destructive' : ''}`}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.fullName}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="fullName" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="email">{t('users.action.form.email.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="email">{t('users.action.form.email.label')}</FieldLabel>
               <Input
                 id="email"
                 placeholder={t('users.action.form.email.placeholder')}
@@ -126,13 +125,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-destructive' : ''}`}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.email}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="email" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="role">{t('users.action.form.role.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="role">{t('users.action.form.role.label')}</FieldLabel>
               <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
                 <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={t('users.action.form.role.placeholder')} />
@@ -148,7 +145,6 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                             {userRole && userRole.icon && (
                               <userRole.icon size={16} className="text-muted-foreground" />
                             )}
-
                             <span className="capitalize text-sm">{role.name}</span>
                           </span>
                         </SelectItem>
@@ -157,13 +153,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.roleId}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="roleId" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="password">{t('users.action.form.password.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="password">{t('users.action.form.password.label')}</FieldLabel>
               <PasswordInput
                 id="password"
                 placeholder={t('users.action.form.password.placeholder')}
@@ -171,15 +165,13 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 onChange={(e) => setData('password', e.target.value)}
                 className={errors?.password ? 'border-destructive' : ''}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.password}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="password" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="passwordConfirmation">
+            <Field>
+              <FieldLabel htmlFor="passwordConfirmation">
                 {t('users.action.form.password_confirmation.label')}
-              </Label>
+              </FieldLabel>
               <PasswordInput
                 id="passwordConfirmation"
                 disabled={data.password === ''}
@@ -188,10 +180,8 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                 onChange={(element) => setData('passwordConfirmation', element.target.value)}
                 className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.passwordConfirmation}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="passwordConfirmation" />
+            </Field>
 
             {progress && (
               <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />

@@ -14,11 +14,10 @@ import {
 } from '@workspace/ui/components/dialog'
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
+import { Field, FieldLabel } from '@workspace/ui/components/field'
 import { Progress } from '@workspace/ui/components/progress'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { cn } from '@workspace/ui/lib/utils'
-
 import {
   Select,
   SelectTrigger,
@@ -27,6 +26,7 @@ import {
   SelectGroup,
   SelectItem,
 } from '@workspace/ui/components/select'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
@@ -102,8 +102,8 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
         </DialogHeader>
         <ScrollArea>
           <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="email">{t('users.invite.form.email.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="email">{t('users.invite.form.email.label')}</FieldLabel>
               <Input
                 id="email"
                 placeholder={t('users.invite.form.email.placeholder')}
@@ -111,13 +111,11 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 onChange={(element) => setData('email', element.target.value)}
                 className={`${errors?.email ? 'border-destructive' : ''}`}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.email}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="email" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="role">{t('users.invite.form.role.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="role">{t('users.invite.form.role.label')}</FieldLabel>
               <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
                 <SelectTrigger className={errors?.roleId ? 'border-destructive' : ''}>
                   <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
@@ -142,13 +140,13 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.roleId}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="roleId" />
+            </Field>
 
-            <div className="space-y-2 mx-1">
-              <Label htmlFor="description">{t('users.invite.form.description.label')}</Label>
+            <Field>
+              <FieldLabel htmlFor="description">
+                {t('users.invite.form.description.label')}
+              </FieldLabel>
               <Textarea
                 id="description"
                 placeholder={t('users.invite.form.description.placeholder')}
@@ -156,10 +154,8 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 onChange={(element) => setData('description', element.target.value)}
                 className={cn('resize-none', `${errors?.description ? 'border-destructive' : ''}`)}
               />
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors?.description}
-              </p>
-            </div>
+              <FieldErrorBag errors={errors} field="description" />
+            </Field>
 
             {progress && (
               <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
