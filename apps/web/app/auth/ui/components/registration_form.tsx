@@ -5,7 +5,8 @@ import { Link } from '@tuyau/inertia/react'
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
-import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldSet, FieldGroup, Field, FieldLabel, FieldError } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
@@ -19,17 +20,16 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
   })
 
   const { t } = useTranslation()
-  const [errorMessage, setErrorMessage] = useState('')
+
+  const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   const messages = useFlashMessage('errorsBag')
-
   useEffect(() => {
     if (messages) {
-      let msg = ''
-      for (let error of Object.entries(messages)) {
-        msg += error[1]
-      }
-      setErrorMessage(msg)
+      const msgs = Object.values(messages).flat().filter(Boolean).map(String)
+      setErrorMessages(msgs)
+    } else {
+      setErrorMessages([])
     }
   }, [messages])
 
@@ -63,11 +63,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.fullName ? 'border-destructive' : ''}`}
               required
             />
-            {errors?.fullName && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors.fullName}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="fullName" />
           </Field>
 
           <Field>
@@ -81,11 +77,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.email ? 'border-destructive' : ''}`}
               required
             />
-            {errors?.email && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors.email}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="email" />
           </Field>
 
           <Field>
@@ -99,11 +91,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               className={`${errors?.password ? 'border-destructive' : ''}`}
               required
             />
-            {errors?.password && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors.password}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="password" />
           </Field>
 
           <Field>
@@ -118,22 +106,15 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               placeholder={t('auth.registration.form.password_confirmation.placeholder')}
               required
             />
-            {errors?.passwordConfirmation && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors.passwordConfirmation}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="passwordConfirmation" />
           </Field>
 
           <Field orientation="responsive">
             <Button type="submit" className="w-full">
               {t('auth.registration.actions.submit')}
             </Button>
-            {errorMessage && (
-              <p className="text-[0.8rem] text-center font-medium text-destructive col-span-1">
-                {errorMessage}
-              </p>
-            )}
+
+            <FieldError errors={errorMessages.map((m) => ({ message: m }))} />
           </Field>
         </FieldGroup>
       </FieldSet>

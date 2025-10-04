@@ -6,6 +6,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
@@ -55,11 +56,7 @@ export function ForgotPasswordForm({
               placeholder={t('auth.forgot_password.form.email.placeholder')}
               required
             />
-            {errors?.email && (
-              <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-                {errors.email}
-              </p>
-            )}
+            <FieldErrorBag errors={errors} field="email" />
           </Field>
 
           <Field orientation="responsive">

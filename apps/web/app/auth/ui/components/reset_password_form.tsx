@@ -5,6 +5,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 export function ResetPasswordForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const { data, setData, errors, post } = useForm({
@@ -36,9 +37,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
               onChange={(element) => setData('password', element.target.value)}
               required
             />
-            <p className="text-[0.8rem] font-medium text-destructive col-span-4 col-start-3">
-              {errors?.password}
-            </p>
+            <FieldErrorBag errors={errors} field="password" />
           </Field>
 
           <Field>
