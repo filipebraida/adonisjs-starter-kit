@@ -238,6 +238,8 @@ This project draws inspiration from the following sources:
 
 Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
 
+**Contributors:** [Lupiac](https://github.com/Lupiac) and [Corentin Clichy](https://github.com/corentinclichy)
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
