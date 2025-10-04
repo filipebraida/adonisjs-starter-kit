@@ -11,9 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@workspace/ui/components/dialog'
-import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
+import { Field, FieldLabel } from '@workspace/ui/components/field'
 import { CopyButton } from '@workspace/ui/components/copy-button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
@@ -86,19 +85,17 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
               </DialogTitle>
               <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>
             </DialogHeader>
-            <ScrollArea>
-              <form id="user-form" onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2 mx-1 mb-1">
-                  <Label htmlFor="name">{t('users.action.form.token.label')}</Label>
-                  <Input
-                    id="name"
-                    placeholder={t('users.action.form.token.placeholder')}
-                    value={name}
-                    onChange={(element) => setName(element.target.value)}
-                  />
-                </div>
-              </form>
-            </ScrollArea>
+            <form id="user-form" onSubmit={handleSubmit}>
+              <Field>
+                <FieldLabel htmlFor="name">{t('users.action.form.token.label')}</FieldLabel>
+                <Input
+                  id="name"
+                  placeholder={t('users.action.form.token.placeholder')}
+                  value={name}
+                  onChange={(element) => setName(element.target.value)}
+                />
+              </Field>
+            </form>
             <DialogFooter className="gap-y-2">
               <DialogClose asChild>
                 <Button variant="outline">{t('users.action.actions.cancel')}</Button>
@@ -118,12 +115,10 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
                 {t('users.tokens.dialogs.generated.description')}
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea>
-              <div className="flex flex-row gap-2 m-1">
-                <Input value={token} readOnly />
-                <CopyButton content={token} />
-              </div>
-            </ScrollArea>
+            <div className="flex flex-row gap-2">
+              <Input value={token} readOnly />
+              <CopyButton content={token} />
+            </div>
             <DialogFooter className="gap-y-2">
               <Button onClick={closeAndClean} variant="outline">
                 {t('users.action.actions.close')}
