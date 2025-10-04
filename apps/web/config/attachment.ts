@@ -4,9 +4,10 @@ import { InferConverters } from '@jrmc/adonis-attachment/types/config'
 const attachmentConfig = defineConfig({
   converters: {
     thumbnail: {
-      converter: () => import('@jrmc/adonis-attachment/converters/image_converter'),
+      converter: () => import('@jrmc/adonis-attachment/converters/autodetect_converter'),
       options: {
         resize: 300,
+        format: 'webp',
       },
     },
   },
