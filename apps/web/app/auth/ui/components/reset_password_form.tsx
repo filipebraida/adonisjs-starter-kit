@@ -15,7 +15,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    post(window.location.pathname + window.location.search)
+    post('/forgot-password')
   }
 
   return (
