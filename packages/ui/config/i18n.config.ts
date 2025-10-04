@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import i18n from "i18next";
 import ICU from "i18next-icu";
 import { initReactI18next } from "react-i18next";
@@ -13,11 +15,13 @@ function buildResources(): Record<string, any> {
 
   for (const path in localeFiles) {
     const match = path.match(
-      /app\/([^/]+)\/resources\/lang\/([^/]+)\/([^/]+)\.json$/,
+      /app\/([^/]+)\/resources\/lang\/([^/]+)\/([^/]+)\.json$/
     );
     if (!match) continue;
 
     const [, moduleName, lang] = match;
+    if (!lang || !moduleName) continue;
+
     const json = localeFiles[path].default ?? localeFiles[path];
 
     resources[lang] ??= { translation: {} };
