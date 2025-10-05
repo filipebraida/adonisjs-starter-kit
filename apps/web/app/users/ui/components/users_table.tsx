@@ -30,11 +30,11 @@ export default function UsersTable({ users, roles }: DataTableProps) {
     meta: users.meta,
     baseUrl: '/users',
     currentSearch: window.location.search,
-    visit: ({ params }) => {
-      return router.reload({
-        data: params,
+    visit: ({ url, params }) => {
+      return router.get(url ?? '/users', params, {
+        preserveState: true,
+        preserveScroll: true,
         replace: true,
-        only: ['users'],
       })
     },
   })
