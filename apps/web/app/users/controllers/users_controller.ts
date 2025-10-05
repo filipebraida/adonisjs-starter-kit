@@ -23,7 +23,7 @@ export default class UsersController {
     const query = User.query()
 
     if (fullName) {
-      query.where('full_name', 'like', `%${fullName}%`)
+      query.where('full_name', 'ilike', `%${fullName}%`)
     }
 
     if (Array.isArray(roleIds) && roleIds.length > 0) {
