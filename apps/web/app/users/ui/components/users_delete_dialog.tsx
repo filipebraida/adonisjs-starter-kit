@@ -62,7 +62,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <p className="mb-2">
             <Trans
               i18nKey="users.delete.description"
-              values={{ email: currentRow.email, role: currentRow.role }}
+              values={{ email: currentRow.email, role: t(`users.roles.${currentRow.roleId}.name`) }}
               components={{
                 strong1: <span className="font-bold" />,
                 strong2: <span className="font-bold" />,

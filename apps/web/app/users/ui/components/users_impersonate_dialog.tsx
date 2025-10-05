@@ -57,7 +57,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
               i18nKey="users.impersonate.description"
               values={{
                 email: currentRow.email,
-                role: currentRow.role,
+                role: t(`users.roles.${currentRow.roleId}.name`),
               }}
               components={{
                 strong1: <span className="font-bold" />,
