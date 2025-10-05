@@ -37,6 +37,8 @@ export interface RemoteTableOptions {
     pagination: { pageIndex: number; pageSize: number };
   };
   onPaginationChange: OnChangeFn<PaginationState>;
+  onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
+  columnFilters: ColumnFiltersState;
 }
 
 export interface ColumnMeta {
@@ -68,8 +70,8 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
 
     manualPagination: isRemote,
-    manualSorting: false,
-    manualFiltering: false,
+    manualSorting: isRemote,
+    manualFiltering: isRemote,
 
     pageCount: isRemote ? remoteTableOptions!.pageCount : undefined,
 
@@ -77,8 +79,14 @@ export function DataTable<TData, TValue>({
       pagination: isRemote
         ? remoteTableOptions!.state.pagination
         : localPagination,
-      columnFilters,
+      columnFilters: isRemote
+        ? remoteTableOptions!.columnFilters
+        : columnFilters,
     },
+
+    onColumnFiltersChange: isRemote
+      ? remoteTableOptions!.onColumnFiltersChange
+      : setColumnFilters,
 
     onPaginationChange: isRemote
       ? remoteTableOptions!.onPaginationChange
@@ -87,7 +95,6 @@ export function DataTable<TData, TValue>({
     ...(isRemote ? {} : { getPaginationRowModel: getPaginationRowModel() }),
 
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnFiltersChange: setColumnFilters,
   });
 
   return (

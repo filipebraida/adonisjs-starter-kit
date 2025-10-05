@@ -17,8 +17,20 @@ export default class UsersController {
 
     const limit = request.input('perPage', 10)
     const page = request.input('page', 1)
+    const fullName = request.input('fullName', undefined)
+    const roleIds = request.input('roleId', [])
 
-    const users = await User.query().preload('role').paginate(page, limit)
+    const query = User.query()
+
+    if (fullName) {
+      query.where('full_name', 'like', `%${fullName}%`)
+    }
+
+    if (Array.isArray(roleIds) && roleIds.length > 0) {
+      query.whereIn('role_id', roleIds)
+    }
+
+    const users = await query.preload('role').paginate(page, limit)
     const roles = await Role.all()
 
     await User.preComputeUrls(users)

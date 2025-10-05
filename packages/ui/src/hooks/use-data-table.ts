@@ -1,10 +1,16 @@
-import * as React from "react";
-import type { PaginationState, Updater } from "@tanstack/react-table";
+import { useState } from "react";
+
+import type {
+  ColumnFiltersState,
+  PaginationState,
+  Updater,
+} from "@tanstack/react-table";
+
 import type { RemoteTableOptions } from "@workspace/ui/components/data-table/data-table";
 
 export type PaginatorMeta = {
   perPage: number;
-  currentPage: number; // 1-based
+  currentPage: number;
   lastPage: number;
   total: number;
   firstPage?: number;
@@ -17,28 +23,28 @@ export type VisitFn = (args: {
 
 type ParamsRecord = Record<string, string | string[]>;
 
-function searchToRecord(search: string): ParamsRecord {
-  const sp = new URLSearchParams(
-    search.startsWith("?") ? search.slice(1) : search,
-  );
+function toParams(items: ColumnFiltersState): ParamsRecord {
   const out: ParamsRecord = {};
-  for (const k of new Set(sp.keys())) {
-    const all = sp.getAll(k);
-    out[k] = all.length > 1 ? all : (all[0] ?? "");
+  for (const it of items) {
+    const k = String(it.id);
+    const v = it.value as string | string[] | undefined | null;
+    if (Array.isArray(v)) {
+      if (v.length) out[k] = v.map(String);
+    } else if (v != null && v !== "") {
+      out[k] = String(v);
+    }
   }
   return out;
 }
 
-function setKey(rec: ParamsRecord, key: string, val: string | string[]) {
-  const next = { ...rec };
-
-  const isEmpty = Array.isArray(val) ? val.length === 0 : val === "";
-
-  if (isEmpty) {
-    delete next[key];
-  } else {
-    next[key] = Array.isArray(val) ? val.map(String) : String(val);
-  }
+function upsert(
+  items: ColumnFiltersState,
+  id: string,
+  value: string | string[]
+) {
+  const next = items.filter((f) => f.id !== id);
+  const isEmpty = Array.isArray(value) ? value.length === 0 : value === "";
+  if (!isEmpty) next.push({ id, value });
   return next;
 }
 
@@ -59,44 +65,74 @@ export function useDataTable({
   pageParam = "page",
   perPageParam = "perPage",
 }: UseDataTableOpts): RemoteTableOptions {
-  const baseParams = React.useMemo(
-    () => searchToRecord(currentSearch),
-    [currentSearch],
-  );
-  const pageIndex = Math.max(0, (meta.currentPage ?? 1) - 1); // 0-based
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(() => {
+    const searchParams = new URLSearchParams(
+      currentSearch.startsWith("?") ? currentSearch.slice(1) : currentSearch
+    );
+    const initial: ColumnFiltersState = [];
+
+    for (const k of new Set(searchParams.keys())) {
+      const all = searchParams.getAll(k);
+      const value = all.length > 1 ? all : (all[0] ?? "");
+      initial.push({ id: k, value });
+    }
+
+    return initial;
+  });
+
+  const pageIndex = Math.max(0, (meta.currentPage ?? 1) - 1);
   const pageSize = meta.perPage;
   const pageCount = Math.max(1, meta.lastPage);
 
-  function mergeAndVisit(merge: (params: ParamsRecord) => ParamsRecord) {
-    const next = merge(baseParams);
-    visit({ url: baseUrl, params: next });
-  }
-
-  function clampIndex(i0: number) {
-    return Math.min(Math.max(0, i0), pageCount - 1);
-  }
-
-  function setPageIndex(nextIndex0: number) {
-    const clamped = clampIndex(nextIndex0);
-    mergeAndVisit((params) => setKey(params, pageParam, String(clamped + 1))); // URL 1-based
-  }
-
-  function setPageSize(next: number) {
-    mergeAndVisit((params) => {
-      let r = setKey(params, perPageParam, String(next));
-      r = setKey(r, pageParam, "1"); // reset para primeira página
-      return r;
-    });
+  function visitFrom(items: ColumnFiltersState) {
+    visit({ url: baseUrl, params: toParams(items) });
   }
 
   return {
     pageCount,
+    columnFilters,
     state: { pagination: { pageIndex, pageSize } },
+    onColumnFiltersChange: (updater: Updater<ColumnFiltersState>) => {
+      setColumnFilters((prev) => {
+        const prevVisible = prev.filter(
+          (f) => f.id !== pageParam && f.id !== perPageParam
+        );
+        const nextVisible =
+          typeof updater === "function" ? updater(prevVisible) : updater;
+
+        const perPage =
+          (prev.find((f) => f.id === perPageParam)?.value as string) ??
+          String(meta.perPage);
+
+        const merged: ColumnFiltersState = [
+          ...nextVisible,
+          // reset page when filters change
+          { id: pageParam, value: "1" },
+          { id: perPageParam, value: perPage },
+        ];
+
+        visitFrom(merged);
+
+        return merged;
+      });
+    },
     onPaginationChange: (updater: Updater<PaginationState>) => {
-      const curr: PaginationState = { pageIndex, pageSize };
-      const next = typeof updater === "function" ? updater(curr) : updater;
-      if (next.pageSize !== curr.pageSize) setPageSize(next.pageSize);
-      else if (next.pageIndex !== curr.pageIndex) setPageIndex(next.pageIndex);
+      setColumnFilters((prev) => {
+        const curr: PaginationState = { pageIndex, pageSize };
+        const next = typeof updater === "function" ? updater(curr) : updater;
+
+        let merged = prev;
+        if (next.pageSize !== curr.pageSize) {
+          merged = upsert(merged, perPageParam, String(next.pageSize));
+          merged = upsert(merged, pageParam, "1");
+        } else if (next.pageIndex !== curr.pageIndex) {
+          merged = upsert(merged, pageParam, String(next.pageIndex + 1));
+        }
+
+        visitFrom(merged);
+
+        return merged;
+      });
     },
   };
 }
