@@ -12,14 +12,33 @@ import Role from '#users/dtos/role'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import { userRoles } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { router } from '@inertiajs/react'
+import { useDataTable } from '@workspace/ui/hooks/use-data-table'
+
+import type UserDto from '#users/dtos/user'
+import type { SimplePaginatorDtoContract } from '@adocasts.com/dto/types'
 
 interface DataTableProps {
-  users: User[]
+  users: SimplePaginatorDtoContract<UserDto>
   roles: Role[]
 }
 
 export default function UsersTable({ users, roles }: DataTableProps) {
   const { t } = useTranslation()
+
+  const remoteTableOptions = useDataTable({
+    meta: users.meta,
+    baseUrl: '/users',
+    currentSearch: window.location.search,
+    visit: ({ url, params }) => {
+      console.log(url, params)
+      return router.get(url ?? '/users', params, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+      })
+    },
+  })
 
   const columns: ColumnDef<User>[] = [
     {
@@ -71,8 +90,9 @@ export default function UsersTable({ users, roles }: DataTableProps) {
   return (
     <DataTable
       columns={columns}
-      data={users}
+      data={users.data}
       t={t}
+      remoteTableOptions={remoteTableOptions}
       Toolbar={(props) => (
         <DataTableToolbar
           t={t}
