@@ -18,15 +18,25 @@ type Option = {
   icon?: React.ComponentType<{ className?: string }>
 }
 
-export default function UsersTableFilters({ roles }: { roles: Role[] }) {
+export default function UsersTableFilters({
+  roles,
+  q,
+  selectedRoles,
+}: {
+  roles: Role[]
+  q: string | undefined
+  selectedRoles: number[]
+}) {
   const { t } = useTranslation()
 
-  const [fullName, setFullName] = React.useState('')
-  const [roleIds, setRoleIds] = React.useState<string[]>([])
+  const [querySearch, setQuerySearch] = React.useState(q || '')
+  const [roleIds, setRoleIds] = React.useState<string[]>(
+    selectedRoles ? selectedRoles.map(String) : []
+  )
 
-  const handleSubmit = React.useCallback((fullName: string, roleIds: string[]) => {
+  const handleSubmit = React.useCallback((querySearch: string, roleIds: string[]) => {
     const data = {
-      fullName: fullName.length > 0 ? fullName : undefined,
+      q: querySearch.length > 0 ? querySearch : undefined,
       roleIds: roleIds.length > 0 ? roleIds : undefined,
     }
 
@@ -41,16 +51,16 @@ export default function UsersTableFilters({ roles }: { roles: Role[] }) {
   const debouncedSearch = useDebounceCallback(handleSubmit, 300)
   React.useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch])
 
-  const isFiltered = (fullName?.trim()?.length ?? 0) > 0 || (roleIds?.length ?? 0) > 0
+  const isFiltered = (querySearch?.trim()?.length ?? 0) > 0 || (selectedRoles?.length ?? 0) > 0
 
   const clearAll = () => {
-    setFullName('')
+    setQuerySearch('')
     setRoleIds([])
     handleSubmit('', [])
   }
 
   const handleSearch = (value: string) => {
-    setFullName(value)
+    setQuerySearch(value)
     debouncedSearch(value, roleIds)
   }
 
@@ -66,7 +76,7 @@ export default function UsersTableFilters({ roles }: { roles: Role[] }) {
 
   const handleRolesChange = (next: string[]) => {
     setRoleIds(next)
-    handleSubmit(fullName, next)
+    handleSubmit(querySearch, next)
   }
 
   return (
@@ -74,7 +84,7 @@ export default function UsersTableFilters({ roles }: { roles: Role[] }) {
       <div className="flex items-center gap-2 flex-wrap">
         <Input
           placeholder={t('users.index.table.filters.search_placeholder')}
-          value={fullName}
+          value={querySearch}
           onChange={(e) => handleSearch(e.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />

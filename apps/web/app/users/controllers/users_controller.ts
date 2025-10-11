@@ -9,21 +9,25 @@ import RoleDto from '#users/dtos/role'
 
 import UserPolicy from '#users/policies/user_policy'
 
-import { createUserValidator, editUserValidator } from '#users/validators'
+import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
 
 export default class UsersController {
   public async index({ bouncer, inertia, request, i18n }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
-    const limit = request.input('perPage', 10)
-    const page = request.input('page', 1)
-    const fullName = request.input('fullName', undefined)
-    const roleIds = request.input('roleIds', [])
+    const payload = await request.validateUsing(listUserValidator)
+
+    const limit = payload.perPage || 2
+    const page = payload.page || 1
+    const querySearch = payload.q || undefined
+    const roleIds = payload.roleIds || []
 
     const query = User.query()
 
-    if (fullName) {
-      query.where('full_name', 'ilike', `%${fullName}%`)
+    if (querySearch) {
+      query
+        .where('full_name', 'ilike', `%${querySearch}%`)
+        .orWhere('email', 'ilike', `%${querySearch}%`)
     }
 
     if (Array.isArray(roleIds) && roleIds.length > 0) {
@@ -37,6 +41,8 @@ export default class UsersController {
 
     return inertia.render('users/index', {
       users: UserDto.fromPaginator(users),
+      q: querySearch,
+      selectedRoles: roleIds,
       roles: RoleDto.fromArray(roles).map((role) => {
         return {
           ...role,

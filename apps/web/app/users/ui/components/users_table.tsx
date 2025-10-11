@@ -15,9 +15,11 @@ import type UserDto from '#users/dtos/user'
 interface DataTableProps {
   users: SimplePaginatorDtoContract<UserDto>
   roles: Role[]
+  q: string | undefined
+  selectedRoles: number[]
 }
 
-export default function UsersTable({ users, roles }: DataTableProps) {
+export default function UsersTable({ users, roles, q, selectedRoles }: DataTableProps) {
   const { t } = useTranslation()
 
   const remoteTableOptions = useDataTable({
@@ -82,7 +84,7 @@ export default function UsersTable({ users, roles }: DataTableProps) {
 
   return (
     <div className="space-y-4">
-      <UsersTableFilters roles={roles} />
+      <UsersTableFilters roles={roles} q={q} selectedRoles={selectedRoles} />
       <DataTable
         columns={columns}
         data={users.data}
