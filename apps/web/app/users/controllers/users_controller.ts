@@ -18,7 +18,7 @@ export default class UsersController {
     const limit = request.input('perPage', 10)
     const page = request.input('page', 1)
     const fullName = request.input('fullName', undefined)
-    const roleIds = request.input('roleId', [])
+    const roleIds = request.input('roleIds', [])
 
     const query = User.query()
 
