@@ -103,6 +103,7 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
         setQuerySearch={setQuerySearch}
         roleIds={roleIds}
         setRoleIds={setRoleIds}
+        perPage={users.meta.perPage}
       />
       <DataTable
         columns={columns}

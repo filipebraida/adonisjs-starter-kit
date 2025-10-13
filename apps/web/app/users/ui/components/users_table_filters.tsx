@@ -24,28 +24,34 @@ export default function UsersTableFilters({
   roleIds,
   setRoleIds,
   roles,
+  perPage,
 }: {
   querySearch: string
   setQuerySearch: React.Dispatch<React.SetStateAction<string>>
   roleIds: string[]
   setRoleIds: React.Dispatch<React.SetStateAction<string[]>>
   roles: Role[]
+  perPage: number
 }) {
   const { t } = useTranslation()
 
-  const handleSubmit = React.useCallback((querySearch: string, roleIds: string[]) => {
-    const data = {
-      q: querySearch.length > 0 ? querySearch : undefined,
-      roleIds: roleIds.length > 0 ? roleIds : undefined,
-    }
+  const handleSubmit = React.useCallback(
+    (querySearch: string, roleIds: string[], perPage: number) => {
+      const data = {
+        q: querySearch.length > 0 ? querySearch : undefined,
+        roleIds: roleIds.length > 0 ? roleIds : undefined,
+        perPage: perPage,
+      }
 
-    router.get('/users', data, {
-      preserveScroll: true,
-      preserveState: true,
-      replace: true,
-      only: ['users'],
-    })
-  }, [])
+      router.get('/users', data, {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true,
+        only: ['users'],
+      })
+    },
+    []
+  )
 
   const debouncedSearch = useDebounceCallback(handleSubmit, 300)
   React.useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch])
@@ -55,12 +61,12 @@ export default function UsersTableFilters({
   const clearAll = () => {
     setQuerySearch('')
     setRoleIds([])
-    handleSubmit('', [])
+    handleSubmit('', [], perPage)
   }
 
   const handleSearch = (value: string) => {
     setQuerySearch(value)
-    debouncedSearch(value, roleIds)
+    debouncedSearch(value, roleIds, perPage)
   }
 
   const options: Option[] = React.useMemo(
@@ -75,7 +81,7 @@ export default function UsersTableFilters({
 
   const handleRolesChange = (next: string[]) => {
     setRoleIds(next)
-    handleSubmit(querySearch, next)
+    handleSubmit(querySearch, next, perPage)
   }
 
   return (
