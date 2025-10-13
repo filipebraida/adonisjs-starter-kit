@@ -17,7 +17,7 @@ export default class UsersController {
 
     const payload = await request.validateUsing(listUserValidator)
 
-    const limit = payload.perPage || 2
+    const limit = payload.perPage || 10
     const page = payload.page || 1
     const querySearch = payload.q || undefined
     const roleIds = payload.roleIds || []
