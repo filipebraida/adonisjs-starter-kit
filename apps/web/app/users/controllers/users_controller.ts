@@ -25,13 +25,15 @@ export default class UsersController {
     const query = User.query()
 
     if (querySearch) {
-      query
-        .where('full_name', 'ilike', `%${querySearch}%`)
-        .orWhere('email', 'ilike', `%${querySearch}%`)
+      query.where((subquery) => {
+        subquery
+          .where('full_name', 'ilike', `%${querySearch}%`)
+          .orWhere('email', 'ilike', `%${querySearch}%`)
+      })
     }
 
     if (Array.isArray(roleIds) && roleIds.length > 0) {
-      query.whereIn('role_id', roleIds)
+      query.andWhereIn('role_id', roleIds)
     }
 
     const users = await query.preload('role').paginate(page, limit)
