@@ -11,6 +11,7 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import type Role from '#users/dtos/role'
 import type UserDto from '#users/dtos/user'
+import React from 'react'
 
 interface DataTableProps {
   users: SimplePaginatorDtoContract<UserDto>
@@ -22,16 +23,28 @@ interface DataTableProps {
 export default function UsersTable({ users, roles, q, selectedRoles }: DataTableProps) {
   const { t } = useTranslation()
 
+  const [querySearch, setQuerySearch] = React.useState(q || '')
+  const [roleIds, setRoleIds] = React.useState<string[]>(
+    selectedRoles ? selectedRoles.map(String) : []
+  )
+
   const remoteTableOptions = useDataTable({
-    meta: users.meta,
-    baseUrl: '/users',
-    currentSearch: window.location.search,
-    visit: ({ url, params }) => {
-      return router.get(url ?? '/users', params, {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-      })
+    data: users,
+    visit: ({ page, perPage }) => {
+      return router.get(
+        '/users',
+        {
+          page,
+          perPage,
+          q: querySearch.length > 0 ? querySearch : undefined,
+          roleIds: roleIds.length > 0 ? roleIds : undefined,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+        }
+      )
     },
   })
 
@@ -84,7 +97,13 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
 
   return (
     <div className="space-y-4">
-      <UsersTableFilters roles={roles} q={q} selectedRoles={selectedRoles} />
+      <UsersTableFilters
+        roles={roles}
+        querySearch={querySearch}
+        setQuerySearch={setQuerySearch}
+        roleIds={roleIds}
+        setRoleIds={setRoleIds}
+      />
       <DataTable
         columns={columns}
         data={users.data}

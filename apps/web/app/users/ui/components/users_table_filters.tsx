@@ -19,20 +19,19 @@ type Option = {
 }
 
 export default function UsersTableFilters({
+  querySearch,
+  setQuerySearch,
+  roleIds,
+  setRoleIds,
   roles,
-  q,
-  selectedRoles,
 }: {
+  querySearch: string
+  setQuerySearch: React.Dispatch<React.SetStateAction<string>>
+  roleIds: string[]
+  setRoleIds: React.Dispatch<React.SetStateAction<string[]>>
   roles: Role[]
-  q: string | undefined
-  selectedRoles: number[]
 }) {
   const { t } = useTranslation()
-
-  const [querySearch, setQuerySearch] = React.useState(q || '')
-  const [roleIds, setRoleIds] = React.useState<string[]>(
-    selectedRoles ? selectedRoles.map(String) : []
-  )
 
   const handleSubmit = React.useCallback((querySearch: string, roleIds: string[]) => {
     const data = {
@@ -51,7 +50,7 @@ export default function UsersTableFilters({
   const debouncedSearch = useDebounceCallback(handleSubmit, 300)
   React.useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch])
 
-  const isFiltered = (querySearch?.trim()?.length ?? 0) > 0 || (selectedRoles?.length ?? 0) > 0
+  const isFiltered = (querySearch?.trim()?.length ?? 0) > 0 || (roleIds?.length ?? 0) > 0
 
   const clearAll = () => {
     setQuerySearch('')
