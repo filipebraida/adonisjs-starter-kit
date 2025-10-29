@@ -1,27 +1,54 @@
-import {
-  DataTable,
-  DataTableToolbar,
-  ColumnDef,
-  DataTableFacetedFilter,
-} from '@workspace/ui/components/data-table'
-import { Input } from '@workspace/ui/components/input'
+import { router } from '@inertiajs/react'
+import type { SimplePaginatorDtoContract } from '@adocasts.com/dto/types'
 
-import User from '#users/dtos/user'
-import Role from '#users/dtos/role'
+import { DataTable, ColumnDef } from '@workspace/ui/components/data-table'
+import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
+import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import { userRoles } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
+import type Role from '#users/dtos/role'
+import type UserDto from '#users/dtos/user'
+import React from 'react'
+
 interface DataTableProps {
-  users: User[]
+  users: SimplePaginatorDtoContract<UserDto>
   roles: Role[]
+  q: string | undefined
+  selectedRoles: number[]
 }
 
-export default function UsersTable({ users, roles }: DataTableProps) {
+export default function UsersTable({ users, roles, q, selectedRoles }: DataTableProps) {
   const { t } = useTranslation()
 
-  const columns: ColumnDef<User>[] = [
+  const [querySearch, setQuerySearch] = React.useState(q || '')
+  const [roleIds, setRoleIds] = React.useState<string[]>(
+    selectedRoles ? selectedRoles.map(String) : []
+  )
+
+  const remoteTableOptions = useDataTable({
+    data: users,
+    visit: ({ page, perPage }) => {
+      return router.get(
+        '/users',
+        {
+          page,
+          perPage,
+          q: querySearch.length > 0 ? querySearch : undefined,
+          roleIds: roleIds.length > 0 ? roleIds : undefined,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+        }
+      )
+    },
+  })
+
+  const columns: ColumnDef<UserDto>[] = [
     {
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
@@ -69,38 +96,21 @@ export default function UsersTable({ users, roles }: DataTableProps) {
   ]
 
   return (
-    <DataTable
-      columns={columns}
-      data={users}
-      t={t}
-      Toolbar={(props) => (
-        <DataTableToolbar
-          t={t}
-          {...props}
-          additionalFilters={
-            <>
-              <Input
-                placeholder={t('users.index.table.filters.search_placeholder')}
-                value={(props.table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
-                onChange={(event) =>
-                  props.table.getColumn('fullName')?.setFilterValue(event.target.value)
-                }
-                className="h-8 w-[150px] lg:w-[250px]"
-              />
-              <DataTableFacetedFilter
-                t={t}
-                column={props.table.getColumn('roleId')}
-                title={t('users.index.table.filters.role')}
-                options={roles.map((role) => ({
-                  value: String(role.id),
-                  label: role.name,
-                  icon: userRoles.find(({ id }) => id === role.id)?.icon,
-                }))}
-              />
-            </>
-          }
-        />
-      )}
-    />
+    <div className="space-y-4">
+      <UsersTableFilters
+        roles={roles}
+        querySearch={querySearch}
+        setQuerySearch={setQuerySearch}
+        roleIds={roleIds}
+        setRoleIds={setRoleIds}
+        perPage={users.meta.perPage}
+      />
+      <DataTable
+        columns={columns}
+        data={users.data}
+        t={t}
+        remoteTableOptions={remoteTableOptions}
+      />
+    </div>
   )
 }

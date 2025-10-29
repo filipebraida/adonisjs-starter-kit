@@ -13,7 +13,12 @@ import UsersProvider from '#users/ui/context/users_context'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
-export default function ListUsersPage({ users, roles }: InferPageProps<UsersController, 'index'>) {
+export default function ListUsersPage({
+  users,
+  roles,
+  q,
+  selectedRoles,
+}: InferPageProps<UsersController, 'index'>) {
   const { t } = useTranslation()
 
   return (
@@ -28,7 +33,7 @@ export default function ListUsersPage({ users, roles }: InferPageProps<UsersCont
           </Heading>
 
           <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-            <UsersTable users={users} roles={roles} />
+            <UsersTable users={users} roles={roles} q={q} selectedRoles={selectedRoles} />
           </div>
         </Main>
 

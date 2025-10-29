@@ -19,7 +19,6 @@ export default class UserDto extends BaseModelDto {
 
     this.id = user.id
     this.roleId = user.roleId
-    this.role = user.role?.name
     this.fullName = user.fullName
     this.email = user.email
     this.createdAt = user.createdAt.toISO()!

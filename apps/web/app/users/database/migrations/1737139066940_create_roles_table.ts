@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import Roles from '#users/enums/role'
 
 export default class extends BaseSchema {
   protected tableName = 'roles'
@@ -11,6 +12,21 @@ export default class extends BaseSchema {
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
+    })
+
+    this.defer(async (db) => {
+      await db.table(this.tableName).insert([
+        {
+          id: Roles.USER,
+          name: 'User',
+          description: 'Authenticated User',
+        },
+        {
+          id: Roles.ADMIN,
+          name: 'Admin',
+          description: 'Super User with full access',
+        },
+      ])
     })
   }
 

@@ -2,6 +2,8 @@ import vine from '@vinejs/vine'
 
 import User from '#users/models/user'
 
+import { baseSearchValidator } from '#common/validators/search'
+
 export const createUserValidator = vine.compile(
   vine.object({
     fullName: vine.string().trim().minLength(3).maxLength(255),
@@ -25,6 +27,13 @@ export const updateProfileValidator = vine.compile(
         size: 1 * 1024 * 1014,
       })
       .nullable(),
+  })
+)
+
+export const listUserValidator = vine.compile(
+  vine.object({
+    ...baseSearchValidator.getProperties(),
+    roleIds: vine.array(vine.number().exists({ table: 'roles', column: 'id' })).optional(),
   })
 )
 

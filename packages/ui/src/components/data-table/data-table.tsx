@@ -5,6 +5,8 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  OnChangeFn,
+  PaginationState,
   Row,
   useReactTable,
 } from "@tanstack/react-table";
@@ -26,6 +28,15 @@ interface DataTableProps<TData, TValue> {
     table: ReturnType<typeof useReactTable<TData>>;
   }>;
   t: (key: string, options?: Record<string, unknown>) => string;
+  remoteTableOptions?: RemoteTableOptions;
+}
+
+export interface RemoteTableOptions {
+  pageCount: number;
+  state: {
+    pagination: { pageIndex: number; pageSize: number };
+  };
+  onPaginationChange: OnChangeFn<PaginationState>;
 }
 
 export interface ColumnMeta {
@@ -41,19 +52,42 @@ export function DataTable<TData, TValue>({
   data,
   Toolbar,
   t,
+  remoteTableOptions,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [localPagination, setLocalPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const isRemote = !!remoteTableOptions;
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
+
+    manualPagination: isRemote,
+    manualSorting: isRemote,
+    manualFiltering: isRemote,
+
+    pageCount: isRemote ? remoteTableOptions!.pageCount : undefined,
+
     state: {
-      columnFilters,
+      pagination: isRemote
+        ? remoteTableOptions!.state.pagination
+        : localPagination,
     },
+
+    onColumnFiltersChange: setColumnFilters,
+
+    onPaginationChange: isRemote
+      ? remoteTableOptions!.onPaginationChange
+      : setLocalPagination,
+
+    ...(isRemote ? {} : { getPaginationRowModel: getPaginationRowModel() }),
+
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   return (
@@ -77,7 +111,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -102,7 +136,7 @@ export function DataTable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
