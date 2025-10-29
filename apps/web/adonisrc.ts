@@ -129,7 +129,7 @@ export default defineConfig({
       reloadServer: false,
     },
     {
-      pattern: 'resources/lang/**/*.{json,yaml,yml}',
+      pattern: 'app/**/resources/lang/**/*.{json,yaml,yml}',
       reloadServer: false,
     },
   ],
