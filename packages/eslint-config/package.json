@@ -5,10 +5,12 @@
   "private": true,
   "exports": {
     "./base": "./base.js",
+    "./adonis": "./adonis.app.js",
     "./next-js": "./next.js",
     "./react-internal": "./react-internal.js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.30.0",
     "@next/eslint-plugin-next": "^15.5.4",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
@@ -21,5 +23,8 @@
     "globals": "^16.4.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0"
+  },
+  "dependencies": {
+    "@adonisjs/eslint-config": "^2.1.0"
   }
 }
