@@ -61,6 +61,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
     method(url, {
       preserveScroll: true,
+      preserveState: false,
       onSuccess: () => {
         onOpenChange(false)
         setTimeout(() => {

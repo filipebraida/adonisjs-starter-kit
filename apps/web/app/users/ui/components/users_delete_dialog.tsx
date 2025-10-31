@@ -30,6 +30,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
 
     destroy(`/users/${currentRow?.id}`, {
       preserveScroll: true,
+      preserveState: false,
       onSuccess: () => {
         onOpenChange(false)
         toast(t('users.delete.toast.title'), {

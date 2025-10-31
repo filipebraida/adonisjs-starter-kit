@@ -61,6 +61,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
 
     post('/users/invite', {
       preserveScroll: true,
+      preserveState: false,
       onSuccess: () => {
         onOpenChange(false)
         setTimeout(() => {
