@@ -10,7 +10,7 @@ import UserPolicy from '#users/policies/user_policy'
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
 
 export default class UsersController {
-  public async index({ bouncer, inertia, request, i18n }: HttpContext) {
+  public async index({ bouncer, inertia, request }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
     const payload = await request.validateUsing(listUserValidator)
