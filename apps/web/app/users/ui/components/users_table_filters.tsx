@@ -5,18 +5,10 @@ import { useDebounceCallback } from 'usehooks-ts'
 import { X } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
+import { CheckboxFilter } from '@workspace/ui/components/checkbox-filter'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
-import { userRoles } from '#users/ui/components/users_types'
-import UsersRoleFilter from '#users/ui/components/users_role_filter'
-
-import type Role from '#users/dtos/role'
-
-type Option = {
-  label: string
-  value: string
-  icon?: React.ComponentType<{ className?: string }>
-}
+import { Role } from '#users/ui/components/users_types'
 
 export default function UsersTableFilters({
   querySearch,
@@ -69,16 +61,6 @@ export default function UsersTableFilters({
     debouncedSearch(value, roleIds, perPage)
   }
 
-  const options: Option[] = React.useMemo(
-    () =>
-      roles.map((role) => ({
-        value: String(role.id),
-        label: role.name,
-        icon: userRoles.find(({ id }) => id === role.id)?.icon,
-      })),
-    [roles]
-  )
-
   const handleRolesChange = (next: string[]) => {
     setRoleIds(next)
     handleSubmit(querySearch, next, perPage)
@@ -94,12 +76,13 @@ export default function UsersTableFilters({
           className="h-8 w-[150px] lg:w-[250px]"
         />
 
-        <UsersRoleFilter
+        <CheckboxFilter
           title={t('users.index.table.filters.role')}
           value={roleIds}
           onChange={handleRolesChange}
-          options={options}
-          t={t}
+          options={roles}
+          clearLabel={t('users.index.table.filters.clear_filters')}
+          emptyMessage={t('users.index.table.filters.no_results')}
         />
       </div>
 

@@ -24,6 +24,7 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  className?: string;
   Toolbar?: React.ComponentType<{
     table: ReturnType<typeof useReactTable<TData>>;
   }>;
@@ -53,6 +54,7 @@ export function DataTable<TData, TValue>({
   Toolbar,
   t,
   remoteTableOptions,
+  className = "table-fixed md:table-auto",
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [localPagination, setLocalPagination] = useState<PaginationState>({
@@ -77,6 +79,7 @@ export function DataTable<TData, TValue>({
       pagination: isRemote
         ? remoteTableOptions!.state.pagination
         : localPagination,
+      columnFilters: isRemote ? undefined : columnFilters,
     },
 
     onColumnFiltersChange: setColumnFilters,
@@ -94,7 +97,7 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       {Toolbar && <Toolbar table={table} />}
       <div className="rounded-md border">
-        <Table>
+        <Table className={className}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -111,7 +114,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -136,7 +139,7 @@ export function DataTable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}

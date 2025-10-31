@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from '@inertiajs/react'
 
+import { MailPlus, Send } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 import { Textarea } from '@workspace/ui/components/textarea'
 import {
@@ -28,18 +29,15 @@ import {
 } from '@workspace/ui/components/select'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
+import { Role } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
-import type RoleDto from '#users/dtos/role'
 import type UserDto from '#users/dtos/user'
 
 import Roles from '#users/enums/role'
 
-import { userRoles } from './users_types'
-import { MailPlus, Send } from 'lucide-react'
-
 interface Props {
-  roles: RoleDto[]
+  roles: Role[]
   currentRow?: UserDto
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -123,16 +121,11 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                 <SelectContent>
                   <SelectGroup>
                     {roles.map((role) => {
-                      const userRole = userRoles.find(({ id }) => id === role.id)
-
                       return (
-                        <SelectItem key={role.id} value={String(role.id)}>
+                        <SelectItem key={role.value} value={role.value}>
                           <span className="flex gap-x-2 items-center">
-                            {userRole && userRole.icon && (
-                              <userRole.icon size={16} className="text-muted-foreground" />
-                            )}
-
-                            <span className="capitalize text-sm">{role.name}</span>
+                            {role.icon && <role.icon size={16} className="text-muted-foreground" />}
+                            <span className="capitalize text-sm">{role.label}</span>
                           </span>
                         </SelectItem>
                       )

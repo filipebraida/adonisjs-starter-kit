@@ -1,3 +1,4 @@
+import React from 'react'
 import { router } from '@inertiajs/react'
 import type { SimplePaginatorDtoContract } from '@adocasts.com/dto/types'
 
@@ -6,12 +7,10 @@ import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
-import { userRoles } from '#users/ui/components/users_types'
+import { Role } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
-import type Role from '#users/dtos/role'
 import type UserDto from '#users/dtos/user'
-import React from 'react'
 
 interface DataTableProps {
   users: SimplePaginatorDtoContract<UserDto>
@@ -71,20 +70,20 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
       header: t('users.index.table.columns.role'),
       cell: ({ row }) => {
         const { roleId } = row.original
-        const role = roles.find((role) => role.id === roleId)
+        const role = roles.find((role) => role.value === String(roleId))
 
         if (!role) {
           return null
         }
 
-        const userRole = userRoles.find(({ id }) => id === roleId)
+        const userRole = roles.find(({ value }) => value === String(roleId))
 
         return (
           <div className="flex gap-x-2 items-center">
             {userRole && userRole.icon && (
               <userRole.icon size={16} className="text-muted-foreground" />
             )}
-            <span className="capitalize text-sm">{role.name}</span>
+            <span className="capitalize text-sm">{role.label}</span>
           </div>
         )
       },

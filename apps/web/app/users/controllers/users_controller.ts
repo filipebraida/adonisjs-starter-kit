@@ -37,7 +37,6 @@ export default class UsersController {
     }
 
     const users = await query.preload('role').paginate(page, limit)
-    const roles = await Role.all()
 
     await User.preComputeUrls(users)
 
@@ -45,13 +44,6 @@ export default class UsersController {
       users: UserDto.fromPaginator(users),
       q: querySearch,
       selectedRoles: roleIds,
-      roles: RoleDto.fromArray(roles).map((role) => {
-        return {
-          ...role,
-          name: i18n.t(`users.roles.${role.id}.name`),
-          description: i18n.t(`users.roles.${role.id}.description`),
-        }
-      }),
     })
   }
 

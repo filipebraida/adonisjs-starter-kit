@@ -10,16 +10,18 @@ import UsersTable from '#users/ui/components/users_table'
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
 import { UsersDialogs } from '#users/ui/components/users_dialogs'
 import UsersProvider from '#users/ui/context/users_context'
+import { userRoles } from '#users/ui/components/users_types'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 export default function ListUsersPage({
   users,
-  roles,
   q,
   selectedRoles,
 }: InferPageProps<UsersController, 'index'>) {
   const { t } = useTranslation()
+
+  const roles = userRoles(t)
 
   return (
     <AppLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
