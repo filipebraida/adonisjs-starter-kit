@@ -29,7 +29,7 @@ export function DataTablePagination<TData>({
       <div className="flex items-center space-x-6 lg:space-x-8 flex-wrap">
         <div className="flex items-center space-x-2 mb-2 sm:mb-0">
           <p className="text-sm font-medium">
-            {t("users.index.table.pagination.rows_per_page")}
+            {t("common.table.pagination.rows_per_page")}
           </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
@@ -51,7 +51,7 @@ export function DataTablePagination<TData>({
         </div>
         <div className="flex items-center space-x-2 mb-2 sm:mb-0">
           <div className="flex w-auto items-center justify-left text-sm font-medium">
-            {t("users.index.table.pagination.page_of", {
+            {t("common.table.pagination.page_of", {
               current: table.getState().pagination.pageIndex + 1,
               total: table.getPageCount(),
             })}
@@ -64,7 +64,7 @@ export function DataTablePagination<TData>({
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">
-                {t("users.index.table.pagination.go_first_page")}
+                {t("common.table.pagination.go_first_page")}
               </span>
               <ChevronsLeft />
             </Button>
@@ -75,7 +75,7 @@ export function DataTablePagination<TData>({
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">
-                {t("users.index.table.pagination.go_previous_page")}
+                {t("common.table.pagination.go_previous_page")}
               </span>
               <ChevronLeft />
             </Button>
@@ -86,7 +86,7 @@ export function DataTablePagination<TData>({
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">
-                {t("users.index.table.pagination.go_next_page")}
+                {t("common.table.pagination.go_next_page")}
               </span>
               <ChevronRight />
             </Button>
@@ -97,7 +97,7 @@ export function DataTablePagination<TData>({
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">
-                {t("users.index.table.pagination.go_last_page")}
+                {t("common.table.pagination.go_last_page")}
               </span>
               <ChevronsRight />
             </Button>

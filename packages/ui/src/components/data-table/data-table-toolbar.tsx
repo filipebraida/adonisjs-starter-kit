@@ -26,7 +26,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            {t("users.index.table.row_actions.clear")}
+            {t("common.table.row_actions.clear")}
             <X />
           </Button>
         )}

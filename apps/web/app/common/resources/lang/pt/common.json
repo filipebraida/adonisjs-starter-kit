@@ -9,5 +9,24 @@
       "settings": "Configurações",
       "logout": "Sair"
     }
+  },
+  "table": {
+    "filters": {
+      "clear_filters": "Limpar os filtros",
+      "no_results": "Nenhum resultado encontrado.",
+      "nb_selected": "selecionados"
+    },
+    "row_actions": {
+      "clear": "Limpar"
+    },
+    "no_results": "Nenhum resultado encontrado.",
+    "pagination": {
+      "rows_per_page": "Linhas por página",
+      "go_first_page": "Ir para a primeira página",
+      "go_previous_page": "Ir para a página anterior",
+      "go_next_page": "Ir para a próxima página",
+      "go_last_page": "Ir para a última página",
+      "page_of": "Página {current} de {total}"
+    }
   }
 }

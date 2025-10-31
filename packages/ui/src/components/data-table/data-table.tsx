@@ -151,7 +151,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {t("users.index.table.filters.no_results")}
+                  {t("common.table.no_results")}
                 </TableCell>
               </TableRow>
             )}
