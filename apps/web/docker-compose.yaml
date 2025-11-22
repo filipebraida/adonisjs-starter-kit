@@ -1,13 +1,13 @@
 services:
   pgsql:
     container_name: '${COMPOSE_PROJECT_NAME}_pgsql'
-    image: postgres:latest
+    image: postgres:18
     environment:
       POSTGRES_DB: '${DB_DATABASE:-default}'
       POSTGRES_USER: '${DB_USER?:err}'
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
-      - pgsql:/var/lib/postgresql/data
+      - pgsql:/var/lib/postgresql
       - ./../../.github/postgres/dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
     ports:
       - "5432:5432"
