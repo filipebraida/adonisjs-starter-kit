@@ -7,7 +7,11 @@ import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
-export function ResetPasswordForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
+export function ResetPasswordForm({
+  token,
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'form'> & { token: string }) {
   const { data, setData, errors, post } = useForm({
     password: '',
     passwordConfirmation: '',
@@ -15,7 +19,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    post('/forgot-password')
+    post(`/reset-password/${token}`)
   }
 
   return (

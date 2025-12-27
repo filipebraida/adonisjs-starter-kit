@@ -14,9 +14,9 @@ export default class ResetPasswordController {
     /**
      * Verify the request signature before proceeding.
      */
-    const token = await this.passwordResetService.getToken(params.token)
+    const resetPasswordToken = await this.passwordResetService.getToken(params.token)
 
-    if (!token) {
+    if (!resetPasswordToken) {
       session.flash('resetPasswordError', 'true')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
@@ -24,7 +24,7 @@ export default class ResetPasswordController {
     /**
      * Render the "Reset Password" page.
      */
-    return inertia.render('auth/reset_password')
+    return inertia.render('auth/reset_password', { token: resetPasswordToken.token })
   }
 
   async handle({ request, params, response, session }: HttpContext) {
