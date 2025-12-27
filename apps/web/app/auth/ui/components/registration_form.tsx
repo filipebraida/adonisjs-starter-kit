@@ -10,6 +10,7 @@ import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
+import { PasswordInput } from '@workspace/ui/components/password-input'
 
 export function RegistrationForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const { data, setData, errors, post } = useForm({
@@ -81,9 +82,8 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
 
           <Field>
             <FieldLabel htmlFor="password">{t('auth.registration.form.password.label')}</FieldLabel>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.registration.form.password.placeholder')}
@@ -97,9 +97,8 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
             <FieldLabel htmlFor="passwordConfirmation">
               {t('auth.registration.form.password_confirmation.label')}
             </FieldLabel>
-            <Input
+            <PasswordInput
               id="passwordConfirmation"
-              type="password"
               value={data.passwordConfirmation}
               onChange={(e) => setData('passwordConfirmation', e.target.value)}
               placeholder={t('auth.registration.form.password_confirmation.placeholder')}

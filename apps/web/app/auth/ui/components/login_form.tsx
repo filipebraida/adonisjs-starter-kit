@@ -17,6 +17,7 @@ import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import useFlashMessage from '#common/ui/hooks/use_flash_message'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { PasswordInput } from '@workspace/ui/components/password-input'
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const { data, setData, errors, post } = useForm({
@@ -77,9 +78,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 {t('auth.signin.actions.forgot_password')}
               </Link>
             </div>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               placeholder={t('auth.signin.form.password.placeholder')}
