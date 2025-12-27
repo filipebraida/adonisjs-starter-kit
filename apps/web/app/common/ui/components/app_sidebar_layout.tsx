@@ -31,9 +31,9 @@ export default function AppLayout({
   user,
 }: AppLayoutProps) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-svh overflow-hidden">
       <AppSidebar navMain={navMain} />
-      <SidebarInset>
+      <SidebarInset className="overflow-hidden">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
           <div className="flex flex-row items-center gap-2">
             <SidebarTrigger className="-ml-1" />
@@ -46,7 +46,7 @@ export default function AppLayout({
             <NavUser user={user} options={navUser} />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 overflow-y-auto">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )

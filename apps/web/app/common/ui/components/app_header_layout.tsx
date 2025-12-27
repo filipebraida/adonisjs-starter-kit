@@ -31,8 +31,8 @@ export default function AppHeaderLayout({
   user,
 }: AppLayoutProps) {
   return (
-    <>
-      <div className="border-sidebar-border/80 border-b">
+    <div className="h-svh flex flex-col overflow-hidden">
+      <div className="border-sidebar-border/80 border-b shrink-0">
         <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
           <NavHeaderMobile items={navMain} />
 
@@ -51,13 +51,15 @@ export default function AppHeaderLayout({
         </div>
       </div>
 
-      <div className="border-sidebar-border/70 flex w-full border-b">
-        <Breadcrumb breadcrumbs={breadcrumbs} />
-      </div>
+      <div className="flex-1 overflow-y-auto w-full">
+        <div className="border-sidebar-border/70 flex w-full border-b shrink-0">
+          <Breadcrumb breadcrumbs={breadcrumbs} />
+        </div>
 
-      <main className="mx-auto px-2 flex h-full w-full max-w-7xl flex-1 flex-col gap-4 rounded-xl">
-        {children}
-      </main>
-    </>
+        <main className="mx-auto px-2 flex h-full w-full max-w-7xl flex-col gap-4 rounded-xl">
+          {children}
+        </main>
+      </div>
+    </div>
   )
 }
