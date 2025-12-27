@@ -20,7 +20,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ navMain, ...props }: AppSidebarProps) {
   return (
-    <Sidebar {...props} variant="sidebar" collapsible="offcanvas">
+    <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

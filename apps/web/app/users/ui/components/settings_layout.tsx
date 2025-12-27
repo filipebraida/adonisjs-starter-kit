@@ -6,7 +6,7 @@ import SidebarNav, { type SidebarNavItem } from '#common/ui/components/sidebar_n
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { Separator } from '@workspace/ui/components/separator'
-import { KeyRound, Ticket, User } from 'lucide-react'
+import { KeyRound, Palette, Ticket, User } from 'lucide-react'
 
 export default function SettingsLayout({
   children,
@@ -33,25 +33,27 @@ export default function SettingsLayout({
       href: '/settings/tokens',
       subject: 'token',
     },
+    {
+      title: 'Appearance',
+      icon: <Palette size={18} />,
+      href: '/settings/appearance',
+    },
   ]
   return (
-    <Main>
-      <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
+    <Main fixed className="h-full flex flex-col space-y-0 p-0">
+      <div className="flex-none p-6 pb-2">
+        <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
+        <Separator className="mt-6" />
+      </div>
 
-      <Separator className="my-6" />
-
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
-        <aside className="w-full max-w-xl lg:w-48">
-          <nav className="flex flex-col space-y-1 space-x-0">
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="w-full max-w-xs lg:w-64 overflow-y-auto border-r px-6 py-4">
+          <nav className="flex flex-col space-y-1">
             <SidebarNav items={sidebarNavItems} currentPath={currentPath} />
           </nav>
         </aside>
 
-        <Separator className="my-6 md:hidden" />
-
-        <div className="flex-1 md:max-w-2xl">
-          <section className="max-w-xl space-y-12">{children}</section>
-        </div>
+        <div className="flex-1 overflow-hidden">{children}</div>
       </div>
     </Main>
   )

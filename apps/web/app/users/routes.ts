@@ -53,3 +53,9 @@ router
   .get('/settings/password', [PasswordController, 'show'])
   .middleware(middleware.auth())
   .as('password.show')
+router
+  .get('/settings/appearance', ({ inertia }) => {
+    return inertia.render('users/appearance')
+  })
+  .middleware(middleware.auth())
+  .as('appearance.show')
