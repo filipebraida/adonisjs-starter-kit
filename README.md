@@ -19,8 +19,8 @@ AdonisJS Starter Kit is a robust, monorepo-based template for developing full-st
 - **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
 - **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
 - **API Tokens**: Users can generate and revoke personal access tokens for use in APIs.
-- **Multiple Layouts**: Choose between two distinct layouts: sidebar for enhanced navigation and Header for a streamlined top-bar interface.
 - **i18n Support**: Built-in internationalization with default support for English and Portuguese using [@adonisjs/i18n](https://docs.adonisjs.com/guides/i18n).
+- **Appearance Settings**: Comprehensive controls for Theme (Light/Dark), Layout (Sidebar/Header), Sidebar variants, and Direction (LTR/RTL), with local persistence.
 
 ## Tools and Technologies
 
@@ -59,7 +59,7 @@ cp apps/web/.env.example apps/web/.env
 node apps/web/ace generate:key
 ```
 
-3. **Configure Social Auth & Email**  
+3. **Configure Social Auth & Email**
    Social authentication and email settings can be configured later as needed.
 
 ### Database Setup
@@ -185,36 +185,6 @@ pnpm dlx shadcn@latest add button -c apps/web
 
 Replace `button` with the name of the component you wish to add.
 
-## Layouts
-
-AdonisJS Starter Kit offers two distinct layouts so you can choose the interface that best fits your application's needs.
-
-```typescript
-export default function ListUsersPage({ users, roles }: InferPageProps<UsersController, 'index'>) {
-  return (
-    <AppLayout breadcrumbs={[{ label: 'Users' }]} layout="sidebar">
-      // code ...
-    </AppLayout>
-  )
-}
-```
-
-### Header Layout
-
-A minimalist design with top-aligned navigation, providing a clean and intuitive user experience.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/header.png" alt="Header Layout" width="600" />
-</p>
-
-### Sidebar Layout
-
-A layout featuring side navigation, ideal for applications that require quick and organized access to various sections.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/sidebar.png" alt="Sidebar Layout" width="600" />
-</p>
-
 ## Libraries Used
 
 This starter kit makes use of the following libraries to support modular design, file handling, SPA integration, and structured data flow. Refer to their documentation for more details:
@@ -238,7 +208,7 @@ This project draws inspiration from the following sources:
 
 Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
 
-**Contributors:** [Lupiac](https://github.com/Lupiac) and [Corentin Clichy](https://github.com/corentinclichy)
+**Contributors:** [Sayed Ahmed](https://github.com/sayeed205), [Lupiac](https://github.com/Lupiac) and [Corentin Clichy](https://github.com/corentinclichy)
 
 ## License
 
