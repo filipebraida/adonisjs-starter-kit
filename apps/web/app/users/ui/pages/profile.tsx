@@ -16,13 +16,15 @@ export default function ProfilePage({ profile }: InferPageProps<ProfileControlle
   return (
     <AppLayout breadcrumbs={[{ label: t('users.profile.breadcrumbs.settings') }]}>
       <SettingsLayout currentPath={currentPath}>
-        <div className="space-y-6">
-          <HeadingSmall
-            title={t('users.profile.title')}
-            description={t('users.profile.description')}
-          />
+        <div className="flex h-full w-full flex-1 flex-col overflow-y-auto p-6">
+          <div className="mx-auto w-full max-w-4xl space-y-6">
+            <HeadingSmall
+              title={t('users.profile.title')}
+              description={t('users.profile.description')}
+            />
 
-          <ProfileForm user={profile} />
+            <ProfileForm user={profile} />
+          </div>
         </div>
       </SettingsLayout>
     </AppLayout>

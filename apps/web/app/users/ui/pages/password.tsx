@@ -16,13 +16,15 @@ export default function PasswordPage({}: InferPageProps<PasswordController, 'sho
   return (
     <AppLayout breadcrumbs={[{ label: t('users.password.breadcrumbs.settings') }]}>
       <SettingsLayout currentPath={currentPath}>
-        <div className="space-y-6">
-          <HeadingSmall
-            title={t('users.password.title')}
-            description={t('users.password.description')}
-          />
+        <div className="flex h-full w-full flex-1 flex-col overflow-y-auto p-6">
+          <div className="mx-auto w-full max-w-4xl space-y-6">
+            <HeadingSmall
+              title={t('users.password.title')}
+              description={t('users.password.description')}
+            />
 
-          <PasswordForm />
+            <PasswordForm />
+          </div>
         </div>
       </SettingsLayout>
     </AppLayout>
