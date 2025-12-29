@@ -54,7 +54,7 @@ export default function AppLayout({
             <NavUser user={user} options={navUser} />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 overflow-y-auto">{children}</div>
+        <main className="flex flex-1 flex-col gap-4 py-4 overflow-y-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )

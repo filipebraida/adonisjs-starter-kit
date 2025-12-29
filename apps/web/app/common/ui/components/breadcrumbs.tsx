@@ -17,26 +17,22 @@ export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
     <>
       {breadcrumbs.length > 0 && (
-        <div className="flex w-full">
-          <div className="mx-auto flex h-12 w-full items-center justify-start px-4 md:max-w-7xl">
-            <Breadcrumb>
-              <BreadcrumbList>
-                {breadcrumbs.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <BreadcrumbItem>
-                      {item.href ? (
-                        <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                      ) : (
-                        <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                      )}
-                    </BreadcrumbItem>
-                    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                  </React.Fragment>
-                ))}
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            {breadcrumbs.map((item, index) => (
+              <React.Fragment key={index}>
+                <BreadcrumbItem>
+                  {item.href ? (
+                    <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+                {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+              </React.Fragment>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
       )}
     </>
   )

@@ -41,13 +41,13 @@ export default function SettingsLayout({
   ]
   return (
     <Main fixed className="h-full flex flex-col space-y-0 p-0">
-      <div className="flex-none p-6 pb-2">
+      <div className="flex-none p-4 pb-2 lg:p-6 lg:pb-2">
         <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
         <Separator className="mt-6" />
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="w-full max-w-xs lg:w-64 overflow-y-auto border-r px-6 py-4">
+      <div className="flex flex-1 w-full flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
+        <aside className="w-full px-4 lg:px-6 max-w-xl lg:w-48">
           <nav className="flex flex-col space-y-1">
             <SidebarNav items={sidebarNavItems} currentPath={currentPath} />
           </nav>

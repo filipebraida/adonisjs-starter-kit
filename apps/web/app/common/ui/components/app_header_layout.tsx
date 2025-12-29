@@ -33,7 +33,7 @@ export default function AppHeaderLayout({
   return (
     <div className="h-svh flex flex-col overflow-hidden">
       <div className="border-sidebar-border/80 border-b shrink-0">
-        <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+        <div className="mx-auto flex h-16 items-center px-6 max-w-7xl">
           <NavHeaderMobile items={navMain} />
 
           <AppLogo />
@@ -53,12 +53,12 @@ export default function AppHeaderLayout({
 
       <div className="flex-1 overflow-y-auto w-full">
         <div className="border-sidebar-border/70 flex w-full border-b shrink-0">
-          <Breadcrumb breadcrumbs={breadcrumbs} />
+          <div className="mx-auto flex h-12 w-full items-center justify-start px-6 max-w-7xl">
+            <Breadcrumb breadcrumbs={breadcrumbs} />
+          </div>
         </div>
 
-        <main className="mx-auto px-2 flex h-full w-full max-w-7xl flex-col gap-4 rounded-xl">
-          {children}
-        </main>
+        <main className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4">{children}</main>
       </div>
     </div>
   )

@@ -21,16 +21,18 @@ export default function TokensPage({ tokens }: InferPageProps<TokensController, 
     <AppLayout breadcrumbs={[{ label: t('users.tokens.breadcrumbs.settings') }]}>
       <SettingsLayout currentPath={currentPath}>
         <TokensProvider>
-          <div className="space-y-6">
-            <HeadingSmall
-              title={t('users.tokens.title')}
-              description={t('users.tokens.description')}
-            >
-              <TokensPrimaryButtons />
-            </HeadingSmall>
+          <div className="flex h-full w-full flex-1 flex-col overflow-y-auto p-6">
+            <div className="mx-auto w-full max-w-4xl space-y-6">
+              <HeadingSmall
+                title={t('users.tokens.title')}
+                description={t('users.tokens.description')}
+              >
+                <TokensPrimaryButtons />
+              </HeadingSmall>
 
-            <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-              <TokensTable tokens={tokens} />
+              <div className="flex-1 overflow-auto py-1">
+                <TokensTable tokens={tokens} />
+              </div>
             </div>
           </div>
 

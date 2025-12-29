@@ -68,16 +68,17 @@ export function PasswordForm() {
             />
             <FieldErrorBag errors={errors} field="passwordConfirmation" />
           </Field>
+          {progress && (
+            <Field>
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
+            </Field>
+          )}
+
+          <Field orientation="responsive">
+            <Button type="submit">{t('users.action.actions.save')}</Button>
+          </Field>
         </FieldGroup>
       </FieldSet>
-
-      {progress && (
-        <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
-      )}
-
-      <div className="pt-2">
-        <Button type="submit">{t('users.action.actions.save')}</Button>
-      </div>
     </form>
   )
 }
