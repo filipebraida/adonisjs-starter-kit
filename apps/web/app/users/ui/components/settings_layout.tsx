@@ -41,7 +41,7 @@ export default function SettingsLayout({
   ]
   return (
     <Main fixed className="h-full flex flex-col space-y-0 p-0">
-      <div className="flex-none p-4 pb-2 lg:p-6 lg:pb-2">
+      <div className="flex-none pt-4 pb-2 lg:pt-6 lg:pb-2">
         <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
         <Separator className="mt-6" />
       </div>

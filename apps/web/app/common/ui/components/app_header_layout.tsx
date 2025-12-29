@@ -58,7 +58,7 @@ export default function AppHeaderLayout({
           </div>
         </div>
 
-        <main className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4">{children}</main>
+        <main className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4 px-6">{children}</main>
       </div>
     </div>
   )
