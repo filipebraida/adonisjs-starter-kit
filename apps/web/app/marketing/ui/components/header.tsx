@@ -1,64 +1,65 @@
 import { useState } from 'react'
 import { Link } from '@tuyau/inertia/react'
-
 import { MenuIcon } from 'lucide-react'
 
+import Container from '#marketing/ui/components/container'
 import { AppLogo } from '#common/ui/components/app_logo'
 
 export default function HeaderSection() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="sticky -top-3 pt-5 pb-2 bg-background text-foreground z-50">
-      <div className="grid w-full grid-cols-2 md:grid-cols-3 items-center">
+    <nav className="bg-background">
+      <Container className="flex h-16 items-center justify-between">
         <div
-          className={`absolute top-0 left-0 w-full h-screen backdrop-blur-lg bg-background/80 z-40 flex flex-col items-center gap-4 py-16 transition-all duration-500 ${
+          className={`absolute top-0 left-0 w-full h-screen bg-background z-40 flex flex-col items-center gap-4 py-16 transition-all duration-300 ${
             menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           } md:hidden`}
         >
-          <div className="flex flex-col w-full pt-8 gap-1 -mx-3">
+          <div className="flex flex-col w-full pt-8 gap-4 px-6">
+            <Link
+              route="auth.sign_in.show"
+              className="w-full rounded-xl bg-primary text-primary-foreground font-semibold px-4 py-3 text-center"
+            >
+              Get Started
+            </Link>
             <a
-              className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
-              href="/#features"
+              className="w-full rounded-xl border font-medium px-4 py-3 text-center hover:bg-muted transition-colors"
+              href="#features"
+              onClick={() => setMenuOpen(false)}
             >
               Features
             </a>
-            <Link
-              route="auth.sign_in.show"
-              className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
-            >
-              Login
-            </Link>
           </div>
         </div>
 
         <AppLogo />
 
-        <div className="hidden md:flex items-center justify-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           <a
-            className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:inline-flex md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted"
-            href="/#features"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            href="#features"
           >
             Features
           </a>
         </div>
 
-        <div className="flex justify-end relative z-50">
+        <div className="flex items-center gap-4">
           <Link
             route="auth.sign_in.show"
-            className="w-auto rounded-xl font-medium transition-all duration-300 md:font-semibold md:-mx-3 md:items-center md:justify-center px-3 py-2 md:text-sm hover:bg-muted hidden md:block"
+            className="hidden md:inline-flex rounded-full bg-primary text-primary-foreground px-5 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
           >
-            Login
+            Get Started
           </Link>
           <button
             aria-label="Toggle menu"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center justify-center rounded-xl px-2 py-2 transition-all duration-300 hover:bg-muted md:hidden"
+            className="flex items-center justify-center rounded-md p-2 hover:bg-accent md:hidden"
           >
-            <MenuIcon />
+            <MenuIcon className="size-5" />
           </button>
         </div>
-      </div>
+      </Container>
     </nav>
   )
 }

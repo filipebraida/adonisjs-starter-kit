@@ -1,11 +1,25 @@
+import Container from '#marketing/ui/components/container'
+
 export default function FooterSection() {
   return (
-    <footer className="bg-background text-muted-foreground">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-        <p className="mt-8 text-center text-sm/6 md:order-1 md:mt-0">
-          &copy; 2025 ATISLabs, Inc. Todos os direitos reservados.
-        </p>
-      </div>
+    <footer className="border-t bg-background/50 backdrop-blur-xl">
+      <Container className="flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            Built by <span className="font-medium text-foreground">ATISLabs</span>. The source code
+            is available on{' '}
+            <a
+              href="https://github.com/filipebraida/adonisjs-starter-kit"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              GitHub
+            </a>
+            .
+          </p>
+        </div>
+      </Container>
     </footer>
   )
 }
