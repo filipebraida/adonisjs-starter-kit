@@ -62,7 +62,7 @@
     "@adonisjs/i18n": "^2.2.2",
     "@adonisjs/inertia": "^3.1.1",
     "@adonisjs/limiter": "^2.4.0",
-    "@adonisjs/lucid": "^21.8.0",
+    "@adonisjs/lucid": "^21.8.2",
     "@adonisjs/mail": "^9.2.2",
     "@adonisjs/session": "^7.5.1",
     "@adonisjs/shield": "^8.2.0",
