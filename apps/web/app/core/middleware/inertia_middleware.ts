@@ -1,8 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
-import type UserDto from '#users/dtos/user'
+import UserDto from '#users/dtos/user'
 import User from '#users/models/user'
 import AbilitiesService from '#users/services/abilities_service'
 
@@ -17,6 +18,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       const user = auth.user
       await User.preComputeUrls(user)
 
+      userDto = new UserDto(user)
       abilities = await new AbilitiesService().getAllAbilities(user)
     }
 
@@ -26,9 +28,11 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         error: session?.flashMessages.get('error'),
         success: session?.flashMessages.get('success'),
       }),
+      locale: ctx.inertia.always(ctx.i18n?.locale ?? i18nManager.config.defaultLocale),
+      fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       flashMessages: ctx.inertia.always(session?.flashMessages.all()),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
-      user: ctx.inertia.always(userDto ? userDto : {}),
+      user: ctx.inertia.always(userDto),
       abilities: ctx.inertia.always(abilities),
     }
   }

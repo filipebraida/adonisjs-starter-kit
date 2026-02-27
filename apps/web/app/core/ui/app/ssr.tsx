@@ -19,11 +19,14 @@ export default function render(page: any) {
     },
     setup: ({ App, props }) => {
       const { locale, fallbackLocale } = props.initialPage.props as unknown as {
-        locale: string
+        locale?: string
         fallbackLocale?: string
       }
 
-      const i18nInstance = setupI18n({ locale, fallbackLocale })
+      const i18nInstance = setupI18n({
+        locale: locale ?? 'en',
+        fallbackLocale: fallbackLocale ?? 'en',
+      })
 
       return (
         <I18nextProvider i18n={i18nInstance}>
