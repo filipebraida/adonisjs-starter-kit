@@ -150,7 +150,15 @@ export default defineConfig({
   ],
 
   hooks: {
-    init: [indexEntities(), generateRegistry(), indexAppUiPages(), indexPolicies()],
+    init: [
+      indexEntities({
+        transformers: { enabled: true, withSharedProps: true },
+      }),
+
+      generateRegistry(),
+      indexAppUiPages(),
+      indexPolicies(),
+    ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
 })

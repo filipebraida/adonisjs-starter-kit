@@ -1,16 +1,13 @@
-/// <reference path="../../../../adonisrc.ts" />
-/// <reference path="../../../../config/inertia.ts" />
-
-import '../css/app.css'
-import { createRoot, hydrateRoot } from 'react-dom/client'
-import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@tuyau/inertia/react'
-import { tuyau } from './tuyau'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import '../css/app.css'
+import { client } from './client'
 
 import { isSSREnableForPage } from 'config/ssr'
-import { setupI18n } from '../config/i18n.config'
 import { I18nextProvider } from 'react-i18next'
+import { setupI18n } from '../config/i18n.config'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS Starter Kit'
 
@@ -46,7 +43,7 @@ createInertiaApp({
       hydrateRoot(
         el,
         <I18nextProvider i18n={i18nInstance}>
-          <TuyauProvider client={tuyau}>
+          <TuyauProvider client={client}>
             <App {...props} />
           </TuyauProvider>
         </I18nextProvider>

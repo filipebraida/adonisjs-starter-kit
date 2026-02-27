@@ -5,8 +5,14 @@
     "module": "ESNext",
     "jsx": "react-jsx",
     "paths": {
-      "config/ssr": ["../../../config/ssr"]
+      "config/ssr": ["../../../config/ssr"],
+      "@generated/*": ["../../../.adonisjs/client/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx"]
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../../.adonisjs/client/**/*.ts",
+    "../../../.adonisjs/server/**/*.ts"
+  ]
 }
