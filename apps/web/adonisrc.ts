@@ -154,7 +154,6 @@ export default defineConfig({
       indexEntities({
         transformers: { enabled: true, withSharedProps: true },
       }),
-
       generateRegistry(),
       indexAppUiPages(),
       indexPolicies(),
