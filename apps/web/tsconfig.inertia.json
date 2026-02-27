@@ -1,0 +1,8 @@
+{
+  "extends": "./app/core/ui/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./app/core/ui",
+    "composite": true
+  },
+  "include": ["./app/core/ui/**/*.ts", "./app/core/ui/**/*.tsx"]
+}

@@ -1,9 +1,8 @@
-import { defineConfig } from 'vite'
-import { getDirname } from '@adonisjs/core/helpers'
-import inertia from '@adonisjs/inertia/client'
-import react from '@vitejs/plugin-react'
+import inertia from '@adonisjs/inertia/vite'
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -22,8 +21,8 @@ export default defineConfig({
    */
   resolve: {
     alias: {
-      '~/': `${getDirname(import.meta.url)}/app/core/ui/`,
-      'config/ssr': `${getDirname(import.meta.url)}/config/ssr.ts`,
+      '~/': `${import.meta.dirname}/app/core/ui/`,
+      'config/ssr': `${import.meta.dirname}/config/ssr.ts`,
     },
   },
 })

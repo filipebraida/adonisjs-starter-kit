@@ -1,6 +1,6 @@
 import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
-import router from '@adonisjs/core/services/router'
+import { urlFor } from '@adonisjs/core/services/url_builder'
 
 import User from '#users/models/user'
 import { MailBasicTranslation } from '#common/models/mail_basic_translation'
@@ -27,7 +27,7 @@ export default class WelcomeNotification extends BaseMail {
      * Generate a signed URL with the user's email,
      * which can be used to reset the password.
      */
-    const welcomeUrl = router.makeUrl(
+    const welcomeUrl = urlFor(
       'marketing.show',
       { email: this.user.email },
       { prefixUrl: env.get('VITE_API_URL') }

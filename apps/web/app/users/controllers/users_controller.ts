@@ -1,5 +1,5 @@
+import { randomUUID } from 'node:crypto'
 import type { HttpContext } from '@adonisjs/core/http'
-import { cuid } from '@adonisjs/core/helpers'
 
 import User from '#users/models/user'
 
@@ -53,7 +53,7 @@ export default class UsersController {
     const user = new User()
     user.merge({
       ...payload,
-      password: payload.password ? payload.password : cuid(),
+      password: payload.password ? payload.password : randomUUID(),
     })
 
     await user.save()

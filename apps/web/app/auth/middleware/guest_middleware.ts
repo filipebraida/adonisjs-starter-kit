@@ -1,4 +1,4 @@
-import router from '@adonisjs/core/services/router'
+import { urlFor } from '@adonisjs/core/services/url_builder'
 
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
@@ -24,7 +24,7 @@ export default class GuestMiddleware {
   ) {
     for (let guard of options.guards || [ctx.auth.defaultGuard]) {
       if (await ctx.auth.use(guard).check()) {
-        const redirectTo = router.makeUrl(afterAuthRedirectRoute)
+        const redirectTo = urlFor(afterAuthRedirectRoute)
 
         return ctx.response.redirect(redirectTo, true)
       }

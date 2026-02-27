@@ -1,0 +1,68 @@
+/* eslint-disable prettier/prettier */
+import type { routes } from './index.ts'
+
+export interface ApiDefinition {
+  drive: {
+    fs: {
+      serve: typeof routes['drive.fs.serve']
+    }
+  }
+  marketing: {
+    show: typeof routes['marketing.show']
+  }
+  auth: {
+    signIn: {
+      show: typeof routes['auth.sign_in.show']
+    }
+    signOut: {
+      show: typeof routes['auth.sign_out.show']
+    }
+    signUp: {
+      show: typeof routes['auth.sign_up.show']
+      handle: typeof routes['auth.sign_up.handle']
+    }
+    forgotPassword: {
+      show: typeof routes['auth.forgot_password.show']
+      handle: typeof routes['auth.forgot_password.handle']
+    }
+    resetPassword: {
+      show: typeof routes['auth.reset_password.show']
+      handle: typeof routes['auth.reset_password.handle']
+    }
+  }
+  signIn: typeof routes['sign_in']
+  social: {
+    create: typeof routes['social.create']
+    callback: typeof routes['social.callback']
+  }
+  users: {
+    index: typeof routes['users.index']
+    store: typeof routes['users.store']
+    update: typeof routes['users.update']
+    destroy: typeof routes['users.destroy']
+  }
+  invite: typeof routes['invite']
+  impersonates: {
+    store: typeof routes['impersonates.store']
+  }
+  settings: {
+    index: typeof routes['settings.index']
+  }
+  profile: typeof routes['profile'] & {
+    show: typeof routes['profile.show']
+  }
+  tokens: {
+    index: typeof routes['tokens.index']
+    destroy: typeof routes['tokens.destroy']
+    store: typeof routes['tokens.store']
+  }
+  password: typeof routes['password'] & {
+    show: typeof routes['password.show']
+  }
+  appearance: {
+    show: typeof routes['appearance.show']
+  }
+  dashboard: {
+    show: typeof routes['dashboard.show']
+  }
+}
