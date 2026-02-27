@@ -1,5 +1,5 @@
-import { randomUUID } from 'node:crypto'
 import type { HttpContext } from '@adonisjs/core/http'
+import { randomUUID } from 'node:crypto'
 
 import User from '#users/models/user'
 

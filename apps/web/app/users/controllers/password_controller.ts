@@ -6,7 +6,7 @@ import { updatePasswordValidator } from '#users/validators'
 
 export default class PasswordController {
   public async show({ inertia }: HttpContext) {
-    return inertia.render('users/password')
+    return inertia.render('users/password', {})
   }
 
   public async handle({ auth, request, response }: HttpContext) {

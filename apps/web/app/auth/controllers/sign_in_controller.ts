@@ -1,7 +1,7 @@
-import { HttpContext } from '@adonisjs/core/http'
 import { afterAuthRedirectRoute } from '#config/auth'
+import { type HttpContext } from '@adonisjs/core/http'
+import { type Limiter } from '@adonisjs/limiter'
 import limiter from '@adonisjs/limiter/services/main'
-import { Limiter } from '@adonisjs/limiter'
 
 import { returnToKey } from '#auth/middleware/auth_middleware'
 
@@ -29,7 +29,7 @@ export default class SignInController {
   }
 
   async show({ inertia }: HttpContext) {
-    return inertia.render('auth/sign_in')
+    return inertia.render('auth/sign_in', {})
   }
 
   async handle({ auth, request, response, session, i18n }: HttpContext) {

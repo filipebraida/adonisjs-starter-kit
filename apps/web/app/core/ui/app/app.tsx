@@ -1,6 +1,6 @@
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { TuyauProvider } from '@adonisjs/inertia/react'
 import { createInertiaApp } from '@inertiajs/react'
-import { TuyauProvider } from '@tuyau/inertia/react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import '../css/app.css'
 import { client } from './client'
@@ -51,7 +51,7 @@ createInertiaApp({
     } else {
       createRoot(el).render(
         <I18nextProvider i18n={i18nInstance}>
-          <TuyauProvider client={tuyau}>
+          <TuyauProvider client={client}>
             <App {...props} />
           </TuyauProvider>
         </I18nextProvider>

@@ -1,6 +1,6 @@
+import { inject } from '@adonisjs/core/container'
 import { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
-import { inject } from '@adonisjs/core/container'
 
 import User from '#users/models/user'
 
@@ -13,7 +13,7 @@ export default class ForgotPasswordController {
   constructor(private passwordResetService: PasswordResetService) {}
 
   async show({ inertia }: HttpContext) {
-    return inertia.render('auth/forgot_password')
+    return inertia.render('auth/forgot_password', {})
   }
 
   async handle({ request, response, i18n }: HttpContext) {
