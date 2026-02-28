@@ -8,13 +8,17 @@ export type PaginatorMeta = {
   lastPage: number;
   total: number;
   firstPage?: number;
+  firstPageUrl?: string;
+  lastPageUrl?: string;
+  nextPageUrl?: string | null;
+  previousPageUrl?: string | null;
 };
 
 export type VisitFn = (args: { page: number; perPage: number }) => void;
 
 type UseDataTableOpts = {
   data: {
-    meta: PaginatorMeta;
+    metadata: PaginatorMeta;
   };
   visit: VisitFn;
   pageParam?: string;
@@ -25,9 +29,9 @@ export function useDataTable({
   data,
   visit,
 }: UseDataTableOpts): RemoteTableOptions {
-  const pageIndex = Math.max(0, (data.meta.currentPage ?? 1) - 1);
-  const pageSize = data.meta.perPage;
-  const pageCount = Math.max(1, data.meta.lastPage);
+  const pageIndex = Math.max(0, (data.metadata.currentPage ?? 1) - 1);
+  const pageSize = data.metadata.perPage;
+  const pageCount = Math.max(1, data.metadata.lastPage);
 
   return {
     pageCount,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useForm } from '@inertiajs/react'
-import { Link } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 import { MenuIcon } from 'lucide-react'
 
 import Container from '#marketing/ui/components/container'

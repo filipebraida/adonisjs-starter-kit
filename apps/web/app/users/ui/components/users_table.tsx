@@ -1,19 +1,31 @@
-import React from 'react'
 import { router } from '@inertiajs/react'
-import type { SimplePaginatorDtoContract } from '@adocasts.com/dto/types'
+import React from 'react'
 
-import { DataTable, ColumnDef } from '@workspace/ui/components/data-table'
+import { ColumnDef, DataTable } from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
-import UsersTableFilters from '#users/ui/components/users_table_filters'
-import { DataTableRowActions } from '#users/ui/components/users_row_actions'
-import { Role } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { DataTableRowActions } from '#users/ui/components/users_row_actions'
+import UsersTableFilters from '#users/ui/components/users_table_filters'
+import { Role } from '#users/ui/components/users_types'
 
-import type UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
 interface DataTableProps {
-  users: SimplePaginatorDtoContract<UserDto>
+  users: {
+    data: Data.User[]
+    metadata: {
+      total: number
+      perPage: number
+      currentPage: number
+      lastPage: number
+      firstPage: number
+      firstPageUrl?: string
+      lastPageUrl?: string
+      nextPageUrl?: string | null
+      previousPageUrl?: string | null
+    }
+  }
   roles: Role[]
   q: string | undefined
   selectedRoles: number[]
@@ -47,7 +59,7 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
     },
   })
 
-  const columns: ColumnDef<UserDto>[] = [
+  const columns: ColumnDef<Data.User>[] = [
     {
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
@@ -102,7 +114,7 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
         setQuerySearch={setQuerySearch}
         roleIds={roleIds}
         setRoleIds={setRoleIds}
-        perPage={users.meta.perPage}
+        perPage={users.metadata.perPage}
       />
       <DataTable
         columns={columns}

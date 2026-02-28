@@ -1,8 +1,9 @@
-import React from 'react'
 import { useForm } from '@inertiajs/react'
+import React from 'react'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import { Role } from '#users/ui/components/users_types'
 import { Button } from '@workspace/ui/components/button'
-import { PasswordInput } from '@workspace/ui/components/password-input'
 import {
   Dialog,
   DialogClose,
@@ -12,30 +13,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@workspace/ui/components/dialog'
-import { ScrollArea } from '@workspace/ui/components/scroll-area'
-import { Input } from '@workspace/ui/components/input'
 import { Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
+import { Input } from '@workspace/ui/components/input'
+import { PasswordInput } from '@workspace/ui/components/password-input'
 import { Progress } from '@workspace/ui/components/progress'
-import { toast } from '@workspace/ui/hooks/use-toast'
+import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@workspace/ui/components/select'
-import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
-import { useTranslation } from '#common/ui/hooks/use_translation'
-import { Role } from '#users/ui/components/users_types'
+import { toast } from '@workspace/ui/hooks/use-toast'
 
-import type UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
 import Roles from '#users/enums/role'
 
 interface Props {
   roles: Role[]
-  currentRow?: UserDto
+  currentRow?: Data.User
   open: boolean
   onOpenChange: (open: boolean) => void
 }

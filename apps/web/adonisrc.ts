@@ -29,7 +29,6 @@ export default defineConfig({
   commands: [
     () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
-    () => import('@adocasts.com/dto/commands'),
     () => import('@adonisjs/mail/commands'),
     () => import('@adonisjs/bouncer/commands'),
     () => import('@jrmc/adonis-attachment/commands'),
@@ -152,7 +151,13 @@ export default defineConfig({
   hooks: {
     init: [
       indexEntities({
-        transformers: { enabled: true, withSharedProps: true },
+        transformers: {
+          enabled: true,
+          withSharedProps: true,
+          inertiaMiddlewareImportPath: '#core/middleware/inertia_middleware',
+          source: 'app/users/transformers',
+          importAlias: '#users/transformers',
+        },
       }),
       generateRegistry(),
       indexAppUiPages(),

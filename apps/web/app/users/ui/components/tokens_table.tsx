@@ -1,19 +1,19 @@
-import TokenDto from '#users/dtos/token'
-
-import { DataTable, DataTableToolbar, ColumnDef } from '@workspace/ui/components/data-table'
+import { ColumnDef, DataTable, DataTableToolbar } from '@workspace/ui/components/data-table'
 
 import { DataTableRowActions } from './tokens_row_actions'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
+import type { Data } from '@generated/data'
+
 interface DataTableProps {
-  tokens: TokenDto[]
+  tokens: Data.Token[]
 }
 
 export default function TokensTable({ tokens }: DataTableProps) {
   const { t } = useTranslation()
 
-  const columns: ColumnDef<TokenDto>[] = [
+  const columns: ColumnDef<Data.Token>[] = [
     {
       header: 'Name',
       accessorKey: 'name',

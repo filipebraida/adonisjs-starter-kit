@@ -3,7 +3,7 @@ import { attachmentManager } from '@jrmc/adonis-attachment'
 
 import User from '#users/models/user'
 
-import UserDto from '#users/dtos/user'
+import UserTransformer from '#users/transformers/user_transformer'
 
 import { updateProfileValidator } from '#users/validators'
 
@@ -12,7 +12,7 @@ export default class ProfileController {
     await User.preComputeUrls(auth.user!)
 
     return inertia.render('users/profile', {
-      profile: new UserDto(auth.user),
+      profile: UserTransformer.transform(auth.user!),
     })
   }
 

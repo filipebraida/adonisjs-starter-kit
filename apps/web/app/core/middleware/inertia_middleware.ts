@@ -3,22 +3,22 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
-import UserDto from '#users/dtos/user'
 import User from '#users/models/user'
 import AbilitiesService from '#users/services/abilities_service'
+import UserTransformer from '#users/transformers/user_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
     const { session, auth } = ctx as Partial<HttpContext>
 
-    let userDto: UserDto | undefined
+    let userData: ReturnType<typeof UserTransformer.transform> | undefined
     let abilities: Awaited<ReturnType<AbilitiesService['getAllAbilities']>> = []
 
     if (auth?.user) {
       const user = auth.user
       await User.preComputeUrls(user)
 
-      userDto = new UserDto(user)
+      userData = UserTransformer.transform(user)
       abilities = await new AbilitiesService().getAllAbilities(user)
     }
 
@@ -32,7 +32,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       flashMessages: ctx.inertia.always(session?.flashMessages.all()),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
-      user: ctx.inertia.always(userDto),
+      user: ctx.inertia.always(userData),
       abilities: ctx.inertia.always(abilities),
     }
   }

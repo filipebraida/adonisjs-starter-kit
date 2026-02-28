@@ -6,7 +6,8 @@
     "jsx": "react-jsx",
     "paths": {
       "config/ssr": ["../../../config/ssr"],
-      "@generated/*": ["../../../.adonisjs/client/*"]
+      "@generated/*": ["../../../.adonisjs/client/*"],
+      "~/*": ["./*"]
     }
   },
   "include": [

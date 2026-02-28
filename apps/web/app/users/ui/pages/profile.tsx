@@ -1,6 +1,4 @@
-import { InferPageProps } from '@adonisjs/inertia/types'
-
-import type ProfileController from '#users/controllers/profile_controller'
+import type { InertiaProps } from '#core/ui/types'
 
 import AppLayout from '#common/ui/components/app_layout'
 import HeadingSmall from '#common/ui/components/heading_small'
@@ -9,7 +7,11 @@ import SettingsLayout from '#users/ui/components/settings_layout'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
-export default function ProfilePage({ profile }: InferPageProps<ProfileController, 'show'>) {
+import type { Data } from '@generated/data'
+
+type PageProps = InertiaProps<{ profile: Data.User }>
+
+export default function ProfilePage({ profile }: PageProps) {
   const { t } = useTranslation()
   const currentPath = '/settings/profile'
 

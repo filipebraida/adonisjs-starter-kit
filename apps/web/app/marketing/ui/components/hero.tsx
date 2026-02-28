@@ -1,4 +1,4 @@
-import { Link } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 import { Github } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'

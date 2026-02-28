@@ -1,6 +1,7 @@
-import { TrashIcon, EllipsisIcon } from 'lucide-react'
+import { EllipsisIcon, TrashIcon } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
+import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,13 +9,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
-import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
 
 import { useTokens } from '#users/ui/context/tokens_context'
 
-import type TokenDto from '#users/dtos/token'
+import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<TokenDto>) {
+export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Token>) {
   const { setOpen, setCurrentRow } = useTokens()
 
   return (

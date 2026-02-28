@@ -1,9 +1,7 @@
-import React from 'react'
 import { useForm } from '@inertiajs/react'
+import React from 'react'
 
-import { MailPlus, Send } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
-import { Textarea } from '@workspace/ui/components/textarea'
 import {
   Dialog,
   DialogClose,
@@ -13,32 +11,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@workspace/ui/components/dialog'
-import { ScrollArea } from '@workspace/ui/components/scroll-area'
-import { Input } from '@workspace/ui/components/input'
 import { Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
+import { Input } from '@workspace/ui/components/input'
 import { Progress } from '@workspace/ui/components/progress'
-import { toast } from '@workspace/ui/hooks/use-toast'
-import { cn } from '@workspace/ui/lib/utils'
+import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@workspace/ui/components/select'
-import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
+import { Textarea } from '@workspace/ui/components/textarea'
+import { toast } from '@workspace/ui/hooks/use-toast'
+import { cn } from '@workspace/ui/lib/utils'
+import { MailPlus, Send } from 'lucide-react'
 
-import { Role } from '#users/ui/components/users_types'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { Role } from '#users/ui/components/users_types'
 
-import type UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
 import Roles from '#users/enums/role'
 
 interface Props {
   roles: Role[]
-  currentRow?: UserDto
+  currentRow?: Data.User
   open: boolean
   onOpenChange: (open: boolean) => void
 }

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { NavUser } from '#common/ui/components/nav_user'
 import { AppLogo } from '#common/ui/components/app_logo'
+import Breadcrumb from '#common/ui/components/breadcrumbs'
 import { NavHeaderMain } from '#common/ui/components/nav_header_main'
 import { NavHeaderMobile } from '#common/ui/components/nav_header_mobile'
+import { NavUser } from '#common/ui/components/nav_user'
 import { ToggleTheme } from '#common/ui/components/toggle_theme'
-import Breadcrumb from '#common/ui/components/breadcrumbs'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
 
-import UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
 interface BreadcrumbItemProps {
   label: string
@@ -20,7 +20,7 @@ interface AppLayoutProps extends React.PropsWithChildren {
   breadcrumbs?: BreadcrumbItemProps[]
   navMain: NavMainItem[]
   navUser: NavUserOptionsGroup[]
-  user: UserDto
+  user: Data.User
 }
 
 export default function AppHeaderLayout({

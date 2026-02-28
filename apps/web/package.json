@@ -11,7 +11,7 @@
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json"
+    "typecheck": "tsc --noEmit && tsc --noEmit --project app/core/ui/tsconfig.json"
   },
   "imports": {
     "#start/*": "./start/*.js",
@@ -52,7 +52,6 @@
     "youch": "^4.1.0"
   },
   "dependencies": {
-    "@adocasts.com/dto": "^0.0.10",
     "@adonisjs-community/modules": "^1.1.0",
     "@adonisjs/ally": "^6.0.0",
     "@adonisjs/auth": "^10.0.0",

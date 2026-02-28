@@ -1,22 +1,22 @@
-import { useState } from 'react'
 import { useForm } from '@inertiajs/react'
+import { useState } from 'react'
 
 import { Trans } from 'react-i18next'
 
-import { AlertTriangleIcon } from 'lucide-react'
-import { toast } from '@workspace/ui/hooks/use-toast'
+import { useTranslation } from '#common/ui/hooks/use_translation'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { toast } from '@workspace/ui/hooks/use-toast'
+import { AlertTriangleIcon } from 'lucide-react'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 
-import type UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: UserDto
+  currentRow: Data.User
 }
 
 export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {

@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 
-import type TokenDto from '#users/dtos/token'
 import useDialogState from '#common/ui/hooks/use_dialog_state'
+
+import type { Data } from '@generated/data'
 
 type TokensDialogType = 'add' | 'delete'
 
 interface TokensContextType {
   open: TokensDialogType | null
   setOpen: (str: TokensDialogType | null) => void
-  currentRow: TokenDto | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<TokenDto | null>>
+  currentRow: Data.Token | null
+  setCurrentRow: React.Dispatch<React.SetStateAction<Data.Token | null>>
 }
 
 const TokensContext = React.createContext<TokensContextType | null>(null)
@@ -20,7 +21,7 @@ interface Props {
 
 export default function TokensProvider({ children }: Props) {
   const [open, setOpen] = useDialogState<TokensDialogType>(null)
-  const [currentRow, setCurrentRow] = useState<TokenDto | null>(null)
+  const [currentRow, setCurrentRow] = useState<Data.Token | null>(null)
 
   return (
     <TokensContext.Provider value={{ open, setOpen, currentRow, setCurrentRow }}>

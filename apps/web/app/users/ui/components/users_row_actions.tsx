@@ -1,6 +1,7 @@
-import { EditIcon, TrashIcon, EllipsisIcon, UserRoundSearch } from 'lucide-react'
+import { EditIcon, EllipsisIcon, TrashIcon, UserRoundSearch } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
+import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,15 +10,14 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
-import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
 
-import { useUsers } from '#users/ui/context/users_context'
 import useUser from '#auth/ui/hooks/use_user'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useUsers } from '#users/ui/context/users_context'
 
-import type UserDto from '#users/dtos/user'
+import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<UserDto>) {
+export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.User>) {
   const { setOpen, setCurrentRow } = useUsers()
   const user = useUser()
   const { t } = useTranslation()

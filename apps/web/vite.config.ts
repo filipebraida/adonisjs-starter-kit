@@ -21,8 +21,15 @@ export default defineConfig({
    */
   resolve: {
     alias: {
+      '@generated': `${import.meta.dirname}/.adonisjs/client`,
       '~/': `${import.meta.dirname}/app/core/ui/`,
       'config/ssr': `${import.meta.dirname}/config/ssr.ts`,
+    },
+  },
+
+  server: {
+    watch: {
+      ignored: ['**/storage/**', '**/tmp/**'],
     },
   },
 })

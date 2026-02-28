@@ -1,11 +1,11 @@
-import { InferPageProps } from '@adonisjs/inertia/types'
+import type { InertiaProps } from '#core/ui/types'
 
-import { ResetPasswordForm } from '#auth/ui/components/reset_password_form'
 import AuthLayout from '#auth/ui/components/layout'
+import { ResetPasswordForm } from '#auth/ui/components/reset_password_form'
 
-import type ResetPasswordController from '#auth/controllers/reset_password_controller'
+type PageProps = InertiaProps<{ token: string }>
 
-export default function ResetPasswordPage(props: InferPageProps<ResetPasswordController, 'show'>) {
+export default function ResetPasswordPage(props: PageProps) {
   return (
     <AuthLayout>
       <ResetPasswordForm token={props.token} />

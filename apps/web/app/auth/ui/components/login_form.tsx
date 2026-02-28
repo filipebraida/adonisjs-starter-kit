@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from '@inertiajs/react'
-import { Link, useTuyau } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -25,8 +25,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     password: '',
   })
   const { t } = useTranslation()
-
-  const tuyau = useTuyau()
 
   const [errorMessages, setErrorMessages] = useState<string[]>([])
 
@@ -98,7 +96,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           <FieldSeparator>{t('auth.signin.divider')}</FieldSeparator>
 
           <Button variant="outline" className="w-full" asChild>
-            <a href={tuyau?.$url('social.create', { params: { provider: 'google' } })}>
+            <Link route="social.create" routeParams={{ provider: 'google' }}>
               <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
@@ -118,7 +116,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 />
               </svg>
               {t('auth.signin.actions.google')}
-            </a>
+            </Link>
           </Button>
         </FieldGroup>
       </FieldSet>

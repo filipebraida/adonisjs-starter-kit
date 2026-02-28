@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 
 import User from '#users/models/user'
 
-import UserDto from '#users/dtos/user'
+import UserTransformer from '#users/transformers/user_transformer'
 
 import UserPolicy from '#users/policies/user_policy'
 
@@ -36,10 +36,12 @@ export default class UsersController {
 
     const users = await query.preload('role').paginate(page, limit)
 
-    await User.preComputeUrls(users)
+    const usersData = users.all()
+
+    await User.preComputeUrls(usersData)
 
     return inertia.render('users/index', {
-      users: UserDto.fromPaginator(users),
+      users: UserTransformer.paginate(usersData, users.getMeta()),
       q: querySearch,
       selectedRoles: roleIds,
     })

@@ -1,4 +1,4 @@
-import { Link } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 
 import logo from '../images/logo.png'
 

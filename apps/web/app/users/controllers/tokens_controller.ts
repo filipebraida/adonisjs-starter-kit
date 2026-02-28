@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import User from '#users/models/user'
 
-import TokenDto from '#users/dtos/token'
+import TokenTransformer from '#users/transformers/token_transformer'
 
 import TokenPolicy from '#users/policies/token_policy'
 
@@ -17,7 +17,7 @@ export default class TokensController {
     const tokens = await User.accessTokens.all(user)
 
     return inertia.render('users/tokens', {
-      tokens: TokenDto.fromArray(tokens),
+      tokens: TokenTransformer.transform(tokens),
     })
   }
 

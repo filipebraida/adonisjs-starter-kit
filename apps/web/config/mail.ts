@@ -27,10 +27,6 @@ const mailConfig = defineConfig({
 
       ignoreTLS: false,
       requireTLS: false,
-
-      pool: false,
-      maxConnections: 5,
-      maxMessages: 100,
     }),
 
     resend: transports.resend({

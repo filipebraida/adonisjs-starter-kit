@@ -1,21 +1,22 @@
 import React from 'react'
 
-import { LayoutProvider, useLayout } from '#common/ui/context/layout_provider'
 import { DirectionProvider } from '#common/ui/context/direction_provider'
+import { LayoutProvider, useLayout } from '#common/ui/context/layout_provider'
 
-import AppSidebarLayout from '#common/ui/components/app_sidebar_layout'
 import AppHeaderLayout from '#common/ui/components/app_header_layout'
+import AppSidebarLayout from '#common/ui/components/app_sidebar_layout'
 
 import useUser from '#auth/ui/hooks/use_user'
-import AbilityProvider from '#users/ui/context/abilities_context'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import AbilityProvider from '#users/ui/context/abilities_context'
 
-import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { Toaster } from '@workspace/ui/components/sonner'
+import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 
 import { getNavMain, getNavUser } from '#common/ui/config/navigation.config'
 import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
-import type UserDto from '#users/dtos/user'
+
+import type { Data } from '@generated/data'
 
 interface BreadcrumbItemProps {
   label: string
@@ -27,7 +28,7 @@ interface AppLayoutProps extends React.PropsWithChildren {
   layout?: 'sidebar' | 'header'
   navMain?: NavMainItem[]
   navUser?: NavUserOptionsGroup[]
-  user?: UserDto
+  user?: Data.User
 }
 
 function AppLayoutContent({ children, breadcrumbs = [], navMain, navUser, user }: AppLayoutProps) {

@@ -1,5 +1,5 @@
 import Container from '#marketing/ui/components/container'
-import { Link } from '@tuyau/inertia/react'
+import { Link } from '@adonisjs/inertia/react'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
