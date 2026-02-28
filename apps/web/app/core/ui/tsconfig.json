@@ -15,15 +15,18 @@
     "./**/*.tsx",
     "../../auth/ui/**/*.ts",
     "../../auth/ui/**/*.tsx",
+    "../../auth/types/**/*.ts",
     "../../users/ui/**/*.ts",
     "../../users/ui/**/*.tsx",
+    "../../users/types/**/*.ts",
     "../../marketing/ui/**/*.ts",
     "../../marketing/ui/**/*.tsx",
     "../../common/ui/**/*.ts",
     "../../common/ui/**/*.tsx",
     "../../analytics/ui/**/*.ts",
     "../../analytics/ui/**/*.tsx",
+    "../../../config/auth.ts",
     "../../../.adonisjs/client/**/*.ts",
-    "../../../.adonisjs/server/**/*.ts"
+    "../../../.adonisjs/server/**/*.d.ts"
   ]
 }
