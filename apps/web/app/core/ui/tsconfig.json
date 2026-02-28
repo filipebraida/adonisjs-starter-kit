@@ -13,6 +13,16 @@
   "include": [
     "./**/*.ts",
     "./**/*.tsx",
+    "../../auth/ui/**/*.ts",
+    "../../auth/ui/**/*.tsx",
+    "../../users/ui/**/*.ts",
+    "../../users/ui/**/*.tsx",
+    "../../marketing/ui/**/*.ts",
+    "../../marketing/ui/**/*.tsx",
+    "../../common/ui/**/*.ts",
+    "../../common/ui/**/*.tsx",
+    "../../analytics/ui/**/*.ts",
+    "../../analytics/ui/**/*.tsx",
     "../../../.adonisjs/client/**/*.ts",
     "../../../.adonisjs/server/**/*.ts"
   ]

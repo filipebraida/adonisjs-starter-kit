@@ -9,8 +9,8 @@
 {
   "extends": "./app/core/ui/tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./app/core/ui",
+    "rootDir": "./app/**/ui",
     "composite": true
   },
-  "include": ["./app/core/ui/**/*.ts", "./app/core/ui/**/*.tsx"]
+  "include": ["./app/**/ui/**/*.ts", "./app/**/ui/**/*.tsx", "./.adonisjs/server/pages.d.ts"]
 }

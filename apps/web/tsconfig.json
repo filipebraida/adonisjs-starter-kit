@@ -4,6 +4,7 @@
     "rootDir": "./",
     "outDir": "./build"
   },
+  "include": ["./**/*.ts", "./.adonisjs/server/**/*.ts", "./.adonisjs/server/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.inertia.json" }],
   "exclude": ["./app/**/ui", "node_modules", "build"]
 }
