@@ -13,7 +13,7 @@ import type { Data } from '@generated/data'
 
 interface DataTableProps {
   users: {
-    data: Data.User[]
+    data: Data.Users.User[]
     metadata: {
       total: number
       perPage: number
@@ -59,7 +59,7 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
     },
   })
 
-  const columns: ColumnDef<Data.User>[] = [
+  const columns: ColumnDef<Data.Users.User>[] = [
     {
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',

@@ -1,6 +1,6 @@
-import { indexAppUiPages } from '#core/inertia/index_pages_hook'
+import { indexAppUiPages } from '#core/hooks/index_pages_hook'
+import { indexTransformers } from '#core/hooks/index_transformers_hook'
 import { indexPolicies } from '@adonisjs/bouncer'
-import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
 
@@ -150,14 +150,9 @@ export default defineConfig({
 
   hooks: {
     init: [
-      indexEntities({
-        transformers: {
-          enabled: true,
-          withSharedProps: true,
-          inertiaMiddlewareImportPath: '#core/middleware/inertia_middleware',
-          source: 'app/users/transformers',
-          importAlias: '#users/transformers',
-        },
+      indexTransformers({
+        withSharedProps: true,
+        inertiaMiddlewareImportPath: '#core/middleware/inertia_middleware',
       }),
       generateRegistry(),
       indexAppUiPages(),

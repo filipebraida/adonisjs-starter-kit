@@ -20,7 +20,7 @@ interface AppLayoutProps extends React.PropsWithChildren {
   breadcrumbs?: BreadcrumbItemProps[]
   navMain: NavMainItem[]
   navUser: NavUserOptionsGroup[]
-  user: Data.User
+  user: Data.Users.User
 }
 
 export default function AppHeaderLayout({

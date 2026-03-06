@@ -16,7 +16,7 @@ import type { Data } from '@generated/data'
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: Data.Token
+  currentRow: Data.Users.Token
 }
 
 export function TokensDeleteDialog({ open, onOpenChange, currentRow }: Props) {

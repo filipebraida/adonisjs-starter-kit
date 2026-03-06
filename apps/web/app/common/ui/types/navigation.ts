@@ -36,6 +36,6 @@ export type NavUserOptionsGroup = {
 }[]
 
 export interface NavUserProps {
-  user: Data.User
+  user: Data.Users.User
   options: NavUserOptionsGroup[]
 }

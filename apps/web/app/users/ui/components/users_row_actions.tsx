@@ -17,7 +17,7 @@ import { useUsers } from '#users/ui/context/users_context'
 
 import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.User>) {
+export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users.User>) {
   const { setOpen, setCurrentRow } = useUsers()
   const user = useUser()
   const { t } = useTranslation()

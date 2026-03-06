@@ -14,7 +14,7 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 import type { Data } from '@generated/data'
 
 interface Props {
-  user: Data.User
+  user: Data.Users.User
 }
 
 export function ProfileForm({ user }: Props) {

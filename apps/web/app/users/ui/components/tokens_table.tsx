@@ -7,13 +7,13 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 import type { Data } from '@generated/data'
 
 interface DataTableProps {
-  tokens: Data.Token[]
+  tokens: Data.Users.Token[]
 }
 
 export default function TokensTable({ tokens }: DataTableProps) {
   const { t } = useTranslation()
 
-  const columns: ColumnDef<Data.Token>[] = [
+  const columns: ColumnDef<Data.Users.Token>[] = [
     {
       header: 'Name',
       accessorKey: 'name',

@@ -14,7 +14,7 @@ import { useTokens } from '#users/ui/context/tokens_context'
 
 import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Token>) {
+export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users.Token>) {
   const { setOpen, setCurrentRow } = useTokens()
 
   return (

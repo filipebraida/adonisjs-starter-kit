@@ -12,7 +12,7 @@ import TokensProvider from '#users/ui/context/tokens_context'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
-type PageProps = InertiaProps<{ tokens: Data.Token[] }>
+type PageProps = InertiaProps<{ tokens: Data.Users.Token[] }>
 
 export default function TokensPage({ tokens }: PageProps) {
   const { t } = useTranslation()

@@ -9,7 +9,7 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import type { Data } from '@generated/data'
 
-type PageProps = InertiaProps<{ profile: Data.User }>
+type PageProps = InertiaProps<{ profile: Data.Users.User }>
 
 export default function ProfilePage({ profile }: PageProps) {
   const { t } = useTranslation()

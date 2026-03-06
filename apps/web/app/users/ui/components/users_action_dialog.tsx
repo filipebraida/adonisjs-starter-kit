@@ -35,7 +35,7 @@ import Roles from '#users/enums/role'
 
 interface Props {
   roles: Role[]
-  currentRow?: Data.User
+  currentRow?: Data.Users.User
   open: boolean
   onOpenChange: (open: boolean) => void
 }
