@@ -3,7 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 
 export default class SwitchLocaleMiddleware {
-  async handle(ctx: HttpContext, next: NextFn) {
+  async handle(ctx: HttpContext, _next: NextFn) {
     const locale = ctx.params.locale
 
     if (!i18nManager.supportedLocales().includes(locale)) {
@@ -17,13 +17,6 @@ export default class SwitchLocaleMiddleware {
       sameSite: true,
     })
 
-    ctx.response.redirect().back()
-
-    /**
-     * Call next method in the pipeline and return its output
-     */
-    const output = await next()
-
-    return output
+    return ctx.response.redirect().back()
   }
 }
