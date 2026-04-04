@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useForm } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 
@@ -22,17 +22,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
 
   const { t } = useTranslation()
 
-  const [errorMessages, setErrorMessages] = useState<string[]>([])
-
-  const messages = useFlashMessage('errorsBag')
-  useEffect(() => {
-    if (messages) {
-      const msgs = Object.values(messages).flat().filter(Boolean).map(String)
-      setErrorMessages(msgs)
-    } else {
-      setErrorMessages([])
-    }
-  }, [messages])
+  const errorMessage = useFlashMessage('error')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -112,7 +102,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
               {t('auth.registration.actions.submit')}
             </Button>
 
-            <FieldError errors={errorMessages.map((m) => ({ message: m }))} />
+            <FieldError errors={errorMessage ? [{ message: errorMessage }] : []} />
           </Field>
         </FieldGroup>
       </FieldSet>

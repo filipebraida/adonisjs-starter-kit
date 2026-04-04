@@ -17,7 +17,7 @@ export default class ResetPasswordController {
     const resetPasswordToken = await this.passwordResetService.getToken(params.token)
 
     if (!resetPasswordToken) {
-      session.flash('resetPasswordError', 'true')
+      session.flash('error', 'auth.reset_password.error.invalid_or_expired')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
@@ -34,7 +34,7 @@ export default class ResetPasswordController {
     const token = await this.passwordResetService.getToken(params.token)
 
     if (!token) {
-      session.flash('resetPasswordError', 'true')
+      session.flash('error', 'auth.reset_password.error.invalid_or_expired')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 

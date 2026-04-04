@@ -18,7 +18,7 @@ export default class SocialController {
      * the login flow
      */
     if (social.accessDenied()) {
-      session.flash('errors', 'auth.social.error.access_denied')
+      session.flash('error', 'auth.social.error.access_denied')
 
       return response.redirect().toRoute('auth.sign_up.show')
     }
@@ -28,7 +28,7 @@ export default class SocialController {
      * CSRF cookie gets expired.
      */
     if (social.stateMisMatch()) {
-      session.flash('errors', 'auth.social.error.state_mismatch')
+      session.flash('error', 'auth.social.error.state_mismatch')
 
       return response.redirect().toRoute('auth.sign_up.show')
     }
@@ -37,7 +37,7 @@ export default class SocialController {
      * Provider responded with some error
      */
     if (social.hasError()) {
-      session.flash('errors', 'auth.social.error.uknown')
+      session.flash('error', 'auth.social.error.uknown')
 
       return response.redirect().toRoute('auth.sign_up.show')
     }

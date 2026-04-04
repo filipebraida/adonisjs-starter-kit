@@ -45,9 +45,7 @@ export default class SignInController {
       return User.verifyCredentials(email, password)
     })
     if (errors) {
-      session.flashErrors({
-        E_TOO_MANY_REQUESTS: i18n.t('errors.E_TOO_MANY_REQUESTS'),
-      })
+      session.flash('error', i18n.t('errors.E_TOO_MANY_REQUESTS'))
       return response.redirect().toRoute('auth.sign_in.show')
     }
     await auth.use('web').login(user)
