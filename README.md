@@ -35,6 +35,11 @@ AdonisJS Starter Kit is a monorepo-based template for developing full-stack appl
 - **Mailpit**: Small, fast, low memory, zero-dependency, multi-platform email testing tool & API for developers.
 - **PgAdmin**: Most popular and feature rich Open Source administration and development platform for PostgreSQL.
 
+## Requirements
+
+- Node.js `>=24`
+- pnpm `10.33.0` — install with `npm install -g pnpm@10.33.0`
+
 ## Installation
 
 ### Cloning the Repository
@@ -45,6 +50,14 @@ To create a new project using this starter kit, run:
 pnpm create adonisjs@latest -K="filipebraida/adonisjs-starter-kit"
 ```
 
+Or, if cloning directly:
+
+```bash
+git clone https://github.com/filipebraida/adonisjs-starter-kit.git
+cd adonisjs-starter-kit
+pnpm install
+```
+
 ### Setting Up the Environment
 
 1. **Copy the Example Environment File**  
@@ -53,6 +66,8 @@ pnpm create adonisjs@latest -K="filipebraida/adonisjs-starter-kit"
 ```bash
 cp apps/web/.env.example apps/web/.env
 ```
+
+> **Note:** Some features (email, social auth, file storage) are optional but their environment variables must still be present with placeholder values due to startup validation. The `.env.example` file already includes all required placeholders.
 
 2. **Generate the App Key**  
    Generate a cryptographically secure key and assign it to the `APP_KEY` environment variable.
@@ -148,10 +163,10 @@ This structure is a project convention and does not depend on an external module
 
 The shared UI package lives in `packages/ui` and uses `components.json` as the shadcn/ui source of truth.
 
-To add a new base component, run the command from the repository root:
+To add a new base component, run the command from the `packages/ui` directory:
 
 ```bash
-pnpm dlx shadcn@latest add button
+pnpm --filter @workspace/ui dlx shadcn@latest add button
 ```
 
 This command updates files inside `packages/ui`. Custom project-specific components such as `field`, `password-input`, `copy-button`, and `data-table` are maintained manually on top of that base.

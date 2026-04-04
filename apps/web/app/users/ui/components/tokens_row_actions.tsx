@@ -1,7 +1,7 @@
 import { EllipsisIcon, TrashIcon } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
-import { DataTableRowActionsProps } from '@workspace/ui/components/data-table/data-table'
+import { DataTableRowActionsProps } from '@workspace/ui/components/data-table'
 import {
   DropdownMenu,
   DropdownMenuContent,
