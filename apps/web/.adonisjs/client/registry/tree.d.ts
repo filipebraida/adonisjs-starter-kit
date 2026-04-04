@@ -16,7 +16,7 @@ export interface ApiDefinition {
       handle: typeof routes['auth.sign_in.handle']
     }
     signOut: {
-      show: typeof routes['auth.sign_out.show']
+      handle: typeof routes['auth.sign_out.handle']
     }
     signUp: {
       show: typeof routes['auth.sign_up.show']

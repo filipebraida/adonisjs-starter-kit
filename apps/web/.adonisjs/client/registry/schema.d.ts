@@ -55,8 +55,8 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/sign_in_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'auth.sign_out.show': {
-    methods: ["GET","HEAD"]
+  'auth.sign_out.handle': {
+    methods: ["POST"]
     pattern: '/logout'
     types: {
       body: {}
@@ -164,7 +164,7 @@ export interface Registry {
     }
   }
   'locale.switch': {
-    methods: ["GET","HEAD"]
+    methods: ["POST"]
     pattern: '/switch/:locale'
     types: {
       body: {}

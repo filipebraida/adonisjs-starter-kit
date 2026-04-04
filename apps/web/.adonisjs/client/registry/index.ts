@@ -30,11 +30,11 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['auth.sign_in.handle']['types'],
   },
-  'auth.sign_out.show': {
-    methods: ["GET","HEAD"],
+  'auth.sign_out.handle': {
+    methods: ["POST"],
     pattern: '/logout',
     tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
-    types: placeholder as Registry['auth.sign_out.show']['types'],
+    types: placeholder as Registry['auth.sign_out.handle']['types'],
   },
   'auth.sign_up.show': {
     methods: ["GET","HEAD"],
@@ -85,7 +85,7 @@ const routes = {
     types: placeholder as Registry['social.callback']['types'],
   },
   'locale.switch': {
-    methods: ["GET","HEAD"],
+    methods: ["POST"],
     pattern: '/switch/:locale',
     tokens: [{"old":"/switch/:locale","type":0,"val":"switch","end":""},{"old":"/switch/:locale","type":1,"val":"locale","end":""}],
     types: placeholder as Registry['locale.switch']['types'],
