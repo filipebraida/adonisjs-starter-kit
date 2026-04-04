@@ -262,12 +262,6 @@ importers:
       cmdk:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      i18next:
-        specifier: ^26.0.3
-        version: 26.0.3(typescript@5.9.3)
-      i18next-icu:
-        specifier: ^2.4.3
-        version: 2.4.3(intl-messageformat@11.1.2)
       lucide-react:
         specifier: ^1.7.0
         version: 1.7.0(react@19.2.4)
@@ -9739,12 +9733,6 @@ snapshots:
   i18next-icu@2.4.3(intl-messageformat@11.1.2):
     dependencies:
       intl-messageformat: 11.1.2
-
-  i18next@26.0.3(typescript@5.9.3):
-    dependencies:
-      '@babel/runtime': 7.29.2
-    optionalDependencies:
-      typescript: 5.9.3
 
   i18next@26.0.3(typescript@6.0.2):
     dependencies:
