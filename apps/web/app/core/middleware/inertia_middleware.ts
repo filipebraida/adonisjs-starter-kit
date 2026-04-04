@@ -9,38 +9,52 @@ import UserTransformer from '#users/transformers/user_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
+    /**
+     * The share method is called everytime an Inertia page is rendered. In
+     * certain cases, a page may get rendered before the session middleware
+     * or the auth middleware are executed. For example: During a 404 request.
+     *
+     * In that case, we must always assume that HttpContext is not fully hydrated
+     * with all the properties
+     */
     const { session, auth } = ctx as Partial<HttpContext>
 
-    let userData: ReturnType<typeof UserTransformer.transform> | undefined
+    /**
+     * Fetching the first error from the flash messages
+     */
+    const error = session?.flashMessages.get('error') as string
+    const success = session?.flashMessages.get('success') as string
+
     let abilities: Awaited<ReturnType<AbilitiesService['getAllAbilities']>> = []
 
     if (auth?.user) {
       const user = auth.user
       await User.preComputeUrls(user)
 
-      userData = UserTransformer.transform(user)
       abilities = await new AbilitiesService().getAllAbilities(user)
     }
 
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       flash: ctx.inertia.always({
-        error: session?.flashMessages.get('error'),
-        success: session?.flashMessages.get('success'),
+        error,
+        success,
       }),
+      user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always(ctx.i18n?.locale ?? i18nManager.config.defaultLocale),
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       flashMessages: ctx.inertia.always(session?.flashMessages.all()),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
-      user: ctx.inertia.always(userData),
       abilities: ctx.inertia.always(abilities),
     }
   }
 
   async handle(ctx: HttpContext, next: NextFn) {
     await this.init(ctx)
+
     const output = await next()
     this.dispose(ctx)
+
     return output
   }
 }
