@@ -154,6 +154,8 @@ export default defineConfig({
           source: './app',
           glob: ['**/*_transformer.ts'],
           importAlias: '#app',
+          withSharedProps: true,
+          inertiaMiddlewareImportPath: '#core/middleware/inertia_middleware',
         },
         controllers: {
           enabled: true,
