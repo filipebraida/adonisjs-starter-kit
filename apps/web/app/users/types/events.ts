@@ -5,6 +5,7 @@ declare module '@adonisjs/core/types' {
   interface EventsList {
     'user:registered': {
       user: User
+      token: string
       translations: MailBasicTranslation
       message?: string
     }

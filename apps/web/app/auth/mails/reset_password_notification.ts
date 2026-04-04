@@ -29,7 +29,7 @@ export default class ResetPasswordNotification extends BaseMail {
     const signedUrl = signedUrlFor(
       'auth.reset_password.show',
       { token: this.token },
-      { expiresIn: '30m', prefixUrl: env.get('VITE_API_URL'), purpose: 'reset_password' }
+      { expiresIn: '30m', prefixUrl: env.get('APP_URL'), purpose: 'reset_password' }
     )
 
     const { subject, title, subtitle, actionBtn, defaultMessage } = this.translations
