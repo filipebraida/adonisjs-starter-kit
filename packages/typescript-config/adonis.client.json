@@ -1,3 +1,0 @@
-{
-  "extends": "@adonisjs/tsconfig/tsconfig.client.json"
-}
