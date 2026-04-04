@@ -2,7 +2,7 @@
   "name": "adonisjs-starter-kit",
   "version": "0.0.2",
   "private": true,
-  "licence": "MIT",
+  "license": "MIT",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",

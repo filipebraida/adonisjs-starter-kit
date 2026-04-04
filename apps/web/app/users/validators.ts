@@ -24,7 +24,7 @@ export const updateProfileValidator = vine.compile(
     avatar: vine
       .file({
         extnames: ['png', 'jpg', 'jpeg', 'gif'],
-        size: 1 * 1024 * 1014,
+        size: 1 * 1024 * 1024,
       })
       .nullable(),
   })
