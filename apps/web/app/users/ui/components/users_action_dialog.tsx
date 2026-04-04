@@ -61,7 +61,6 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
     method(url, {
       preserveScroll: true,
-      preserveState: false,
       onSuccess: () => {
         onOpenChange(false)
         setTimeout(() => {
@@ -86,10 +85,12 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
-        setTimeout(() => {
-          reset()
-          clearErrors()
-        }, 500)
+        if (!state) {
+          setTimeout(() => {
+            reset()
+            clearErrors()
+          }, 500)
+        }
       }}
     >
       <DialogContent className="sm:max-w-md">

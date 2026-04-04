@@ -9,7 +9,7 @@ export function TokensDialogs() {
       <TokensActionDialog
         key="token-add"
         open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
+        onOpenChange={(state) => setOpen(state ? 'add' : null)}
       />
 
       {currentRow && (
@@ -17,11 +17,13 @@ export function TokensDialogs() {
           <TokensDeleteDialog
             key={`token-delete-${currentRow.id}`}
             open={open === 'delete'}
-            onOpenChange={() => {
-              setOpen('delete')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+            onOpenChange={(state) => {
+              setOpen(state ? 'delete' : null)
+              if (!state) {
+                setTimeout(() => {
+                  setCurrentRow(null)
+                }, 500)
+              }
             }}
             currentRow={currentRow}
           />

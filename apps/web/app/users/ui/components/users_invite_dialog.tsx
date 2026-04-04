@@ -61,7 +61,6 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
 
     post('/users/invite', {
       preserveScroll: true,
-      preserveState: false,
       onSuccess: () => {
         onOpenChange(false)
         setTimeout(() => {
@@ -86,10 +85,12 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
-        setTimeout(() => {
-          reset()
-          clearErrors()
-        }, 500)
+        if (!state) {
+          setTimeout(() => {
+            reset()
+            clearErrors()
+          }, 500)
+        }
       }}
     >
       <DialogContent className="sm:max-w-md">

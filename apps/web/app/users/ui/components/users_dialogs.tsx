@@ -13,14 +13,14 @@ export function UsersDialogs({ roles }: { roles: Role[] }) {
         key="user-add"
         roles={roles}
         open={open === 'add'}
-        onOpenChange={() => setOpen('add')}
+        onOpenChange={(state) => setOpen(state ? 'add' : null)}
       />
 
       <UsersInviteDialog
         key="user-invite"
         roles={roles}
         open={open === 'invite'}
-        onOpenChange={() => setOpen('invite')}
+        onOpenChange={(state) => setOpen(state ? 'invite' : null)}
       />
 
       {currentRow && (
@@ -28,11 +28,13 @@ export function UsersDialogs({ roles }: { roles: Role[] }) {
           <UsersImpersonateDialog
             key={`user-impersonate-${currentRow.id}`}
             open={open === 'impersonate'}
-            onOpenChange={() => {
-              setOpen('impersonate')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+            onOpenChange={(state) => {
+              setOpen(state ? 'impersonate' : null)
+              if (!state) {
+                setTimeout(() => {
+                  setCurrentRow(null)
+                }, 500)
+              }
             }}
             currentRow={currentRow}
           />
@@ -41,11 +43,13 @@ export function UsersDialogs({ roles }: { roles: Role[] }) {
             key={`user-edit-${currentRow.id}`}
             roles={roles}
             open={open === 'edit'}
-            onOpenChange={() => {
-              setOpen('edit')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+            onOpenChange={(state) => {
+              setOpen(state ? 'edit' : null)
+              if (!state) {
+                setTimeout(() => {
+                  setCurrentRow(null)
+                }, 500)
+              }
             }}
             currentRow={currentRow}
           />
@@ -53,11 +57,13 @@ export function UsersDialogs({ roles }: { roles: Role[] }) {
           <UsersDeleteDialog
             key={`user-delete-${currentRow.id}`}
             open={open === 'delete'}
-            onOpenChange={() => {
-              setOpen('delete')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
+            onOpenChange={(state) => {
+              setOpen(state ? 'delete' : null)
+              if (!state) {
+                setTimeout(() => {
+                  setCurrentRow(null)
+                }, 500)
+              }
             }}
             currentRow={currentRow}
           />
