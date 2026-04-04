@@ -1,5 +1,5 @@
 import { defineConfig } from '@jrmc/adonis-attachment'
-import { InferConverters } from '@jrmc/adonis-attachment/types/config'
+import { type InferConverters } from '@jrmc/adonis-attachment/types/config'
 
 const attachmentConfig = defineConfig({
   converters: {

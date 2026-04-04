@@ -3,4 +3,27 @@
  * DO NOT EDIT manually
  */
 
-export const controllers = {}
+export const controllers = {
+  analytics: {
+    Dashboard: () => import('#app/analytics/controllers/dashboard_controller'),
+  },
+  auth: {
+    ForgotPassword: () => import('#app/auth/controllers/forgot_password_controller'),
+    ResetPassword: () => import('#app/auth/controllers/reset_password_controller'),
+    SignIn: () => import('#app/auth/controllers/sign_in_controller'),
+    SignOut: () => import('#app/auth/controllers/sign_out_controller'),
+    SignUp: () => import('#app/auth/controllers/sign_up_controller'),
+    Social: () => import('#app/auth/controllers/social_controller'),
+  },
+  marketing: {
+    Marketing: () => import('#app/marketing/controllers/marketing_controller'),
+  },
+  users: {
+    Impersonates: () => import('#app/users/controllers/impersonates_controller'),
+    Invite: () => import('#app/users/controllers/invite_controller'),
+    Password: () => import('#app/users/controllers/password_controller'),
+    Profile: () => import('#app/users/controllers/profile_controller'),
+    Tokens: () => import('#app/users/controllers/tokens_controller'),
+    Users: () => import('#app/users/controllers/users_controller'),
+  },
+}

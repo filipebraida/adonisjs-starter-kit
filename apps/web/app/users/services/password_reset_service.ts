@@ -1,9 +1,9 @@
 import { TokenUtils } from '#common/utils/token_utils'
 import { DateTime } from 'luxon'
 
-import User from '#users/models/user'
+import type User from '#users/models/user'
 import ResetPasswordToken from '#users/models/reset_password_token'
-import { Limiter } from '@adonisjs/limiter'
+import { type Limiter } from '@adonisjs/limiter'
 import limiter from '@adonisjs/limiter/services/main'
 
 export default class PasswordResetService {

@@ -1,6 +1,5 @@
 import { indexAppUiPages } from '#core/hooks/index_pages_hook'
-import { indexTransformers } from '#core/hooks/index_transformers_hook'
-import { indexPolicies } from '@adonisjs/bouncer'
+import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
 
@@ -33,7 +32,6 @@ export default defineConfig({
     () => import('@adonisjs/bouncer/commands'),
     () => import('@jrmc/adonis-attachment/commands'),
     () => import('@tuyau/core/commands'),
-    () => import('@adonisjs-community/modules/commands'),
   ],
 
   /*
@@ -150,13 +148,22 @@ export default defineConfig({
 
   hooks: {
     init: [
-      indexTransformers({
-        withSharedProps: true,
-        inertiaMiddlewareImportPath: '#core/middleware/inertia_middleware',
+      indexEntities({
+        transformers: {
+          enabled: true,
+          source: './app',
+          glob: ['**/*_transformer.ts'],
+          importAlias: '#app',
+        },
+        controllers: {
+          enabled: true,
+          source: './app',
+          glob: ['**/*_controller.ts'],
+          importAlias: '#app',
+        },
       }),
-      generateRegistry(),
       indexAppUiPages(),
-      indexPolicies(),
+      generateRegistry(),
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },

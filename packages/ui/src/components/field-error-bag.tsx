@@ -1,11 +1,11 @@
 import * as React from "react";
 import { FieldError } from "@workspace/ui/components/field";
 
-export type InertiaErrors<T extends Record<string, any>> = Partial<
+export type InertiaErrors<T extends Record<string, unknown>> = Partial<
   Record<keyof T, string | string[]>
 >;
 
-export function FieldErrorBag<T extends Record<string, any>>({
+export function FieldErrorBag<T extends Record<string, unknown>>({
   errors,
   field,
   label,

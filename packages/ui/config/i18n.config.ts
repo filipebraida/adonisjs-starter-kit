@@ -6,12 +6,22 @@ import { initReactI18next } from "react-i18next";
 
 let i18nInstance: typeof i18n | null = null;
 
+type LocaleFile = {
+  default?: Record<string, unknown>;
+} & Record<string, unknown>;
+
+type TranslationNamespace = Record<string, Record<string, unknown>>;
+type TranslationResources = Record<
+  string,
+  { translation: TranslationNamespace }
+>;
+
 const localeFiles = import.meta.glob("/app/**/resources/lang/*/*.json", {
   eager: true,
-}) as Record<string, any>;
+}) as Record<string, LocaleFile>;
 
-function buildResources(): Record<string, any> {
-  const resources: Record<string, any> = {};
+function buildResources(): TranslationResources {
+  const resources: TranslationResources = {};
 
   for (const path in localeFiles) {
     const match = path.match(
@@ -22,7 +32,10 @@ function buildResources(): Record<string, any> {
     const [, moduleName, lang] = match;
     if (!lang || !moduleName) continue;
 
-    const json = localeFiles[path].default ?? localeFiles[path];
+    const localeFile = localeFiles[path];
+    if (!localeFile) continue;
+
+    const json = localeFile.default ?? localeFile;
 
     resources[lang] ??= { translation: {} };
 

@@ -2,8 +2,8 @@ import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
 import { urlFor } from '@adonisjs/core/services/url_builder'
 
-import User from '#users/models/user'
-import { MailBasicTranslation } from '#common/models/mail_basic_translation'
+import type User from '#users/models/user'
+import { type MailBasicTranslation } from '#common/models/mail_basic_translation'
 
 export default class WelcomeNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
