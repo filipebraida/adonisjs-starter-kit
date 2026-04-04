@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@workspace/ui/components/dialog'
 import { Input } from '@workspace/ui/components/input'
-import { Field, FieldLabel } from '@workspace/ui/components/field'
+import { Field, FieldError, FieldLabel } from '@workspace/ui/components/field'
 import { CopyButton } from '@workspace/ui/components/copy-button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
@@ -27,28 +27,56 @@ interface Props {
 export function TokensActionDialog({ open, onOpenChange }: Props) {
   const [token, setToken] = useState<string | null>(null)
   const [name, setName] = useState<string>('')
+  const [processing, setProcessing] = useState(false)
+  const [nameError, setNameError] = useState<string | null>(null)
   const { t } = useTranslation()
 
-  async function closeAndClean() {
-    onOpenChange(false)
+  function resetFormState() {
     setName('')
+    setToken(null)
+    setProcessing(false)
+    setNameError(null)
+  }
+
+  function closeAndClean() {
+    onOpenChange(false)
+
     setTimeout(() => {
-      setToken(null)
+      resetFormState()
     }, 500)
 
-    router.visit(urlFor('tokens.index'))
+    router.visit(urlFor('tokens.index'), {
+      only: ['tokens'],
+      preserveState: true,
+      preserveScroll: true,
+    })
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (processing) return
+
+    setProcessing(true)
+    setNameError(null)
 
     const [result, error] = await client.api.tokens
       .store({
         body: { name: name.length > 0 ? name : undefined },
+        headers: {
+          Accept: 'application/json',
+        },
       })
       .safe()
 
     if (error) {
+      setProcessing(false)
+
+      if (error.isValidationError()) {
+        const fieldError = error.response.errors.find((issue) => issue.field === 'name')
+        setNameError(fieldError?.message ?? null)
+        return
+      }
+
       toast(t('users.action.toast.type_error'), {
         description: error.message,
       })
@@ -56,6 +84,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
     }
 
     setToken(result.token)
+    setProcessing(false)
 
     toast(t('users.action.toast.title'), {
       description: (
@@ -73,9 +102,11 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
-        setTimeout(() => {
-          setName('')
-        }, 500)
+        if (!state) {
+          setTimeout(() => {
+            resetFormState()
+          }, 500)
+        }
       }}
     >
       <DialogContent className="sm:max-w-md">
@@ -92,17 +123,23 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
                 <FieldLabel htmlFor="name">{t('users.action.form.token.label')}</FieldLabel>
                 <Input
                   id="name"
+                  name="name"
                   placeholder={t('users.action.form.token.placeholder')}
                   value={name}
                   onChange={(element) => setName(element.target.value)}
+                  disabled={processing}
+                  className={nameError ? 'border-destructive' : undefined}
                 />
+                <FieldError errors={nameError ? [{ message: nameError }] : undefined} />
               </Field>
             </form>
             <DialogFooter className="gap-y-2">
               <DialogClose asChild>
-                <Button variant="outline">{t('users.action.actions.cancel')}</Button>
+                <Button variant="outline" disabled={processing}>
+                  {t('users.action.actions.cancel')}
+                </Button>
               </DialogClose>
-              <Button type="submit" form="user-form">
+              <Button type="submit" form="user-form" disabled={processing}>
                 {t('users.action.actions.add')}
               </Button>
             </DialogFooter>
