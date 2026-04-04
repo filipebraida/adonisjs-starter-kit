@@ -17,7 +17,7 @@ const ResetPasswordController = () => import('#auth/controllers/reset_password_c
 const SocialController = () => import('#auth/controllers/social_controller')
 
 router.get('/login', [SignInController, 'show']).use(middleware.guest()).as('auth.sign_in.show')
-router.post('/login', [SignInController])
+router.post('/login', [SignInController]).as('auth.sign_in.handle')
 router.get('/logout', [SignOutController]).as('auth.sign_out.show')
 
 router.get('/sign-up', [SignUpController, 'show']).use(middleware.guest()).as('auth.sign_up.show')
@@ -42,4 +42,7 @@ router
   .where('provider', /google/)
   .as('social.create')
 router.get('/:provider/callback', [SocialController, 'callback']).where('provider', /google/)
-router.get('/switch/:locale', () => {}).use(middleware.switchLocale())
+router
+  .get('/switch/:locale', () => {})
+  .use(middleware.switchLocale())
+  .as('locale.switch')

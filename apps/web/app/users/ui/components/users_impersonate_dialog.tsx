@@ -1,12 +1,13 @@
 import { useForm } from '@inertiajs/react'
 
+import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
+
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { UserIcon } from 'lucide-react'
 import { Trans } from 'react-i18next'
-
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 
 import type { Data } from '@generated/data'
 
@@ -22,7 +23,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
   const { t } = useTranslation()
 
   const handleImpersonate = () => {
-    post(`/users/impersonate/${currentRow?.id}`, {
+    post(urlFor('users.impersonate.handle', { id: currentRow.id }), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)

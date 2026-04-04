@@ -43,7 +43,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/sign_in_controller').default['show']>>>
     }
   }
-  'sign_in': {
+  'auth.sign_in.handle': {
     methods: ["POST"]
     pattern: '/login'
     types: {
@@ -163,6 +163,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/social_controller').default['callback']>>>
     }
   }
+  'locale.switch': {
+    methods: ["GET","HEAD"]
+    pattern: '/switch/:locale'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { locale: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
   'users.index': {
     methods: ["GET","HEAD"]
     pattern: '/users'
@@ -211,7 +223,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['destroy']>>>
     }
   }
-  'invite': {
+  'users.invite.handle': {
     methods: ["POST"]
     pattern: '/users/invite'
     types: {
@@ -223,7 +235,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/invite_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'impersonates.store': {
+  'users.impersonate.handle': {
     methods: ["POST"]
     pattern: '/users/impersonate/:id'
     types: {
@@ -247,7 +259,7 @@ export interface Registry {
       errorResponse: unknown
     }
   }
-  'profile': {
+  'profile.update': {
     methods: ["PUT"]
     pattern: '/settings/profile'
     types: {
@@ -307,7 +319,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'password': {
+  'password.update': {
     methods: ["PUT"]
     pattern: '/settings/password'
     types: {

@@ -13,6 +13,7 @@ export interface ApiDefinition {
   auth: {
     signIn: {
       show: typeof routes['auth.sign_in.show']
+      handle: typeof routes['auth.sign_in.handle']
     }
     signOut: {
       show: typeof routes['auth.sign_out.show']
@@ -30,25 +31,30 @@ export interface ApiDefinition {
       handle: typeof routes['auth.reset_password.handle']
     }
   }
-  signIn: typeof routes['sign_in']
   social: {
     create: typeof routes['social.create']
     callback: typeof routes['social.callback']
+  }
+  locale: {
+    switch: typeof routes['locale.switch']
   }
   users: {
     index: typeof routes['users.index']
     store: typeof routes['users.store']
     update: typeof routes['users.update']
     destroy: typeof routes['users.destroy']
-  }
-  invite: typeof routes['invite']
-  impersonates: {
-    store: typeof routes['impersonates.store']
+    invite: {
+      handle: typeof routes['users.invite.handle']
+    }
+    impersonate: {
+      handle: typeof routes['users.impersonate.handle']
+    }
   }
   settings: {
     index: typeof routes['settings.index']
   }
-  profile: typeof routes['profile'] & {
+  profile: {
+    update: typeof routes['profile.update']
     show: typeof routes['profile.show']
   }
   tokens: {
@@ -56,7 +62,8 @@ export interface ApiDefinition {
     destroy: typeof routes['tokens.destroy']
     store: typeof routes['tokens.store']
   }
-  password: typeof routes['password'] & {
+  password: {
+    update: typeof routes['password.update']
     show: typeof routes['password.show']
   }
   appearance: {

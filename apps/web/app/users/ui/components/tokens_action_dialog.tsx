@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { router } from '@inertiajs/react'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import { client, urlFor } from '~/app/client'
+
 import { Button } from '@workspace/ui/components/button'
 import {
   Dialog,
@@ -15,8 +18,6 @@ import { Input } from '@workspace/ui/components/input'
 import { Field, FieldLabel } from '@workspace/ui/components/field'
 import { CopyButton } from '@workspace/ui/components/copy-button'
 import { toast } from '@workspace/ui/hooks/use-toast'
-
-import { useTranslation } from '#common/ui/hooks/use_translation'
 
 interface Props {
   open: boolean
@@ -35,25 +36,26 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
       setToken(null)
     }, 500)
 
-    router.visit('/settings/tokens')
+    router.visit(urlFor('tokens.index'))
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    const response = await fetch('/api/tokens', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name && name.length > 0 ? name : undefined }),
-    })
+    const [result, error] = await client.api.tokens
+      .store({
+        body: { name: name.length > 0 ? name : undefined },
+      })
+      .safe()
 
-    const result = await response.json()
-
-    if ('token' in result) {
-      setToken(result.token)
+    if (error) {
+      toast(t('users.action.toast.type_error'), {
+        description: error.message,
+      })
+      return
     }
+
+    setToken(result.token)
 
     toast(t('users.action.toast.title'), {
       description: (

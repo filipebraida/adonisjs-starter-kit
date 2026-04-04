@@ -2,7 +2,9 @@ import { useForm } from '@inertiajs/react'
 import React from 'react'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
 import { Role } from '#users/ui/components/users_types'
+
 import { Button } from '@workspace/ui/components/button'
 import {
   Dialog,
@@ -56,7 +58,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    const url = isEdit ? `/users/${currentRow?.id}` : '/users'
+    const url = isEdit ? urlFor('users.update', { id: currentRow!.id }) : urlFor('users.store')
     const method = isEdit ? put : post
 
     method(url, {

@@ -2,14 +2,16 @@ import React from 'react'
 import { useForm } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import useFlashMessage from '#common/ui/hooks/use_flash_message'
+import { urlFor } from '~/app/client'
+
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { FieldSet, FieldGroup, Field, FieldLabel, FieldError } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
-import useFlashMessage from '#common/ui/hooks/use_flash_message'
 import { PasswordInput } from '@workspace/ui/components/password-input'
 
 export function RegistrationForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
@@ -26,7 +28,7 @@ export function RegistrationForm({ className, ...props }: React.ComponentPropsWi
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    post('/sign-up')
+    post(urlFor('auth.sign_up.handle'))
   }
 
   return (

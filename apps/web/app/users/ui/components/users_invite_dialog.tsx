@@ -1,6 +1,10 @@
 import { useForm } from '@inertiajs/react'
 import React from 'react'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
+import { Role } from '#users/ui/components/users_types'
+
 import { Button } from '@workspace/ui/components/button'
 import {
   Dialog,
@@ -29,9 +33,6 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 import { cn } from '@workspace/ui/lib/utils'
 import { MailPlus, Send } from 'lucide-react'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
-import { Role } from '#users/ui/components/users_types'
-
 import type { Data } from '@generated/data'
 
 import Roles from '#users/enums/role'
@@ -59,7 +60,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    post('/users/invite', {
+    post(urlFor('users.invite.handle'), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)

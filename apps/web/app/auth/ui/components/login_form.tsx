@@ -2,6 +2,10 @@ import React from 'react'
 import { useForm } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 
+import useFlashMessage from '#common/ui/hooks/use_flash_message'
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
+
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -15,8 +19,6 @@ import {
 } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
-import useFlashMessage from '#common/ui/hooks/use_flash_message'
-import { useTranslation } from '#common/ui/hooks/use_translation'
 import { PasswordInput } from '@workspace/ui/components/password-input'
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
@@ -31,7 +33,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    post('/login')
+    post(urlFor('auth.sign_in.handle'))
   }
 
   return (

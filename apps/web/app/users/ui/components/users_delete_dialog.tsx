@@ -3,13 +3,14 @@ import { useState } from 'react'
 
 import { Trans } from 'react-i18next'
 
+import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
+
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { AlertTriangleIcon } from 'lucide-react'
-
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 
 import type { Data } from '@generated/data'
 
@@ -28,7 +29,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const handleDelete = () => {
     if (value.trim() !== currentRow.email) return
 
-    destroy(`/users/${currentRow?.id}`, {
+    destroy(urlFor('users.destroy', { id: currentRow.id }), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)

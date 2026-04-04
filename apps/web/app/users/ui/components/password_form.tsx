@@ -1,6 +1,9 @@
 import React from 'react'
 import { useForm } from '@inertiajs/react'
 
+import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
+
 import { Button } from '@workspace/ui/components/button'
 import { Progress } from '@workspace/ui/components/progress'
 import { PasswordInput } from '@workspace/ui/components/password-input'
@@ -8,7 +11,6 @@ import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/component
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { toast } from '@workspace/ui/hooks/use-toast'
-import { useTranslation } from '#common/ui/hooks/use_translation'
 
 export function PasswordForm() {
   const { t } = useTranslation()
@@ -21,7 +23,7 @@ export function PasswordForm() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    put('/settings/password', {
+    put(urlFor('password.update'), {
       preserveScroll: true,
       onSuccess: () => {
         reset()

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useForm } from '@inertiajs/react'
 
+import { urlFor } from '~/app/client'
+
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { PasswordInput } from '@workspace/ui/components/password-input'
@@ -19,7 +21,7 @@ export function ResetPasswordForm({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    post(`/reset-password/${token}`)
+    post(urlFor('auth.reset_password.handle', { token }))
   }
 
   return (

@@ -24,11 +24,11 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['auth.sign_in.show']['types'],
   },
-  'sign_in': {
+  'auth.sign_in.handle': {
     methods: ["POST"],
     pattern: '/login',
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
-    types: placeholder as Registry['sign_in']['types'],
+    types: placeholder as Registry['auth.sign_in.handle']['types'],
   },
   'auth.sign_out.show': {
     methods: ["GET","HEAD"],
@@ -84,6 +84,12 @@ const routes = {
     tokens: [{"old":"/:provider/callback","type":1,"val":"provider","end":""},{"old":"/:provider/callback","type":0,"val":"callback","end":""}],
     types: placeholder as Registry['social.callback']['types'],
   },
+  'locale.switch': {
+    methods: ["GET","HEAD"],
+    pattern: '/switch/:locale',
+    tokens: [{"old":"/switch/:locale","type":0,"val":"switch","end":""},{"old":"/switch/:locale","type":1,"val":"locale","end":""}],
+    types: placeholder as Registry['locale.switch']['types'],
+  },
   'users.index': {
     methods: ["GET","HEAD"],
     pattern: '/users',
@@ -108,17 +114,17 @@ const routes = {
     tokens: [{"old":"/users/:id","type":0,"val":"users","end":""},{"old":"/users/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['users.destroy']['types'],
   },
-  'invite': {
+  'users.invite.handle': {
     methods: ["POST"],
     pattern: '/users/invite',
     tokens: [{"old":"/users/invite","type":0,"val":"users","end":""},{"old":"/users/invite","type":0,"val":"invite","end":""}],
-    types: placeholder as Registry['invite']['types'],
+    types: placeholder as Registry['users.invite.handle']['types'],
   },
-  'impersonates.store': {
+  'users.impersonate.handle': {
     methods: ["POST"],
     pattern: '/users/impersonate/:id',
     tokens: [{"old":"/users/impersonate/:id","type":0,"val":"users","end":""},{"old":"/users/impersonate/:id","type":0,"val":"impersonate","end":""},{"old":"/users/impersonate/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['impersonates.store']['types'],
+    types: placeholder as Registry['users.impersonate.handle']['types'],
   },
   'settings.index': {
     methods: ["GET","HEAD"],
@@ -126,11 +132,11 @@ const routes = {
     tokens: [{"old":"/settings","type":0,"val":"settings","end":""}],
     types: placeholder as Registry['settings.index']['types'],
   },
-  'profile': {
+  'profile.update': {
     methods: ["PUT"],
     pattern: '/settings/profile',
     tokens: [{"old":"/settings/profile","type":0,"val":"settings","end":""},{"old":"/settings/profile","type":0,"val":"profile","end":""}],
-    types: placeholder as Registry['profile']['types'],
+    types: placeholder as Registry['profile.update']['types'],
   },
   'profile.show': {
     methods: ["GET","HEAD"],
@@ -156,11 +162,11 @@ const routes = {
     tokens: [{"old":"/api/tokens","type":0,"val":"api","end":""},{"old":"/api/tokens","type":0,"val":"tokens","end":""}],
     types: placeholder as Registry['tokens.store']['types'],
   },
-  'password': {
+  'password.update': {
     methods: ["PUT"],
     pattern: '/settings/password',
     tokens: [{"old":"/settings/password","type":0,"val":"settings","end":""},{"old":"/settings/password","type":0,"val":"password","end":""}],
-    types: placeholder as Registry['password']['types'],
+    types: placeholder as Registry['password.update']['types'],
   },
   'password.show': {
     methods: ["GET","HEAD"],

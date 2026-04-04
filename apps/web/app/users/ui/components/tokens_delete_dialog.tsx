@@ -2,14 +2,14 @@ import { useForm } from '@inertiajs/react'
 import { useState } from 'react'
 import { Trans } from 'react-i18next'
 
+import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { AlertTriangleIcon } from 'lucide-react'
 
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
-
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
 
 import type { Data } from '@generated/data'
 
@@ -27,7 +27,7 @@ export function TokensDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const handleDelete = () => {
     if (value.trim() !== currentRow.name) return
 
-    destroy(`/settings/tokens/${currentRow?.id}`, {
+    destroy(urlFor('tokens.destroy', { id: currentRow.id }), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)

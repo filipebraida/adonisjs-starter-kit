@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 
 import { UserAvatar } from '#common/ui/components/user_avatar'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'
 import { Field, FieldGroup, FieldLabel, FieldSet } from '@workspace/ui/components/field'
@@ -41,7 +42,7 @@ export function ProfileForm({ user }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    put('/settings/profile', {
+    put(urlFor('profile.update'), {
       preserveScroll: true,
       onSuccess: () => {
         setPreviewUrl(null)
