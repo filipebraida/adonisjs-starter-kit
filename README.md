@@ -163,10 +163,10 @@ This structure is a project convention and does not depend on an external module
 
 The shared UI package lives in `packages/ui` and uses `components.json` as the shadcn/ui source of truth.
 
-To add a new base component, run the command from the `packages/ui` directory:
+To add a new base component, run from the repository root:
 
 ```bash
-pnpm --filter @workspace/ui dlx shadcn@latest add button
+pnpm dlx shadcn@latest add button --cwd packages/ui
 ```
 
 This command updates files inside `packages/ui`. Custom project-specific components such as `field`, `password-input`, `copy-button`, and `data-table` are maintained manually on top of that base.
