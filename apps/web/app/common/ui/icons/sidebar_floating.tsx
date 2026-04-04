@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react'
 
 export function IconSidebarFloating(props: SVGProps<SVGSVGElement>) {
   return (
@@ -20,31 +20,11 @@ export function IconSidebarFloating(props: SVGProps<SVGSVGElement>) {
         strokeMiterlimit={10}
       />
       <g stroke="#fff" strokeLinecap="round" strokeMiterlimit={10}>
-        <path
-          fill="none"
-          opacity={0.72}
-          strokeWidth="2px"
-          d="M9.81 18.36L22.04 18.36"
-        />
-        <path
-          fill="none"
-          opacity={0.48}
-          strokeWidth="2px"
-          d="M9.81 25.57L20.33 25.57"
-        />
-        <path
-          fill="none"
-          opacity={0.55}
-          strokeWidth="2px"
-          d="M9.81 21.85L19.18 21.85"
-        />
+        <path fill="none" opacity={0.72} strokeWidth="2px" d="M9.81 18.36L22.04 18.36" />
+        <path fill="none" opacity={0.48} strokeWidth="2px" d="M9.81 25.57L20.33 25.57" />
+        <path fill="none" opacity={0.55} strokeWidth="2px" d="M9.81 21.85L19.18 21.85" />
         <circle cx={11.76} cy={10.88} r={2.54} fill="#fff" opacity={0.8} />
-        <path
-          fill="none"
-          opacity={0.8}
-          strokeWidth="2px"
-          d="M16.31 9.62L22.04 9.62"
-        />
+        <path fill="none" opacity={0.8} strokeWidth="2px" d="M16.31 9.62L22.04 9.62" />
         <path fill="none" opacity={0.6} d="M16.1 12.27L21.16 12.27" />
       </g>
       <path
@@ -78,5 +58,5 @@ export function IconSidebarFloating(props: SVGProps<SVGSVGElement>) {
         strokeMiterlimit={10}
       />
     </svg>
-  );
+  )
 }

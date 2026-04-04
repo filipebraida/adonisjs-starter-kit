@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react'
 
 export function IconSidebarSidebar(props: SVGProps<SVGSVGElement>) {
   return (
@@ -40,14 +40,9 @@ export function IconSidebarSidebar(props: SVGProps<SVGSVGElement>) {
       />
       <g strokeLinecap="round" strokeMiterlimit={10}>
         <circle cx={7.51} cy={7.4} r={2.54} opacity={0.8} />
-        <path
-          fill="none"
-          opacity={0.8}
-          strokeWidth="2px"
-          d="M12.06 6.14L17.78 6.14"
-        />
+        <path fill="none" opacity={0.8} strokeWidth="2px" d="M12.06 6.14L17.78 6.14" />
         <path fill="none" opacity={0.6} d="M11.85 8.79L16.91 8.79" />
       </g>
     </svg>
-  );
+  )
 }

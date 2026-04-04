@@ -68,7 +68,7 @@ export function CheckboxFilter<T extends string>({
 
   const selectedOptions = React.useMemo(
     () => options.filter((o) => value.includes(o.value)),
-    [options, value]
+    [options, value],
   );
 
   const visibleBadges = selectedOptions.slice(0, maxBadgesInTrigger);
