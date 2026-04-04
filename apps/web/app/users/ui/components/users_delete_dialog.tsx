@@ -34,13 +34,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       onSuccess: () => {
         onOpenChange(false)
         toast(t('users.delete.toast.title'), {
-          description: (
-            <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
-              <pre className="text-white whitespace-pre-wrap break-words">
-                <code>{JSON.stringify(currentRow, null, 2)}</code>
-              </pre>
-            </div>
-          ),
+          description: currentRow.email,
         })
       },
     })

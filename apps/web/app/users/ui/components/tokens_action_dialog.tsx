@@ -87,13 +87,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
     setProcessing(false)
 
     toast(t('users.action.toast.title'), {
-      description: (
-        <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
-          <pre className="text-white whitespace-pre-wrap break-words">
-            <code>{JSON.stringify({ name }, null, 2)}</code>
-          </pre>
-        </div>
-      ),
+      description: name || t('users.action.form.token.label'),
     })
   }
 

@@ -2,6 +2,7 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import { TooltipProvider } from '@workspace/ui/components/tooltip'
 import '../css/app.css'
 import { client } from './client'
 
@@ -43,17 +44,21 @@ createInertiaApp({
       hydrateRoot(
         el,
         <I18nextProvider i18n={i18nInstance}>
-          <TuyauProvider client={client}>
-            <App {...props} />
-          </TuyauProvider>
+          <TooltipProvider>
+            <TuyauProvider client={client}>
+              <App {...props} />
+            </TuyauProvider>
+          </TooltipProvider>
         </I18nextProvider>
       )
     } else {
       createRoot(el).render(
         <I18nextProvider i18n={i18nInstance}>
-          <TuyauProvider client={client}>
-            <App {...props} />
-          </TuyauProvider>
+          <TooltipProvider>
+            <TuyauProvider client={client}>
+              <App {...props} />
+            </TuyauProvider>
+          </TooltipProvider>
         </I18nextProvider>
       )
     }

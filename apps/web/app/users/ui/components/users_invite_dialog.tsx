@@ -69,13 +69,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
           clearErrors()
         }, 500)
         toast(t('users.invite.toast.title'), {
-          description: (
-            <div className="mt-2 max-w-[320px] overflow-x-auto rounded-md bg-slate-950 p-4">
-              <pre className="text-white whitespace-pre-wrap break-words">
-                <code>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            </div>
-          ),
+          description: data.email,
         })
       },
     })
