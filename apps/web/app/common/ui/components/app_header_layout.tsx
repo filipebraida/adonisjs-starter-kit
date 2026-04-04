@@ -5,6 +5,7 @@ import Breadcrumb from '#common/ui/components/breadcrumbs'
 import { NavHeaderMain } from '#common/ui/components/nav_header_main'
 import { NavHeaderMobile } from '#common/ui/components/nav_header_mobile'
 import { NavUser } from '#common/ui/components/nav_user'
+import { LanguageSwitcher } from '#common/ui/components/language_switcher'
 import { ToggleTheme } from '#common/ui/components/toggle_theme'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
@@ -45,6 +46,7 @@ export default function AppHeaderLayout({
           <div className="ml-auto flex items-center space-x-2">
             <div className="relative flex items-center space-x-1">
               <ToggleTheme />
+              <LanguageSwitcher />
               <NavUser user={user} options={navUser} />
             </div>
           </div>

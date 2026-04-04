@@ -33,6 +33,7 @@ export type NavUserOptionsGroup = {
   url: string
   icon: LucideIcon
   shortcut?: string
+  method?: 'get' | 'post'
 }[]
 
 export interface NavUserProps {

@@ -1,16 +1,20 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+import i18nManager from '@adonisjs/i18n/services/main'
 
 export default class SwitchLocaleMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    /**
-     * Middleware logic goes here (before the next call)
-     */
-    ctx.response.cookie('user-locale', ctx.params.locale, {
+    const locale = ctx.params.locale
+
+    if (!i18nManager.supportedLocales().includes(locale)) {
+      return ctx.response.redirect().back()
+    }
+
+    ctx.response.cookie('user-locale', locale, {
       httpOnly: true,
       path: '/',
-      maxAge: 60 * 60 * 24 * 30, // Example duration: 30 days
-      sameSite: true, // Improve cookie security
+      maxAge: 60 * 60 * 24 * 30,
+      sameSite: true,
     })
 
     ctx.response.redirect().back()

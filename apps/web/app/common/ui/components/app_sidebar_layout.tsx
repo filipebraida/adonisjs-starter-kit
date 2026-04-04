@@ -3,6 +3,7 @@ import React from 'react'
 import { AppSidebar } from '#common/ui/components/app_sidebar'
 import Breadcrumb from '#common/ui/components/breadcrumbs'
 import { NavUser } from '#common/ui/components/nav_user'
+import { LanguageSwitcher } from '#common/ui/components/language_switcher'
 import { ToggleTheme } from '#common/ui/components/toggle_theme'
 import { getCookie } from '#common/ui/utils/cookie_helper'
 
@@ -52,6 +53,7 @@ export default function AppLayout({
 
           <div className="flex flex-row items-center gap-2 ml-auto">
             <ToggleTheme />
+            <LanguageSwitcher />
             <NavUser user={user} options={navUser} />
           </div>
         </header>

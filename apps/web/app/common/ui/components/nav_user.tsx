@@ -38,7 +38,7 @@ export function NavUser({ user, options }: NavUserProps) {
             {groupIndex > 0 && <DropdownMenuSeparator />}
 
             {group.map((option) => (
-              <Link key={option.title} href={option.url}>
+              <Link key={option.title} href={option.url} method={option.method ?? 'get'}>
                 <DropdownMenuItem className="cursor-pointer">
                   <option.icon />
                   <span>{option.title}</span>

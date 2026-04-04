@@ -18,6 +18,7 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
         title: t('common.layout.navUser.logout'),
         url: '/logout',
         icon: LogOut,
+        method: 'post',
       },
     ],
   ]
