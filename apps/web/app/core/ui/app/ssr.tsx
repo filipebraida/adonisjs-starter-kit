@@ -1,6 +1,7 @@
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { createInertiaApp } from '@inertiajs/react'
 import ReactDOMServer from 'react-dom/server'
+import { ModalStackProvider } from 'adonis-inertia-modal/react'
 import { client } from './client'
 
 import { I18nextProvider } from 'react-i18next'
@@ -31,7 +32,9 @@ export default function render(page: any) {
       return (
         <I18nextProvider i18n={i18nInstance}>
           <TuyauProvider client={client}>
-            <App {...props} />
+            <ModalStackProvider>
+              <App {...props} />
+            </ModalStackProvider>
           </TuyauProvider>
         </I18nextProvider>
       )

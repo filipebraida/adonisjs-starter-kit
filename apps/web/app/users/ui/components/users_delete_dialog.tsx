@@ -1,20 +1,19 @@
 import { useForm } from '@inertiajs/react'
 import { useState } from 'react'
-
 import { Trans } from 'react-i18next'
+import { AlertTriangleIcon } from 'lucide-react'
+
+import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
+import { Input } from '@workspace/ui/components/input'
+import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
-import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
-import { Input } from '@workspace/ui/components/input'
-import { toast } from '@workspace/ui/hooks/use-toast'
-import { AlertTriangleIcon } from 'lucide-react'
+import { ROLES, mainRole } from '#users/enums/role'
 
 import type { Data } from '@generated/data'
-
-import { ROLES, mainRole } from '#users/enums/role'
 
 interface Props {
   open: boolean
@@ -24,9 +23,10 @@ interface Props {
 
 export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const [value, setValue] = useState('')
-  const { delete: destroy } = useForm()
-
+  const { delete: destroy, processing } = useForm()
   const { t } = useTranslation()
+
+  const roleName = t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`)
 
   const handleDelete = () => {
     if (value.trim() !== currentRow.email) return
@@ -35,9 +35,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)
-        toast(t('users.delete.toast.title'), {
-          description: currentRow.email,
-        })
+        toast(t('users.delete.toast.title'), { description: currentRow.email })
       },
     })
   }
@@ -47,7 +45,8 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.email}
+      disabled={value.trim() !== currentRow.email || processing}
+      isLoading={processing}
       title={
         <span className="text-destructive flex items-center gap-2">
           <AlertTriangleIcon className="mr-1 inline-block stroke-destructive" size={18} />
@@ -59,10 +58,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <p className="mb-2">
             <Trans
               i18nKey="users.delete.description"
-              values={{
-                email: currentRow.email,
-                role: t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`),
-              }}
+              values={{ email: currentRow.email, role: roleName }}
               components={{
                 strong1: <span className="font-bold" />,
                 strong2: <span className="font-bold" />,

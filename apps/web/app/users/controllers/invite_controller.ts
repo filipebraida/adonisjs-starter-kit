@@ -2,6 +2,7 @@ import { inject } from '@adonisjs/core/container'
 import type { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
 
+import { modal } from '#core/inertia/modal'
 import Role from '#users/models/role'
 import User from '#users/models/user'
 
@@ -15,6 +16,12 @@ import { inviteUserValidator } from '#users/validators'
 @inject()
 export default class InviteController {
   constructor(private passwordResetService: PasswordResetService) {}
+
+  public async show({ bouncer, inertia }: HttpContext) {
+    await bouncer.with(UserPolicy).authorize('invite')
+
+    return modal(inertia, 'users/invite', {}, { route: 'users.index' })
+  }
 
   public async handle({ auth, i18n, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')

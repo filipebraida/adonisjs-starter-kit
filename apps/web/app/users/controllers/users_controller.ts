@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { randomUUID } from 'node:crypto'
 
+import { modal } from '#core/inertia/modal'
 import Role from '#users/models/role'
 import User from '#users/models/user'
 
@@ -51,6 +52,12 @@ export default class UsersController {
     })
   }
 
+  public async create({ bouncer, inertia }: HttpContext) {
+    await bouncer.with(UserPolicy).authorize('create')
+
+    return modal(inertia, 'users/create', {}, { route: 'users.index' })
+  }
+
   public async store({ auth, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
@@ -71,6 +78,20 @@ export default class UsersController {
     await user.assignRole(role)
 
     return response.redirect().toRoute('users.index')
+  }
+
+  public async edit({ bouncer, inertia, params }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    await user.load('roles')
+
+    await bouncer.with(UserPolicy).authorize('update', user)
+
+    return modal(
+      inertia,
+      'users/edit',
+      { user: UserTransformer.transform(user) },
+      { route: 'users.index' }
+    )
   }
 
   public async update({ auth, bouncer, params, request, response }: HttpContext) {

@@ -17,19 +17,24 @@ const ImpersonatesController = () => import('#users/controllers/impersonates_con
 const TokensController = () => import('#users/controllers/tokens_controller')
 
 router
-  .resource('/users', UsersController)
-  .only(['index', 'store', 'update', 'destroy'])
-  .use('*', middleware.auth())
-  .as('users')
-
+  .get('/users/invite', [InviteController, 'show'])
+  .middleware(middleware.auth())
+  .as('users.invite.show')
 router
-  .post('/users/invite', [InviteController])
+  .post('/users/invite', [InviteController, 'handle'])
   .middleware(middleware.auth())
   .as('users.invite.handle')
+
 router
   .post('/users/impersonate/:id', [ImpersonatesController, 'store'])
   .middleware(middleware.auth())
   .as('users.impersonate.handle')
+
+router
+  .resource('/users', UsersController)
+  .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+  .use('*', middleware.auth())
+  .as('users')
 
 router
   .get('/settings', ({ response }) => {

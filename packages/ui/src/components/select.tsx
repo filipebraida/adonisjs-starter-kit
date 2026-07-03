@@ -4,6 +4,7 @@ import * as React from "react";
 import { Select as SelectPrimitive } from "radix-ui";
 
 import { cn } from "@workspace/ui/lib/utils";
+import { usePortalContainer } from "@workspace/ui/hooks/use-portal-container";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
 
 function Select({
@@ -62,10 +63,21 @@ function SelectContent({
   children,
   position = "item-aligned",
   align = "center",
+  container,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+  /**
+   * DOM node the dropdown portals into. Defaults to the nearest
+   * `<PortalContainerProvider>` (used by modal wrappers to keep the dropdown
+   * inside the dialog's top-layer). Explicit prop wins over context, which
+   * wins over Radix's document.body default.
+   */
+  container?: React.ComponentProps<typeof SelectPrimitive.Portal>["container"];
+}) {
+  const contextContainer = usePortalContainer();
+  const resolvedContainer = container ?? contextContainer;
   return (
-    <SelectPrimitive.Portal>
+    <SelectPrimitive.Portal container={resolvedContainer}>
       <SelectPrimitive.Content
         data-slot="select-content"
         data-align-trigger={position === "item-aligned"}

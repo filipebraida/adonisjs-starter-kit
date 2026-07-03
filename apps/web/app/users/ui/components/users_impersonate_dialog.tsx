@@ -1,17 +1,17 @@
 import { useForm } from '@inertiajs/react'
+import { Trans } from 'react-i18next'
+import { UserIcon } from 'lucide-react'
+
+import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
+import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
-import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
-import { toast } from '@workspace/ui/hooks/use-toast'
-import { UserIcon } from 'lucide-react'
-import { Trans } from 'react-i18next'
+import { ROLES, mainRole } from '#users/enums/role'
 
 import type { Data } from '@generated/data'
-
-import { ROLES, mainRole } from '#users/enums/role'
 
 interface Props {
   open: boolean
@@ -20,18 +20,17 @@ interface Props {
 }
 
 export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props) {
-  const { post } = useForm()
-
+  const { post, processing } = useForm()
   const { t } = useTranslation()
+
+  const roleName = t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`)
 
   const handleImpersonate = () => {
     post(urlFor('users.impersonate.handle', { id: currentRow.id }), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)
-        toast(t('users.impersonate.toast.title'), {
-          description: currentRow.email,
-        })
+        toast(t('users.impersonate.toast.title'), { description: currentRow.email })
       },
     })
   }
@@ -41,6 +40,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleImpersonate}
+      isLoading={processing}
       title={
         <span className="flex items-center gap-2">
           <UserIcon className="mr-1 inline-block" size={18} />
@@ -52,10 +52,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
           <p className="mb-2">
             <Trans
               i18nKey="users.impersonate.description"
-              values={{
-                email: currentRow.email,
-                role: t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`),
-              }}
+              values={{ email: currentRow.email, role: roleName }}
               components={{
                 strong1: <span className="font-bold" />,
                 strong2: <span className="font-bold" />,

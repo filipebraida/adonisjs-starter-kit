@@ -90,29 +90,11 @@ const routes = {
     tokens: [{"old":"/switch/:locale","type":0,"val":"switch","end":""},{"old":"/switch/:locale","type":1,"val":"locale","end":""}],
     types: placeholder as Registry['locale.switch']['types'],
   },
-  'users.index': {
+  'users.invite.show': {
     methods: ["GET","HEAD"],
-    pattern: '/users',
-    tokens: [{"old":"/users","type":0,"val":"users","end":""}],
-    types: placeholder as Registry['users.index']['types'],
-  },
-  'users.store': {
-    methods: ["POST"],
-    pattern: '/users',
-    tokens: [{"old":"/users","type":0,"val":"users","end":""}],
-    types: placeholder as Registry['users.store']['types'],
-  },
-  'users.update': {
-    methods: ["PUT","PATCH"],
-    pattern: '/users/:id',
-    tokens: [{"old":"/users/:id","type":0,"val":"users","end":""},{"old":"/users/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['users.update']['types'],
-  },
-  'users.destroy': {
-    methods: ["DELETE"],
-    pattern: '/users/:id',
-    tokens: [{"old":"/users/:id","type":0,"val":"users","end":""},{"old":"/users/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['users.destroy']['types'],
+    pattern: '/users/invite',
+    tokens: [{"old":"/users/invite","type":0,"val":"users","end":""},{"old":"/users/invite","type":0,"val":"invite","end":""}],
+    types: placeholder as Registry['users.invite.show']['types'],
   },
   'users.invite.handle': {
     methods: ["POST"],
@@ -125,6 +107,42 @@ const routes = {
     pattern: '/users/impersonate/:id',
     tokens: [{"old":"/users/impersonate/:id","type":0,"val":"users","end":""},{"old":"/users/impersonate/:id","type":0,"val":"impersonate","end":""},{"old":"/users/impersonate/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['users.impersonate.handle']['types'],
+  },
+  'users.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/users',
+    tokens: [{"old":"/users","type":0,"val":"users","end":""}],
+    types: placeholder as Registry['users.index']['types'],
+  },
+  'users.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/users/create',
+    tokens: [{"old":"/users/create","type":0,"val":"users","end":""},{"old":"/users/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['users.create']['types'],
+  },
+  'users.store': {
+    methods: ["POST"],
+    pattern: '/users',
+    tokens: [{"old":"/users","type":0,"val":"users","end":""}],
+    types: placeholder as Registry['users.store']['types'],
+  },
+  'users.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/users/:id/edit',
+    tokens: [{"old":"/users/:id/edit","type":0,"val":"users","end":""},{"old":"/users/:id/edit","type":1,"val":"id","end":""},{"old":"/users/:id/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['users.edit']['types'],
+  },
+  'users.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/users/:id',
+    tokens: [{"old":"/users/:id","type":0,"val":"users","end":""},{"old":"/users/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['users.update']['types'],
+  },
+  'users.destroy': {
+    methods: ["DELETE"],
+    pattern: '/users/:id',
+    tokens: [{"old":"/users/:id","type":0,"val":"users","end":""},{"old":"/users/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['users.destroy']['types'],
   },
   'settings.index': {
     methods: ["GET","HEAD"],

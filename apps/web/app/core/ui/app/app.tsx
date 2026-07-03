@@ -3,6 +3,8 @@ import { TuyauProvider } from '@adonisjs/inertia/react'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { TooltipProvider } from '@workspace/ui/components/tooltip'
+import { ModalStackProvider } from 'adonis-inertia-modal/react'
+import 'adonis-inertia-modal/styles.css'
 import '../css/app.css'
 import { client } from './client'
 
@@ -46,7 +48,9 @@ createInertiaApp({
         <I18nextProvider i18n={i18nInstance}>
           <TooltipProvider>
             <TuyauProvider client={client}>
-              <App {...props} />
+              <ModalStackProvider>
+                <App {...props} />
+              </ModalStackProvider>
             </TuyauProvider>
           </TooltipProvider>
         </I18nextProvider>
@@ -56,7 +60,9 @@ createInertiaApp({
         <I18nextProvider i18n={i18nInstance}>
           <TooltipProvider>
             <TuyauProvider client={client}>
-              <App {...props} />
+              <ModalStackProvider>
+                <App {...props} />
+              </ModalStackProvider>
             </TuyauProvider>
           </TooltipProvider>
         </I18nextProvider>
