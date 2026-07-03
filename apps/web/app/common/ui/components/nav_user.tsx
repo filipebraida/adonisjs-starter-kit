@@ -38,15 +38,20 @@ export function NavUser({ user, options }: NavUserProps) {
             {groupIndex > 0 && <DropdownMenuSeparator />}
 
             {group.map((option) => (
-              <Link key={option.title} href={option.url} method={option.method ?? 'get'}>
-                <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem key={option.title} asChild className="cursor-pointer">
+                <Link
+                  href={option.url}
+                  method={option.method ?? 'get'}
+                  as={option.method === 'post' ? 'button' : 'a'}
+                  className="w-full"
+                >
                   <option.icon />
                   <span>{option.title}</span>
                   {option.shortcut && (
                     <DropdownMenuShortcut>{option.shortcut}</DropdownMenuShortcut>
                   )}
-                </DropdownMenuItem>
-              </Link>
+                </Link>
+              </DropdownMenuItem>
             ))}
           </React.Fragment>
         ))}
