@@ -7,13 +7,20 @@ import TokenPolicy from '#users/policies/token_policy'
 import { createTokenValidator } from '#users/validators'
 
 export default class TokensController {
-  async store({ auth, bouncer, request }: HttpContext) {
+  async store({ auth, bouncer, request, response, session }: HttpContext) {
     await bouncer.with(TokenPolicy).authorize('create')
 
     const owner = await User.findOrFail(auth.user!.id)
     const payload = await request.validateUsing(createTokenValidator)
 
-    return new CreateToken().handle({ owner, name: payload.name })
+    const created = await new CreateToken().handle({ owner, name: payload.name })
+
+    session.flash('newToken', {
+      name: payload.name ?? 'Secret Token',
+      value: created.token,
+    })
+
+    return response.redirect().toRoute('settings.index')
   }
 
   async destroy({ auth, bouncer, params, response }: HttpContext) {

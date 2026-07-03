@@ -333,7 +333,7 @@ export interface Registry {
   }
   'tokens.store': {
     methods: ["POST"]
-    pattern: '/api/tokens'
+    pattern: '/settings/tokens'
     types: {
       body: ExtractBody<InferInput<(typeof import('#users/validators').createTokenValidator)>>
       paramsTuple: []

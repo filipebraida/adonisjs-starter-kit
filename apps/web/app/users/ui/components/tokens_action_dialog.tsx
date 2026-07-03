@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { router } from '@inertiajs/react'
+import React from 'react'
+import { useForm } from '@inertiajs/react'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
-import { client, urlFor } from '~/app/client'
+import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -15,9 +15,8 @@ import {
   DialogTitle,
 } from '@workspace/ui/components/dialog'
 import { Input } from '@workspace/ui/components/input'
-import { Field, FieldError, FieldLabel } from '@workspace/ui/components/field'
-import { CopyButton } from '@workspace/ui/components/copy-button'
-import { toast } from '@workspace/ui/hooks/use-toast'
+import { Field, FieldLabel } from '@workspace/ui/components/field'
+import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 interface Props {
   open: boolean
@@ -25,69 +24,19 @@ interface Props {
 }
 
 export function TokensActionDialog({ open, onOpenChange }: Props) {
-  const [token, setToken] = useState<string | null>(null)
-  const [name, setName] = useState<string>('')
-  const [processing, setProcessing] = useState(false)
-  const [nameError, setNameError] = useState<string | null>(null)
   const { t } = useTranslation()
+  const { data, setData, errors, post, processing, reset } = useForm({ name: '' })
 
-  function resetFormState() {
-    setName('')
-    setToken(null)
-    setProcessing(false)
-    setNameError(null)
-  }
-
-  function closeAndClean() {
-    onOpenChange(false)
-
-    setTimeout(() => {
-      resetFormState()
-    }, 500)
-
-    router.visit(urlFor('settings.index'), {
-      only: ['tokens'],
-      preserveState: true,
-      preserveScroll: true,
-    })
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (processing) return
 
-    setProcessing(true)
-    setNameError(null)
-
-    const [result, error] = await client.api.tokens
-      .store({
-        body: { name: name.length > 0 ? name : undefined },
-        headers: {
-          Accept: 'application/json',
-        },
-      })
-      .safe()
-
-    if (error) {
-      setProcessing(false)
-
-      if (error.isValidationError()) {
-        const fieldError = error.response.errors.find((issue) => issue.field === 'name')
-        setNameError(fieldError?.message ?? null)
-        return
-      }
-
-      toast(t('users.action.toast.type_error'), {
-        description: error.message,
-      })
-      return
-    }
-
-    setToken(result.token)
-    setProcessing(false)
-
-    toast(t('users.action.toast.title'), {
-      description: name || t('users.action.form.token.label'),
+    post(urlFor('tokens.store'), {
+      preserveScroll: true,
+      onSuccess: () => {
+        reset()
+        onOpenChange(false)
+      },
     })
   }
 
@@ -96,69 +45,39 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
       open={open}
       onOpenChange={(state) => {
         onOpenChange(state)
-        if (!state) {
-          setTimeout(() => {
-            resetFormState()
-          }, 500)
-        }
+        if (!state) reset()
       }}
     >
       <DialogContent className="sm:max-w-md">
-        {!token ? (
-          <>
-            <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">
-                {t('users.tokens.dialogs.add.title')}
-              </DialogTitle>
-              <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>
-            </DialogHeader>
-            <form id="user-form" onSubmit={handleSubmit}>
-              <Field>
-                <FieldLabel htmlFor="name">{t('users.action.form.token.label')}</FieldLabel>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder={t('users.action.form.token.placeholder')}
-                  value={name}
-                  onChange={(element) => setName(element.target.value)}
-                  disabled={processing}
-                  className={nameError ? 'border-destructive' : undefined}
-                />
-                <FieldError errors={nameError ? [{ message: nameError }] : undefined} />
-              </Field>
-            </form>
-            <DialogFooter className="gap-y-2">
-              <DialogClose asChild>
-                <Button variant="outline" disabled={processing}>
-                  {t('users.action.actions.cancel')}
-                </Button>
-              </DialogClose>
-              <Button type="submit" form="user-form" disabled={processing}>
-                {t('users.action.actions.add')}
-              </Button>
-            </DialogFooter>
-          </>
-        ) : (
-          <>
-            <DialogHeader className="text-left">
-              <DialogTitle className="flex items-center gap-2">
-                {t('users.tokens.dialogs.generated.title')}
-              </DialogTitle>
-              <DialogDescription>
-                {t('users.tokens.dialogs.generated.description')}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-row gap-2">
-              <Input value={token} readOnly />
-              <CopyButton content={token} />
-            </div>
-            <DialogFooter className="gap-y-2">
-              <Button onClick={closeAndClean} variant="outline">
-                {t('users.action.actions.close')}
-              </Button>
-            </DialogFooter>
-          </>
-        )}
+        <DialogHeader className="text-left">
+          <DialogTitle>{t('users.tokens.dialogs.add.title')}</DialogTitle>
+          <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>
+        </DialogHeader>
+        <form id="token-form" onSubmit={handleSubmit}>
+          <Field>
+            <FieldLabel htmlFor="name">{t('users.action.form.token.label')}</FieldLabel>
+            <Input
+              id="name"
+              name="name"
+              placeholder={t('users.action.form.token.placeholder')}
+              value={data.name}
+              onChange={(e) => setData('name', e.target.value)}
+              disabled={processing}
+              className={errors?.name ? 'border-destructive' : undefined}
+            />
+            <FieldErrorBag errors={errors} field="name" />
+          </Field>
+        </form>
+        <DialogFooter className="gap-y-2">
+          <DialogClose asChild>
+            <Button variant="outline" disabled={processing}>
+              {t('users.action.actions.cancel')}
+            </Button>
+          </DialogClose>
+          <Button type="submit" form="token-form" disabled={processing}>
+            {t('users.action.actions.add')}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

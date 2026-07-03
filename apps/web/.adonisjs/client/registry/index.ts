@@ -170,8 +170,8 @@ const routes = {
   },
   'tokens.store': {
     methods: ["POST"],
-    pattern: '/api/tokens',
-    tokens: [{"old":"/api/tokens","type":0,"val":"api","end":""},{"old":"/api/tokens","type":0,"val":"tokens","end":""}],
+    pattern: '/settings/tokens',
+    tokens: [{"old":"/settings/tokens","type":0,"val":"settings","end":""},{"old":"/settings/tokens","type":0,"val":"tokens","end":""}],
     types: placeholder as Registry['tokens.store']['types'],
   },
   'dashboard.show': {

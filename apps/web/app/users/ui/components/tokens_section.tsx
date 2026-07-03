@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DateTime } from 'luxon'
-import { Plus, Ticket, Trash2 } from 'lucide-react'
+import { CheckCircle2, Plus, Ticket, Trash2, X } from 'lucide-react'
 
 import { TokensActionDialog } from '#users/ui/components/tokens_action_dialog'
 import { TokensDeleteDialog } from '#users/ui/components/tokens_delete_dialog'
@@ -8,21 +8,62 @@ import { TokensDeleteDialog } from '#users/ui/components/tokens_delete_dialog'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
+import { CopyButton } from '@workspace/ui/components/copy-button'
+import { Input } from '@workspace/ui/components/input'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type { Data } from '@generated/data'
 
-interface Props {
-  tokens: Data.Users.Token[]
+interface NewToken {
+  name: string
+  value: string
 }
 
-export function TokensSection({ tokens }: Props) {
+interface Props {
+  tokens: Data.Users.Token[]
+  newToken: NewToken | null
+}
+
+export function TokensSection({ tokens, newToken }: Props) {
   const { t } = useTranslation()
   const [addOpen, setAddOpen] = useState(false)
   const [toDelete, setToDelete] = useState<Data.Users.Token | null>(null)
+  const [revealed, setRevealed] = useState<NewToken | null>(null)
+
+  useEffect(() => {
+    if (newToken) setRevealed(newToken)
+  }, [newToken])
 
   return (
     <div>
+      {revealed && (
+        <div className="mb-4 rounded-xl border border-primary/40 bg-primary/5 p-4">
+          <div className="mb-2 flex items-start justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-primary" />
+              <span className="text-sm font-medium">
+                {t('users.tokens.dialogs.generated.title')}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRevealed(null)}
+              className="text-muted-foreground transition-colors hover:text-foreground"
+              aria-label={t('users.action.actions.close')}
+            >
+              <X size={16} />
+            </button>
+          </div>
+          <p className="mb-3 text-xs text-muted-foreground">
+            {t('users.tokens.dialogs.generated.description')}
+          </p>
+          <div className="flex gap-2">
+            <Input value={revealed.value} readOnly className="font-mono text-xs" />
+            <CopyButton content={revealed.value} />
+          </div>
+        </div>
+      )}
+
       <div className="mb-3 flex items-center justify-between gap-3">
         <span className="text-sm font-medium text-muted-foreground">
           {t('users.tokens.active_count', { count: tokens.length })}

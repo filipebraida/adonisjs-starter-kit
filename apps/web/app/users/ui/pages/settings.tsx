@@ -14,9 +14,10 @@ import { useTranslation } from '#common/ui/hooks/use_translation'
 type PageProps = InertiaProps<{
   profile: Data.Users.User
   tokens: Data.Users.Token[]
+  newToken: { name: string; value: string } | null
 }>
 
-export default function SettingsPage({ profile, tokens }: PageProps) {
+export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
   const { t } = useTranslation()
   const can = useCan()
 
@@ -56,7 +57,7 @@ export default function SettingsPage({ profile, tokens }: PageProps) {
             description={t('users.tokens.description')}
             last
           >
-            <TokensSection tokens={tokens} />
+            <TokensSection tokens={tokens} newToken={newToken} />
           </SettingsSection>
         )}
       </div>

@@ -6,8 +6,13 @@ import ListUserTokens from '#users/queries/list_user_tokens'
 import TokenTransformer from '#users/transformers/token_transformer'
 import UserTransformer from '#users/transformers/user_transformer'
 
+interface NewToken {
+  name: string
+  value: string
+}
+
 export default class SettingsController {
-  async show({ auth, bouncer, inertia }: HttpContext) {
+  async show({ auth, bouncer, inertia, session }: HttpContext) {
     await User.preComputeUrls(auth.user!)
 
     const canManageTokens = await bouncer.with(TokenPolicy).allows('viewList')
@@ -15,9 +20,12 @@ export default class SettingsController {
       ? TokenTransformer.transform(await new ListUserTokens().handle({ owner: auth.user! }))
       : []
 
+    const newToken = (session.flashMessages.get('newToken') as NewToken | undefined) ?? null
+
     return inertia.render('users/settings', {
       profile: UserTransformer.transform(auth.user!),
       tokens,
+      newToken,
     })
   }
 }

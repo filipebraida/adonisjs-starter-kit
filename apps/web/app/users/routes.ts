@@ -58,6 +58,6 @@ router
   .as('tokens.destroy')
 
 router
-  .post('/api/tokens', [TokensController, 'store'])
+  .post('/settings/tokens', [TokensController, 'store'])
   .middleware(middleware.auth())
   .as('tokens.store')
