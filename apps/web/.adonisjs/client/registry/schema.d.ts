@@ -291,8 +291,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: unknown
-      errorResponse: unknown
+      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/settings_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/settings_controller').default['show']>>>
     }
   }
   'profile.update': {
@@ -307,28 +307,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/profile_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'profile.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/settings/profile'
+  'password.update': {
+    methods: ["PUT"]
+    pattern: '/settings/password'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/profile_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/profile_controller').default['show']>>>
-    }
-  }
-  'tokens.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/settings/tokens'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['index']>>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'tokens.destroy': {
@@ -353,42 +341,6 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators').createTokenValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'password.update': {
-    methods: ["PUT"]
-    pattern: '/settings/password'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'password.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/settings/password'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['show']>>>
-    }
-  }
-  'appearance.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/settings/appearance'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: unknown
-      errorResponse: unknown
     }
   }
   'dashboard.show': {

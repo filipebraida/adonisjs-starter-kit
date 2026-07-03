@@ -29,13 +29,9 @@ export type ScannedRoutes = {
     'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
     'profile.update': { paramsTuple?: []; params?: {} }
-    'profile.show': { paramsTuple?: []; params?: {} }
-    'tokens.index': { paramsTuple?: []; params?: {} }
+    'password.update': { paramsTuple?: []; params?: {} }
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.store': { paramsTuple?: []; params?: {} }
-    'password.update': { paramsTuple?: []; params?: {} }
-    'password.show': { paramsTuple?: []; params?: {} }
-    'appearance.show': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   GET: {
@@ -52,10 +48,6 @@ export type ScannedRoutes = {
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
-    'profile.show': { paramsTuple?: []; params?: {} }
-    'tokens.index': { paramsTuple?: []; params?: {} }
-    'password.show': { paramsTuple?: []; params?: {} }
-    'appearance.show': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
@@ -72,10 +64,6 @@ export type ScannedRoutes = {
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
-    'profile.show': { paramsTuple?: []; params?: {} }
-    'tokens.index': { paramsTuple?: []; params?: {} }
-    'password.show': { paramsTuple?: []; params?: {} }
-    'appearance.show': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   POST: {

@@ -45,7 +45,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
       resetFormState()
     }, 500)
 
-    router.visit(urlFor('tokens.index'), {
+    router.visit(urlFor('settings.index'), {
       only: ['tokens'],
       preserveState: true,
       preserveScroll: true,

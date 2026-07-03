@@ -10,6 +10,7 @@ import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 const UsersController = () => import('#users/controllers/users_controller')
+const SettingsController = () => import('#users/controllers/settings_controller')
 const ProfileController = () => import('#users/controllers/profile_controller')
 const PasswordController = () => import('#users/controllers/password_controller')
 const InviteController = () => import('#users/controllers/invite_controller')
@@ -37,43 +38,26 @@ router
   .as('users')
 
 router
-  .get('/settings', ({ response }) => {
-    return response.redirect().toRoute('profile.show')
-  })
+  .get('/settings', [SettingsController, 'show'])
   .middleware(middleware.auth())
   .as('settings.index')
 
 router
-  .put('/settings/profile', [ProfileController])
+  .put('/settings/profile', [ProfileController, 'handle'])
   .middleware(middleware.auth())
   .as('profile.update')
-router
-  .get('/settings/profile', [ProfileController, 'show'])
-  .middleware(middleware.auth())
-  .as('profile.show')
 
 router
-  .resource('/settings/tokens', TokensController)
-  .only(['index', 'destroy'])
-  .middleware('*', middleware.auth())
-  .as('tokens')
+  .put('/settings/password', [PasswordController, 'handle'])
+  .middleware(middleware.auth())
+  .as('password.update')
+
+router
+  .delete('/settings/tokens/:id', [TokensController, 'destroy'])
+  .middleware(middleware.auth())
+  .as('tokens.destroy')
 
 router
   .post('/api/tokens', [TokensController, 'store'])
   .middleware(middleware.auth())
   .as('tokens.store')
-
-router
-  .put('/settings/password', [PasswordController])
-  .middleware(middleware.auth())
-  .as('password.update')
-router
-  .get('/settings/password', [PasswordController, 'show'])
-  .middleware(middleware.auth())
-  .as('password.show')
-router
-  .get('/settings/appearance', ({ inertia }) => {
-    return inertia.render('users/appearance', {})
-  })
-  .middleware(middleware.auth())
-  .as('appearance.show')

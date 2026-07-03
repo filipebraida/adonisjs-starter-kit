@@ -58,19 +58,13 @@ export interface ApiDefinition {
   }
   profile: {
     update: typeof routes['profile.update']
-    show: typeof routes['profile.show']
-  }
-  tokens: {
-    index: typeof routes['tokens.index']
-    destroy: typeof routes['tokens.destroy']
-    store: typeof routes['tokens.store']
   }
   password: {
     update: typeof routes['password.update']
-    show: typeof routes['password.show']
   }
-  appearance: {
-    show: typeof routes['appearance.show']
+  tokens: {
+    destroy: typeof routes['tokens.destroy']
+    store: typeof routes['tokens.store']
   }
   dashboard: {
     show: typeof routes['dashboard.show']

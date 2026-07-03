@@ -156,17 +156,11 @@ const routes = {
     tokens: [{"old":"/settings/profile","type":0,"val":"settings","end":""},{"old":"/settings/profile","type":0,"val":"profile","end":""}],
     types: placeholder as Registry['profile.update']['types'],
   },
-  'profile.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/settings/profile',
-    tokens: [{"old":"/settings/profile","type":0,"val":"settings","end":""},{"old":"/settings/profile","type":0,"val":"profile","end":""}],
-    types: placeholder as Registry['profile.show']['types'],
-  },
-  'tokens.index': {
-    methods: ["GET","HEAD"],
-    pattern: '/settings/tokens',
-    tokens: [{"old":"/settings/tokens","type":0,"val":"settings","end":""},{"old":"/settings/tokens","type":0,"val":"tokens","end":""}],
-    types: placeholder as Registry['tokens.index']['types'],
+  'password.update': {
+    methods: ["PUT"],
+    pattern: '/settings/password',
+    tokens: [{"old":"/settings/password","type":0,"val":"settings","end":""},{"old":"/settings/password","type":0,"val":"password","end":""}],
+    types: placeholder as Registry['password.update']['types'],
   },
   'tokens.destroy': {
     methods: ["DELETE"],
@@ -179,24 +173,6 @@ const routes = {
     pattern: '/api/tokens',
     tokens: [{"old":"/api/tokens","type":0,"val":"api","end":""},{"old":"/api/tokens","type":0,"val":"tokens","end":""}],
     types: placeholder as Registry['tokens.store']['types'],
-  },
-  'password.update': {
-    methods: ["PUT"],
-    pattern: '/settings/password',
-    tokens: [{"old":"/settings/password","type":0,"val":"settings","end":""},{"old":"/settings/password","type":0,"val":"password","end":""}],
-    types: placeholder as Registry['password.update']['types'],
-  },
-  'password.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/settings/password',
-    tokens: [{"old":"/settings/password","type":0,"val":"settings","end":""},{"old":"/settings/password","type":0,"val":"password","end":""}],
-    types: placeholder as Registry['password.show']['types'],
-  },
-  'appearance.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/settings/appearance',
-    tokens: [{"old":"/settings/appearance","type":0,"val":"settings","end":""},{"old":"/settings/appearance","type":0,"val":"appearance","end":""}],
-    types: placeholder as Registry['appearance.show']['types'],
   },
   'dashboard.show': {
     methods: ["GET","HEAD"],

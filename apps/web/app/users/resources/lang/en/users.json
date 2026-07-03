@@ -4,7 +4,15 @@
     "description": "Manage your profile and account settings",
     "profile": "Profile",
     "password": "Password",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "appearance": "Appearance"
+  },
+  "appearance": {
+    "breadcrumbs": {
+      "settings": "Settings"
+    },
+    "title": "Appearance",
+    "description": "Customize the look and feel of the application. Automatically switch between day and night themes."
   },
   "index": {
     "page": {
@@ -59,8 +67,12 @@
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Tokens",
+    "title": "API Tokens",
     "description": "Manage your API tokens here.",
+    "active_count": "{count, plural, =0 {No active tokens} one {# active token} other {# active tokens}}",
+    "create_button": "Create token",
+    "created_word": "Created {date}",
+    "last_used_word": "Last used {time}",
     "dialogs": {
       "add": {
         "title": "Add Token",

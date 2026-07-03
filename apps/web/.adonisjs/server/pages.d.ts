@@ -20,21 +20,10 @@ declare module '@adonisjs/inertia/types' {
     'core/errors/not_found': ExtractProps<(typeof import('../../app/core/ui/pages/errors/not_found.tsx'))['default']>
     'core/errors/server_error': ExtractProps<(typeof import('../../app/core/ui/pages/errors/server_error.tsx'))['default']>
     'marketing/show': ExtractProps<(typeof import('../../app/marketing/ui/pages/show.tsx'))['default']>
-    'users/appearance': ExtractProps<(typeof import('../../app/users/ui/pages/appearance.tsx'))['default']>
     'users/create': ExtractProps<(typeof import('../../app/users/ui/pages/create.tsx'))['default']>
     'users/edit': ExtractProps<(typeof import('../../app/users/ui/pages/edit.tsx'))['default']>
     'users/index': ExtractProps<(typeof import('../../app/users/ui/pages/index.tsx'))['default']>
     'users/invite': ExtractProps<(typeof import('../../app/users/ui/pages/invite.tsx'))['default']>
-    'users/password': ExtractProps<(typeof import('../../app/users/ui/pages/password.tsx'))['default']>
-    'users/profile': ExtractProps<(typeof import('../../app/users/ui/pages/profile.tsx'))['default']>
-    'users/tokens': ExtractProps<(typeof import('../../app/users/ui/pages/tokens.tsx'))['default']>
-    'auth/actions/sign_up': ExtractProps<(typeof import('../../app/auth/actions/sign_up.ts'))['default']>
-    'auth/actions/sign_in': ExtractProps<(typeof import('../../app/auth/actions/sign_in.ts'))['default']>
-    'auth/actions/request_password_reset': ExtractProps<(typeof import('../../app/auth/actions/request_password_reset.ts'))['default']>
-    'auth/actions/reset_password': ExtractProps<(typeof import('../../app/auth/actions/reset_password.ts'))['default']>
-    'auth/actions/authenticate_with_social': ExtractProps<(typeof import('../../app/auth/actions/authenticate_with_social.ts'))['default']>
-    'users/queries/list_user_tokens': ExtractProps<(typeof import('../../app/users/queries/list_user_tokens.ts'))['default']>
-    'users/actions/create_token': ExtractProps<(typeof import('../../app/users/actions/create_token.ts'))['default']>
-    'users/actions/delete_token': ExtractProps<(typeof import('../../app/users/actions/delete_token.ts'))['default']>
+    'users/settings': ExtractProps<(typeof import('../../app/users/ui/pages/settings.tsx'))['default']>
   }
 }

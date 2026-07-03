@@ -4,7 +4,15 @@
     "description": "Gerencie seu perfil e as configurações da conta",
     "profile": "Perfil",
     "password": "Senha",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "appearance": "Aparência"
+  },
+  "appearance": {
+    "breadcrumbs": {
+      "settings": "Configurações"
+    },
+    "title": "Aparência",
+    "description": "Personalize a aparência da aplicação. Alterne automaticamente entre os temas claro e escuro."
   },
   "index": {
     "page": {
@@ -59,8 +67,12 @@
     "breadcrumbs": {
       "settings": "Configurações"
     },
-    "title": "Tokens",
+    "title": "Tokens de API",
     "description": "Gerencie aqui seus tokens de API.",
+    "active_count": "{count, plural, =0 {Nenhum token ativo} one {# token ativo} other {# tokens ativos}}",
+    "create_button": "Criar token",
+    "created_word": "Criado em {date}",
+    "last_used_word": "Usado {time}",
     "dialogs": {
       "add": {
         "title": "Adicionar Token",

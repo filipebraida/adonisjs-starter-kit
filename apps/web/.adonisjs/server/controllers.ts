@@ -23,6 +23,7 @@ export const controllers = {
     Invite: () => import('#app/users/controllers/invite_controller'),
     Password: () => import('#app/users/controllers/password_controller'),
     Profile: () => import('#app/users/controllers/profile_controller'),
+    Settings: () => import('#app/users/controllers/settings_controller'),
     Tokens: () => import('#app/users/controllers/tokens_controller'),
     Users: () => import('#app/users/controllers/users_controller'),
   },

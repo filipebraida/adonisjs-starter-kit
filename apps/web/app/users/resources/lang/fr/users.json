@@ -4,7 +4,15 @@
     "description": "Gérez votre profil et les paramètres de votre compte",
     "profile": "Profil",
     "password": "Mot de Passe",
-    "tokens": "Jetons"
+    "tokens": "Jetons",
+    "appearance": "Apparence"
+  },
+  "appearance": {
+    "breadcrumbs": {
+      "settings": "Paramètres"
+    },
+    "title": "Apparence",
+    "description": "Personnalisez l'apparence de l'application. Basculez automatiquement entre les thèmes clair et sombre."
   },
   "index": {
     "page": {
@@ -59,8 +67,12 @@
     "breadcrumbs": {
       "settings": "Paramètres"
     },
-    "title": "Jetons",
+    "title": "Jetons API",
     "description": "Gérez vos jetons API ici.",
+    "active_count": "{count, plural, =0 {Aucun jeton actif} one {# jeton actif} other {# jetons actifs}}",
+    "create_button": "Créer un jeton",
+    "created_word": "Créé le {date}",
+    "last_used_word": "Dernière utilisation {time}",
     "dialogs": {
       "add": {
         "title": "Ajouter un jeton",
