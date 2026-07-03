@@ -1,18 +1,14 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { randomUUID } from 'node:crypto'
 
 import { modal } from '#core/inertia/modal'
-import Role from '#users/models/role'
+
+import CreateUser from '#users/actions/create_user'
+import DeleteUser from '#users/actions/delete_user'
+import UpdateUser from '#users/actions/update_user'
 import User from '#users/models/user'
-
-import UserTransformer from '#users/transformers/user_transformer'
-
 import UserPolicy from '#users/policies/user_policy'
-
-import SyncUserRoles, { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
-import type { Role as RoleSlug } from '#users/enums/role'
-import { USERS_SORT_COLUMN } from '#users/enums/sort'
-
+import ListUsers from '#users/queries/list_users'
+import UserTransformer from '#users/transformers/user_transformer'
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
 
 export default class UsersController {
@@ -21,48 +17,20 @@ export default class UsersController {
 
     const payload = await request.validateUsing(listUserValidator)
 
-    const limit = payload.perPage || 10
-    const page = payload.page || 1
-    const querySearch = payload.q || undefined
-    const roles = payload.roles ?? []
-    const sort = payload.sort
-    const order = payload.order
-
-    const query = User.query().preload('roles')
-
-    if (querySearch) {
-      query.where((subquery) => {
-        subquery
-          .where('full_name', 'ilike', `%${querySearch}%`)
-          .orWhere('email', 'ilike', `%${querySearch}%`)
-      })
-    }
-
-    if (roles.length > 0) {
-      query.whereHas('roles', (rolesQuery) => rolesQuery.whereIn('name', roles))
-    }
-
-    // Sort with a stable tiebreaker: without `id asc`, rows with the same
-    // sorted-column value can swap pages between requests.
-    if (sort) {
-      query.orderBy(USERS_SORT_COLUMN[sort], order ?? 'asc')
-    } else {
-      query.orderBy('created_at', 'desc')
-    }
-    query.orderBy('id', 'asc')
-
-    const users = await query.paginate(page, limit)
+    const users = await new ListUsers().handle(
+      { q: payload.q, roles: payload.roles, sort: payload.sort, order: payload.order },
+      { page: payload.page ?? 1, perPage: payload.perPage ?? 10 }
+    )
 
     const usersData = users.all()
-
     await User.preComputeUrls(usersData)
 
     return inertia.render('users/index', {
       users: UserTransformer.paginate(usersData, users.getMeta()),
-      q: querySearch,
-      selectedRoles: roles,
-      sort: sort ?? null,
-      order: order ?? null,
+      q: payload.q,
+      selectedRoles: payload.roles ?? [],
+      sort: payload.sort ?? null,
+      order: payload.order ?? null,
     })
   }
 
@@ -77,19 +45,13 @@ export default class UsersController {
 
     const payload = await request.validateUsing(createUserValidator)
 
-    await requireManageRolesIfEscalating(auth.user!, [payload.role])
-
-    const user = new User()
-    user.merge({
+    await new CreateUser().handle({
       fullName: payload.fullName,
       email: payload.email,
-      password: payload.password ? payload.password : randomUUID(),
+      role: payload.role,
+      password: payload.password,
+      executor: auth.user!,
     })
-
-    await user.save()
-
-    const role = await Role.findByOrFail('name', payload.role)
-    await user.assignRole(role)
 
     return response.redirect().toRoute('users.index')
   }
@@ -114,17 +76,13 @@ export default class UsersController {
     await bouncer.with(UserPolicy).authorize('update', user)
 
     const payload = await request.validateUsing(editUserValidator, { meta: { userId: params.id } })
-    user.merge({
+
+    await new UpdateUser().handle({
+      target: user,
       fullName: payload.fullName,
       email: payload.email,
-      password: payload.password ? payload.password : user.password,
-    })
-
-    await user.save()
-
-    await new SyncUserRoles().handle({
-      target: user,
-      desiredRoles: [payload.role as RoleSlug],
+      role: payload.role,
+      password: payload.password,
       executor: auth.user!,
     })
 
@@ -136,7 +94,7 @@ export default class UsersController {
 
     await bouncer.with(UserPolicy).authorize('delete', user)
 
-    await user.delete()
+    await new DeleteUser().handle({ target: user })
 
     return response.redirect().toRoute('users.index')
   }
