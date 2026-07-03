@@ -22,9 +22,7 @@ declare module '@adonisjs/inertia/types' {
     'marketing/show': ExtractProps<(typeof import('../../app/marketing/ui/pages/show.tsx'))['default']>
     'users/appearance': ExtractProps<(typeof import('../../app/users/ui/pages/appearance.tsx'))['default']>
     'users/create': ExtractProps<(typeof import('../../app/users/ui/pages/create.tsx'))['default']>
-    'users/delete': ExtractProps<(typeof import('../../app/users/ui/pages/delete.tsx'))['default']>
     'users/edit': ExtractProps<(typeof import('../../app/users/ui/pages/edit.tsx'))['default']>
-    'users/impersonate': ExtractProps<(typeof import('../../app/users/ui/pages/impersonate.tsx'))['default']>
     'users/index': ExtractProps<(typeof import('../../app/users/ui/pages/index.tsx'))['default']>
     'users/invite': ExtractProps<(typeof import('../../app/users/ui/pages/invite.tsx'))['default']>
     'users/password': ExtractProps<(typeof import('../../app/users/ui/pages/password.tsx'))['default']>
