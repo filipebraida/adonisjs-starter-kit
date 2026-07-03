@@ -80,7 +80,11 @@ export function CheckboxFilter<T extends string>({
         <Button
           variant="outline"
           size="sm"
-          className={cn("h-8 border-dashed", className)}
+          className={cn(
+            "h-8",
+            selectedCount === 0 && "border-dashed",
+            className,
+          )}
         >
           <PlusCircle className="mr-1 h-4 w-4" />
           {title}
