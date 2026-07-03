@@ -1,10 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { attachmentManager } from '@jrmc/adonis-attachment'
 
+import UpdateProfile from '#users/actions/update_profile'
 import User from '#users/models/user'
-
 import UserTransformer from '#users/transformers/user_transformer'
-
 import { updateProfileValidator } from '#users/validators'
 
 export default class ProfileController {
@@ -17,19 +15,15 @@ export default class ProfileController {
   }
 
   public async handle({ auth, request, response }: HttpContext) {
-    const { avatar, ...payload } = await request.validateUsing(updateProfileValidator)
+    const payload = await request.validateUsing(updateProfileValidator)
 
     const user = await User.findOrFail(auth.user!.id)
 
-    if (avatar) {
-      user.avatar = await attachmentManager.createFromFile(avatar)
-    }
-
-    user.merge({
-      ...payload,
+    await new UpdateProfile().handle({
+      target: user,
+      fullName: payload.fullName,
+      avatar: payload.avatar,
     })
-
-    await user.save()
 
     return response.redirect().toRoute('profile.show')
   }

@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
+import UpdatePassword from '#users/actions/update_password'
 import User from '#users/models/user'
-
 import { updatePasswordValidator } from '#users/validators'
 
 export default class PasswordController {
@@ -14,11 +14,7 @@ export default class PasswordController {
 
     const user = await User.findOrFail(auth.user!.id)
 
-    user.merge({
-      ...payload,
-    })
-
-    await user.save()
+    await new UpdatePassword().handle({ target: user, password: payload.password })
 
     return response.redirect().toRoute('password.show')
   }
