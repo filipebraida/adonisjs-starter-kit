@@ -64,7 +64,8 @@ export function ProfileForm({ user }: Props) {
             <div className="col-span-full flex items-center gap-x-8">
               <UserAvatar
                 user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
-                className="size-24 flex-none rounded-lg object-cover"
+                shape="square"
+                className="size-24 flex-none"
               />
 
               <div>

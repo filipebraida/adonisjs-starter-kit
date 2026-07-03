@@ -9,6 +9,7 @@ export interface NavUserProps {
     avatarUrl: string | null | undefined
   }
   className?: string
+  shape?: 'circle' | 'square'
 }
 
 function generateFallbackText(user: { name?: string; email: string }): string {
@@ -24,13 +25,13 @@ function generateFallbackText(user: { name?: string; email: string }): string {
   return user.email.slice(0, 2).toUpperCase()
 }
 
-export function UserAvatar({ user, className }: NavUserProps) {
+export function UserAvatar({ user, className, shape = 'circle' }: NavUserProps) {
   const fallbackText = generateFallbackText(user)
 
   return (
-    <Avatar className={cn('h-8 w-8', className)}>
+    <Avatar className={cn('h-8 w-8', className)} shape={shape}>
       <AvatarImage src={user.avatarUrl ?? undefined} alt={user.fullName ?? undefined} />
-      <AvatarFallback className="rounded-lg">{fallbackText}</AvatarFallback>
+      <AvatarFallback>{fallbackText}</AvatarFallback>
     </Avatar>
   )
 }
