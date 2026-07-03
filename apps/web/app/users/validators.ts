@@ -5,6 +5,7 @@ import User from '#users/models/user'
 import { baseSearchValidator } from '#common/validators/search'
 
 import { ROLES } from '#users/enums/role'
+import { SORT_DIRECTIONS, USERS_SORT_BY } from '#users/enums/sort'
 
 const roleValues = Object.values(ROLES)
 
@@ -38,6 +39,8 @@ export const listUserValidator = vine.compile(
   vine.object({
     ...baseSearchValidator.getProperties(),
     roles: vine.array(vine.enum(roleValues)).optional(),
+    sort: vine.enum(USERS_SORT_BY).optional(),
+    order: vine.enum(SORT_DIRECTIONS).optional(),
   })
 )
 

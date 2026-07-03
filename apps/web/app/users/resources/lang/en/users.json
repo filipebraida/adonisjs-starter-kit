@@ -18,7 +18,8 @@
       "columns": {
         "full_name": "Full Name",
         "email": "Email",
-        "role": "Role"
+        "role": "Role",
+        "created_at": "Created At"
       },
       "filters": {
         "search_placeholder": "Search...",

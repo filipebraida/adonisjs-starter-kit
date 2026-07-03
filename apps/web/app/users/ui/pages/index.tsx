@@ -29,9 +29,11 @@ type PageProps = InertiaProps<{
   }
   q?: string
   selectedRoles: string[]
+  sort: string | null
+  order: string | null
 }>
 
-export default function ListUsersPage({ users, q, selectedRoles }: PageProps) {
+export default function ListUsersPage({ users, q, selectedRoles, sort, order }: PageProps) {
   const { t } = useTranslation()
 
   const roles = userRoles(t)
@@ -47,7 +49,14 @@ export default function ListUsersPage({ users, q, selectedRoles }: PageProps) {
         </Heading>
 
         <div className="flex-1 overflow-auto px-1 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable users={users} roles={roles} q={q} selectedRoles={selectedRoles} />
+          <UsersTable
+            users={users}
+            roles={roles}
+            q={q}
+            selectedRoles={selectedRoles}
+            sort={sort}
+            order={order}
+          />
         </div>
       </Main>
     </AppLayout>

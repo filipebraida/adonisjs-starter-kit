@@ -1,7 +1,12 @@
 import { router } from '@inertiajs/react'
 import React from 'react'
 
-import { ColumnDef, DataTable } from '@workspace/ui/components/data-table'
+import {
+  ColumnDef,
+  DataTable,
+  type OnChangeFn,
+  type SortingState,
+} from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
@@ -10,6 +15,7 @@ import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
 
 import { mainRole, ROLES, type Role as RoleSlug } from '#users/enums/role'
+import type { SortDirection, UsersSortBy } from '#users/enums/sort'
 
 import type { Data } from '@generated/data'
 
@@ -31,13 +37,58 @@ interface DataTableProps {
   roles: Role[]
   q: string | undefined
   selectedRoles: string[]
+  sort: string | null
+  order: string | null
 }
 
-export default function UsersTable({ users, roles, q, selectedRoles }: DataTableProps) {
+export default function UsersTable({
+  users,
+  roles,
+  q,
+  selectedRoles,
+  sort,
+  order,
+}: DataTableProps) {
   const { t } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q || '')
   const [selectedRoleSlugs, setSelectedRoleSlugs] = React.useState<string[]>(selectedRoles ?? [])
+
+  const sorting = React.useMemo<SortingState>(
+    () => (sort && order ? [{ id: sort, desc: order === 'desc' }] : []),
+    [sort, order]
+  )
+
+  const onSortingChange = React.useCallback<OnChangeFn<SortingState>>(
+    (updater) => {
+      const next = typeof updater === 'function' ? updater(sorting) : updater
+      const first = next[0]
+      const nextSort = (first?.id ?? undefined) as UsersSortBy | undefined
+      const nextOrder: SortDirection | undefined = first
+        ? first.desc
+          ? 'desc'
+          : 'asc'
+        : undefined
+
+      router.get(
+        '/users',
+        {
+          q: querySearch.length > 0 ? querySearch : undefined,
+          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
+          perPage: users.metadata.perPage,
+          sort: nextSort,
+          order: nextOrder,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['users', 'sort', 'order'],
+        }
+      )
+    },
+    [sorting, querySearch, selectedRoleSlugs, users.metadata.perPage]
+  )
 
   const remoteTableOptions = useDataTable({
     data: users,
@@ -49,6 +100,8 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
           perPage,
           q: querySearch.length > 0 ? querySearch : undefined,
           roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
+          sort: sort ?? undefined,
+          order: order ?? undefined,
         },
         {
           preserveState: true,
@@ -57,12 +110,15 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
         }
       )
     },
+    sorting: { state: sorting, onChange: onSortingChange },
   })
 
   const columns: ColumnDef<Data.Users.User>[] = [
     {
+      id: 'fullName',
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.fullName ? (
           row.original.fullName
@@ -73,13 +129,16 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
         ),
     },
     {
+      id: 'email',
       header: t('users.index.table.columns.email'),
       accessorKey: 'email',
+      enableSorting: true,
     },
     {
       id: 'role',
       accessorFn: (user) => mainRole(user.roles) ?? ROLES.USER,
       header: t('users.index.table.columns.role'),
+      enableSorting: false,
       cell: ({ row }) => {
         const slug: RoleSlug = mainRole(row.original.roles) ?? ROLES.USER
         const userRole = roles.find(({ value }) => value === slug)
@@ -97,7 +156,16 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
       },
     },
     {
+      id: 'createdAt',
+      header: t('users.index.table.columns.created_at'),
+      accessorKey: 'createdAt',
+      enableSorting: true,
+      cell: ({ row }) =>
+        row.original.createdAt ? new Date(row.original.createdAt).toLocaleDateString() : null,
+    },
+    {
       id: 'actions',
+      enableSorting: false,
       cell: DataTableRowActions,
     },
   ]

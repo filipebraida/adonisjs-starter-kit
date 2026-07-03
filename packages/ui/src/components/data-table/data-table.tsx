@@ -8,6 +8,7 @@ import {
   OnChangeFn,
   PaginationState,
   Row,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -19,6 +20,7 @@ import {
   TableRow,
 } from "@workspace/ui/components/table";
 import { DataTablePagination } from "@workspace/ui/components/data-table/data-table-pagination";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
@@ -36,8 +38,10 @@ export interface RemoteTableOptions {
   pageCount: number;
   state: {
     pagination: { pageIndex: number; pageSize: number };
+    sorting?: SortingState;
   };
   onPaginationChange: OnChangeFn<PaginationState>;
+  onSortingChange?: OnChangeFn<SortingState>;
 }
 
 export interface ColumnMeta {
@@ -61,6 +65,7 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [localSorting, setLocalSorting] = useState<SortingState>([]);
 
   const isRemote = !!remoteTableOptions;
 
@@ -80,6 +85,9 @@ export function DataTable<TData, TValue>({
         ? remoteTableOptions!.state.pagination
         : localPagination,
       columnFilters: isRemote ? undefined : columnFilters,
+      sorting: isRemote
+        ? (remoteTableOptions!.state.sorting ?? [])
+        : localSorting,
     },
 
     onColumnFiltersChange: setColumnFilters,
@@ -87,6 +95,10 @@ export function DataTable<TData, TValue>({
     onPaginationChange: isRemote
       ? remoteTableOptions!.onPaginationChange
       : setLocalPagination,
+
+    onSortingChange: isRemote
+      ? remoteTableOptions!.onSortingChange
+      : setLocalSorting,
 
     ...(isRemote ? {} : { getPaginationRowModel: getPaginationRowModel() }),
 
@@ -102,6 +114,8 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const canSort = header.column.getCanSort();
+                  const sortDir = header.column.getIsSorted();
                   return (
                     <TableHead
                       key={header.id}
@@ -110,12 +124,30 @@ export function DataTable<TData, TValue>({
                           ?.columnClasses
                       }
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                      {header.isPlaceholder ? null : canSort ? (
+                        <button
+                          type="button"
+                          onClick={header.column.getToggleSortingHandler()}
+                          className="inline-flex items-center gap-1 select-none hover:text-foreground"
+                        >
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+                          {sortDir === "asc" ? (
+                            <ArrowUp className="size-3.5" />
+                          ) : sortDir === "desc" ? (
+                            <ArrowDown className="size-3.5" />
+                          ) : (
+                            <ArrowUpDown className="size-3.5 opacity-40" />
+                          )}
+                        </button>
+                      ) : (
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )
+                      )}
                     </TableHead>
                   );
                 })}

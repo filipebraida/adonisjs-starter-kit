@@ -1,4 +1,9 @@
-import type { PaginationState, Updater } from "@tanstack/react-table";
+import type {
+  OnChangeFn,
+  PaginationState,
+  SortingState,
+  Updater,
+} from "@tanstack/react-table";
 
 import type { RemoteTableOptions } from "@workspace/ui/components/data-table/data-table";
 
@@ -23,11 +28,16 @@ type UseDataTableOpts = {
   visit: VisitFn;
   pageParam?: string;
   perPageParam?: string;
+  sorting?: {
+    state: SortingState;
+    onChange: OnChangeFn<SortingState>;
+  };
 };
 
 export function useDataTable({
   data,
   visit,
+  sorting,
 }: UseDataTableOpts): RemoteTableOptions {
   const pageIndex = Math.max(0, (data.metadata.currentPage ?? 1) - 1);
   const pageSize = data.metadata.perPage;
@@ -35,7 +45,10 @@ export function useDataTable({
 
   return {
     pageCount,
-    state: { pagination: { pageIndex, pageSize } },
+    state: {
+      pagination: { pageIndex, pageSize },
+      sorting: sorting?.state,
+    },
     onPaginationChange: (updater: Updater<PaginationState>) => {
       const curr: PaginationState = { pageIndex, pageSize };
       const next = typeof updater === "function" ? updater(curr) : updater;
@@ -54,5 +67,6 @@ export function useDataTable({
         perPage: next.pageSize,
       });
     },
+    onSortingChange: sorting?.onChange,
   };
 }

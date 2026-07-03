@@ -11,6 +11,7 @@ import UserPolicy from '#users/policies/user_policy'
 
 import SyncUserRoles, { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
 import type { Role as RoleSlug } from '#users/enums/role'
+import { USERS_SORT_COLUMN } from '#users/enums/sort'
 
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
 
@@ -24,6 +25,8 @@ export default class UsersController {
     const page = payload.page || 1
     const querySearch = payload.q || undefined
     const roles = payload.roles ?? []
+    const sort = payload.sort
+    const order = payload.order
 
     const query = User.query().preload('roles')
 
@@ -39,6 +42,15 @@ export default class UsersController {
       query.whereHas('roles', (rolesQuery) => rolesQuery.whereIn('name', roles))
     }
 
+    // Sort with a stable tiebreaker: without `id asc`, rows with the same
+    // sorted-column value can swap pages between requests.
+    if (sort) {
+      query.orderBy(USERS_SORT_COLUMN[sort], order ?? 'asc')
+    } else {
+      query.orderBy('created_at', 'desc')
+    }
+    query.orderBy('id', 'asc')
+
     const users = await query.paginate(page, limit)
 
     const usersData = users.all()
@@ -49,6 +61,8 @@ export default class UsersController {
       users: UserTransformer.paginate(usersData, users.getMeta()),
       q: querySearch,
       selectedRoles: roles,
+      sort: sort ?? null,
+      order: order ?? null,
     })
   }
 
