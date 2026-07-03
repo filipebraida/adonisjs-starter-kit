@@ -42,25 +42,21 @@ export default class Role extends BaseModel {
   })
   declare users: ManyToMany<typeof User>
 
-  /** True when this role grants the given permission. */
   hasPermission(permission: Permission): boolean {
     return this.permissions.includes(permission)
   }
 
-  /** Adds permissions (idempotent — duplicates are dropped). Persists immediately. */
   async givePermissions(permissions: Permission[]): Promise<void> {
     const merged = new Set<Permission>([...this.permissions, ...permissions])
     this.permissions = Array.from(merged)
     await this.save()
   }
 
-  /** Replaces the permission set. Persists immediately. */
   async syncPermissions(permissions: Permission[]): Promise<void> {
     this.permissions = Array.from(new Set(permissions))
     await this.save()
   }
 
-  /** Removes the given permissions. Persists immediately. */
   async revokePermissions(permissions: Permission[]): Promise<void> {
     const toRemove = new Set<string>(permissions)
     this.permissions = this.permissions.filter((permission) => !toRemove.has(permission))

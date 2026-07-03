@@ -11,15 +11,6 @@ interface AppModalProps extends Omit<ModalProps, 'children'> {
   children: ReactNode | ((args: ModalArgs) => ReactNode)
 }
 
-/**
- * `adonis-inertia-modal`'s `<Modal>` with a `<PortalContainerProvider>` around
- * its content, so any Radix popover inside (Select, Dropdown, Tooltip, …)
- * portals into the modal's panel instead of `document.body`. Without this the
- * native `<dialog>`'s modal shield blocks every click on those popovers.
- *
- * Behaves identically to `<Modal>` otherwise — use it as a drop-in wrapper
- * whenever the modal contains form controls that use portals.
- */
 export function AppModal({ children, ...modalProps }: AppModalProps) {
   const [panel, setPanel] = useState<HTMLDivElement | null>(null)
 

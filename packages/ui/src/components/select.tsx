@@ -66,12 +66,6 @@ function SelectContent({
   container,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
-  /**
-   * DOM node the dropdown portals into. Defaults to the nearest
-   * `<PortalContainerProvider>` (used by modal wrappers to keep the dropdown
-   * inside the dialog's top-layer). Explicit prop wins over context, which
-   * wins over Radix's document.body default.
-   */
   container?: React.ComponentProps<typeof SelectPrimitive.Portal>["container"];
 }) {
   const contextContainer = usePortalContainer();

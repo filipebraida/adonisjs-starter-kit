@@ -5,17 +5,13 @@ import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 import Role from '#users/models/role'
 import type User from '#users/models/user'
 
-/** Throws unless the executor holds the dedicated `users.manage_roles` permission. */
 export async function requireManageRoles(executor: User) {
   const allowed = await executor.hasPermission(PERMISSIONS.usersManageRoles)
   if (!allowed) throw new ManageRolesUnauthorizedException()
 }
 
-/**
- * Defense-in-depth for create/invite: assigning any role beyond the default
- * `user` is an escalation and requires the manage-roles permission, even when
- * the validator already accepted the value.
- */
+// Defense-in-depth for create/invite: enforce manage-roles even if the
+// validator accepted a non-default role.
 export async function requireManageRolesIfEscalating(executor: User, roles: string[]) {
   const escalating = roles.some((role) => role !== ROLES.USER)
   if (escalating) await requireManageRoles(executor)
