@@ -11,6 +11,7 @@ import { Button } from '@workspace/ui/components/button'
 import { CopyButton } from '@workspace/ui/components/copy-button'
 import { Input } from '@workspace/ui/components/input'
 import { cn } from '@workspace/ui/lib/utils'
+import { toast } from '@workspace/ui/hooks/use-toast'
 
 import type { Data } from '@generated/data'
 
@@ -59,7 +60,14 @@ export function TokensSection({ tokens, newToken }: Props) {
           </p>
           <div className="flex gap-2">
             <Input value={revealed.value} readOnly className="font-mono text-xs" />
-            <CopyButton content={revealed.value} />
+            <CopyButton
+              content={revealed.value}
+              onCopy={() =>
+                toast(t('users.action.toast.type_success'), {
+                  description: t('users.tokens.copied'),
+                })
+              }
+            />
           </div>
         </div>
       )}

@@ -73,6 +73,7 @@
     "create_button": "Criar token",
     "created_word": "Criado em {date}",
     "last_used_word": "Usado {time}",
+    "copied": "Token copiado para a área de transferência",
     "dialogs": {
       "add": {
         "title": "Adicionar Token",

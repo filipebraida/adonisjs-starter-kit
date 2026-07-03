@@ -78,8 +78,7 @@ function CopyButton({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       if (isCopied) return;
       if (content) {
-        navigator.clipboard
-          .writeText(content)
+        copyToClipboard(content)
           .then(() => {
             handleIsCopied(true);
             setTimeout(() => handleIsCopied(false), delay);
@@ -117,6 +116,30 @@ function CopyButton({
       </AnimatePresence>
     </motion.button>
   );
+}
+
+// `navigator.clipboard` is unavailable in insecure contexts (plain HTTP on
+// non-localhost hosts). Fall back to the legacy `execCommand` trick so the
+// button still works when the app is served over LAN IP or similar.
+async function copyToClipboard(text: string): Promise<void> {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    const ok = document.execCommand("copy");
+    if (!ok) throw new Error("execCommand copy failed");
+  } finally {
+    document.body.removeChild(textarea);
+  }
 }
 
 export { CopyButton, buttonVariants, type CopyButtonProps };

@@ -73,6 +73,7 @@
     "create_button": "Créer un jeton",
     "created_word": "Créé le {date}",
     "last_used_word": "Dernière utilisation {time}",
+    "copied": "Jeton copié dans le presse-papiers",
     "dialogs": {
       "add": {
         "title": "Ajouter un jeton",

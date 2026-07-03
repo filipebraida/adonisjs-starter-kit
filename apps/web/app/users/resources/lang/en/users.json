@@ -73,6 +73,7 @@
     "create_button": "Create token",
     "created_word": "Created {date}",
     "last_used_word": "Last used {time}",
+    "copied": "Token copied to clipboard",
     "dialogs": {
       "add": {
         "title": "Add Token",
