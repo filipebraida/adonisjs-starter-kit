@@ -12,4 +12,8 @@ export default class TokenPolicy extends BasePolicy {
   async viewList(user: User): Promise<AuthorizerResponse> {
     return user.hasPermission(PERMISSIONS.tokensViewList)
   }
+
+  async delete(user: User): Promise<AuthorizerResponse> {
+    return user.hasPermission(PERMISSIONS.tokensDelete)
+  }
 }

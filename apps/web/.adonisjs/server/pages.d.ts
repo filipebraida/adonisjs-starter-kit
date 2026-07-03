@@ -33,5 +33,8 @@ declare module '@adonisjs/inertia/types' {
     'auth/actions/request_password_reset': ExtractProps<(typeof import('../../app/auth/actions/request_password_reset.ts'))['default']>
     'auth/actions/reset_password': ExtractProps<(typeof import('../../app/auth/actions/reset_password.ts'))['default']>
     'auth/actions/authenticate_with_social': ExtractProps<(typeof import('../../app/auth/actions/authenticate_with_social.ts'))['default']>
+    'users/queries/list_user_tokens': ExtractProps<(typeof import('../../app/users/queries/list_user_tokens.ts'))['default']>
+    'users/actions/create_token': ExtractProps<(typeof import('../../app/users/actions/create_token.ts'))['default']>
+    'users/actions/delete_token': ExtractProps<(typeof import('../../app/users/actions/delete_token.ts'))['default']>
   }
 }

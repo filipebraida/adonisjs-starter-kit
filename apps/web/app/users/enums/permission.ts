@@ -8,6 +8,7 @@ export const PERMISSIONS = {
   usersManageRoles: 'users.manage_roles',
   tokensViewList: 'tokens.view_list',
   tokensCreate: 'tokens.create',
+  tokensDelete: 'tokens.delete',
 } as const
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
