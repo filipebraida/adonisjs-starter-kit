@@ -1,60 +1,35 @@
-import { HttpContext } from '@adonisjs/core/http'
+import type { HttpContext } from '@adonisjs/core/http'
 
-import User from '#users/models/user'
-
+import ResetPassword from '#auth/actions/reset_password'
 import { resetPasswordValidator } from '#auth/validators'
 import PasswordResetService from '#users/services/password_reset_service'
-import { inject } from '@adonisjs/core/container'
 
-@inject()
 export default class ResetPasswordController {
-  constructor(private passwordResetService: PasswordResetService) {}
-
   async show({ params, inertia, response, session }: HttpContext) {
-    /**
-     * Verify the request signature before proceeding.
-     */
-    const resetPasswordToken = await this.passwordResetService.getToken(params.token)
+    const record = await new PasswordResetService().getToken(params.token)
 
-    if (!resetPasswordToken) {
+    if (!record) {
       session.flash('error', 'auth.reset_password.error.invalid_or_expired')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
-    /**
-     * Render the "Reset Password" page.
-     */
-    return inertia.render('auth/reset_password', { token: resetPasswordToken.token })
+    return inertia.render('auth/reset_password', { token: record.token })
   }
 
   async handle({ request, params, response, session }: HttpContext) {
-    /**
-     * Validate the token validity
-     */
-    const token = await this.passwordResetService.getToken(params.token)
+    const payload = await request.validateUsing(resetPasswordValidator)
 
-    if (!token) {
+    const user = await new ResetPassword().handle({
+      token: params.token,
+      password: payload.password,
+      ip: request.ip(),
+    })
+
+    if (!user) {
       session.flash('error', 'auth.reset_password.error.invalid_or_expired')
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
-    /**
-     * Validate the request input.
-     */
-    const validatedData = await request.validateUsing(resetPasswordValidator)
-
-    /**
-     * Handle the password reset request.
-     */
-    const user = await User.findOrFail(token.userId)
-    user.password = validatedData.password
-    await user.save()
-
-    await this.passwordResetService.deleteTokens(user)
-    await this.passwordResetService.clearRateLimits(request.ip(), user.email)
-    /**
-     * Redirect to the login page.
-     */
     return response.redirect().toRoute('auth.sign_in.show')
   }
 }

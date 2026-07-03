@@ -28,11 +28,10 @@ declare module '@adonisjs/inertia/types' {
     'users/password': ExtractProps<(typeof import('../../app/users/ui/pages/password.tsx'))['default']>
     'users/profile': ExtractProps<(typeof import('../../app/users/ui/pages/profile.tsx'))['default']>
     'users/tokens': ExtractProps<(typeof import('../../app/users/ui/pages/tokens.tsx'))['default']>
-    'users/queries/list_users': ExtractProps<(typeof import('../../app/users/queries/list_users.ts'))['default']>
-    'users/actions/create_user': ExtractProps<(typeof import('../../app/users/actions/create_user.ts'))['default']>
-    'users/actions/update_user': ExtractProps<(typeof import('../../app/users/actions/update_user.ts'))['default']>
-    'users/actions/delete_user': ExtractProps<(typeof import('../../app/users/actions/delete_user.ts'))['default']>
-    'users/actions/invite_user': ExtractProps<(typeof import('../../app/users/actions/invite_user.ts'))['default']>
-    'users/actions/impersonate_user': ExtractProps<(typeof import('../../app/users/actions/impersonate_user.ts'))['default']>
+    'auth/actions/sign_up': ExtractProps<(typeof import('../../app/auth/actions/sign_up.ts'))['default']>
+    'auth/actions/sign_in': ExtractProps<(typeof import('../../app/auth/actions/sign_in.ts'))['default']>
+    'auth/actions/request_password_reset': ExtractProps<(typeof import('../../app/auth/actions/request_password_reset.ts'))['default']>
+    'auth/actions/reset_password': ExtractProps<(typeof import('../../app/auth/actions/reset_password.ts'))['default']>
+    'auth/actions/authenticate_with_social': ExtractProps<(typeof import('../../app/auth/actions/authenticate_with_social.ts'))['default']>
   }
 }

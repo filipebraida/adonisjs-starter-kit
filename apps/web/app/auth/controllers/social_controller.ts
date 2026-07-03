@@ -1,64 +1,42 @@
 import type { HttpContext } from '@adonisjs/core/http'
+
 import { afterAuthRedirectRoute } from '#config/auth'
 
-import User from '#users/models/user'
+import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
 
 export default class SocialController {
   async redirect({ ally, params }: HttpContext) {
-    const driverInstance = ally.use(params.provider)
-
-    return driverInstance.redirect()
+    return ally.use(params.provider).redirect()
   }
 
   async callback({ ally, auth, params, response, session }: HttpContext) {
     const social = ally.use(params.provider)
 
-    /**
-     * User has denied access by canceling
-     * the login flow
-     */
     if (social.accessDenied()) {
       session.flash('error', 'auth.social.error.access_denied')
-
       return response.redirect().toRoute('auth.sign_up.show')
     }
 
-    /**
-     * OAuth state verification failed. This happens when the
-     * CSRF cookie gets expired.
-     */
     if (social.stateMisMatch()) {
       session.flash('error', 'auth.social.error.state_mismatch')
-
       return response.redirect().toRoute('auth.sign_up.show')
     }
 
-    /**
-     * Provider responded with some error
-     */
     if (social.hasError()) {
       session.flash('error', 'auth.social.error.uknown')
-
       return response.redirect().toRoute('auth.sign_up.show')
     }
 
-    /**
-     * Access user info
-     */
     const socialUser = await social.user()
 
-    let user = await User.findBy('email', socialUser.email)
-
-    if (!user) {
-      user = await User.create({
-        fullName: socialUser.name,
+    await new AuthenticateWithSocial().handle({
+      socialUser: {
         email: socialUser.email,
-        password: null,
+        name: socialUser.name,
         avatarUrl: socialUser.avatarUrl,
-      })
-    }
-
-    await auth.use('web').login(user)
+      },
+      auth,
+    })
 
     return response.redirect().toRoute(afterAuthRedirectRoute)
   }

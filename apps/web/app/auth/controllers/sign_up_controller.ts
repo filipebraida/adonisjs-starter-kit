@@ -1,8 +1,8 @@
+import type { HttpContext } from '@adonisjs/core/http'
+
 import { afterAuthRedirectRoute } from '#config/auth'
-import { type HttpContext } from '@adonisjs/core/http'
 
-import User from '#users/models/user'
-
+import SignUp from '#auth/actions/sign_up'
 import { signUpValidator } from '#auth/validators'
 
 export default class SignUpController {
@@ -11,11 +11,14 @@ export default class SignUpController {
   }
 
   async handle({ auth, request, response }: HttpContext) {
-    const { email, password, fullName } = await request.validateUsing(signUpValidator)
+    const payload = await request.validateUsing(signUpValidator)
 
-    const user = await User.create({ fullName, email, password })
-
-    await auth.use('web').login(user)
+    await new SignUp().handle({
+      fullName: payload.fullName,
+      email: payload.email,
+      password: payload.password,
+      auth,
+    })
 
     return response.redirect().toRoute(afterAuthRedirectRoute)
   }
