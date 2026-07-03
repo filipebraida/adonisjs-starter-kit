@@ -33,15 +33,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   async handle(error: unknown, ctx: HttpContext) {
     if (error instanceof errors.E_AUTHORIZATION_FAILURE) {
-      if (this.debug) {
-        return this.renderErrorAsHTML(error, ctx)
-      }
-
-      const html = await ctx.inertia.render('core/errors/not_found', { error })
-
-      ctx.response.send(html)
-
-      return html
+      const message = ctx.i18n?.t('errors.E_AUTHORIZATION_FAILURE') ?? error.message
+      ctx.session?.flash('error', message)
+      return ctx.response.redirect().back()
     }
 
     if (error instanceof authErrors.E_INVALID_CREDENTIALS) {

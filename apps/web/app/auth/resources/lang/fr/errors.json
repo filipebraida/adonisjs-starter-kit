@@ -1,5 +1,6 @@
 {
   "E_TOO_MANY_REQUESTS": "Trop de tentatives, veuillez réessayer plus tard.",
   "E_INVALID_CREDENTIALS": "E-mail ou mot de passe invalide",
-  "E_VALIDATION_ERROR": "Le formulaire n'a pas pu être enregistré. Veuillez vérifier les erreurs ci-dessus."
+  "E_VALIDATION_ERROR": "Le formulaire n'a pas pu être enregistré. Veuillez vérifier les erreurs ci-dessus.",
+  "E_AUTHORIZATION_FAILURE": "Vous n'avez pas la permission d'effectuer cette action."
 }

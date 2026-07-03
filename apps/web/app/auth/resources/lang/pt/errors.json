@@ -1,5 +1,6 @@
 {
   "E_TOO_MANY_REQUESTS": "Muitas tentativas, tente novamente mais tarde.",
   "E_INVALID_CREDENTIALS": "E-mail ou senha inválidos",
-  "E_VALIDATION_ERROR": "O formulário não pôde ser salvo. Verifique os erros acima."
+  "E_VALIDATION_ERROR": "O formulário não pôde ser salvo. Verifique os erros acima.",
+  "E_AUTHORIZATION_FAILURE": "Você não tem permissão para executar esta ação."
 }

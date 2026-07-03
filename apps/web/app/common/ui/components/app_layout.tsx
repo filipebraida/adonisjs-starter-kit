@@ -7,6 +7,7 @@ import AppHeaderLayout from '#common/ui/components/app_header_layout'
 import AppSidebarLayout from '#common/ui/components/app_sidebar_layout'
 
 import useUser from '#auth/ui/hooks/use_user'
+import useFlashToasts from '#common/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { ModalRoot } from 'adonis-inertia-modal/react'
@@ -33,6 +34,7 @@ interface AppLayoutProps extends React.PropsWithChildren {
 
 function AppLayoutContent({ children, breadcrumbs = [], navMain, navUser, user }: AppLayoutProps) {
   const { layout, variant, collapsible } = useLayout()
+  useFlashToasts()
 
   if (!navMain || !navUser || !user) {
     return null
