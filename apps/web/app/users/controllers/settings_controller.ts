@@ -23,7 +23,7 @@ export default class SettingsController {
     const newToken = (session.flashMessages.get('newToken') as NewToken | undefined) ?? null
 
     return inertia.render('users/settings', {
-      profile: UserTransformer.transform(auth.user!),
+      profile: UserTransformer.transform(auth.user!).useVariant('forProfile'),
       tokens,
       newToken,
     })

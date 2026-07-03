@@ -14,7 +14,7 @@ import type { Data } from '@generated/data'
 
 type PageProps = InertiaProps<{
   users: {
-    data: Data.Users.User[]
+    data: Data.Users.User.Variants['forList'][]
     metadata: {
       total: number
       perPage: number

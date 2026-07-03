@@ -29,7 +29,7 @@ interface AppLayoutProps extends React.PropsWithChildren {
   layout?: 'sidebar' | 'header'
   navMain?: NavMainItem[]
   navUser?: NavUserOptionsGroup[]
-  user?: Data.Users.User
+  user?: Data.Users.User.Variants['forSharedProps']
 }
 
 function AppLayoutContent({ children, breadcrumbs = [], navMain, navUser, user }: AppLayoutProps) {

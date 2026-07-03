@@ -38,7 +38,9 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       flash: ctx.inertia.always({ error, success }),
-      user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
+      user: ctx.inertia.always(
+        auth?.user ? UserTransformer.transform(auth.user).useVariant('forSharedProps') : undefined
+      ),
       locale: ctx.inertia.always(ctx.i18n?.locale ?? i18nManager.config.defaultLocale),
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       csrf: ctx.inertia.always(ctx.request.csrfToken),

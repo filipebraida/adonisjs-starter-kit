@@ -12,7 +12,7 @@ import useCan from '#common/ui/hooks/use_can'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 type PageProps = InertiaProps<{
-  profile: Data.Users.User
+  profile: Data.Users.User.Variants['forProfile']
   tokens: Data.Users.Token[]
   newToken: { name: string; value: string } | null
 }>

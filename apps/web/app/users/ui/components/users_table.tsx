@@ -21,7 +21,7 @@ import type { Data } from '@generated/data'
 
 interface DataTableProps {
   users: {
-    data: Data.Users.User[]
+    data: Data.Users.User.Variants['forList'][]
     metadata: {
       total: number
       perPage: number
@@ -113,7 +113,7 @@ export default function UsersTable({
     sorting: { state: sorting, onChange: onSortingChange },
   })
 
-  const columns: ColumnDef<Data.Users.User>[] = [
+  const columns: ColumnDef<Data.Users.User.Variants['forList']>[] = [
     {
       id: 'fullName',
       header: t('users.index.table.columns.full_name'),

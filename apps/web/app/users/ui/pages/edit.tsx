@@ -15,7 +15,7 @@ import type { InertiaProps } from '#core/ui/types'
 import type { Data } from '@generated/data'
 
 type PageProps = InertiaProps<{
-  user: Data.Users.User
+  user: Data.Users.User.Variants['forEdit']
 }>
 
 export default function EditUserPage({ user }: PageProps) {

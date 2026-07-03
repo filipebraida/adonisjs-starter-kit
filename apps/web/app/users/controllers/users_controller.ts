@@ -26,7 +26,7 @@ export default class UsersController {
     await User.preComputeUrls(usersData)
 
     return inertia.render('users/index', {
-      users: UserTransformer.paginate(usersData, users.getMeta()),
+      users: UserTransformer.paginate(usersData, users.getMeta()).useVariant('forList'),
       q: payload.q,
       selectedRoles: payload.roles ?? [],
       sort: payload.sort ?? null,
@@ -65,7 +65,7 @@ export default class UsersController {
     return modal(
       inertia,
       'users/edit',
-      { user: UserTransformer.transform(user) },
+      { user: UserTransformer.transform(user).useVariant('forEdit') },
       { route: 'users.index' }
     )
   }

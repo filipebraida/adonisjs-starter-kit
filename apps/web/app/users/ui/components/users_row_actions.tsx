@@ -22,7 +22,7 @@ import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_d
 
 import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users.User>) {
+export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users.User.Variants['forList']>) {
   const user = useUser()
   const { t } = useTranslation()
 

@@ -38,6 +38,6 @@ export type NavUserOptionsGroup = {
 }[]
 
 export interface NavUserProps {
-  user: Data.Users.User
+  user: Data.Users.User.Variants['forSharedProps']
   options: NavUserOptionsGroup[]
 }
