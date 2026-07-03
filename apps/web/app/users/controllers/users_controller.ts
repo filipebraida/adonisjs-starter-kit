@@ -1,11 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { randomUUID } from 'node:crypto'
 
+import Role from '#users/models/role'
 import User from '#users/models/user'
 
 import UserTransformer from '#users/transformers/user_transformer'
 
 import UserPolicy from '#users/policies/user_policy'
+
+import SyncUserRoles, { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
+import type { Role as RoleSlug } from '#users/enums/role'
 
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
 
@@ -18,9 +22,9 @@ export default class UsersController {
     const limit = payload.perPage || 10
     const page = payload.page || 1
     const querySearch = payload.q || undefined
-    const roleIds = payload.roleIds || []
+    const roles = payload.roles ?? []
 
-    const query = User.query()
+    const query = User.query().preload('roles')
 
     if (querySearch) {
       query.where((subquery) => {
@@ -30,11 +34,11 @@ export default class UsersController {
       })
     }
 
-    if (Array.isArray(roleIds) && roleIds.length > 0) {
-      query.andWhereIn('role_id', roleIds)
+    if (roles.length > 0) {
+      query.whereHas('roles', (rolesQuery) => rolesQuery.whereIn('name', roles))
     }
 
-    const users = await query.preload('role').paginate(page, limit)
+    const users = await query.paginate(page, limit)
 
     const usersData = users.all()
 
@@ -43,38 +47,51 @@ export default class UsersController {
     return inertia.render('users/index', {
       users: UserTransformer.paginate(usersData, users.getMeta()),
       q: querySearch,
-      selectedRoles: roleIds,
+      selectedRoles: roles,
     })
   }
 
-  public async store({ bouncer, request, response }: HttpContext) {
+  public async store({ auth, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
     const payload = await request.validateUsing(createUserValidator)
 
+    await requireManageRolesIfEscalating(auth.user!, [payload.role])
+
     const user = new User()
     user.merge({
-      ...payload,
+      fullName: payload.fullName,
+      email: payload.email,
       password: payload.password ? payload.password : randomUUID(),
     })
 
     await user.save()
 
+    const role = await Role.findByOrFail('name', payload.role)
+    await user.assignRole(role)
+
     return response.redirect().toRoute('users.index')
   }
 
-  public async update({ bouncer, params, request, response }: HttpContext) {
+  public async update({ auth, bouncer, params, request, response }: HttpContext) {
     const user = await User.findOrFail(params.id)
 
     await bouncer.with(UserPolicy).authorize('update', user)
 
     const payload = await request.validateUsing(editUserValidator, { meta: { userId: params.id } })
     user.merge({
-      ...payload,
+      fullName: payload.fullName,
+      email: payload.email,
       password: payload.password ? payload.password : user.password,
     })
 
     await user.save()
+
+    await new SyncUserRoles().handle({
+      target: user,
+      desiredRoles: [payload.role as RoleSlug],
+      executor: auth.user!,
+    })
 
     return response.redirect().toRoute('users.index')
   }

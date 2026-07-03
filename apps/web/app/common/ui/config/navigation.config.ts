@@ -37,7 +37,7 @@ export function getNavMain(t: SimpleTFunction): NavMainItem[] {
           title: t('common.layout.navMain.users'),
           url: '/users',
           icon: Users,
-          subject: 'user',
+          can: 'manageUsers',
         },
       ],
     },

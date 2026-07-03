@@ -11,6 +11,8 @@ import { Trans } from 'react-i18next'
 
 import type { Data } from '@generated/data'
 
+import { ROLES, mainRole } from '#users/enums/role'
+
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -52,7 +54,7 @@ export function UsersImpersonateDialog({ open, onOpenChange, currentRow }: Props
               i18nKey="users.impersonate.description"
               values={{
                 email: currentRow.email,
-                role: t(`users.roles.${currentRow.roleId}.name`),
+                role: t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`),
               }}
               components={{
                 strong1: <span className="font-bold" />,

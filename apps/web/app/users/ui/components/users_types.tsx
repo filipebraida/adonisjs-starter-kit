@@ -1,25 +1,26 @@
+import { LucideIcon, Shield, User } from 'lucide-react'
+
 import { SimpleTFunction } from '#common/ui/hooks/use_translation'
 
-import Roles from '#users/enums/role'
-import { LucideIcon, Shield, User } from 'lucide-react'
+import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 
 export type Role = {
   label: string
-  value: string
+  value: RoleSlug
   icon?: LucideIcon
 }
 
 export function userRoles(t: SimpleTFunction): Role[] {
   return [
     {
-      value: String(Roles.ADMIN),
-      label: t(`users.roles.${Roles.ADMIN}.name`),
+      value: ROLES.ADMIN,
+      label: t(`users.roles.${ROLES.ADMIN}.name`),
       icon: Shield,
     },
     {
-      value: String(Roles.USER),
-      label: t(`users.roles.${Roles.USER}.name`),
+      value: ROLES.USER,
+      label: t(`users.roles.${ROLES.USER}.name`),
       icon: User,
     },
-  ] as const
+  ]
 }

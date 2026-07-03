@@ -13,25 +13,25 @@ import { Role } from '#users/ui/components/users_types'
 export default function UsersTableFilters({
   querySearch,
   setQuerySearch,
-  roleIds,
-  setRoleIds,
+  selectedRoles,
+  setSelectedRoles,
   roles,
   perPage,
 }: {
   querySearch: string
   setQuerySearch: React.Dispatch<React.SetStateAction<string>>
-  roleIds: string[]
-  setRoleIds: React.Dispatch<React.SetStateAction<string[]>>
+  selectedRoles: string[]
+  setSelectedRoles: React.Dispatch<React.SetStateAction<string[]>>
   roles: Role[]
   perPage: number
 }) {
   const { t } = useTranslation()
 
   const handleSubmit = React.useCallback(
-    (querySearch: string, roleIds: string[], perPage: number) => {
+    (querySearch: string, selectedRoles: string[], perPage: number) => {
       const data = {
         q: querySearch.length > 0 ? querySearch : undefined,
-        roleIds: roleIds.length > 0 ? roleIds : undefined,
+        roles: selectedRoles.length > 0 ? selectedRoles : undefined,
         perPage: perPage,
       }
 
@@ -48,21 +48,21 @@ export default function UsersTableFilters({
   const debouncedSearch = useDebounceCallback(handleSubmit, 300)
   React.useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch])
 
-  const isFiltered = (querySearch?.trim()?.length ?? 0) > 0 || (roleIds?.length ?? 0) > 0
+  const isFiltered = (querySearch?.trim()?.length ?? 0) > 0 || (selectedRoles?.length ?? 0) > 0
 
   const clearAll = () => {
     setQuerySearch('')
-    setRoleIds([])
+    setSelectedRoles([])
     handleSubmit('', [], perPage)
   }
 
   const handleSearch = (value: string) => {
     setQuerySearch(value)
-    debouncedSearch(value, roleIds, perPage)
+    debouncedSearch(value, selectedRoles, perPage)
   }
 
   const handleRolesChange = (next: string[]) => {
-    setRoleIds(next)
+    setSelectedRoles(next)
     handleSubmit(querySearch, next, perPage)
   }
 
@@ -78,7 +78,7 @@ export default function UsersTableFilters({
 
         <CheckboxFilter
           title={t('users.index.table.filters.role')}
-          value={roleIds}
+          value={selectedRoles}
           onChange={handleRolesChange}
           options={roles}
           clearLabel={t('users.index.table.filters.clear_filters')}

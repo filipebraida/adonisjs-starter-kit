@@ -14,6 +14,8 @@ import { AlertTriangleIcon } from 'lucide-react'
 
 import type { Data } from '@generated/data'
 
+import { ROLES, mainRole } from '#users/enums/role'
+
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -57,7 +59,10 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <p className="mb-2">
             <Trans
               i18nKey="users.delete.description"
-              values={{ email: currentRow.email, role: t(`users.roles.${currentRow.roleId}.name`) }}
+              values={{
+                email: currentRow.email,
+                role: t(`users.roles.${mainRole(currentRow.roles) ?? ROLES.USER}.name`),
+              }}
               components={{
                 strong1: <span className="font-bold" />,
                 strong2: <span className="font-bold" />,

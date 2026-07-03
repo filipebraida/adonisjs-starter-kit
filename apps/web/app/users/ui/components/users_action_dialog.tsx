@@ -33,7 +33,7 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 
 import type { Data } from '@generated/data'
 
-import Roles from '#users/enums/role'
+import { ROLES, mainRole } from '#users/enums/role'
 
 interface Props {
   roles: Role[]
@@ -50,7 +50,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
   const { data, setData, errors, post, put, progress, clearErrors, reset } = useForm({
     fullName: currentRow && currentRow.fullName ? currentRow.fullName : '',
     email: currentRow ? currentRow.email : '',
-    roleId: currentRow ? String(currentRow.roleId) : String(Roles.USER),
+    role: currentRow ? (mainRole(currentRow.roles) ?? ROLES.USER) : ROLES.USER,
     password: '',
     passwordConfirmation: '',
   })
@@ -126,8 +126,11 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
 
             <Field>
               <FieldLabel htmlFor="role">{t('users.action.form.role.label')}</FieldLabel>
-              <Select value={data.roleId} onValueChange={(v) => setData('roleId', v)}>
-                <SelectTrigger className={`${errors?.roleId ? 'border-destructive' : ''}`}>
+              <Select
+                value={data.role}
+                onValueChange={(v) => setData('role', v as typeof data.role)}
+              >
+                <SelectTrigger className={`${errors?.role ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={t('users.action.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -145,7 +148,7 @@ export function UsersActionDialog({ roles, currentRow, open, onOpenChange }: Pro
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <FieldErrorBag errors={errors} field="roleId" />
+              <FieldErrorBag errors={errors} field="role" />
             </Field>
 
             <Field>

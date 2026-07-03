@@ -1,14 +1,15 @@
 import { BasePolicy } from '@adonisjs/bouncer'
 import { type AuthorizerResponse } from '@adonisjs/bouncer/types'
 
+import { PERMISSIONS } from '#users/enums/permission'
 import type User from '#users/models/user'
 
 export default class TokenPolicy extends BasePolicy {
-  create(user: User): AuthorizerResponse {
-    return user.isAdmin
+  async create(user: User): Promise<AuthorizerResponse> {
+    return user.hasPermission(PERMISSIONS.tokensCreate)
   }
 
-  viewList(user: User): AuthorizerResponse {
-    return user.isAdmin
+  async viewList(user: User): Promise<AuthorizerResponse> {
+    return user.hasPermission(PERMISSIONS.tokensViewList)
   }
 }

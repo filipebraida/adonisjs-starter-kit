@@ -2,22 +2,20 @@ import { Link } from '@inertiajs/react'
 
 import { isSection, type NavMainItem } from '#common/ui/types/navigation'
 import HeaderDropdown from '#common/ui/components/header_dropdown'
-import { useAbility } from '#users/ui/context/abilities_context'
+import useCan from '#common/ui/hooks/use_can'
 
 export interface NavHeaderMainProps {
   items: NavMainItem[]
 }
 
 export function NavHeaderMain({ items }: NavHeaderMainProps) {
-  const abilities = useAbility()
+  const can = useCan()
 
   return (
     <nav className="flex items-center space-x-4">
       {items.map((item, index) => {
         if (isSection(item)) {
-          const visibleItems = item.items.filter(
-            (subItem) => !subItem.subject || abilities.can('read', subItem.subject)
-          )
+          const visibleItems = item.items.filter((subItem) => !subItem.can || can[subItem.can])
 
           if (visibleItems.length === 0) {
             return null
@@ -61,7 +59,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
             />
           )
         } else {
-          if (!item.subject || abilities.can('read', item.subject)) {
+          if (!item.can || can[item.can]) {
             if (item.external) {
               return (
                 <a

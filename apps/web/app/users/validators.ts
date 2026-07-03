@@ -4,11 +4,15 @@ import User from '#users/models/user'
 
 import { baseSearchValidator } from '#common/validators/search'
 
+import { ROLES } from '#users/enums/role'
+
+const roleValues = Object.values(ROLES)
+
 export const createUserValidator = vine.compile(
   vine.object({
     fullName: vine.string().trim().minLength(3).maxLength(255),
     email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),
-    roleId: vine.number().exists({ table: 'roles', column: 'id' }),
+    role: vine.enum(roleValues),
     password: vine
       .string()
       .minLength(8)
@@ -33,7 +37,7 @@ export const updateProfileValidator = vine.compile(
 export const listUserValidator = vine.compile(
   vine.object({
     ...baseSearchValidator.getProperties(),
-    roleIds: vine.array(vine.number().exists({ table: 'roles', column: 'id' })).optional(),
+    roles: vine.array(vine.enum(roleValues)).optional(),
   })
 )
 
@@ -47,7 +51,7 @@ export const inviteUserValidator = vine.compile(
   vine.object({
     email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),
     description: vine.string().trim().optional(),
-    roleId: vine.number().exists({ table: 'roles', column: 'id' }),
+    role: vine.enum(roleValues),
   })
 )
 
@@ -76,7 +80,7 @@ export const editUserValidator = vine.withMetaData<{ userId: number }>().compile
           .first()
         return row ? false : true
       }),
-    roleId: vine.number().exists({ table: 'roles', column: 'id' }),
+    role: vine.enum(roleValues),
     password: vine
       .string()
       .minLength(8)

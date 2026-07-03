@@ -3,21 +3,21 @@
 | Bouncer abilities
 |--------------------------------------------------------------------------
 |
-| You may export multiple abilities from this file and pre-register them
-| when creating the Bouncer instance.
+| The `hasPermission` ability bridges the role/permission catalog defined in
+| `#users/enums/permission` with Bouncer. Register it on the middleware and
+| call it as `bouncer.allows('hasPermission', PERMISSIONS.x)` for lightweight
+| capability checks that don't need a full policy.
 |
-| Pre-registered policies and abilities can be referenced as a string by their
-| name. Also they are must if want to perform authorization inside Edge
-| templates.
+| Prefer policies (`bouncer.with(Policy).authorize(...)`) for gates that
+| combine capability with ownership or state.
 |
 */
 
 import { Bouncer } from '@adonisjs/bouncer'
 
-/**
- * Delete the following ability to start from
- * scratch
- */
-export const editUser = Bouncer.ability(() => {
-  return true
-})
+import type { Permission } from '#users/enums/permission'
+import type User from '#users/models/user'
+
+export const hasPermission = Bouncer.ability(async (user: User, permission: Permission) =>
+  user.hasPermission(permission)
+)

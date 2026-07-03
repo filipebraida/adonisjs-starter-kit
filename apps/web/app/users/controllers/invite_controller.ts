@@ -2,10 +2,13 @@ import { inject } from '@adonisjs/core/container'
 import type { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
 
+import Role from '#users/models/role'
 import User from '#users/models/user'
 
 import UserPolicy from '#users/policies/user_policy'
 import PasswordResetService from '#users/services/password_reset_service'
+
+import { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
 
 import { inviteUserValidator } from '#users/validators'
 
@@ -13,17 +16,21 @@ import { inviteUserValidator } from '#users/validators'
 export default class InviteController {
   constructor(private passwordResetService: PasswordResetService) {}
 
-  public async handle({ i18n, bouncer, request, response }: HttpContext) {
+  public async handle({ auth, i18n, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')
 
     const payload = await request.validateUsing(inviteUserValidator)
 
+    await requireManageRolesIfEscalating(auth.user!, [payload.role])
+
     const user = await User.create({
       email: payload.email,
-      roleId: payload.roleId,
     })
 
     await user.save()
+
+    const role = await Role.findByOrFail('name', payload.role)
+    await user.assignRole(role)
 
     const { token } = await this.passwordResetService.generateToken(user)
 

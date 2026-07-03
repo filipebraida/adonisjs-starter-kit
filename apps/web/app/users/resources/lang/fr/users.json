@@ -192,11 +192,11 @@
     }
   },
   "roles": {
-    "1":{
+    "user": {
       "name": "Utilisateur",
       "description": "Utilisateur Authentifié"
     },
-    "2":{
+    "admin": {
       "name": "Administrateur",
       "description": "Super Utilisateur"
     }

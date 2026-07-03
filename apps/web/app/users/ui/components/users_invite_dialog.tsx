@@ -35,7 +35,7 @@ import { MailPlus, Send } from 'lucide-react'
 
 import type { Data } from '@generated/data'
 
-import Roles from '#users/enums/role'
+import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 
 interface Props {
   roles: Role[]
@@ -47,11 +47,11 @@ interface Props {
 export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
   const { data, setData, errors, post, progress, clearErrors, reset } = useForm<{
     email: string
-    roleId: string
+    role: RoleSlug
     description: string | null
   }>({
     email: '',
-    roleId: String(Roles.USER),
+    role: ROLES.USER,
     description: '',
   })
 
@@ -111,8 +111,11 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
 
             <Field>
               <FieldLabel htmlFor="role">{t('users.invite.form.role.label')}</FieldLabel>
-              <Select value={data.roleId} onValueChange={(value) => setData('roleId', value)}>
-                <SelectTrigger className={errors?.roleId ? 'border-destructive' : ''}>
+              <Select
+                value={data.role}
+                onValueChange={(value) => setData('role', value as RoleSlug)}
+              >
+                <SelectTrigger className={errors?.role ? 'border-destructive' : ''}>
                   <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -130,7 +133,7 @@ export function UsersInviteDialog({ roles, open, onOpenChange }: Props) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <FieldErrorBag errors={errors} field="roleId" />
+              <FieldErrorBag errors={errors} field="role" />
             </Field>
 
             <Field>

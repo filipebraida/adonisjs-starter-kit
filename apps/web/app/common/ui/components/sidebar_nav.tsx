@@ -12,13 +12,14 @@ import {
   SelectValue,
 } from '@workspace/ui/components/select'
 
-import { Subjects, useAbility } from '#users/ui/context/abilities_context'
+import useCan from '#common/ui/hooks/use_can'
+import type { CanKey } from '#common/ui/types/navigation'
 
 export interface SidebarNavItem {
   href: string
   title: string
   icon: JSX.Element
-  subject?: Subjects
+  can?: CanKey
 }
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -29,14 +30,14 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 export default function SidebarNav({ className, currentPath, items, ...props }: SidebarNavProps) {
   const [val, setVal] = useState(currentPath)
 
-  const abilities = useAbility()
+  const can = useCan()
 
   const handleSelect = (e: string) => {
     setVal(e)
     router.visit(e)
   }
 
-  const visibleItems = items.filter((item) => !item.subject || abilities.can('read', item.subject))
+  const visibleItems = items.filter((item) => !item.can || can[item.can])
 
   return (
     <>

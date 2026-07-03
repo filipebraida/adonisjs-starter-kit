@@ -11,22 +11,20 @@ import {
   SidebarMenuItem,
 } from '@workspace/ui/components/sidebar'
 
-import { useAbility } from '#users/ui/context/abilities_context'
+import useCan from '#common/ui/hooks/use_can'
 
 export interface NavSidebarMainProps {
   items: NavMainItem[]
 }
 
 export function NavSidebarMain({ items }: NavSidebarMainProps) {
-  const abilities = useAbility()
+  const can = useCan()
 
   return (
     <>
       {items.map((item) => {
         if (isSection(item)) {
-          const visibleItems = item.items.filter(
-            (subItem) => !subItem.subject || abilities.can('read', subItem.subject)
-          )
+          const visibleItems = item.items.filter((subItem) => !subItem.can || can[subItem.can])
 
           if (visibleItems.length === 0) return null
 
@@ -64,7 +62,7 @@ export function NavSidebarMain({ items }: NavSidebarMainProps) {
             </SidebarGroup>
           )
         } else {
-          if (!item.subject || abilities.can('read', item.subject)) {
+          if (!item.can || can[item.can]) {
             return (
               <SidebarGroup key={item.title}>
                 <SidebarGroupContent>

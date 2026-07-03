@@ -8,7 +8,6 @@ import AppSidebarLayout from '#common/ui/components/app_sidebar_layout'
 
 import useUser from '#auth/ui/hooks/use_user'
 import { useTranslation } from '#common/ui/hooks/use_translation'
-import AbilityProvider from '#users/ui/context/abilities_context'
 
 import { Toaster } from '@workspace/ui/components/sonner'
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
@@ -71,9 +70,7 @@ export default function AppLayout(props: AppLayoutProps) {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <DirectionProvider>
         <LayoutProvider>
-          <AbilityProvider>
-            <AppLayoutContent {...props} navMain={navMain} navUser={navUser} user={user} />
-          </AbilityProvider>
+          <AppLayoutContent {...props} navMain={navMain} navUser={navUser} user={user} />
         </LayoutProvider>
       </DirectionProvider>
     </ThemeProvider>

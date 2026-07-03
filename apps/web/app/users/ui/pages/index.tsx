@@ -30,7 +30,7 @@ type PageProps = InertiaProps<{
     }
   }
   q?: string
-  selectedRoles: number[]
+  selectedRoles: string[]
 }>
 
 export default function ListUsersPage({ users, q, selectedRoles }: PageProps) {

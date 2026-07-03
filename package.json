@@ -8,6 +8,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "infra:up": "docker compose --env-file apps/web/.env up -d",
+    "infra:down": "docker compose --env-file apps/web/.env down",
     "docker:prod": "docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d"
   },
   "devDependencies": {

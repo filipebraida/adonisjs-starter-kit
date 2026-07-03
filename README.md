@@ -15,7 +15,7 @@ AdonisJS Starter Kit is a monorepo-based template for developing full-stack appl
 - **Styling**: Rapid and responsive UI development using Tailwind CSS.
 - **Database**: PostgreSQL ensures robust, scalable, and high-performance data storage.
 - **User Management**: Comprehensive user management system.
-- **Authorization & Authentication**: Secure access control mechanisms.
+- **Authorization & Authentication**: Role-based access control with typed capabilities, admin-lockout guards, and a typed `useCan()` hook on the frontend.
 - **Password Recovery**: Built-in functionality for password reset and recovery.
 - **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
 - **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
@@ -83,12 +83,14 @@ node apps/web/ace generate:key
 
 The project includes a Dockerfile that automatically initializes the necessary configurations using your environment variables. To set up the database:
 
-1. **Start the Database with Docker**  
-   Launch the database container:
+1. **Start the Infrastructure with Docker**
+   Launch PostgreSQL, pgAdmin and Mailpit:
 
 ```bash
-docker compose up -d
+pnpm infra:up
 ```
+
+To tear it down later, run `pnpm infra:down`.
 
 2. **Run Migrations**  
    Apply all migrations to create the database schema:
@@ -158,6 +160,28 @@ apps/web/app/
 ```
 
 This structure is a project convention and does not depend on an external modules package.
+
+## Authorization
+
+Access control is role-based with a static catalog of capabilities. There is no dedicated authorization library — the pattern is implemented in plain code on top of AdonisJS Bouncer.
+
+Four moving parts:
+
+- **`app/users/enums/permission.ts`** — the single source of truth. Declares every capability the app supports (e.g. `users.create`, `tokens.view_list`). Adding a permission means adding one entry here and referencing it wherever you gate.
+- **`app/users/enums/role.ts`** — role slugs (`user`, `admin`) with weights and helpers like `mainRole()` for display.
+- **`Role` model + `withRoles()` mixin** — roles store their granted permissions as a JSON column; the mixin composes into `User` (like `withAuthFinder`) and adds `assignRole`, `hasRole`, `hasPermission`, `getPermissions`.
+- **`hasPermission` Bouncer ability + policies** — controllers gate routes with `bouncer.authorize('hasPermission', PERMISSIONS.usersCreate)` or through a resource policy like `UserPolicy`.
+
+On the frontend, the Inertia middleware shares a typed `can: GlobalPermissions` prop; consume it via the argument-less `useCan()` hook:
+
+```tsx
+const can = useCan()
+if (!can.manageUsers) return null
+```
+
+For per-resource permissions (e.g. "can I edit *this* record?"), pass them as a `permissions` prop from the controller after calling `bouncer.with(Policy).allows(...)`.
+
+Escalation is protected in depth: `SyncUserRoles.handle` requires the `users.manage_roles` capability and refuses to remove the executor's own admin role. `requireManageRolesIfEscalating` protects create/invite paths from bypassing the validator.
 
 ## Adding a New Component
 

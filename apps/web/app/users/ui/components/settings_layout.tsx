@@ -31,7 +31,7 @@ export default function SettingsLayout({
       title: t('users.layout.tokens'),
       icon: <Ticket size={18} />,
       href: '/settings/tokens',
-      subject: 'token',
+      can: 'manageTokens',
     },
     {
       title: 'Appearance',

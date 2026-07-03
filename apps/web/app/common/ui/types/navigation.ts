@@ -1,8 +1,9 @@
-import { type Subjects } from '#users/ui/context/abilities_context'
-
 import { type LucideIcon } from 'lucide-react'
 
+import type { GlobalPermissions } from '#users/services/global_permissions'
 import type { Data } from '@generated/data'
+
+export type CanKey = keyof GlobalPermissions
 
 interface ItemNav {
   title: string
@@ -10,7 +11,7 @@ interface ItemNav {
   icon?: LucideIcon
   isActive?: boolean
   external?: boolean
-  subject?: Subjects
+  can?: CanKey
 }
 
 interface NavMainSection {

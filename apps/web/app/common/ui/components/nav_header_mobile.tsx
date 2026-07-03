@@ -11,7 +11,7 @@ import {
 
 import { AppLogo } from '#common/ui/components/app_logo'
 import { isSection, type NavMainItem } from '#common/ui/types/navigation'
-import { useAbility } from '#users/ui/context/abilities_context'
+import useCan from '#common/ui/hooks/use_can'
 
 const sidebarMenuButtonVariants =
   'text-sidebar-foreground flex w-full items-center gap-2 overflow-hidden ' +
@@ -29,7 +29,7 @@ export interface NavHeaderMobileProps {
 }
 
 export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
-  const abilities = useAbility()
+  const can = useCan()
 
   return (
     <div className="lg:hidden">
@@ -55,7 +55,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
               {items.map((item, index) => {
                 if (isSection(item)) {
                   const visibleItems = item.items.filter(
-                    (subItem) => !subItem.subject || abilities.can('read', subItem.subject)
+                    (subItem) => !subItem.can || can[subItem.can]
                   )
                   if (visibleItems.length === 0) return null
 
@@ -97,7 +97,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                     </div>
                   )
                 } else {
-                  if (!item.subject || abilities.can('read', item.subject)) {
+                  if (!item.can || can[item.can]) {
                     if (item.external) {
                       return (
                         <a

@@ -68,8 +68,6 @@
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^5.1.0",
-    "@casl/ability": "^6.8.0",
-    "@casl/react": "^5.0.1",
     "@inertiajs/react": "^2.3.18",
     "@jrmc/adonis-attachment": "^5.1.2",
     "@radix-ui/react-direction": "^1.1.1",

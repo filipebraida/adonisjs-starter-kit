@@ -9,6 +9,8 @@ import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
 
+import { mainRole, ROLES, type Role as RoleSlug } from '#users/enums/role'
+
 import type { Data } from '@generated/data'
 
 interface DataTableProps {
@@ -28,16 +30,14 @@ interface DataTableProps {
   }
   roles: Role[]
   q: string | undefined
-  selectedRoles: number[]
+  selectedRoles: string[]
 }
 
 export default function UsersTable({ users, roles, q, selectedRoles }: DataTableProps) {
   const { t } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q || '')
-  const [roleIds, setRoleIds] = React.useState<string[]>(
-    selectedRoles ? selectedRoles.map(String) : []
-  )
+  const [selectedRoleSlugs, setSelectedRoleSlugs] = React.useState<string[]>(selectedRoles ?? [])
 
   const remoteTableOptions = useDataTable({
     data: users,
@@ -48,7 +48,7 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
           page,
           perPage,
           q: querySearch.length > 0 ? querySearch : undefined,
-          roleIds: roleIds.length > 0 ? roleIds : undefined,
+          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
         },
         {
           preserveState: true,
@@ -77,25 +77,21 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
       accessorKey: 'email',
     },
     {
-      accessorKey: 'roleId',
-      accessorFn: (user) => String(user.roleId),
+      id: 'role',
+      accessorFn: (user) => mainRole(user.roles) ?? ROLES.USER,
       header: t('users.index.table.columns.role'),
       cell: ({ row }) => {
-        const { roleId } = row.original
-        const role = roles.find((role) => role.value === String(roleId))
+        const slug: RoleSlug = mainRole(row.original.roles) ?? ROLES.USER
+        const userRole = roles.find(({ value }) => value === slug)
 
-        if (!role) {
+        if (!userRole) {
           return null
         }
 
-        const userRole = roles.find(({ value }) => value === String(roleId))
-
         return (
           <div className="flex gap-x-2 items-center">
-            {userRole && userRole.icon && (
-              <userRole.icon size={16} className="text-muted-foreground" />
-            )}
-            <span className="capitalize text-sm">{role.label}</span>
+            {userRole.icon && <userRole.icon size={16} className="text-muted-foreground" />}
+            <span className="capitalize text-sm">{userRole.label}</span>
           </div>
         )
       },
@@ -112,8 +108,8 @@ export default function UsersTable({ users, roles, q, selectedRoles }: DataTable
         roles={roles}
         querySearch={querySearch}
         setQuerySearch={setQuerySearch}
-        roleIds={roleIds}
-        setRoleIds={setRoleIds}
+        selectedRoles={selectedRoleSlugs}
+        setSelectedRoles={setSelectedRoleSlugs}
         perPage={users.metadata.perPage}
       />
       <DataTable

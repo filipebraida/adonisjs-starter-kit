@@ -4,7 +4,7 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 import User from '#users/models/user'
-import AbilitiesService from '#users/services/abilities_service'
+import { EMPTY_GLOBAL_PERMISSIONS, globalPermissions } from '#users/services/global_permissions'
 import UserTransformer from '#users/transformers/user_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -25,26 +25,24 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const error = session?.flashMessages.get('error') as string
     const success = session?.flashMessages.get('success') as string
 
-    let abilities: Awaited<ReturnType<AbilitiesService['getAllAbilities']>> = []
+    let can = EMPTY_GLOBAL_PERMISSIONS
 
     if (auth?.user) {
-      const user = auth.user
+      const user = auth.user as User
       await User.preComputeUrls(user)
+      await user.load('roles')
 
-      abilities = await new AbilitiesService().getAllAbilities(user)
+      can = await globalPermissions(user)
     }
 
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
-      flash: ctx.inertia.always({
-        error,
-        success,
-      }),
+      flash: ctx.inertia.always({ error, success }),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always(ctx.i18n?.locale ?? i18nManager.config.defaultLocale),
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
-      abilities: ctx.inertia.always(abilities),
+      can: ctx.inertia.always(can),
     }
   }
 
