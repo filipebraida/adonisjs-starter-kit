@@ -9,15 +9,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/geist": "^5.2.9",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "lucide-react": "^1.7.0",
-    "motion": "^12.23.12",
+    "motion": "^12.42.2",
     "next-themes": "^0.4.6",
-    "radix-ui": "^1.4.3",
+    "radix-ui": "^1.6.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "shadcn": "^4.1.2",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.2",
-    "@turbo/gen": "^2.8.1",
+    "@turbo/gen": "^2.10.2",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
