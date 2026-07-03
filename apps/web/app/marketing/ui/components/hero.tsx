@@ -1,7 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Github } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
+
+import { GithubIcon } from '#marketing/ui/components/github_icon'
 
 import Container from '#marketing/ui/components/container'
 import featureHero from '../images/feature_hero.png'
@@ -49,7 +50,7 @@ export default function HeroSection() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Github className="size-5" />
+                  <GithubIcon className="size-5" />
                   Star on GitHub
                 </a>
               </Button>
