@@ -12,6 +12,7 @@ import {
 } from '@workspace/ui/components/sidebar'
 
 import useCan from '#common/ui/hooks/use_can'
+import useCurrentUrl, { isNavItemActive } from '#common/ui/hooks/use_is_active'
 
 export interface NavSidebarMainProps {
   items: NavMainItem[]
@@ -19,6 +20,7 @@ export interface NavSidebarMainProps {
 
 export function NavSidebarMain({ items }: NavSidebarMainProps) {
   const can = useCan()
+  const currentUrl = useCurrentUrl()
 
   return (
     <>
@@ -33,42 +35,46 @@ export function NavSidebarMain({ items }: NavSidebarMainProps) {
               <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {visibleItems.map((subItem) => (
-                    <SidebarMenuItem key={subItem.title}>
-                      <SidebarMenuButton asChild tooltip={subItem.title}>
-                        {subItem.url ? (
-                          subItem.external ? (
-                            <a href={subItem.url} target="_blank" rel="noopener noreferrer">
-                              {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
-                              <span>{subItem.title}</span>
-                            </a>
+                  {visibleItems.map((subItem) => {
+                    const active = isNavItemActive(subItem.url, currentUrl)
+                    return (
+                      <SidebarMenuItem key={subItem.title}>
+                        <SidebarMenuButton asChild isActive={active} tooltip={subItem.title}>
+                          {subItem.url ? (
+                            subItem.external ? (
+                              <a href={subItem.url} target="_blank" rel="noopener noreferrer">
+                                {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
+                                <span>{subItem.title}</span>
+                              </a>
+                            ) : (
+                              <Link href={subItem.url}>
+                                {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
+                                <span>{subItem.title}</span>
+                              </Link>
+                            )
                           ) : (
-                            <Link href={subItem.url}>
+                            <span>
                               {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
                               <span>{subItem.title}</span>
-                            </Link>
-                          )
-                        ) : (
-                          <span>
-                            {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
-                            <span>{subItem.title}</span>
-                          </span>
-                        )}
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                            </span>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    )
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
           )
         } else {
           if (!item.can || can[item.can]) {
+            const active = isNavItemActive(item.url, currentUrl)
             return (
               <SidebarGroup key={item.title}>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     <SidebarMenuItem>
-                      <SidebarMenuButton asChild tooltip={item.title}>
+                      <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                         {item.url ? (
                           item.external ? (
                             <a href={item.url} target="_blank" rel="noopener noreferrer">

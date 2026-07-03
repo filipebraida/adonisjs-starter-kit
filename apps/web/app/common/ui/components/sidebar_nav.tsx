@@ -13,6 +13,7 @@ import {
 } from '@workspace/ui/components/select'
 
 import useCan from '#common/ui/hooks/use_can'
+import { isNavItemActive } from '#common/ui/hooks/use_is_active'
 import type { CanKey } from '#common/ui/types/navigation'
 
 export interface SidebarNavItem {
@@ -64,22 +65,25 @@ export default function SidebarNav({ className, currentPath, items, ...props }: 
           className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)}
           {...props}
         >
-          {visibleItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                buttonVariants({ variant: 'ghost' }),
-                currentPath === item.href
-                  ? 'bg-muted hover:bg-muted'
-                  : 'hover:bg-transparent hover:underline',
-                'justify-start'
-              )}
-            >
-              <span className="mr-2">{item.icon}</span>
-              {item.title}
-            </Link>
-          ))}
+          {visibleItems.map((item) => {
+            const active = isNavItemActive(item.href, currentPath)
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  buttonVariants({ variant: 'ghost' }),
+                  active
+                    ? 'bg-muted hover:bg-muted font-medium'
+                    : 'hover:bg-transparent hover:underline',
+                  'justify-start'
+                )}
+              >
+                <span className="mr-2">{item.icon}</span>
+                {item.title}
+              </Link>
+            )
+          })}
         </nav>
       </ScrollArea>
     </>

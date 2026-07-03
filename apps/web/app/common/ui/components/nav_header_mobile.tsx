@@ -12,6 +12,7 @@ import {
 import { AppLogo } from '#common/ui/components/app_logo'
 import { isSection, type NavMainItem } from '#common/ui/types/navigation'
 import useCan from '#common/ui/hooks/use_can'
+import useCurrentUrl, { isNavItemActive } from '#common/ui/hooks/use_is_active'
 
 const sidebarMenuButtonVariants =
   'text-sidebar-foreground flex w-full items-center gap-2 overflow-hidden ' +
@@ -30,6 +31,7 @@ export interface NavHeaderMobileProps {
 
 export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
   const can = useCan()
+  const currentUrl = useCurrentUrl()
 
   return (
     <div className="lg:hidden">
@@ -67,6 +69,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
 
                       <div className="flex flex-col space-y-1">
                         {visibleItems.map((subItem, subIndex) => {
+                          const active = isNavItemActive(subItem.url, currentUrl)
                           if (subItem.external) {
                             return (
                               <a
@@ -80,24 +83,25 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                                 <span>{subItem.title}</span>
                               </a>
                             )
-                          } else {
-                            return (
-                              <Link
-                                key={subIndex}
-                                href={subItem.url}
-                                className={sidebarMenuButtonVariants}
-                              >
-                                {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
-                                <span>{subItem.title}</span>
-                              </Link>
-                            )
                           }
+                          return (
+                            <Link
+                              key={subIndex}
+                              href={subItem.url}
+                              data-active={active}
+                              className={sidebarMenuButtonVariants}
+                            >
+                              {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
+                              <span>{subItem.title}</span>
+                            </Link>
+                          )
                         })}
                       </div>
                     </div>
                   )
                 } else {
                   if (!item.can || can[item.can]) {
+                    const active = isNavItemActive(item.url, currentUrl)
                     if (item.external) {
                       return (
                         <a
@@ -111,14 +115,18 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                           <span>{item.title}</span>
                         </a>
                       )
-                    } else {
-                      return (
-                        <Link key={index} href={item.url} className={sidebarMenuButtonVariants}>
-                          {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
-                          <span>{item.title}</span>
-                        </Link>
-                      )
                     }
+                    return (
+                      <Link
+                        key={index}
+                        href={item.url}
+                        data-active={active}
+                        className={sidebarMenuButtonVariants}
+                      >
+                        {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
+                        <span>{item.title}</span>
+                      </Link>
+                    )
                   }
                   return null
                 }
