@@ -1,3 +1,4 @@
+import { errors as authErrors } from '@adonisjs/auth'
 import { errors } from '@adonisjs/bouncer'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
@@ -41,6 +42,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       ctx.response.send(html)
 
       return html
+    }
+
+    if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
+      const message = ctx.i18n?.t('errors.E_INVALID_CREDENTIALS') ?? error.message
+      ctx.session?.flash('error', message)
+      return ctx.response.redirect().toRoute('auth.sign_in.show')
     }
 
     return super.handle(error, ctx)
