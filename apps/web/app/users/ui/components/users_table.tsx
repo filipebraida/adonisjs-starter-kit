@@ -119,26 +119,50 @@ export default function UsersTable({
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
       enableSorting: true,
-      cell: ({ row }) =>
-        row.original.fullName ? (
-          row.original.fullName
-        ) : (
-          <span className="text-muted-foreground">
-            <i>{t('users.index.table.not_provided')}</i>
-          </span>
-        ),
+      cell: ({ row }) => {
+        const user = row.original
+        const slug: RoleSlug = mainRole(user.roles) ?? ROLES.USER
+        const userRole = roles.find(({ value }) => value === slug)
+        return (
+          <div className="min-w-0">
+            <div className="truncate font-medium">
+              {user.fullName ? (
+                user.fullName
+              ) : (
+                <span className="text-muted-foreground italic">
+                  {t('users.index.table.not_provided')}
+                </span>
+              )}
+            </div>
+            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground sm:hidden">
+              <span className="truncate">{user.email}</span>
+              {userRole && (
+                <>
+                  <span className="text-muted-foreground/60">·</span>
+                  <span className="inline-flex items-center gap-1 capitalize">
+                    {userRole.icon && <userRole.icon size={12} />}
+                    {userRole.label}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        )
+      },
     },
     {
       id: 'email',
       header: t('users.index.table.columns.email'),
       accessorKey: 'email',
       enableSorting: true,
+      meta: { columnClasses: 'hidden sm:table-cell' },
     },
     {
       id: 'role',
       accessorFn: (user) => mainRole(user.roles) ?? ROLES.USER,
       header: t('users.index.table.columns.role'),
       enableSorting: false,
+      meta: { columnClasses: 'hidden md:table-cell' },
       cell: ({ row }) => {
         const slug: RoleSlug = mainRole(row.original.roles) ?? ROLES.USER
         const userRole = roles.find(({ value }) => value === slug)
@@ -160,12 +184,14 @@ export default function UsersTable({
       header: t('users.index.table.columns.created_at'),
       accessorKey: 'createdAt',
       enableSorting: true,
+      meta: { columnClasses: 'hidden lg:table-cell' },
       cell: ({ row }) =>
         row.original.createdAt ? new Date(row.original.createdAt).toLocaleDateString() : null,
     },
     {
       id: 'actions',
       enableSorting: false,
+      meta: { columnClasses: 'w-[52px]' },
       cell: DataTableRowActions,
     },
   ]

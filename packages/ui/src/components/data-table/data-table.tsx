@@ -45,7 +45,7 @@ export interface RemoteTableOptions {
 }
 
 export interface ColumnMeta {
-  columnClasses: string;
+  columnClasses?: string;
 }
 
 export interface DataTableRowActionsProps<TData> {
@@ -120,8 +120,7 @@ export function DataTable<TData, TValue>({
                     <TableHead
                       key={header.id}
                       className={
-                        (header.column.columnDef.meta as ColumnMeta)
-                          ?.columnClasses
+                        (header.column.columnDef.meta as ColumnMeta)?.columnClasses
                       }
                     >
                       {header.isPlaceholder ? null : canSort ? (
@@ -165,8 +164,7 @@ export function DataTable<TData, TValue>({
                     <TableCell
                       key={cell.id}
                       className={
-                        (cell.column.columnDef.meta as ColumnMeta)
-                          ?.columnClasses
+                        (cell.column.columnDef.meta as ColumnMeta)?.columnClasses
                       }
                     >
                       {flexRender(
