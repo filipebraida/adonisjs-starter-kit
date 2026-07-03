@@ -46,7 +46,7 @@ export default function ListUsersPage({ users, q, selectedRoles }: PageProps) {
           <UsersPrimaryButtons />
         </Heading>
 
-        <div className="flex-1 overflow-auto py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="flex-1 overflow-auto px-1 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
           <UsersTable users={users} roles={roles} q={q} selectedRoles={selectedRoles} />
         </div>
       </Main>
