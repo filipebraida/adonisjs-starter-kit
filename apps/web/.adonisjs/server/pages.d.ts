@@ -36,5 +36,6 @@ declare module '@adonisjs/inertia/types' {
     'users/queries/list_user_tokens': ExtractProps<(typeof import('../../app/users/queries/list_user_tokens.ts'))['default']>
     'users/actions/create_token': ExtractProps<(typeof import('../../app/users/actions/create_token.ts'))['default']>
     'users/actions/delete_token': ExtractProps<(typeof import('../../app/users/actions/delete_token.ts'))['default']>
+    'auth/actions/sign_out': ExtractProps<(typeof import('../../app/auth/actions/sign_out.ts'))['default']>
   }
 }
