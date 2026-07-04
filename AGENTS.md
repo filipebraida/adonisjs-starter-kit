@@ -20,13 +20,15 @@ AdonisJS 7 (session auth + Bouncer + Lucid), Inertia + React 19, Tailwind 4 + sh
 
 Declared in `apps/web/package.json` → `"imports"`:
 
-- `#auth/*`, `#users/*`, `#common/*`, `#core/*`, `#marketing/*`, `#analytics/*` → `app/<mod>/`
+- `#auth/*`, `#users/*`, `#common/*`, `#core/*`, `#marketing/*`, `#analytics/*`, `#notifications/*` → `app/<mod>/`
 - `#app/*`, `#start/*`, `#config/*`, `#providers/*`, `#tests/*` → matching root dirs
 - `#generated/*` → `.adonisjs/server/` (typed data / pages, regenerated on codegen)
 
 Bootstrapping a new module always includes adding a matching `#<mod>/*` alias here.
 
 ## Architecture — module per feature
+
+Every feature lives at `app/<mod>/` as a self-contained module. Existing modules: `auth`, `users`, `marketing`, `analytics`, `common`, `core`, `notifications`.
 
 ```
 app/<module>/
@@ -35,111 +37,75 @@ app/<module>/
   queries/            # read-only Lucid query classes
   policies/           # extend BasePolicy, one per resource
   models/, mixins/, services/, exceptions/, enums/
-  transformers/       # follow the existing transformer shape
+  transformers/
   validators/         # one file per entity — validators/users.ts, validators/tokens.ts
   database/{factories,migrations,seeders}/
   resources/lang/     # i18n JSON, per module per locale
   ui/                 # Inertia pages + React components
-  start/{events,view}.ts     # optional per-module bootstrap
+  notifications/      # Notification classes (if the module emits)
+  start/{events,view}.ts
   routes.ts
   tests/{unit,functional}/
 ```
 
-Existing modules: `auth`, `users`, `marketing`, `analytics`, `common`, `core`.
+## Skills — where the detailed workflows live
 
-**Invariants:**
+Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills --agent claude-code` (or `--all`). **Prefer loading the relevant skill over guessing** — every skill has repo refs to canonical examples and external doc links. Only the invariants below need to hold when a skill isn't loaded.
 
-- Controllers are thin: validate → call action → render/redirect. No business logic inline.
-- Actions never touch `HttpContext` directly. They take a plain input and return values or throw.
-- Transformers, validators, Inertia pages, tests — **match the shape of the nearest existing example**.
+**Backbone**
 
-## Bootstrapping a new module
+- `module-scaffolding` — bootstrap a new `app/<mod>/` (dirs + alias + preload + migration paths).
+- `crud` — full stack (route → controller → validator → policy → action → transformer → Inertia page).
+- `actions-events` — action shape (`.handle(input)`) and event-driven side effects.
+- `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
 
-1. Create the directory tree above.
-2. Register in `apps/web/adonisrc.ts` preloads: `() => import('#<mod>/routes')` (add `events`, `view` if the module has them).
-3. Add import alias in `apps/web/package.json`: `"#<mod>/*": "./app/<mod>/*.js"`.
-4. If the module has migrations/seeders, append its paths to `apps/web/config/database.ts` (`migrations.paths` and `seeders.paths`).
+**Frontend**
 
-No autoloader — preloads and database paths are explicit.
+- `inertia` — page resolver, shared props, `useForm`, `urlFor`, modals, provider tree.
+- `i18n` — three locales, `useTranslation()`, `ctx.i18n.t()`, `User.locale` persistence.
+- `layout-shells` — four coexisting shells; pages import explicitly, no runtime toggle.
 
-## Cross-cutting
+**Feature**
 
-- **Side effects via events**: `emitter.emit('mod:event', payload)` inside actions; listener wired in `<mod>/start/events.ts` and preloaded from `adonisrc.ts`. Do not call side-effect code (mail, transmit) directly from an action.
-- **Route guards**: `middleware.auth()` / `middleware.guest()` on the route.
-- **Policy checks**: `bouncer.with(XPolicy).authorize('method', resource?)` inside the controller.
-- **Auth guards**: `web` (session cookie, default) and `api` (access tokens on User).
-- **RBAC**: `WithRoles` mixin exposes `assignRole`/`syncRoles`/`revokeRole`/`hasRole`/`hasPermission`. `ROLES` and `PERMISSIONS` are const objects — extend them there, not inline.
-- **i18n**: three locales (`en`, `fr`, `pt`). Adding a key requires updating all three JSON files. `User.locale` is authoritative when authenticated — the switch endpoint persists to DB + cookie; login flows sync the cookie from `user.locale`. Pre-login pages fall back to cookie / `Accept-Language`.
-- **Migrations**: this is a starter kit — no production data. Prefer editing the existing `create_<table>_table.ts` migration and running `pnpm ace migration:fresh` over layering an `alter_table` migration on top. Downstream projects can adopt a stricter policy.
+- `authorization` — `PERMISSIONS` + `ROLES` + `WithRoles` + Bouncer policies + `useCan()` + escalation guards.
+- `mail` — `BaseMail` classes + MJML via `@email.layout` + `mailContext()`.
+- `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count.
+- `attachment` — `@jrmc/adonis-attachment` converters + model decoration + `preComputeUrls`.
+- `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
 
-## Frontend
+**Git**
 
-Pages under `app/<mod>/ui/pages/`:
+- `git-commit` — commit types, scopes, examples, safety protocol.
 
-- Single entity → `pages/<name>.tsx` (`index.tsx`, `create.tsx`, `edit.tsx`, …)
-- Multiple entities → `pages/<entity>/<name>.tsx` following the same filenames
+## Non-negotiable invariants
 
-Components mirror the same rule at `app/<mod>/ui/components/`. Shared UI kit at `packages/ui`.
+These must hold even without loading a skill:
 
-### Layout shells
-
-Every page imports its shell explicitly. There is no runtime layout chooser — variants coexist as distinct components you delete if unused:
-
-- `admin_layout` (`app/common/ui/components/`) — sidebar shell for admin/backoffice pages.
-- `authenticated_layout` (`app/common/ui/components/`) — top-nav shell for regular logged-in pages.
-- `auth_layout` (`app/auth/ui/components/`) — split-screen shell for sign-in/sign-up/password flows.
-- `marketing_layout` (`app/marketing/ui/components/`) — public shell with header + footer.
-
-Add a shell only when a page truly needs a new shape. Adjust `variant`/`collapsible`/direction inside the shell file itself — never expose them as props or user-facing toggles.
-
-## Testing
-
-Specs at `app/<mod>/tests/{unit,functional}/*.spec.ts`. Match the shape of the nearest existing spec.
-
-- Tests run against the same Postgres as dev, wrapped in a per-test transaction via `testUtils.db().wrapInGlobalTransaction()`. No separate test DB config.
-- **Fakes are mandatory** for anything that reaches out: attachments (`drive.fake`), mail (`mail.fake`), events (`emitter.fake`).
-- **Prefer factories** (`app/<mod>/database/factories/`) over hand-built fixtures.
-- **Sinon** for stubbing services, drivers, and external dependencies.
-- POST/PUT/DELETE routes must include `.withCsrfToken()` in tests (shield middleware is active).
-
-## Mail
-
-Email HTML is authored in **MJML**, not raw HTML + inline CSS. Every template uses the shared `@email.layout({ title, preview? })` component from `resources/views/components/email/layout.edge` and only fills the main slot with `<mj-section>` markup for its own body. The layout owns head defaults (fonts, colors, button styles), the app header, and the footer.
-
-- Mail classes spread `...mailContext()` from `#common/services/mail_context` into `htmlView(...)` so the layout gets `appName` and `appUrl` for free.
-- `APP_NAME` env var is optional (fallback: `AdonisJS Starter Kit`); `APP_URL` is already required.
-- Do not author new email HTML as raw `<html><head><style>` blocks. If a new email doesn't fit the shared layout, extend the layout or write a second layout — never inline.
-
-## Notifications + SSE
-
-In-app notifications persist in the `notifications` table and stream in realtime over SSE. Stack: `@facteurjs/adonisjs` (framework) + `@adonisjs/transmit` (in-memory SSE, mono-node).
-
-- **Module** `app/notifications/` holds the model, transformer, controller, and routes (`GET /notifications`, `POST /notifications/:id/read`, `POST /notifications/seen`, `POST /notifications/read`).
-- **Notification classes** extend `Notification<User, Params>` and live per domain at `app/<mod>/notifications/<name>_notification.ts`. Set `static options = { name, deliverBy: { database: true, transmit: true } }` and implement `asDatabaseMessage()` / `asTransmitMessage()`.
-- **Emission goes through events**, not directly from actions. Actions emit a domain event; a listener in `<mod>/start/events.ts` calls `facteur.notification(TheNotification).params(...).to([user]).send()`. Example: `user:registered` → `UserWelcomeNotification`.
-- **User targeting** uses `User.notificationTargets()` to map to channels — `database: { notifiableId: String(id) }` and `transmit: { channel: 'notifications/user-<id>' }`. The frontend hook `useNotificationsChannel` subscribes to the same channel name.
-- **Shared prop** `unseenNotifications` (count) is computed in `inertia_middleware.ts` when a user is authenticated, so the bell badge is right on first render.
-- **Testing**: for endpoint specs, insert `Notification.create({...})` rows directly and hit `/notifications/*`. For end-to-end listener specs, `mail.fake()` first, then `await emitter.emit('user:registered', {...})` and assert the resulting `Notification` row.
+- Controllers are thin: validate → policy → action → render/redirect. No business logic inline.
+- Actions never touch `HttpContext` and never call side-effect code (mail, notifications, transmit) directly — emit a domain event; a listener in `<mod>/start/events.ts` runs the effect.
+- Never send a Lucid model to Inertia — always through a Transformer variant.
+- Every mutation route is gated by a Bouncer policy (`bouncer.with(X).authorize('method', resource?)`).
+- Adding an i18n key requires updates in all three locales (en/fr/pt).
+- No runtime layout toggle — pages import their shell explicitly.
+- Emails author in MJML using the shared `@email.layout` — never raw `<html><head><style>`.
+- Tests: `wrapInGlobalTransaction()` + mandatory fakes (`drive.fake`, `mail.fake`, `emitter.fake`) + `.withCsrfToken()` on POST/PUT/DELETE.
+- Migrations (starter kit): fold changes into the existing `create_<table>_table.ts` and `pnpm ace migration:fresh` locally — never on shared / production DB.
+- No autoloader — preloads (`adonisrc.ts`), aliases (`package.json`), and migration paths (`config/database.ts`) are explicit.
+- Match the shape of the nearest existing example.
 
 ## Code style
 
-- Comments only for non-obvious WHY — a hidden constraint, a subtle invariant, a workaround. Don't narrate what the code does; the diff and identifiers already do that.
+- Comments only for non-obvious WHY — a hidden constraint, subtle invariant, workaround. Don't narrate what the code does.
 - Don't create README / doc files unless the user asks for them.
 - Prefer editing existing files over creating new ones.
 
 ## Gotchas
 
 - `ctx.auth.user` doesn't always populate after `authenticate()` — use the return value: `const user = await ctx.auth.use('web').authenticate()`.
-- `apps/web/database/schema.ts` is auto-generated by ace (gitignored). `pnpm ace migration:fresh` regenerates it; the regenerated file sometimes needs `eslint --fix` to satisfy prettier.
+- `apps/web/database/schema.ts` is auto-generated by ace (gitignored). `pnpm ace migration:fresh` regenerates it; the regenerated file sometimes needs `pnpm --filter web exec eslint --fix database/schema.ts` to satisfy prettier.
 - Ace commands and codegen resolve paths against `apps/web/`. `pnpm ace` handles this from anywhere; scripts that rely on `import.meta.url` still resolve against the source location.
-
-## Skills
-
-Coding-agent skills live in `packages/skills/`, in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install into an agent with `npx skills add ./packages/skills --agent claude-code` (or `--all`). Prefer skills over duplicating conventions here — this file stays high-level, skills carry the workflow detail.
-
-Currently shipped:
-
-- `git-commit` — commit types, scopes, examples, workflow, safety protocol.
+- `vine.compile()` is deprecated — use `vine.create({...})` (and `vine.withMetaData<T>().create({...})`).
+- Turbo cache can go stale on structural changes; if typecheck complains about types that clearly exist, `rm -rf apps/web/.turbo && pnpm typecheck` to force fresh.
 
 ## Git — non-negotiables
 
