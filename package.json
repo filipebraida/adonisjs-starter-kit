@@ -9,6 +9,7 @@
     "lint": "turbo lint --continue --ui=stream --log-order=grouped",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "typecheck": "turbo typecheck --continue --ui=stream --log-order=grouped",
+    "test": "turbo test --continue --ui=stream --log-order=grouped",
     "infra:up": "docker compose --env-file apps/web/.env up -d",
     "infra:down": "docker compose --env-file apps/web/.env down",
     "docker:prod": "docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d"
