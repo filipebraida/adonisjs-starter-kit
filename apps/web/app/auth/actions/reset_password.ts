@@ -18,8 +18,10 @@ export default class ResetPassword {
     user.password = input.password
     await user.save()
 
-    await service.deleteTokens(user)
-    await service.clearRateLimits(input.ip, user.email)
+    await Promise.all([
+      service.deleteTokens(user),
+      service.clearRateLimits(input.ip, user.email),
+    ])
 
     return user
   }

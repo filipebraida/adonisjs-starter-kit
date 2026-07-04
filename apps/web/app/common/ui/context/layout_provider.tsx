@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, use, useCallback, useMemo, useState } from 'react'
 import { getCookie, setCookie } from '#common/ui/utils/cookie_helper'
 
 export type Collapsible = 'offcanvas' | 'icon' | 'none'
@@ -54,46 +54,48 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
     return (saved as Layout) || DEFAULT_LAYOUT
   })
 
-  const setCollapsible = (newCollapsible: Collapsible) => {
-    _setCollapsible(newCollapsible)
-    setCookie(LAYOUT_COLLAPSIBLE_COOKIE_NAME, newCollapsible, LAYOUT_COOKIE_MAX_AGE)
-  }
+  const setCollapsible = useCallback((next: Collapsible) => {
+    _setCollapsible(next)
+    setCookie(LAYOUT_COLLAPSIBLE_COOKIE_NAME, next, LAYOUT_COOKIE_MAX_AGE)
+  }, [])
 
-  const setVariant = (newVariant: Variant) => {
-    _setVariant(newVariant)
-    setCookie(LAYOUT_VARIANT_COOKIE_NAME, newVariant, LAYOUT_COOKIE_MAX_AGE)
-  }
+  const setVariant = useCallback((next: Variant) => {
+    _setVariant(next)
+    setCookie(LAYOUT_VARIANT_COOKIE_NAME, next, LAYOUT_COOKIE_MAX_AGE)
+  }, [])
 
-  const setLayout = (newLayout: Layout) => {
-    _setLayout(newLayout)
-    setCookie(LAYOUT_STYLE_COOKIE_NAME, newLayout, LAYOUT_COOKIE_MAX_AGE)
-  }
+  const setLayout = useCallback((next: Layout) => {
+    _setLayout(next)
+    setCookie(LAYOUT_STYLE_COOKIE_NAME, next, LAYOUT_COOKIE_MAX_AGE)
+  }, [])
 
-  const resetLayout = () => {
+  const resetLayout = useCallback(() => {
     setCollapsible(DEFAULT_COLLAPSIBLE)
     setVariant(DEFAULT_VARIANT)
     setLayout(DEFAULT_LAYOUT)
-  }
+  }, [setCollapsible, setVariant, setLayout])
 
-  const contextValue: LayoutContextType = {
-    resetLayout,
-    defaultCollapsible: DEFAULT_COLLAPSIBLE,
-    collapsible,
-    setCollapsible,
-    defaultVariant: DEFAULT_VARIANT,
-    variant,
-    setVariant,
-    defaultLayout: DEFAULT_LAYOUT,
-    layout,
-    setLayout,
-  }
+  const contextValue = useMemo<LayoutContextType>(
+    () => ({
+      resetLayout,
+      defaultCollapsible: DEFAULT_COLLAPSIBLE,
+      collapsible,
+      setCollapsible,
+      defaultVariant: DEFAULT_VARIANT,
+      variant,
+      setVariant,
+      defaultLayout: DEFAULT_LAYOUT,
+      layout,
+      setLayout,
+    }),
+    [collapsible, variant, layout, setCollapsible, setVariant, setLayout, resetLayout]
+  )
 
   return <LayoutContext.Provider value={contextValue}>{children}</LayoutContext.Provider>
 }
 
-// Define the hook for the provider
 export function useLayout() {
-  const context = useContext(LayoutContext)
+  const context = use(LayoutContext)
   if (!context) {
     throw new Error('useLayout must be used within a LayoutProvider')
   }

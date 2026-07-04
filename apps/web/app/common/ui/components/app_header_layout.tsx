@@ -24,9 +24,11 @@ interface AppLayoutProps extends React.PropsWithChildren {
   user: Data.Users.User.Variants['forSharedProps']
 }
 
+const EMPTY_BREADCRUMBS: BreadcrumbItemProps[] = []
+
 export default function AppHeaderLayout({
   children,
-  breadcrumbs = [],
+  breadcrumbs = EMPTY_BREADCRUMBS,
   navMain,
   navUser,
   user,

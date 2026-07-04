@@ -1,15 +1,15 @@
 import Container from '#marketing/ui/components/container'
 import { Layers } from 'lucide-react'
 
-export default function StackSection() {
-  const stack = [
-    { name: 'AdonisJS 6', description: 'Robust Backend Framework' },
-    { name: 'Inertia.js', description: 'Seamless Monolith' },
-    { name: 'React', description: 'Dynamic UI' },
-    { name: 'Tailwind CSS', description: 'Utility-First Styling' },
-    { name: 'PostgreSQL', description: 'Reliable Database' },
-  ]
+const STACK = [
+  { name: 'AdonisJS 6', description: 'Robust Backend Framework' },
+  { name: 'Inertia.js', description: 'Seamless Monolith' },
+  { name: 'React', description: 'Dynamic UI' },
+  { name: 'Tailwind CSS', description: 'Utility-First Styling' },
+  { name: 'PostgreSQL', description: 'Reliable Database' },
+]
 
+export default function StackSection() {
   return (
     <section className="py-12 border-y bg-muted/30">
       <Container>
@@ -19,7 +19,7 @@ export default function StackSection() {
             <span>Powering your next idea with:</span>
           </div>
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-8 gap-y-4">
-            {stack.map((item) => (
+            {STACK.map((item) => (
               <div
                 key={item.name}
                 className="flex flex-col items-center md:items-start group cursor-default"

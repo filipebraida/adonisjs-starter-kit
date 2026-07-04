@@ -52,6 +52,7 @@ export default function HeaderSection() {
             Get Started
           </Link>
           <button
+            type="button"
             aria-label="Toggle menu"
             onClick={() => setMenuOpen(!menuOpen)}
             className="flex items-center justify-center rounded-md p-2 hover:bg-accent md:hidden"

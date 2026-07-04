@@ -32,7 +32,15 @@ interface AppLayoutProps extends React.PropsWithChildren {
   user?: Data.Users.User.Variants['forSharedProps']
 }
 
-function AppLayoutContent({ children, breadcrumbs = [], navMain, navUser, user }: AppLayoutProps) {
+const EMPTY_BREADCRUMBS: BreadcrumbItemProps[] = []
+
+function AppLayoutContent({
+  children,
+  breadcrumbs = EMPTY_BREADCRUMBS,
+  navMain,
+  navUser,
+  user,
+}: AppLayoutProps) {
   const { layout, variant, collapsible } = useLayout()
   useFlashToasts()
 

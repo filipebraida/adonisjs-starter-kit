@@ -25,7 +25,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
 
   return (
     <nav className="flex items-center space-x-4">
-      {items.map((item, index) => {
+      {items.map((item) => {
         if (isSection(item)) {
           const visibleItems = item.items.filter((subItem) => !subItem.can || can[subItem.can])
 
@@ -39,7 +39,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
 
           return (
             <HeaderDropdown
-              key={index}
+              key={item.title}
               trigger={
                 <div
                   className={cn(
@@ -53,12 +53,12 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
               width={visibleItems.length > 5 ? 'w-[220px]' : 'w-[180px]'}
               content={
                 <div className="grid gap-1 p-2">
-                  {visibleItems.map((subItem, subIndex) => {
+                  {visibleItems.map((subItem) => {
                     const active = isNavItemActive(subItem.url, currentUrl)
                     if (subItem.external) {
                       return (
                         <a
-                          key={subIndex}
+                          key={subItem.url}
                           href={subItem.url}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -71,7 +71,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
                     }
                     return (
                       <Link
-                        key={subIndex}
+                        key={subItem.url}
                         href={subItem.url}
                         className={cn(subLinkBase, active && subLinkActive)}
                       >
@@ -93,7 +93,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
         if (item.external) {
           return (
             <a
-              key={index}
+              key={item.url}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -105,7 +105,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
           )
         }
         return (
-          <Link key={index} href={item.url} className={cn(linkBase, active && linkActive)}>
+          <Link key={item.url} href={item.url} className={cn(linkBase, active && linkActive)}>
             {item.icon && <item.icon className="mr-2 h-4 w-4 shrink-0" />}
             {item.title}
           </Link>

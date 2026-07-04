@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Trans } from 'react-i18next'
 import { AlertTriangleIcon } from 'lucide-react'
 
@@ -40,6 +40,45 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
     })
   }
 
+  const title = useMemo(
+    () => (
+      <span className="text-destructive flex items-center gap-2">
+        <AlertTriangleIcon className="mr-1 inline-block stroke-destructive" size={18} />
+        <span>{t('users.delete.title')}</span>
+      </span>
+    ),
+    [t]
+  )
+
+  const desc = useMemo(
+    () => (
+      <div className="space-y-4">
+        <p className="mb-2">
+          <Trans
+            i18nKey="users.delete.description"
+            values={{ email: currentRow.email, role: roleName }}
+            components={{
+              strong1: <span className="font-bold" />,
+              strong2: <span className="font-bold" />,
+            }}
+          />
+        </p>
+
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={t('users.delete.confirm_placeholder')}
+        />
+
+        <Alert variant="destructive">
+          <AlertTitle>{t('users.delete.alert.title')}</AlertTitle>
+          <AlertDescription>{t('users.delete.alert.description')}</AlertDescription>
+        </Alert>
+      </div>
+    ),
+    [t, currentRow.email, roleName, value]
+  )
+
   return (
     <ConfirmDialog
       open={open}
@@ -47,37 +86,8 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       handleConfirm={handleDelete}
       disabled={value.trim() !== currentRow.email || processing}
       isLoading={processing}
-      title={
-        <span className="text-destructive flex items-center gap-2">
-          <AlertTriangleIcon className="mr-1 inline-block stroke-destructive" size={18} />
-          <span>{t('users.delete.title')}</span>
-        </span>
-      }
-      desc={
-        <div className="space-y-4">
-          <p className="mb-2">
-            <Trans
-              i18nKey="users.delete.description"
-              values={{ email: currentRow.email, role: roleName }}
-              components={{
-                strong1: <span className="font-bold" />,
-                strong2: <span className="font-bold" />,
-              }}
-            />
-          </p>
-
-          <Input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={t('users.delete.confirm_placeholder')}
-          />
-
-          <Alert variant="destructive">
-            <AlertTitle>{t('users.delete.alert.title')}</AlertTitle>
-            <AlertDescription>{t('users.delete.alert.description')}</AlertDescription>
-          </Alert>
-        </div>
-      }
+      title={title}
+      desc={desc}
       confirmText={t('users.delete.confirm_button')}
       destructive
     />

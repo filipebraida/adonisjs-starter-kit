@@ -5,7 +5,7 @@ export const ROLES = {
 
 export type Role = (typeof ROLES)[keyof typeof ROLES]
 
-export const ROLE_WEIGHTS: Record<Role, number> = {
+const ROLE_WEIGHTS: Record<Role, number> = {
   admin: 20,
   user: 10,
 }
@@ -20,12 +20,4 @@ export function mainRole(roles: string[]): Role | null {
   const known = roles.filter(isKnownRole)
   if (known.length === 0) return null
   return known.reduce((top, role) => (ROLE_WEIGHTS[role] > ROLE_WEIGHTS[top] ? role : top))
-}
-
-export function isStaff(roles: string[]): boolean {
-  return roles.some((role) => role !== ROLES.USER)
-}
-
-export function needsOnboarding(roles: string[]): boolean {
-  return roles.length === 0
 }

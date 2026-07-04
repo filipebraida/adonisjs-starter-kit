@@ -45,14 +45,6 @@ export default function HeaderDropdown({
     }
   }, [])
 
-  React.useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
   return (
     <div
       className="relative"
@@ -61,6 +53,7 @@ export default function HeaderDropdown({
       ref={containerRef}
     >
       <button
+        type="button"
         className={cn(
           'group flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors',
           'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',

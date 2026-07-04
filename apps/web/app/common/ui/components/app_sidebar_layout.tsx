@@ -29,9 +29,11 @@ interface AppLayoutProps extends React.PropsWithChildren {
   collapsible?: Collapsible
 }
 
+const EMPTY_BREADCRUMBS: BreadcrumbItemProps[] = []
+
 export default function AppLayout({
   children,
-  breadcrumbs = [],
+  breadcrumbs = EMPTY_BREADCRUMBS,
   navMain,
   navUser,
   user,

@@ -1,12 +1,10 @@
-import React, { createContext, useContext } from 'react'
+import React from 'react'
 import { Form as InertiaForm } from '@adonisjs/inertia/react'
 
-import { Field as BaseField, FieldError as BaseFieldError } from '@workspace/ui/components/field'
+import { FormErrors, FormErrorsContext } from '#common/ui/components/form_context'
 
-type FormErrors = Record<string, string | string[] | undefined>
-
-const FormErrorsContext = createContext<FormErrors | undefined>(undefined)
-const FieldNameContext = createContext<string | undefined>(undefined)
+export { Field } from '#common/ui/components/field'
+export { FieldError } from '#common/ui/components/field_error'
 
 type InertiaChildren = React.ComponentProps<typeof InertiaForm>['children']
 type FormSlotProps = InertiaChildren extends
@@ -31,37 +29,4 @@ export function Form(props: AppFormProps) {
       )}
     </InertiaForm>
   )
-}
-
-export function Field({
-  name,
-  ...props
-}: React.ComponentProps<typeof BaseField> & { name?: string }) {
-  return (
-    <FieldNameContext.Provider value={name}>
-      <BaseField {...props} />
-    </FieldNameContext.Provider>
-  )
-}
-
-export function FieldError(props: React.ComponentProps<typeof BaseFieldError>) {
-  const errors = useContext(FormErrorsContext)
-  const fieldName = useContext(FieldNameContext)
-
-  if (props.errors) {
-    return <BaseFieldError {...props} />
-  }
-
-  if (!fieldName || !errors) {
-    return <BaseFieldError {...props} />
-  }
-
-  const value = errors[fieldName]
-  const issues = Array.isArray(value)
-    ? value.filter(Boolean).map((message) => ({ message: String(message) }))
-    : value
-      ? [{ message: String(value) }]
-      : undefined
-
-  return <BaseFieldError {...props} errors={issues} />
 }

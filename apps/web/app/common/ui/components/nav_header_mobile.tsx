@@ -54,7 +54,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
 
           <div className="mt-2 flex h-full flex-1 flex-col space-y-4 px-2">
             <div className="flex flex-col space-y-8 text-sm">
-              {items.map((item, index) => {
+              {items.map((item) => {
                 if (isSection(item)) {
                   const visibleItems = item.items.filter(
                     (subItem) => !subItem.can || can[subItem.can]
@@ -62,18 +62,18 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                   if (visibleItems.length === 0) return null
 
                   return (
-                    <div key={index}>
+                    <div key={item.title}>
                       <h3 className="mb-1 px-2 text-xs font-medium text-sidebar-foreground/70">
                         {item.title}
                       </h3>
 
                       <div className="flex flex-col space-y-1">
-                        {visibleItems.map((subItem, subIndex) => {
+                        {visibleItems.map((subItem) => {
                           const active = isNavItemActive(subItem.url, currentUrl)
                           if (subItem.external) {
                             return (
                               <a
-                                key={subIndex}
+                                key={subItem.url}
                                 href={subItem.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -86,7 +86,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                           }
                           return (
                             <Link
-                              key={subIndex}
+                              key={subItem.url}
                               href={subItem.url}
                               data-active={active}
                               className={sidebarMenuButtonVariants}
@@ -105,7 +105,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                     if (item.external) {
                       return (
                         <a
-                          key={index}
+                          key={item.url}
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -118,7 +118,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                     }
                     return (
                       <Link
-                        key={index}
+                        key={item.url}
                         href={item.url}
                         data-active={active}
                         className={sidebarMenuButtonVariants}

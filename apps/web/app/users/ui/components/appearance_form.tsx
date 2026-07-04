@@ -238,20 +238,15 @@ function SidebarConfig() {
   )
 }
 
-// Custom hook to safely use sidebar
-function useSafeSidebar() {
-  try {
-    return useSidebar()
-  } catch {
-    return { open: true, setOpen: () => {} }
-  }
+function SidebarLayoutConfig() {
+  const { layout } = useLayout()
+  if (layout !== 'sidebar') return null
+  return <SidebarLayoutConfigInner />
 }
 
-function SidebarLayoutConfig() {
-  const { setOpen, open } = useSafeSidebar()
-  const { defaultCollapsible, collapsible, setCollapsible, layout } = useLayout()
-
-  if (layout !== 'sidebar') return null
+function SidebarLayoutConfigInner() {
+  const { setOpen, open } = useSidebar()
+  const { defaultCollapsible, collapsible, setCollapsible } = useLayout()
 
   const radioState = open ? 'default' : collapsible
 
