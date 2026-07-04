@@ -50,7 +50,7 @@ jobs:
 
       - name: Run migrations
         working-directory: apps/web
-        run: node ace migration:run --force
+        run: node ace migration:run --force --no-schema-generate
 
       - name: Typecheck
         run: pnpm typecheck
