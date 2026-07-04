@@ -2,4 +2,8 @@ packages:
   - "apps/*"
   - "packages/*"
 allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  exifreader: true
+  msw: true
   sharp: true
