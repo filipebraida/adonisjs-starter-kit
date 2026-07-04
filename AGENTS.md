@@ -56,6 +56,7 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 
 - `module-scaffolding` — bootstrap a new `app/<mod>/` (dirs + alias + preload + migration paths).
 - `crud` — full stack (route → controller → validator → policy → action → transformer → Inertia page).
+- `queries` — read side: list queries + per-concept read models composed in the controller.
 - `actions-events` — action shape (`.handle(input)`) and event-driven side effects.
 - `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
 

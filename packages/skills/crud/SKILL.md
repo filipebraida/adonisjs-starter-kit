@@ -17,7 +17,7 @@ A CRUD feature in this repo is a stack: `router.resource(...)` in the module's `
 - **Policy**: `BasePolicy` subclass at `<mod>/policies/<entity>_policy.ts`. One method per gated action. Return boolean or `AuthorizerResponse`. Always gate before validating: `await bouncer.with(XPolicy).authorize('action', resource?)`.
 - **Action**: one class per write in `<mod>/actions/<verb_entity>.ts`. Never takes `HttpContext` — see [[actions-events]].
 - **Transformer**: `BaseTransformer<Model>` with `toObject()` as the base + variants (`forList`, `forEdit`, `forSharedProps`, `forProfile`). Call `Transformer.transform(model).useVariant('forList')` or `Transformer.paginate(rows, meta).useVariant('forList')`. Never send raw model instances to Inertia.
-- **Query**: read-only, in `<mod>/queries/list_<entities>.ts`. Handles search + role/tag filter + sort + pagination. Returns `LucidRow[] | ModelPaginatorContract`.
+- **Query**: read-only, in `<mod>/queries/list_<entities>.ts`. Full patterns (list queries + read models for aggregate screens) live in [[queries]].
 - **Inertia pages**: at `<mod>/ui/pages/<entity>/`. `index.tsx` (list) is a full page; `create.tsx` and `edit.tsx` are modals mounted over the index via `modal(inertia, 'users/create', {}, { route: 'users.index' })`. See [[inertia]].
 
 ## Repo refs (users is the canonical CRUD)

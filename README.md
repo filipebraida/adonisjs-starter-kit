@@ -30,7 +30,7 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **Testing + CI** — 166 spec-based tests (Japa) running against a real Postgres wrapped in a per-test transaction, factories, mandatory fakes (`drive.fake`, `mail.fake`, `emitter.fake`) and Sinon stubs. Coverage runs via `c8` and shows up in the PR summary automatically. GitHub Actions CI on every push and pull request.
 
-**Coding-agent skills** — `@workspace/skills` package ships shareable skills for Claude Code, OpenCode, and Cursor in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills`. Currently: `git-commit`.
+**Coding-agent skills** — `@workspace/skills` package ships shareable skills for Claude Code, OpenCode, and Cursor in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills`. 14 skills covering module scaffolding, CRUD, queries (list + read models), actions/events, testing, Inertia, i18n, layout shells, authorization, mail, notifications, attachment, migrations, and semantic commits.
 
 ## Requirements
 
