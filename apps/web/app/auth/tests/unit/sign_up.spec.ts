@@ -18,10 +18,15 @@ test.group('SignUp', (group) => {
       fullName: 'Filipe Teste',
       email: 'novo@example.test',
       password: 'senha-inicial-123',
+      locale: 'pt',
       auth,
     })
 
-    await db.assertHas('users', { email: 'novo@example.test', full_name: 'Filipe Teste' })
+    await db.assertHas('users', {
+      email: 'novo@example.test',
+      full_name: 'Filipe Teste',
+      locale: 'pt',
+    })
 
     const persisted = await User.findByOrFail('email', 'novo@example.test')
     assert.equal(persisted.id, user.id)

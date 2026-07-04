@@ -31,6 +31,9 @@ export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
   @column({ serializeAs: null })
   declare password: string | null
 
+  @column()
+  declare locale: string | null
+
   @attachment({ preComputeUrl: false, variants: ['thumbnail'] })
   declare avatar: Attachment
 

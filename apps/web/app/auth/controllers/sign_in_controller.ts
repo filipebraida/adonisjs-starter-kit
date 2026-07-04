@@ -8,6 +8,8 @@ import SignIn from '#auth/actions/sign_in'
 import { returnToKey } from '#auth/middleware/auth_middleware'
 import { signInValidator } from '#auth/validators'
 
+import { setUserLocaleCookie } from '#common/services/user_locale'
+
 export function isSafeInternalPath(path?: string | null): path is string {
   if (!path) return false
   if (!path.startsWith('/') || path.startsWith('//')) return false
@@ -37,13 +39,17 @@ export default class SignInController {
     const returnTo = session.pull(returnToKey, null)
     const key = `login_${request.ip()}_${email}`
 
-    const [errors] = await this.loginLimiter.penalize(key, async () => {
+    const [errors, user] = await this.loginLimiter.penalize(key, async () => {
       return new SignIn().handle({ email, password, auth, session })
     })
 
     if (errors) {
       session.flash('error', i18n.t('errors.E_TOO_MANY_REQUESTS'))
       return response.redirect().toRoute('auth.sign_in.show')
+    }
+
+    if (user.locale) {
+      setUserLocaleCookie(response, user.locale)
     }
 
     const safeReturnTo = isSafeInternalPath(returnTo) ? returnTo : null

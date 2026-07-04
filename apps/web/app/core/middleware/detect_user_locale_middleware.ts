@@ -3,6 +3,8 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { type HttpContext, RequestValidator } from '@adonisjs/core/http'
 
+import { USER_LOCALE_COOKIE, setUserLocaleCookie } from '#common/services/user_locale'
+
 /**
  * The "DetectUserLocaleMiddleware" middleware uses i18n service to share
  * a request specific i18n object with the HTTP Context
@@ -38,7 +40,7 @@ export default class DetectUserLocaleMiddleware {
     }
 
     // Then check the cookie
-    const cookieLocale = ctx.request.cookie('user-locale')
+    const cookieLocale = ctx.request.cookie(USER_LOCALE_COOKIE)
 
     if (cookieLocale && supportedLocales.includes(cookieLocale)) {
       return cookieLocale
@@ -56,13 +58,8 @@ export default class DetectUserLocaleMiddleware {
      */
     const language = this.getRequestLocale(ctx)
     // Update the cookie if necessary
-    if (!ctx.request.cookie('user-locale') || ctx.request.cookie('user-locale') !== language) {
-      ctx.response.cookie('user-locale', language, {
-        httpOnly: true,
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30, // Example duration: 30 days
-        sameSite: true, // Improve cookie security
-      })
+    if (ctx.request.cookie(USER_LOCALE_COOKIE) !== language) {
+      setUserLocaleCookie(ctx.response, language)
     }
 
     /**

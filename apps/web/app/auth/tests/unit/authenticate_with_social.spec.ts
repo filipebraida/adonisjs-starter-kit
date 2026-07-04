@@ -24,6 +24,7 @@ test.group('AuthenticateWithSocial', (group) => {
         name: 'Nome do Google',
         avatarUrl: 'https://cdn.google/avatar.png',
       },
+      locale: 'en',
       auth,
     })
 
@@ -43,6 +44,7 @@ test.group('AuthenticateWithSocial', (group) => {
         name: 'Google User',
         avatarUrl: 'https://cdn.google/x.png',
       },
+      locale: 'pt',
       auth,
     })
 
@@ -50,6 +52,7 @@ test.group('AuthenticateWithSocial', (group) => {
       email: 'novo-social@example.test',
       full_name: 'Google User',
       avatar_url: 'https://cdn.google/x.png',
+      locale: 'pt',
     })
     assert.isNull(result.password)
     sinon.assert.calledOnceWithExactly(login, result)

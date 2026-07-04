@@ -4,12 +4,14 @@ import { afterAuthRedirectRoute } from '#config/auth'
 
 import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
 
+import { setUserLocaleCookie } from '#common/services/user_locale'
+
 export default class SocialController {
   async redirect({ ally, params }: HttpContext) {
     return ally.use(params.provider).redirect()
   }
 
-  async callback({ ally, auth, params, response, session }: HttpContext) {
+  async callback({ ally, auth, i18n, params, response, session }: HttpContext) {
     const social = ally.use(params.provider)
 
     if (social.accessDenied()) {
@@ -29,14 +31,19 @@ export default class SocialController {
 
     const socialUser = await social.user()
 
-    await new AuthenticateWithSocial().handle({
+    const user = await new AuthenticateWithSocial().handle({
       socialUser: {
         email: socialUser.email,
         name: socialUser.name,
         avatarUrl: socialUser.avatarUrl,
       },
+      locale: i18n.locale,
       auth,
     })
+
+    if (user.locale) {
+      setUserLocaleCookie(response, user.locale)
+    }
 
     return response.redirect().toRoute(afterAuthRedirectRoute)
   }

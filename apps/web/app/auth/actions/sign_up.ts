@@ -6,6 +6,7 @@ export interface SignUpInput {
   fullName: string
   email: string
   password: string
+  locale: string
   auth: HttpContext['auth']
 }
 
@@ -15,6 +16,7 @@ export default class SignUp {
       fullName: input.fullName,
       email: input.email,
       password: input.password,
+      locale: input.locale,
     })
 
     await input.auth.use('web').login(user)

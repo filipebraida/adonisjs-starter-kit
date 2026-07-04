@@ -76,4 +76,19 @@ test.group('Endpoint /sign-up', (group) => {
     await db.assertMissing('users', { email: payload.email })
     assert.isUndefined(response.session().auth_web)
   })
+
+  test('captura o locale corrente e persiste em user.locale', async ({ client, assert }) => {
+    const response = await client
+      .post('/sign-up')
+      .redirects(0)
+      .withCsrfToken()
+      .header('X-User-Language', 'pt')
+      .json(payload)
+
+    response.assertStatus(302)
+    response.assertCookie('user-locale', 'pt')
+
+    const user = await User.findByOrFail('email', payload.email)
+    assert.equal(user.locale, 'pt')
+  })
 })

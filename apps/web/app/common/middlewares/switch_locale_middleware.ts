@@ -2,6 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 
+import { setUserLocaleCookie } from '#common/services/user_locale'
+
 export default class SwitchLocaleMiddleware {
   async handle(ctx: HttpContext, _next: NextFn) {
     const locale = ctx.params.locale
@@ -10,12 +12,15 @@ export default class SwitchLocaleMiddleware {
       return ctx.response.redirect().back()
     }
 
-    ctx.response.cookie('user-locale', locale, {
-      httpOnly: true,
-      path: '/',
-      maxAge: 60 * 60 * 24 * 30,
-      sameSite: true,
-    })
+    setUserLocaleCookie(ctx.response, locale)
+
+    try {
+      const user = await ctx.auth.use('web').authenticate()
+      user.locale = locale
+      await user.save()
+    } catch {
+      // Anonymous request — cookie fallback is enough.
+    }
 
     return ctx.response.redirect().back()
   }

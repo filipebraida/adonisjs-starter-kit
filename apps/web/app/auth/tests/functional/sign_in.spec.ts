@@ -78,4 +78,17 @@ test.group('Endpoint /login', (group) => {
 
     response.assertStatus(422)
   })
+
+  test('sincroniza cookie user-locale a partir de user.locale ao logar', async ({ client }) => {
+    await UserFactory.merge({ email, password, locale: 'pt' }).create()
+
+    const response = await client
+      .post('/login')
+      .redirects(0)
+      .withCsrfToken()
+      .json({ email, password })
+
+    response.assertStatus(302)
+    response.assertCookie('user-locale', 'pt')
+  })
 })

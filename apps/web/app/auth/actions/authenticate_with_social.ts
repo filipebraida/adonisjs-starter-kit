@@ -10,6 +10,7 @@ export interface SocialUserInfo {
 
 export interface AuthenticateWithSocialInput {
   socialUser: SocialUserInfo
+  locale: string
   auth: HttpContext['auth']
 }
 
@@ -23,6 +24,7 @@ export default class AuthenticateWithSocial {
         email: input.socialUser.email,
         password: null,
         avatarUrl: input.socialUser.avatarUrl,
+        locale: input.locale,
       })
     }
 
