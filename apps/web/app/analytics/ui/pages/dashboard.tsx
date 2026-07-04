@@ -1,57 +1,84 @@
-import { useState } from 'react'
+import { router } from '@inertiajs/react'
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '@workspace/ui/components/chart'
 import { cn } from '@workspace/ui/lib/utils'
+
+import { urlFor } from '~/app/client'
 
 import AuthenticatedLayout from '#common/ui/components/authenticated_layout'
 import { Main } from '#common/ui/components/main'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { KpiCard } from '#analytics/ui/components/kpi_card'
-import { Sparkline } from '#analytics/ui/components/sparkline'
 
-// Placeholder dashboard — showcases how to compose shadcn Card, Badge,
-// Button, and an inline SVG Sparkline. Data is mocked inline; wire the
-// period selector to a real backend query when replacing this page.
+import type { InertiaProps } from '#core/ui/types'
+import { PERIODS, type Period } from '#analytics/enums/period'
+import type { RevenueMetrics } from '#analytics/queries/get_revenue_metrics'
+import type { SubscriptionMetrics } from '#analytics/queries/get_subscription_metrics'
+import type { UserMetrics } from '#analytics/queries/get_user_metrics'
 
-type Period = '7d' | '30d' | '90d'
+type PageProps = InertiaProps<{
+  period: Period
+  revenue: RevenueMetrics
+  users: UserMetrics
+  subscriptions: SubscriptionMetrics
+}>
 
-const KPIS = {
-  revenue: {
-    value: '$18,420',
-    change: { '7d': 2.1, '30d': 12.5, '90d': 34.2 },
-    data: [16400, 16900, 16700, 17100, 17200, 17600, 17400, 17800, 18000, 17900, 18200, 18420],
-  },
-  activeUsers: {
-    value: '1,284',
-    change: { '7d': 0.8, '30d': 3.2, '90d': 11.4 },
-    data: [1180, 1195, 1210, 1205, 1220, 1235, 1250, 1245, 1260, 1270, 1275, 1284],
-  },
-  subscriptions: {
-    value: '312',
-    change: { '7d': 1.4, '30d': 8.1, '90d': 22.6 },
-    data: [280, 284, 289, 292, 295, 298, 300, 304, 306, 309, 311, 312],
-  },
-  churn: {
-    value: '2.4%',
-    change: { '7d': -0.1, '30d': -0.4, '90d': -1.2 },
-    data: [3.1, 3.0, 3.0, 2.9, 2.8, 2.7, 2.7, 2.6, 2.6, 2.5, 2.5, 2.4],
-  },
-} as const
+type Format = 'currency' | 'number' | 'percent'
 
-const REVENUE_SERIES = [
-  16400, 16800, 17100, 17300, 17500, 17800, 17400, 17600, 17900, 18100, 17900, 18000, 18200, 18400,
-  18100, 18300, 18500, 18420,
-]
+function formatValue(value: number, format: Format, locale: string): string {
+  if (format === 'currency') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }).format(value)
+  }
+  if (format === 'percent') {
+    return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)}%`
+  }
+  return new Intl.NumberFormat(locale).format(value)
+}
 
-const SIGNUPS_SERIES = [40, 55, 48, 60, 72, 68, 75, 82, 78, 88, 91, 84, 96, 102, 99, 108, 115, 112]
+const chartConfig = {
+  value: { label: 'Value', color: 'var(--chart-1)' },
+} satisfies ChartConfig
 
-const PERIODS: Period[] = ['7d', '30d', '90d']
+export default function Page({ period, revenue, users, subscriptions }: PageProps) {
+  const { t, language } = useTranslation()
 
-export default function Page() {
-  const { t } = useTranslation()
-  const [period, setPeriod] = useState<Period>('30d')
+  const setPeriod = (next: Period) => {
+    if (next === period) return
+    router.get(
+      urlFor('dashboard.show'),
+      { period: next },
+      {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['period', 'revenue', 'users', 'subscriptions'],
+      }
+    )
+  }
+
+  const currency = (v: number) =>
+    new Intl.NumberFormat(language, {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }).format(v)
+
+  const number = (v: number) => new Intl.NumberFormat(language).format(v)
+
+  const revenueSeries = revenue.chart.map((y, i) => ({ i, value: y }))
+  const signupsSeries = users.signupsChart.map((y, i) => ({ i, value: y }))
 
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('analytics.dashboard.breadcrumb') }]}>
@@ -68,12 +95,9 @@ export default function Page() {
               {PERIODS.map((p) => (
                 <Button
                   key={p}
-                  variant="ghost"
+                  variant={period === p ? 'default' : 'ghost'}
                   size="sm"
-                  className={cn(
-                    'text-xs',
-                    period === p && 'bg-primary text-primary-foreground hover:bg-primary/90'
-                  )}
+                  className={cn('text-xs', period !== p && 'text-muted-foreground')}
                   onClick={() => setPeriod(p)}
                 >
                   {t(`analytics.dashboard.period.${p}`)}
@@ -85,27 +109,31 @@ export default function Page() {
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <KpiCard
               label={t('analytics.dashboard.kpi.revenue')}
-              value={KPIS.revenue.value}
-              change={KPIS.revenue.change[period]}
-              data={KPIS.revenue.data}
+              value={formatValue(revenue.revenue.value, revenue.revenue.format, language)}
+              change={revenue.revenue.change}
+              data={revenue.revenue.trend}
             />
             <KpiCard
               label={t('analytics.dashboard.kpi.activeUsers')}
-              value={KPIS.activeUsers.value}
-              change={KPIS.activeUsers.change[period]}
-              data={KPIS.activeUsers.data}
+              value={formatValue(users.activeUsers.value, users.activeUsers.format, language)}
+              change={users.activeUsers.change}
+              data={users.activeUsers.trend}
             />
             <KpiCard
               label={t('analytics.dashboard.kpi.subscriptions')}
-              value={KPIS.subscriptions.value}
-              change={KPIS.subscriptions.change[period]}
-              data={KPIS.subscriptions.data}
+              value={formatValue(
+                subscriptions.subscriptions.value,
+                subscriptions.subscriptions.format,
+                language
+              )}
+              change={subscriptions.subscriptions.change}
+              data={subscriptions.subscriptions.trend}
             />
             <KpiCard
               label={t('analytics.dashboard.kpi.churn')}
-              value={KPIS.churn.value}
-              change={KPIS.churn.change[period]}
-              data={KPIS.churn.data}
+              value={formatValue(subscriptions.churn.value, subscriptions.churn.format, language)}
+              change={subscriptions.churn.change}
+              data={subscriptions.churn.trend}
             />
           </section>
 
@@ -117,8 +145,43 @@ export default function Page() {
                   {t('analytics.dashboard.chart.revenueDescription')}
                 </CardDescription>
               </CardHeader>
-              <Sparkline data={REVENUE_SERIES} positive className="mx-4 mb-4 h-40 w-auto" />
+              <ChartContainer config={chartConfig} className="h-[220px] w-full px-4 pb-4">
+                <AreaChart
+                  accessibilityLayer
+                  data={revenueSeries}
+                  margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="i"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    interval="preserveStartEnd"
+                    minTickGap={40}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={
+                      <ChartTooltipContent
+                        hideLabel
+                        formatter={(value) => currency(Number(value))}
+                      />
+                    }
+                  />
+                  <Area
+                    dataKey="value"
+                    type="natural"
+                    stroke="var(--color-value)"
+                    strokeWidth={2}
+                    fill="var(--color-value)"
+                    fillOpacity={0.35}
+                    isAnimationActive={false}
+                  />
+                </AreaChart>
+              </ChartContainer>
             </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>{t('analytics.dashboard.chart.signupsTitle')}</CardTitle>
@@ -126,7 +189,41 @@ export default function Page() {
                   {t('analytics.dashboard.chart.signupsDescription')}
                 </CardDescription>
               </CardHeader>
-              <Sparkline data={SIGNUPS_SERIES} positive className="mx-4 mb-4 h-40 w-auto" />
+              <ChartContainer config={chartConfig} className="h-[220px] w-full px-4 pb-4">
+                <AreaChart
+                  accessibilityLayer
+                  data={signupsSeries}
+                  margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="i"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    interval="preserveStartEnd"
+                    minTickGap={40}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={
+                      <ChartTooltipContent
+                        hideLabel
+                        formatter={(value) => number(Number(value))}
+                      />
+                    }
+                  />
+                  <Area
+                    dataKey="value"
+                    type="natural"
+                    stroke="var(--color-value)"
+                    strokeWidth={2}
+                    fill="var(--color-value)"
+                    fillOpacity={0.35}
+                    isAnimationActive={false}
+                  />
+                </AreaChart>
+              </ChartContainer>
             </Card>
           </section>
         </div>

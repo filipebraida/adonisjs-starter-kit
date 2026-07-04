@@ -47,10 +47,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/login'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators').signInValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/auth').signInValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators').signInValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').signInValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/sign_in_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/sign_in_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -83,10 +83,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/sign-up'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators').signUpValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/auth').signUpValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators').signUpValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').signUpValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/sign_up_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/sign_up_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -107,10 +107,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/forgot-password'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators').forgotPasswordValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/auth').forgotPasswordValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators').forgotPasswordValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').forgotPasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/forgot_password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/forgot_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -131,10 +131,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/reset-password/:token'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators').resetPasswordValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/auth').resetPasswordValidator)>>
       paramsTuple: [ParamValue]
       params: { token: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators').resetPasswordValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').resetPasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/reset_password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/reset_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -239,10 +239,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/users/invite'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').inviteUserValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/users').inviteUserValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').inviteUserValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/users').inviteUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/invite_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/invite_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -266,7 +266,7 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: ExtractQueryForGet<InferInput<(typeof import('#users/validators').listUserValidator)>>
+      query: ExtractQueryForGet<InferInput<(typeof import('#users/validators/users').listUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['index']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -287,10 +287,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/users'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').createUserValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/users').createUserValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').createUserValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/users').createUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -311,10 +311,10 @@ export interface Registry {
     methods: ["PUT","PATCH"]
     pattern: '/users/:id'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').editUserValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/users').editUserValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').editUserValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/users').editUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['update']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/users_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -347,10 +347,10 @@ export interface Registry {
     methods: ["PUT"]
     pattern: '/settings/profile'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').updateProfileValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/users').updateProfileValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').updateProfileValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/users').updateProfileValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/profile_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/profile_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -359,10 +359,10 @@ export interface Registry {
     methods: ["PUT"]
     pattern: '/settings/password'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/users').updatePasswordValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').updatePasswordValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/users').updatePasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -383,10 +383,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/settings/tokens'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#users/validators').createTokenValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#users/validators/tokens').createTokenValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#users/validators').createTokenValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#users/validators/tokens').createTokenValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#users/controllers/tokens_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -398,9 +398,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#analytics/validators/dashboard').dashboardQueryValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#analytics/controllers/dashboard_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#analytics/controllers/dashboard_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#analytics/controllers/dashboard_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
 }

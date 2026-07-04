@@ -12,8 +12,6 @@ interface KpiCardProps {
   data: readonly number[]
 }
 
-// A KPI cell: label + big value on top, change badge + sparkline at the bottom.
-// Compose these in a grid to build the dashboard overview row.
 export function KpiCard({ label, value, change, data }: KpiCardProps) {
   const positive = change >= 0
   const Arrow = positive ? ArrowUp : ArrowDown
@@ -36,7 +34,9 @@ export function KpiCard({ label, value, change, data }: KpiCardProps) {
           {sign}
           {change}%
         </span>
-        <Sparkline data={data} positive={positive} className="w-24 h-8" />
+        <div className="w-24">
+          <Sparkline data={data} height={28} />
+        </div>
       </CardFooter>
     </Card>
   )

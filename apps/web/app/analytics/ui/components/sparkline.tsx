@@ -1,46 +1,27 @@
-import { cn } from '@workspace/ui/lib/utils'
+import { Line, LineChart, ResponsiveContainer } from 'recharts'
 
 interface SparklineProps {
   data: readonly number[]
-  positive?: boolean
-  className?: string
+  height?: number
 }
 
-// Tiny inline SVG sparkline. Zero deps — swap for recharts / visx if you
-// need axes, tooltips, or interactivity.
-export function Sparkline({ data, positive = true, className }: SparklineProps) {
+export function Sparkline({ data, height = 32 }: SparklineProps) {
   if (data.length < 2) return null
 
-  const width = 100
-  const height = 32
-  const max = Math.max(...data)
-  const min = Math.min(...data)
-  const range = max - min || 1
-  const step = width / (data.length - 1)
-
-  const points = data
-    .map((value, i) => {
-      const x = i * step
-      const y = height - ((value - min) / range) * height
-      return `${x.toFixed(2)},${y.toFixed(2)}`
-    })
-    .join(' ')
+  const chartData = data.map((y, i) => ({ i, y }))
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      preserveAspectRatio="none"
-      className={cn('overflow-visible', className)}
-      aria-hidden
-    >
-      <polyline
-        points={points}
-        fill="none"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={positive ? 'stroke-emerald-500' : 'stroke-rose-500'}
-      />
-    </svg>
+    <ResponsiveContainer width="100%" height={height}>
+      <LineChart data={chartData} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
+        <Line
+          type="natural"
+          dataKey="y"
+          stroke="var(--chart-1)"
+          strokeWidth={1.5}
+          dot={false}
+          isAnimationActive={false}
+        />
+      </LineChart>
+    </ResponsiveContainer>
   )
 }

@@ -40,6 +40,7 @@ npm-debug.log*
 
 # Installed skills (source lives in packages/skills/)
 .agents/skills/
+agent/skills/
 .claude/skills/
 .cursor/skills/
 .opencode/skills/
