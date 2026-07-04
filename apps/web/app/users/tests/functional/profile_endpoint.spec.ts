@@ -4,6 +4,7 @@ import fileGenerator from '@poppinss/file-generator'
 import { test } from '@japa/runner'
 
 import env from '#start/env'
+import User from '#users/models/user'
 import { UserFactory } from '#users/database/factories/user'
 
 test.group('Endpoint PUT /settings/profile', (group) => {
@@ -14,6 +15,29 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     return () => drive.restore(diskName)
   })
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+
+  test('atualiza fullName e persiste avatar (png valido)', async ({ client, assert }) => {
+    const user = await UserFactory.merge({ fullName: 'Antes' }).create()
+    const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
+
+    const response = await client
+      .put('/settings/profile')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .field('fullName', 'Depois')
+      .file('avatar', png.contents, { filename: png.name, contentType: png.mime })
+
+    response.assertStatus(302)
+    assert.equal(response.header('location'), '/settings')
+
+    const refreshed = await User.findOrFail(user.id)
+    assert.equal(refreshed.fullName, 'Depois')
+    assert.isNotNull(refreshed.avatar)
+
+    const disk = drive.use(diskName)
+    assert.isTrue(await disk.exists(refreshed.avatar.path!))
+  })
 
   test('sem auth redireciona para login e nao muda ninguem', async ({ client, assert }) => {
     const user = await UserFactory.merge({ fullName: 'Original' }).create()
