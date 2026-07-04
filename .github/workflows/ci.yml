@@ -62,10 +62,13 @@ jobs:
         working-directory: apps/web
         run: pnpm coverage
 
-      - name: Upload coverage report
+      - name: Coverage summary
         if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: coverage-report
-          path: apps/web/coverage/
-          retention-days: 14
+        working-directory: apps/web
+        run: |
+          {
+            echo '## Coverage'
+            echo '```'
+            pnpm exec c8 report --reporter=text-summary
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
