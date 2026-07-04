@@ -102,6 +102,14 @@ Specs at `app/<mod>/tests/{unit,functional}/*.spec.ts`. Match the shape of the n
 - **Sinon** for stubbing services, drivers, and external dependencies.
 - POST/PUT/DELETE routes must include `.withCsrfToken()` in tests (shield middleware is active).
 
+## Mail
+
+Email HTML is authored in **MJML**, not raw HTML + inline CSS. Every template uses the shared `@email.layout({ title, preview? })` component from `resources/views/components/email/layout.edge` and only fills the main slot with `<mj-section>` markup for its own body. The layout owns head defaults (fonts, colors, button styles), the app header, and the footer.
+
+- Mail classes spread `...mailContext()` from `#common/services/mail_context` into `htmlView(...)` so the layout gets `appName` and `appUrl` for free.
+- `APP_NAME` env var is optional (fallback: `AdonisJS Starter Kit`); `APP_URL` is already required.
+- Do not author new email HTML as raw `<html><head><style>` blocks. If a new email doesn't fit the shared layout, extend the layout or write a second layout — never inline.
+
 ## Notifications + SSE
 
 In-app notifications persist in the `notifications` table and stream in realtime over SSE. Stack: `@facteurjs/adonisjs` (framework) + `@adonisjs/transmit` (in-memory SSE, mono-node).

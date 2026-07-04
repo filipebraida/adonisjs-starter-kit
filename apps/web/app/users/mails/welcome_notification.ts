@@ -2,6 +2,7 @@ import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
 import { signedUrlFor } from '@adonisjs/core/services/url_builder'
 
+import { mailContext } from '#common/services/mail_context'
 import type User from '#users/models/user'
 import { type MailBasicTranslation } from '#common/models/mail_basic_translation'
 
@@ -39,10 +40,11 @@ export default class WelcomeNotification extends BaseMail {
     this.message.to(this.user.email).subject(subject)
 
     this.message.htmlView('users::emails/welcome', {
-      title: title,
-      subtitle: subtitle,
-      actionBtn: actionBtn,
-      defaultMessage: defaultMessage,
+      ...mailContext(),
+      title,
+      subtitle,
+      actionBtn,
+      defaultMessage,
       welcomeUrl,
       welcomeMessage: this.welcomeMessage,
     })

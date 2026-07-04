@@ -2,6 +2,7 @@ import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
 import { signedUrlFor } from '@adonisjs/core/services/url_builder'
 
+import { mailContext } from '#common/services/mail_context'
 import type User from '#users/models/user'
 import { type MailBasicTranslation } from '#common/models/mail_basic_translation'
 
@@ -36,6 +37,7 @@ export default class ResetPasswordNotification extends BaseMail {
     this.message.to(this.user.email).subject(subject)
 
     this.message.htmlView('auth::emails/forgot_password', {
+      ...mailContext(),
       title,
       subtitle,
       actionBtn,
