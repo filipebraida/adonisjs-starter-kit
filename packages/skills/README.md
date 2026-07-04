@@ -5,6 +5,10 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 ## Available Skills
 
 - `git-commit` — semantic commits following this repo's `AGENTS.md` conventions (see [`git-commit/SKILL.md`](./git-commit/SKILL.md)).
+- `module-scaffolding` — how to add a new `app/<mod>/` module end-to-end (alias, preload, migration paths).
+- `crud` — build a resource CRUD stack (route → controller → validator → policy → action → transformer → Inertia page).
+- `actions-events` — action pattern (`.handle(input)`) and event-based side effects.
+- `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
 
 ## Structure
 
