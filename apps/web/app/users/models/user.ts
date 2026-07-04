@@ -50,6 +50,18 @@ export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
     }
   }
 
+  /**
+   * Delivery targets used by facteur per channel. `database` persists
+   * the notification row; `transmit` pushes the SSE event on the user's
+   * personal channel (`notifications/user-<id>`).
+   */
+  notificationTargets() {
+    return {
+      database: { notifiableId: String(this.id) },
+      transmit: { channel: `notifications/user-${this.id}` },
+    }
+  }
+
   static async preComputeUrls(models: User | User[]) {
     if (Array.isArray(models)) {
       await Promise.all(models.map((model) => this.preComputeUrls(model)))

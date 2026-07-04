@@ -18,6 +18,8 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **Layout shells** — Purpose-built shells that coexist as distinct components — `admin_layout` (sidebar), `authenticated_layout` (top-nav), `auth_layout` (split-screen), `marketing_layout` (public). Pages import the shell they need. Delete the ones you don't use — no refactor required.
 
+**Notifications + SSE** — In-app notifications persisted in Postgres and streamed in realtime over Server-Sent Events (`@facteurjs/adonisjs` + `@adonisjs/transmit`). Bell + unread badge wired into the top nav, notification classes per domain (`app/<mod>/notifications/`), delivery via event listeners so actions stay pure. Demo: `UserWelcomeNotification` fires on `user:registered`.
+
 **i18n** — English, French, and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
 
 **RBAC** — Static catalog of typed capabilities (`PERMISSIONS`) + role slugs (`ROLES`) enforced through Bouncer abilities and per-resource policies. Frontend consumes a typed `useCan()` hook. User impersonation is available to admins.

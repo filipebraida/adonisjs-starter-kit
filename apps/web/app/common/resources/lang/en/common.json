@@ -29,5 +29,11 @@
       "go_last_page": "Go to last page",
       "page_of": "Page {current} of {total}"
     }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "You have no notifications.",
+    "ariaLabel": "Notifications"
   }
 }

@@ -25,6 +25,7 @@
     "#users/*": "./app/users/*.js",
     "#marketing/*": "./app/marketing/*.js",
     "#analytics/*": "./app/analytics/*.js",
+    "#notifications/*": "./app/notifications/*.js",
     "#providers/*": "./providers/*.js",
     "#tests/*": "./tests/*.js",
     "#generated/*": "./.adonisjs/server/*.js"
@@ -75,7 +76,10 @@
     "@adonisjs/session": "^8.1.0",
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
+    "@adonisjs/transmit": "^3.0.1",
+    "@adonisjs/transmit-client": "^1.1.0",
     "@adonisjs/vite": "^5.1.1",
+    "@facteurjs/adonisjs": "2.0.0-beta.8",
     "@inertiajs/react": "^2.3.24",
     "@jrmc/adonis-attachment": "^5.2.0",
     "@radix-ui/react-direction": "^1.1.2",

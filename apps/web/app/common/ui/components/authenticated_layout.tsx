@@ -9,6 +9,7 @@ import { NavHeaderMain } from '#common/ui/components/nav_header_main'
 import { NavHeaderMobile } from '#common/ui/components/nav_header_mobile'
 import { NavUser } from '#common/ui/components/nav_user'
 import { LanguageSwitcher } from '#common/ui/components/language_switcher'
+import { NotificationBell } from '#common/ui/components/notification_bell'
 import { ToggleTheme } from '#common/ui/components/toggle_theme'
 
 import useUser from '#auth/ui/hooks/use_user'
@@ -59,6 +60,7 @@ export default function AuthenticatedLayout({
 
             <div className="ml-auto flex items-center space-x-2">
               <div className="relative flex items-center space-x-1">
+                <NotificationBell />
                 <ToggleTheme />
                 <LanguageSwitcher />
                 <NavUser user={user} options={navUser} />

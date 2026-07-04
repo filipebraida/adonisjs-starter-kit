@@ -90,6 +90,30 @@ const routes = {
     tokens: [{"old":"/switch/:locale","type":0,"val":"switch","end":""},{"old":"/switch/:locale","type":1,"val":"locale","end":""}],
     types: placeholder as Registry['locale.switch']['types'],
   },
+  'notifications.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/notifications',
+    tokens: [{"old":"/notifications","type":0,"val":"notifications","end":""}],
+    types: placeholder as Registry['notifications.index']['types'],
+  },
+  'notifications.markRead': {
+    methods: ["POST"],
+    pattern: '/notifications/:id/read',
+    tokens: [{"old":"/notifications/:id/read","type":0,"val":"notifications","end":""},{"old":"/notifications/:id/read","type":1,"val":"id","end":""},{"old":"/notifications/:id/read","type":0,"val":"read","end":""}],
+    types: placeholder as Registry['notifications.markRead']['types'],
+  },
+  'notifications.markAllSeen': {
+    methods: ["POST"],
+    pattern: '/notifications/seen',
+    tokens: [{"old":"/notifications/seen","type":0,"val":"notifications","end":""},{"old":"/notifications/seen","type":0,"val":"seen","end":""}],
+    types: placeholder as Registry['notifications.markAllSeen']['types'],
+  },
+  'notifications.markAllRead': {
+    methods: ["POST"],
+    pattern: '/notifications/read',
+    tokens: [{"old":"/notifications/read","type":0,"val":"notifications","end":""},{"old":"/notifications/read","type":0,"val":"read","end":""}],
+    types: placeholder as Registry['notifications.markAllRead']['types'],
+  },
   'users.invite.show': {
     methods: ["GET","HEAD"],
     pattern: '/users/invite',

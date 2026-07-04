@@ -3,6 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
+import Notification from '#notifications/models/notification'
 import User from '#users/models/user'
 import { EMPTY_GLOBAL_PERMISSIONS, globalPermissions } from '#users/services/global_permissions'
 import UserTransformer from '#users/transformers/user_transformer'
@@ -26,6 +27,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const success = session?.flashMessages.get('success') as string
 
     let can = EMPTY_GLOBAL_PERMISSIONS
+    let unseenNotifications = 0
 
     if (auth?.user) {
       const user = auth.user as User
@@ -33,6 +35,13 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       await user.load('roles')
 
       can = await globalPermissions(user)
+
+      const row = await Notification.query()
+        .where('notifiableId', String(user.id))
+        .whereNull('seenAt')
+        .count('* as total')
+        .first()
+      unseenNotifications = Number(row?.$extras.total ?? 0)
     }
 
     return {
@@ -45,6 +54,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
       can: ctx.inertia.always(can),
+      unseenNotifications: ctx.inertia.always(unseenNotifications),
     }
   }
 

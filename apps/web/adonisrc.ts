@@ -68,6 +68,8 @@ export default defineConfig({
     () => import('@adonisjs/i18n/i18n_provider'),
     () => import('@adonisjs/limiter/limiter_provider'),
     () => import('adonis-inertia-modal/modal_provider'),
+    () => import('@adonisjs/transmit/transmit_provider'),
+    () => import('@facteurjs/adonisjs/facteur_provider'),
   ],
 
   /*
@@ -96,6 +98,9 @@ export default defineConfig({
 
     //analytics
     () => import('#analytics/routes'),
+
+    //notifications
+    () => import('#notifications/routes'),
   ],
 
   /*

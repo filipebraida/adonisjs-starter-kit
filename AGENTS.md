@@ -102,6 +102,17 @@ Specs at `app/<mod>/tests/{unit,functional}/*.spec.ts`. Match the shape of the n
 - **Sinon** for stubbing services, drivers, and external dependencies.
 - POST/PUT/DELETE routes must include `.withCsrfToken()` in tests (shield middleware is active).
 
+## Notifications + SSE
+
+In-app notifications persist in the `notifications` table and stream in realtime over SSE. Stack: `@facteurjs/adonisjs` (framework) + `@adonisjs/transmit` (in-memory SSE, mono-node).
+
+- **Module** `app/notifications/` holds the model, transformer, controller, and routes (`GET /notifications`, `POST /notifications/:id/read`, `POST /notifications/seen`, `POST /notifications/read`).
+- **Notification classes** extend `Notification<User, Params>` and live per domain at `app/<mod>/notifications/<name>_notification.ts`. Set `static options = { name, deliverBy: { database: true, transmit: true } }` and implement `asDatabaseMessage()` / `asTransmitMessage()`.
+- **Emission goes through events**, not directly from actions. Actions emit a domain event; a listener in `<mod>/start/events.ts` calls `facteur.notification(TheNotification).params(...).to([user]).send()`. Example: `user:registered` → `UserWelcomeNotification`.
+- **User targeting** uses `User.notificationTargets()` to map to channels — `database: { notifiableId: String(id) }` and `transmit: { channel: 'notifications/user-<id>' }`. The frontend hook `useNotificationsChannel` subscribes to the same channel name.
+- **Shared prop** `unseenNotifications` (count) is computed in `inertia_middleware.ts` when a user is authenticated, so the bell badge is right on first render.
+- **Testing**: for endpoint specs, insert `Notification.create({...})` rows directly and hit `/notifications/*`. For end-to-end listener specs, `mail.fake()` first, then `await emitter.emit('user:registered', {...})` and assert the resulting `Notification` row.
+
 ## Code style
 
 - Comments only for non-obvious WHY — a hidden constraint, a subtle invariant, a workaround. Don't narrate what the code does; the diff and identifiers already do that.

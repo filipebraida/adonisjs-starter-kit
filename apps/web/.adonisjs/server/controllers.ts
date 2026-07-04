@@ -18,6 +18,9 @@ export const controllers = {
   marketing: {
     Marketing: () => import('#app/marketing/controllers/marketing_controller'),
   },
+  notifications: {
+    Notifications: () => import('#app/notifications/controllers/notifications_controller'),
+  },
   users: {
     Impersonates: () => import('#app/users/controllers/impersonates_controller'),
     Invite: () => import('#app/users/controllers/invite_controller'),

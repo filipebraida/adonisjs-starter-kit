@@ -175,6 +175,54 @@ export interface Registry {
       errorResponse: unknown
     }
   }
+  'notifications.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/notifications'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['index']>>>
+    }
+  }
+  'notifications.markRead': {
+    methods: ["POST"]
+    pattern: '/notifications/:id/read'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markRead']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markRead']>>>
+    }
+  }
+  'notifications.markAllSeen': {
+    methods: ["POST"]
+    pattern: '/notifications/seen'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markAllSeen']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markAllSeen']>>>
+    }
+  }
+  'notifications.markAllRead': {
+    methods: ["POST"]
+    pattern: '/notifications/read'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markAllRead']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#notifications/controllers/notifications_controller').default['markAllRead']>>>
+    }
+  }
   'users.invite.show': {
     methods: ["GET","HEAD"]
     pattern: '/users/invite'
