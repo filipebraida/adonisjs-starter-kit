@@ -36,7 +36,7 @@ app/<module>/
   policies/           # extend BasePolicy, one per resource
   models/, mixins/, services/, exceptions/, enums/
   transformers/       # follow the existing transformer shape
-  validators.ts       # follow the existing validator shape
+  validators/         # one file per entity — validators/users.ts, validators/tokens.ts
   database/{factories,migrations,seeders}/
   resources/lang/     # i18n JSON, per module per locale
   ui/                 # Inertia pages + React components

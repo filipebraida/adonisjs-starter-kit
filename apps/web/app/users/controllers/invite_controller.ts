@@ -4,7 +4,7 @@ import { modal } from '#core/inertia/modal'
 
 import InviteUser from '#users/actions/invite_user'
 import UserPolicy from '#users/policies/user_policy'
-import { inviteUserValidator } from '#users/validators'
+import { inviteUserValidator } from '#users/validators/users'
 
 export default class InviteController {
   public async show({ bouncer, inertia }: HttpContext) {

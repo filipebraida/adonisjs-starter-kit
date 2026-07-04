@@ -9,7 +9,7 @@ import User from '#users/models/user'
 import UserPolicy from '#users/policies/user_policy'
 import ListUsers from '#users/queries/list_users'
 import UserTransformer from '#users/transformers/user_transformer'
-import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators'
+import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators/users'
 
 export default class UsersController {
   public async index({ bouncer, inertia, request }: HttpContext) {

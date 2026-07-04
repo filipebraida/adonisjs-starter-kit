@@ -6,7 +6,7 @@ import { afterAuthRedirectRoute } from '#config/auth'
 
 import SignIn from '#auth/actions/sign_in'
 import { returnToKey } from '#auth/middleware/auth_middleware'
-import { signInValidator } from '#auth/validators'
+import { signInValidator } from '#auth/validators/auth'
 
 import { setUserLocaleCookie } from '#common/services/user_locale'
 

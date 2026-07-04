@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import RequestPasswordReset from '#auth/actions/request_password_reset'
-import { forgotPasswordValidator } from '#auth/validators'
+import { forgotPasswordValidator } from '#auth/validators/auth'
 
 export default class ForgotPasswordController {
   async show({ inertia }: HttpContext) {

@@ -3,7 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { afterAuthRedirectRoute } from '#config/auth'
 
 import SignUp from '#auth/actions/sign_up'
-import { signUpValidator } from '#auth/validators'
+import { signUpValidator } from '#auth/validators/auth'
 
 import { setUserLocaleCookie } from '#common/services/user_locale'
 

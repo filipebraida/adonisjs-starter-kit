@@ -13,7 +13,7 @@ A CRUD feature in this repo is a stack: `router.resource(...)` in the module's `
 
 - **Route shape**: `router.resource('/entities', EntitiesController).only([...]).use('*', middleware.auth())`. Optional actions (impersonate, invite, publish, etc.) are separate `router.post(...)` calls in the same file.
 - **Controller (thin)**: one method per resource action. Order per method: `policy → validator → action call → render/redirect`. No business logic, no queries longer than one line, no ORM calls beyond `Model.findOrFail`.
-- **Validator**: VineJS `vine.compile(vine.object({...}))` per mutation, exported from `<mod>/validators.ts`. Use `vine.withMetaData<{...}>()` when the rule depends on route params (e.g. unique-except-self on edit).
+- **Validator**: VineJS `vine.create({...})` per mutation, exported from `<mod>/validators/<entity>.ts` (one file per entity — `validators/users.ts`, `validators/tokens.ts`). Use `vine.withMetaData<{...}>().create({...})` when the rule depends on route params (e.g. unique-except-self on edit). `vine.compile()` is **deprecated** — use `vine.create()`.
 - **Policy**: `BasePolicy` subclass at `<mod>/policies/<entity>_policy.ts`. One method per gated action. Return boolean or `AuthorizerResponse`. Always gate before validating: `await bouncer.with(XPolicy).authorize('action', resource?)`.
 - **Action**: one class per write in `<mod>/actions/<verb_entity>.ts`. Never takes `HttpContext` — see [[actions-events]].
 - **Transformer**: `BaseTransformer<Model>` with `toObject()` as the base + variants (`forList`, `forEdit`, `forSharedProps`, `forProfile`). Call `Transformer.transform(model).useVariant('forList')` or `Transformer.paginate(rows, meta).useVariant('forList')`. Never send raw model instances to Inertia.
@@ -24,7 +24,7 @@ A CRUD feature in this repo is a stack: `router.resource(...)` in the module's `
 
 - Route: `apps/web/app/users/routes.ts:35` (`router.resource('/users', UsersController).only([...])`).
 - Controller: `apps/web/app/users/controllers/users_controller.ts` — 5-method thin controller.
-- Validators: `apps/web/app/users/validators.ts` (`createUserValidator`, `editUserValidator` with `withMetaData` for unique-except-self, `listUserValidator`).
+- Validators: `apps/web/app/users/validators/users.ts` + `apps/web/app/users/validators/tokens.ts` (`createUserValidator`, `editUserValidator` with `withMetaData` for unique-except-self, `listUserValidator`, `createTokenValidator`).
 - Policy: `apps/web/app/users/policies/user_policy.ts` — every method returns `PERMISSIONS.usersX` via `hasPermission`.
 - Actions: `apps/web/app/users/actions/{create,update,delete}_user.ts`.
 - Transformer: `apps/web/app/users/transformers/user_transformer.ts` — `toObject()` + `forList`, `forEdit`, `forSharedProps`, `forProfile` variants.
@@ -52,32 +52,35 @@ Prerequisite: module exists — see [[module-scaffolding]].
 
 ### 2. Validators (one per mutation)
 
-In `<mod>/validators.ts`:
+Split by entity — one file per resource. For an `Entity`, use `<mod>/validators/entities.ts` (plural of the entity):
 
 ```ts
-export const createEntityValidator = vine.compile(vine.object({
+// app/<mod>/validators/entities.ts
+import vine from '@vinejs/vine'
+
+export const createEntityValidator = vine.create({
   name: vine.string().trim().minLength(3),
   // ...
-}))
+})
 
-export const editEntityValidator = vine.withMetaData<{ entityId: number }>().compile(
-  vine.object({
-    name: vine.string().trim().minLength(3),
-    email: vine
-      .string()
-      .email()
-      .unique(async (_, value, field) => {
-        const row = await Entity.query().where('email', value).whereNot('id', field.meta.entityId).first()
-        return row ? false : true
-      }),
-  })
-)
+export const editEntityValidator = vine.withMetaData<{ entityId: number }>().create({
+  name: vine.string().trim().minLength(3),
+  email: vine
+    .string()
+    .email()
+    .unique(async (_, value, field) => {
+      const row = await Entity.query().where('email', value).whereNot('id', field.meta.entityId).first()
+      return row ? false : true
+    }),
+})
 
-export const listEntityValidator = vine.compile(vine.object({
+export const listEntityValidator = vine.create({
   ...baseSearchValidator.getProperties(),
   // filters, sort, order
-}))
+})
 ```
+
+Use `vine.create({...})` — `vine.compile()` is deprecated. If the module has multiple entities (e.g. `users` also has `tokens`), split into separate files: `validators/users.ts`, `validators/tokens.ts`.
 
 ### 3. Policy
 
