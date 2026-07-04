@@ -2,7 +2,9 @@
 
 import * as React from "react";
 
-const PortalContainerContext = React.createContext<HTMLElement | null | undefined>(undefined);
+const PortalContainerContext = React.createContext<
+  HTMLElement | null | undefined
+>(undefined);
 
 export function PortalContainerProvider({
   container,
