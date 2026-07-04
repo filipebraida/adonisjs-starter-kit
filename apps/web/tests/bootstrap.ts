@@ -7,6 +7,7 @@ import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
 import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
+import { dbAssertions } from '@adonisjs/lucid/plugins/db'
 import mail from '@adonisjs/mail/services/main'
 import testUtils from '@adonisjs/core/services/test_utils'
 
@@ -25,6 +26,7 @@ export const plugins: Config['plugins'] = [
   authApiClient(app),
   inertiaApiClient(app),
   shieldApiClient(),
+  dbAssertions(app),
   pluginAdonisJS(app),
 ]
 

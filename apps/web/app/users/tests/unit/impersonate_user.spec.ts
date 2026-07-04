@@ -1,42 +1,27 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
+import sinon from 'sinon'
 
 import ImpersonateUser from '#users/actions/impersonate_user'
 import type User from '#users/models/user'
 import { UserFactory } from '#users/database/factories/user'
 
-function createSessionStub() {
-  const store = new Map<string, unknown>()
-  const session = {
-    put: (key: string, value: unknown) => store.set(key, value),
-    get: (key: string) => store.get(key),
-  }
-  return {
-    session: session as unknown as Parameters<ImpersonateUser['handle']>[0]['session'],
-    store,
-  }
-}
-
-function createAuthSpy() {
-  const calls: User[] = []
-  const auth = {
-    use: (_guard: string) => ({
-      login: async (user: User) => {
-        calls.push(user)
-      },
-    }),
-  }
-  return { auth: auth as unknown as Parameters<ImpersonateUser['handle']>[0]['auth'], calls }
-}
+type Handle = ImpersonateUser['handle']
+type Input = Parameters<Handle>[0]
 
 test.group('ImpersonateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+  group.each.teardown(() => sinon.restore())
 
   test('guarda originalUserId na sessao e faz login como o impersonado', async ({ assert }) => {
     const original = await UserFactory.create()
     const alvo = await UserFactory.create()
-    const { session, store } = createSessionStub()
-    const { auth, calls } = createAuthSpy()
+
+    const put = sinon.stub<[string, unknown], void>()
+    const session = { put } as unknown as Input['session']
+
+    const login = sinon.stub<[User], Promise<void>>().resolves()
+    const auth = { use: () => ({ login }) } as unknown as Input['auth']
 
     await new ImpersonateUser().handle({
       impersonated: alvo,
@@ -45,8 +30,8 @@ test.group('ImpersonateUser', (group) => {
       auth,
     })
 
-    assert.equal(store.get('originalUserId'), original.id)
-    assert.lengthOf(calls, 1)
-    assert.equal(calls[0].id, alvo.id)
+    sinon.assert.calledOnceWithExactly(put, 'originalUserId', original.id)
+    sinon.assert.calledOnce(login)
+    assert.equal(login.firstCall.args[0].id, alvo.id)
   })
 })

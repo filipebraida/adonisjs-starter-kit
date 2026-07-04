@@ -40,16 +40,19 @@ test.group('RequestPasswordReset', (group) => {
     fake.assertNoneEmitted()
   })
 
-  test('gerar dois tokens em sequencia mantem apenas o mais recente valido', async ({ assert }) => {
+  test('gerar dois tokens em sequencia mantem apenas o mais recente valido', async ({
+    db,
+    assert,
+  }) => {
     const user = await UserFactory.create()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })
     const primeiro = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })
-    const tokens = await ResetPasswordToken.query().where('userId', user.id)
 
-    assert.lengthOf(tokens, 1)
-    assert.notEqual(tokens[0].token, primeiro.token)
+    await db.assertHas('reset_password_tokens', { user_id: user.id }, 1)
+    const atual = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
+    assert.notEqual(atual.token, primeiro.token)
   })
 })

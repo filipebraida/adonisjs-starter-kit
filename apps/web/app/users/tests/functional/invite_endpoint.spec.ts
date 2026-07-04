@@ -29,7 +29,7 @@ test.group('Endpoint /users/invite', (group) => {
     assert.equal(response.header('location'), '/login')
   })
 
-  test('POST como user comum eh barrado e nao emite evento', async ({ client, assert }) => {
+  test('POST como user comum eh barrado e nao emite evento', async ({ client, db }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -42,10 +42,10 @@ test.group('Endpoint /users/invite', (group) => {
 
     assertForbiddenRedirect(response)
     fake.assertNoneEmitted()
-    assert.isNull(await User.findBy('email', 'barrado-convite@example.test'))
+    await db.assertMissing('users', { email: 'barrado-convite@example.test' })
   })
 
-  test('POST como admin cria user + gera token + emite evento', async ({ client, assert }) => {
+  test('POST como admin cria user + gera token + emite evento', async ({ client, db, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -63,8 +63,9 @@ test.group('Endpoint /users/invite', (group) => {
     response.assertStatus(302)
     assert.equal(response.header('location'), '/users')
 
+    await db.assertHas('users', { email: 'convite@example.test' })
+
     const criado = await User.findByOrFail('email', 'convite@example.test')
-    assert.equal(criado.email, 'convite@example.test')
     const roles = await criado.related('roles').query().select('name')
     assert.deepEqual(
       roles.map((r) => r.name),

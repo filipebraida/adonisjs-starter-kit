@@ -6,7 +6,6 @@ import { test } from '@japa/runner'
 import InviteUser from '#users/actions/invite_user'
 import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
 import ResetPasswordToken from '#users/models/reset_password_token'
-import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
 import { currentRoleNames, ensureBaseRoles, withRole } from '#tests/helpers/rbac'
@@ -25,6 +24,7 @@ test.group('InviteUser', (group) => {
   const i18n = () => i18nManager.locale(i18nManager.defaultLocale)
 
   test('admin convida user comum: cria user, atribui papel, gera token, emite evento', async ({
+    db,
     assert,
   }) => {
     const admin = await UserFactory.create()
@@ -38,19 +38,18 @@ test.group('InviteUser', (group) => {
       i18n: i18n(),
     })
 
-    const persisted = await User.findByOrFail('email', 'convidado@example.test')
-    assert.equal(persisted.id, convidado.id)
+    await db.assertHas('users', { email: 'convidado@example.test' })
 
-    const roles = await currentRoleNames(persisted)
+    const roles = await currentRoleNames(convidado)
     assert.deepEqual(roles, [ROLES.USER])
 
-    const token = await ResetPasswordToken.query().where('userId', persisted.id).firstOrFail()
+    const token = await ResetPasswordToken.query().where('userId', convidado.id).firstOrFail()
     assert.isNotEmpty(token.token)
 
     fake.assertEmitted('user:registered')
   })
 
-  test('user comum NAO pode convidar admin', async ({ assert }) => {
+  test('user comum NAO pode convidar admin', async ({ db, assert }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
@@ -65,8 +64,7 @@ test.group('InviteUser', (group) => {
       ManageRolesUnauthorizedException
     )
 
-    const criado = await User.findBy('email', 'escalador@example.test')
-    assert.isNull(criado)
+    await db.assertMissing('users', { email: 'escalador@example.test' })
     fake.assertNoneEmitted()
   })
 })

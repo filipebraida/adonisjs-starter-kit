@@ -11,7 +11,7 @@ test.group('CreateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.setup(() => ensureBaseRoles())
 
-  test('admin cria user comum com role atribuido', async ({ assert }) => {
+  test('admin cria user comum com role atribuido', async ({ db, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -23,11 +23,8 @@ test.group('CreateUser', (group) => {
       executor: admin,
     })
 
-    assert.equal(created.email, 'joao-novo@example.test')
-    assert.equal(created.fullName, 'Joao Novo')
-
-    const roles = await currentRoleNames(created)
-    assert.deepEqual(roles, [ROLES.USER])
+    await db.assertHas('users', { email: 'joao-novo@example.test', full_name: 'Joao Novo' })
+    assert.deepEqual(await currentRoleNames(created), [ROLES.USER])
   })
 
   test('admin promove ao criar (usersManageRoles necessario para admin)', async ({ assert }) => {
@@ -42,8 +39,7 @@ test.group('CreateUser', (group) => {
       executor: admin,
     })
 
-    const roles = await currentRoleNames(created)
-    assert.deepEqual(roles, [ROLES.ADMIN])
+    assert.deepEqual(await currentRoleNames(created), [ROLES.ADMIN])
   })
 
   test('usa UUID como senha quando nao informada (usuario nao consegue logar direto)', async ({
@@ -63,7 +59,7 @@ test.group('CreateUser', (group) => {
     assert.notEqual(created.password, '')
   })
 
-  test('user comum NAO pode criar admin', async ({ assert }) => {
+  test('user comum NAO pode criar admin', async ({ db, assert }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
@@ -77,21 +73,23 @@ test.group('CreateUser', (group) => {
         }),
       ManageRolesUnauthorizedException
     )
+
+    await db.assertMissing('users', { email: 'escalador@example.test' })
   })
 
   test('escalation guard so protege contra papel != USER (block user->user cabe a policy)', async ({
-    assert,
+    db,
   }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
-    const created = await new CreateUser().handle({
+    await new CreateUser().handle({
       fullName: 'Ok User',
       email: 'ok-user@example.test',
       role: ROLES.USER,
       executor,
     })
 
-    assert.equal(created.email, 'ok-user@example.test')
+    await db.assertHas('users', { email: 'ok-user@example.test' })
   })
 })

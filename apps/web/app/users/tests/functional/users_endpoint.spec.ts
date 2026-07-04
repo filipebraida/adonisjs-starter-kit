@@ -1,7 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
@@ -104,7 +103,7 @@ test.group('Endpoint /users', (group) => {
     response.assertStatus(404)
   })
 
-  test('POST /users cria user comum quando admin', async ({ client, assert }) => {
+  test('POST /users cria user comum quando admin', async ({ client, db, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -117,11 +116,13 @@ test.group('Endpoint /users', (group) => {
     response.assertStatus(302)
     assert.equal(response.header('location'), '/users')
 
-    const criado = await User.findByOrFail('email', 'novo-por-admin@example.test')
-    assert.equal(criado.fullName, 'Novo Usuario')
+    await db.assertHas('users', {
+      email: 'novo-por-admin@example.test',
+      full_name: 'Novo Usuario',
+    })
   })
 
-  test('POST /users com user comum eh barrado e nao cria', async ({ client, assert }) => {
+  test('POST /users com user comum eh barrado e nao cria', async ({ client, db }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -132,7 +133,7 @@ test.group('Endpoint /users', (group) => {
     })
 
     assertForbiddenRedirect(response)
-    assert.isNull(await User.findBy('email', 'barrado@example.test'))
+    await db.assertMissing('users', { email: 'barrado@example.test' })
   })
 
   test('POST /users com email duplicado retorna 422', async ({ client }) => {
@@ -177,7 +178,7 @@ test.group('Endpoint /users', (group) => {
     assert.equal(alvo.fullName, 'Nome Alterado')
   })
 
-  test('DELETE /users/:id como admin remove o usuario', async ({ client, assert }) => {
+  test('DELETE /users/:id como admin remove o usuario', async ({ client, db }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -190,13 +191,12 @@ test.group('Endpoint /users', (group) => {
       .redirects(0)
 
     response.assertStatus(302)
-    const restante = await User.find(alvo.id)
-    assert.isNull(restante)
+    await db.assertModelMissing(alvo)
   })
 
   test('DELETE /users/:id do proprio admin eh barrado (self-delete guard)', async ({
     client,
-    assert,
+    db,
   }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
@@ -208,6 +208,6 @@ test.group('Endpoint /users', (group) => {
       .redirects(0)
 
     assertForbiddenRedirect(response)
-    assert.isNotNull(await User.find(admin.id))
+    await db.assertModelExists(admin)
   })
 })

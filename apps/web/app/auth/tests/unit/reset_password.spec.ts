@@ -11,7 +11,7 @@ import { UserFactory } from '#users/database/factories/user'
 test.group('ResetPassword', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('troca a senha e invalida o token', async ({ assert }) => {
+  test('troca a senha e invalida o token', async ({ db, assert }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -28,8 +28,7 @@ test.group('ResetPassword', (group) => {
     assert.isNotNull(user.password)
     assert.isTrue(await hash.verify(user.password!, 'nova-senha-123'))
 
-    const restante = await ResetPasswordToken.query().where('userId', user.id).first()
-    assert.isNull(restante)
+    await db.assertMissing('reset_password_tokens', { user_id: user.id })
   })
 
   test('retorna null quando o token nao existe', async ({ assert }) => {

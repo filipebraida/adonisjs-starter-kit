@@ -10,7 +10,7 @@ import { UserFactory } from '#users/database/factories/user'
 test.group('Endpoint /reset-password/:token', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('POST valido troca a senha e redireciona para /login', async ({ client, assert }) => {
+  test('POST valido troca a senha e redireciona para /login', async ({ client, db, assert }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -26,8 +26,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
     await user.refresh()
     assert.isTrue(await hash.verify(user.password!, 'senha-nova-456'))
 
-    const remaining = await ResetPasswordToken.query().where('userId', user.id).first()
-    assert.isNull(remaining)
+    await db.assertMissing('reset_password_tokens', { user_id: user.id })
   })
 
   test('POST com token invalido nao muda senha e volta para /forgot-password', async ({
@@ -50,7 +49,11 @@ test.group('Endpoint /reset-password/:token', (group) => {
     assert.equal(user.password, senhaOriginal)
   })
 
-  test('POST com token expirado nao muda senha nem consome o token', async ({ client, assert }) => {
+  test('POST com token expirado nao muda senha nem consome o token', async ({
+    client,
+    db,
+    assert,
+  }) => {
     const user = await UserFactory.create()
     const senhaOriginal = user.password
     const { token } = await new PasswordResetService().generateToken(user)
@@ -70,11 +73,10 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     await user.refresh()
     assert.equal(user.password, senhaOriginal)
-    const stillExists = await ResetPasswordToken.query().where('userId', user.id).first()
-    assert.isNotNull(stillExists)
+    await db.assertHas('reset_password_tokens', { user_id: user.id })
   })
 
-  test('rejeita senha curta, nao muda senha nem consome token', async ({ client, assert }) => {
+  test('rejeita senha curta, nao muda senha nem consome token', async ({ client, db, assert }) => {
     const user = await UserFactory.create()
     const senhaOriginal = user.password
     const { token } = await new PasswordResetService().generateToken(user)
@@ -90,8 +92,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     await user.refresh()
     assert.equal(user.password, senhaOriginal)
-    const stillExists = await ResetPasswordToken.query().where('userId', user.id).first()
-    assert.isNotNull(stillExists)
+    await db.assertHas('reset_password_tokens', { user_id: user.id })
   })
 
   test('GET com token valido renderiza pagina', async ({ client }) => {
