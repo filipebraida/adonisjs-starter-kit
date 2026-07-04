@@ -105,5 +105,20 @@
       "./app/middleware/*.ts"
     ]
   },
-  "prettier": "@adonisjs/prettier-config"
+  "prettier": "@adonisjs/prettier-config",
+  "c8": {
+    "all": true,
+    "include": ["app/**/*.ts"],
+    "exclude": [
+      "app/**/tests/**",
+      "app/**/database/factories/**",
+      "app/**/database/migrations/**",
+      "app/**/database/seeders/**",
+      "app/**/ui/**",
+      "app/**/resources/**",
+      "app/**/types/**",
+      "app/core/hooks/**",
+      "app/**/*.d.ts"
+    ]
+  }
 }
