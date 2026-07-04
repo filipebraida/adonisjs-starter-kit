@@ -8,7 +8,7 @@ import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_una
 import ResetPasswordToken from '#users/models/reset_password_token'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { currentRoleNames, ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
 
 test.group('InviteUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -40,7 +40,7 @@ test.group('InviteUser', (group) => {
 
     await db.assertHas('users', { email: 'convidado@example.test' })
 
-    const roles = await currentRoleNames(convidado)
+    const roles = await convidado.getRoleNames()
     assert.deepEqual(roles, [ROLES.USER])
 
     const token = await ResetPasswordToken.query().where('userId', convidado.id).firstOrFail()

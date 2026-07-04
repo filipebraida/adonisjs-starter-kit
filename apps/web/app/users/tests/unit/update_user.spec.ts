@@ -6,7 +6,7 @@ import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_una
 import UpdateUser from '#users/actions/update_user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { currentRoleNames, ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
 
 test.group('UpdateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -29,7 +29,7 @@ test.group('UpdateUser', (group) => {
     await alvo.refresh()
     assert.equal(alvo.fullName, 'Nome Novo')
     assert.equal(alvo.email, 'depois@example.test')
-    assert.deepEqual(await currentRoleNames(alvo), [ROLES.ADMIN])
+    assert.deepEqual(await alvo.getRoleNames(), [ROLES.ADMIN])
   })
 
   test('senha opcional: mantem hash quando nao informada', async ({ assert }) => {

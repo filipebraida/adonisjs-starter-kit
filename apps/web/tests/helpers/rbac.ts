@@ -28,12 +28,6 @@ export async function withPermissions(
   return role
 }
 
-// Bypasses the WithRoles mixin's in-memory cache, which stays stale after syncRoles/assignRole.
-export async function currentRoleNames(user: User): Promise<string[]> {
-  const rows = await user.related('roles').query().select('name')
-  return rows.map((row) => row.name)
-}
-
 // Idempotent: reuses the row if a prior run left it behind, overwrites password + role.
 export async function ensureUser(input: {
   email: string

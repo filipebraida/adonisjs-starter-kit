@@ -55,26 +55,35 @@ export function withRoles({ foreignKey = 'user_id' }: { foreignKey?: string } = 
       async assignRole(role: Role | number): Promise<void> {
         const id = typeof role === 'number' ? role : role.id
         await this.rolesClient().sync([id], false)
+        await this.reloadRoles()
       }
 
       async assignRoles(roles: (Role | number)[]): Promise<void> {
         const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
         await this.rolesClient().sync(ids, false)
+        await this.reloadRoles()
       }
 
       async syncRoles(roles: (Role | number)[]): Promise<void> {
         const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
         await this.rolesClient().sync(ids)
+        await this.reloadRoles()
       }
 
       async revokeRole(role: Role | number): Promise<void> {
         const id = typeof role === 'number' ? role : role.id
         await this.rolesClient().detach([id])
+        await this.reloadRoles()
       }
 
       async revokeRoles(roles: (Role | number)[]): Promise<void> {
         const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
         await this.rolesClient().detach(ids)
+        await this.reloadRoles()
+      }
+
+      private async reloadRoles(): Promise<void> {
+        await (this as unknown as { load: (relation: 'roles') => Promise<void> }).load('roles')
       }
 
       private rolesClient() {
