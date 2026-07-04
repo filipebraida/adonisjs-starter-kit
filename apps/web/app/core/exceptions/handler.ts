@@ -34,12 +34,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   async handle(error: unknown, ctx: HttpContext) {
     if (error instanceof errors.E_AUTHORIZATION_FAILURE) {
       const message = ctx.i18n?.t('errors.E_AUTHORIZATION_FAILURE') ?? error.message
+      if (ctx.request.accepts(['html', 'json']) === 'json') {
+        return ctx.response.status(403).send({ message })
+      }
       ctx.session?.flash('error', message)
       return ctx.response.redirect().back()
     }
 
     if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
       const message = ctx.i18n?.t('errors.E_INVALID_CREDENTIALS') ?? error.message
+      if (ctx.request.accepts(['html', 'json']) === 'json') {
+        return ctx.response.status(401).send({ message })
+      }
       ctx.session?.flash('error', message)
       return ctx.response.redirect().toRoute('auth.sign_in.show')
     }
