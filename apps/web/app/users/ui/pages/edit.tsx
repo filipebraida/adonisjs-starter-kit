@@ -21,7 +21,7 @@ type PageProps = InertiaProps<{
 export default function EditUserPage({ user }: PageProps) {
   const { t } = useTranslation()
 
-  const { data, setData, errors, put, progress, processing } = useForm<UserFormData>({
+  const { data, setData, errors, put, progress, processing, reset } = useForm<UserFormData>({
     fullName: user.fullName ?? '',
     email: user.email,
     role: mainRole(user.roles) ?? ROLES.USER,
@@ -50,6 +50,7 @@ export default function EditUserPage({ user }: PageProps) {
                     description: data.email,
                   })
                 },
+                onFinish: () => reset('password', 'passwordConfirmation'),
               })
             }}
           >

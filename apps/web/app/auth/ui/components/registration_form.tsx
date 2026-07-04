@@ -17,7 +17,12 @@ export function RegistrationForm({ className }: { className?: string }) {
   const errorMessage = useFlashMessage('error')
 
   return (
-    <Form route="auth.sign_up.handle" className={cn('flex flex-col gap-6', className)}>
+    <Form
+      route="auth.sign_up.handle"
+      resetOnSuccess={['password', 'passwordConfirmation']}
+      resetOnError={['password', 'passwordConfirmation']}
+      className={cn('flex flex-col gap-6', className)}
+    >
       {({ processing }) => (
         <>
           <div className="flex flex-col items-center gap-2 text-center">

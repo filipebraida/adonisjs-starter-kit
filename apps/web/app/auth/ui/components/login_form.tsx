@@ -17,7 +17,12 @@ export function LoginForm({ className }: { className?: string }) {
   const errorMessage = useFlashMessage('error')
 
   return (
-    <Form route="auth.sign_in.handle" className={cn('flex flex-col gap-6', className)}>
+    <Form
+      route="auth.sign_in.handle"
+      resetOnSuccess={['password']}
+      resetOnError={['password']}
+      className={cn('flex flex-col gap-6', className)}
+    >
       {({ processing }) => (
         <>
           <div className="flex flex-col items-center gap-2 text-center">

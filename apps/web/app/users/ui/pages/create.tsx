@@ -14,7 +14,7 @@ import { ROLES } from '#users/enums/role'
 export default function CreateUserPage() {
   const { t } = useTranslation()
 
-  const { data, setData, errors, post, progress, processing } = useForm<UserFormData>({
+  const { data, setData, errors, post, progress, processing, reset } = useForm<UserFormData>({
     fullName: '',
     email: '',
     role: ROLES.USER,
@@ -43,6 +43,7 @@ export default function CreateUserPage() {
                     description: data.fullName || data.email,
                   })
                 },
+                onFinish: () => reset('password', 'passwordConfirmation'),
               })
             }}
           >

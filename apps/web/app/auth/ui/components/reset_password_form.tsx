@@ -10,6 +10,8 @@ export function ResetPasswordForm({ token, className }: { token: string; classNa
     <Form
       route="auth.reset_password.handle"
       routeParams={{ token }}
+      resetOnSuccess={['password', 'passwordConfirmation']}
+      resetOnError={['password', 'passwordConfirmation']}
       className={cn('flex flex-col gap-6', className)}
     >
       {({ processing }) => (
