@@ -1,7 +1,7 @@
 import type { InertiaProps } from '#core/ui/types'
 import type { Data } from '@generated/data'
 
-import AppLayout from '#common/ui/components/app_layout'
+import AuthenticatedLayout from '#common/ui/components/authenticated_layout'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
 import { PasswordForm } from '#users/ui/components/password_form'
 import { ProfileForm } from '#users/ui/components/profile_form'
@@ -22,7 +22,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
   const can = useCan()
 
   return (
-    <AppLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
+    <AuthenticatedLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
       <div className="mx-auto w-full max-w-[840px] px-4 pt-8 pb-24 sm:px-6 lg:px-10">
         <header>
           <h1 className="text-2xl font-semibold tracking-tight">{t('users.layout.title')}</h1>
@@ -61,6 +61,6 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
           </SettingsSection>
         )}
       </div>
-    </AppLayout>
+    </AuthenticatedLayout>
   )
 }

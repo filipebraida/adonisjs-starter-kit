@@ -1,33 +1,15 @@
 import { type SVGProps } from 'react'
 import { Item, Root as Radio } from '@radix-ui/react-radio-group'
 import { CircleCheck, RotateCcw } from 'lucide-react'
-import { useDirection } from '#common/ui/context/direction_provider'
-import { useLayout } from '#common/ui/context/layout_provider'
 import { useTheme } from '@workspace/ui/components/theme-provider'
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
-import { useSidebar } from '@workspace/ui/components/sidebar'
-import {
-  IconDir,
-  IconLayoutCompact,
-  IconLayoutDefault,
-  IconLayoutFull,
-  IconSidebarFloating,
-  IconSidebarInset,
-  IconSidebarSidebar,
-  IconThemeDark,
-  IconThemeLight,
-  IconThemeSystem,
-} from '#common/ui/icons/index'
+import { IconThemeDark, IconThemeLight, IconThemeSystem } from '#common/ui/icons/index'
 
 export function AppearanceForm() {
   return (
     <div className="space-y-8">
       <ThemeConfig />
-      <LayoutModeConfig />
-      <SidebarConfig />
-      <SidebarLayoutConfig />
-      <DirConfig />
     </div>
   )
 }
@@ -150,188 +132,6 @@ function ThemeConfig() {
       </Radio>
       <div id="theme-description" className="sr-only">
         Choose between system preference, light mode, or dark mode
-      </div>
-    </div>
-  )
-}
-
-function LayoutModeConfig() {
-  const { defaultLayout, layout, setLayout } = useLayout()
-
-  return (
-    <div>
-      <SectionTitle
-        title="Layout"
-        description="Choose between Header or Sidebar layout."
-        showReset={defaultLayout !== layout}
-        onReset={() => setLayout(defaultLayout)}
-      />
-      <Radio
-        value={layout}
-        onValueChange={(v) => setLayout(v as 'header' | 'sidebar')}
-        className="grid w-full grid-cols-3 gap-4"
-        aria-label="Select layout mode"
-      >
-        {[
-          {
-            value: 'sidebar',
-            label: 'Sidebar',
-            icon: IconLayoutDefault,
-          },
-          {
-            value: 'header',
-            label: 'Header',
-            icon: IconLayoutFull,
-          },
-        ].map((item) => (
-          <RadioGroupItem key={item.value} item={item} />
-        ))}
-      </Radio>
-    </div>
-  )
-}
-
-function SidebarConfig() {
-  const { defaultVariant, variant, setVariant, layout } = useLayout()
-
-  if (layout !== 'sidebar') return null
-
-  return (
-    <div>
-      <SectionTitle
-        title="Sidebar"
-        description="Choose how the sidebar should appear."
-        showReset={defaultVariant !== variant}
-        onReset={() => setVariant(defaultVariant)}
-      />
-      <Radio
-        value={variant}
-        onValueChange={setVariant}
-        className="grid w-full grid-cols-3 gap-4"
-        aria-label="Select sidebar style"
-        aria-describedby="sidebar-description"
-      >
-        {[
-          {
-            value: 'inset',
-            label: 'Inset',
-            icon: IconSidebarInset,
-          },
-          {
-            value: 'floating',
-            label: 'Floating',
-            icon: IconSidebarFloating,
-          },
-          {
-            value: 'sidebar',
-            label: 'Sidebar',
-            icon: IconSidebarSidebar,
-          },
-        ].map((item) => (
-          <RadioGroupItem key={item.value} item={item} />
-        ))}
-      </Radio>
-      <div id="sidebar-description" className="sr-only">
-        Choose between inset, floating, or standard sidebar layout
-      </div>
-    </div>
-  )
-}
-
-function SidebarLayoutConfig() {
-  const { layout } = useLayout()
-  if (layout !== 'sidebar') return null
-  return <SidebarLayoutConfigInner />
-}
-
-function SidebarLayoutConfigInner() {
-  const { setOpen, open } = useSidebar()
-  const { defaultCollapsible, collapsible, setCollapsible } = useLayout()
-
-  const radioState = open ? 'default' : collapsible
-
-  return (
-    <div>
-      <SectionTitle
-        title="Sidebar Layout"
-        description="Choose the sidebar collapsed state."
-        showReset={radioState !== 'default'}
-        onReset={() => {
-          setOpen(true)
-          setCollapsible(defaultCollapsible)
-        }}
-      />
-      <Radio
-        value={radioState}
-        onValueChange={(v) => {
-          if (v === 'default') {
-            setOpen(true)
-            return
-          }
-          setOpen(false)
-          setCollapsible(v as 'offcanvas' | 'icon' | 'none')
-        }}
-        className="grid w-full grid-cols-3 gap-4"
-        aria-label="Select sidebar layout state"
-      >
-        {[
-          {
-            value: 'default',
-            label: 'Default',
-            icon: IconLayoutDefault,
-          },
-          {
-            value: 'icon',
-            label: 'Compact',
-            icon: IconLayoutCompact,
-          },
-          {
-            value: 'offcanvas',
-            label: 'Offcanvas',
-            icon: IconLayoutFull,
-          },
-        ].map((item) => (
-          <RadioGroupItem key={item.value} item={item} />
-        ))}
-      </Radio>
-    </div>
-  )
-}
-
-function DirConfig() {
-  const { defaultDir, dir, setDir } = useDirection()
-  return (
-    <div>
-      <SectionTitle
-        title="Direction"
-        description="Set the text direction for the dashboard."
-        showReset={defaultDir !== dir}
-        onReset={() => setDir(defaultDir)}
-      />
-      <Radio
-        value={dir}
-        onValueChange={setDir}
-        className="grid w-full max-w-md grid-cols-3 gap-4"
-        aria-label="Select site direction"
-        aria-describedby="direction-description"
-      >
-        {[
-          {
-            value: 'ltr',
-            label: 'Left to Right',
-            icon: (props: SVGProps<SVGSVGElement>) => <IconDir dir="ltr" {...props} />,
-          },
-          {
-            value: 'rtl',
-            label: 'Right to Left',
-            icon: (props: SVGProps<SVGSVGElement>) => <IconDir dir="rtl" {...props} />,
-          },
-        ].map((item) => (
-          <RadioGroupItem key={item.value} item={item} />
-        ))}
-      </Radio>
-      <div id="direction-description" className="sr-only">
-        Choose between left-to-right or right-to-left site direction
       </div>
     </div>
   )

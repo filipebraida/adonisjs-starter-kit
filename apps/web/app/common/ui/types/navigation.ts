@@ -35,6 +35,7 @@ export type NavUserOptionsGroup = {
   icon: LucideIcon
   shortcut?: string
   method?: 'get' | 'post'
+  can?: CanKey
 }[]
 
 export interface NavUserProps {

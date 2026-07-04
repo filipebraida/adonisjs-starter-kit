@@ -1,6 +1,6 @@
 import type { InertiaProps } from '#core/ui/types'
 
-import AppLayout from '#common/ui/components/app_layout'
+import AdminLayout from '#common/ui/components/admin_layout'
 import Heading from '#common/ui/components/heading'
 import { Main } from '#common/ui/components/main'
 
@@ -39,7 +39,7 @@ export default function ListUsersPage({ users, q, selectedRoles, sort, order }: 
   const roles = userRoles(t)
 
   return (
-    <AppLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
+    <AdminLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
       <Main>
         <Heading
           title={t('users.index.page.title')}
@@ -59,6 +59,6 @@ export default function ListUsersPage({ users, q, selectedRoles, sort, order }: 
           />
         </div>
       </Main>
-    </AppLayout>
+    </AdminLayout>
   )
 }

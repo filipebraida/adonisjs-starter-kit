@@ -1,6 +1,6 @@
 import type { SimpleTFunction } from '#common/ui/hooks/use_translation'
 
-import { LogOut, Settings, Users } from 'lucide-react'
+import { LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
 
@@ -11,6 +11,12 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
         title: t('common.layout.navUser.settings'),
         url: '/settings',
         icon: Settings,
+      },
+      {
+        title: t('common.layout.navUser.adminPanel'),
+        url: '/users',
+        icon: Shield,
+        can: 'manageUsers',
       },
     ],
     [
@@ -24,11 +30,21 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
   ]
 }
 
-export function getNavMain(t: SimpleTFunction): NavMainItem[] {
+export function getMainNav(t: SimpleTFunction): NavMainItem[] {
   return [
     {
       title: t('common.layout.navMain.dashboard'),
       url: '/dashboard',
+    },
+  ]
+}
+
+export function getAdminNav(t: SimpleTFunction): NavMainItem[] {
+  return [
+    {
+      title: t('common.layout.navMain.dashboard'),
+      url: '/dashboard',
+      icon: LayoutDashboard,
     },
     {
       title: t('common.layout.navMain.administration'),

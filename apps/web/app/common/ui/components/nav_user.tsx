@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 
 import { UserAvatar } from '#common/ui/components/user_avatar'
+import useCan from '#common/ui/hooks/use_can'
 import type { NavUserProps } from '#common/ui/types/navigation'
 
 import {
@@ -15,6 +16,11 @@ import {
 } from '@workspace/ui/components/dropdown-menu'
 
 export function NavUser({ user, options }: NavUserProps) {
+  const can = useCan()
+  const visibleGroups = options
+    .map((group) => group.filter((option) => !option.can || can[option.can]))
+    .filter((group) => group.length > 0)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,7 +39,7 @@ export function NavUser({ user, options }: NavUserProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {options.map((group, groupIndex) => (
+        {visibleGroups.map((group, groupIndex) => (
           <React.Fragment key={groupIndex}>
             {groupIndex > 0 && <DropdownMenuSeparator />}
 

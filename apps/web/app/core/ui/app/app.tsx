@@ -2,6 +2,7 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { TooltipProvider } from '@workspace/ui/components/tooltip'
 import { ModalStackProvider } from 'adonis-inertia-modal/react'
 import 'adonis-inertia-modal/styles.css'
@@ -46,25 +47,29 @@ createInertiaApp({
       hydrateRoot(
         el,
         <I18nextProvider i18n={i18nInstance}>
-          <TooltipProvider>
-            <TuyauProvider client={client}>
-              <ModalStackProvider>
-                <App {...props} />
-              </ModalStackProvider>
-            </TuyauProvider>
-          </TooltipProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <TooltipProvider>
+              <TuyauProvider client={client}>
+                <ModalStackProvider>
+                  <App {...props} />
+                </ModalStackProvider>
+              </TuyauProvider>
+            </TooltipProvider>
+          </ThemeProvider>
         </I18nextProvider>
       )
     } else {
       createRoot(el).render(
         <I18nextProvider i18n={i18nInstance}>
-          <TooltipProvider>
-            <TuyauProvider client={client}>
-              <ModalStackProvider>
-                <App {...props} />
-              </ModalStackProvider>
-            </TuyauProvider>
-          </TooltipProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <TooltipProvider>
+              <TuyauProvider client={client}>
+                <ModalStackProvider>
+                  <App {...props} />
+                </ModalStackProvider>
+              </TuyauProvider>
+            </TooltipProvider>
+          </ThemeProvider>
         </I18nextProvider>
       )
     }
