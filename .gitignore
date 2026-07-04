@@ -37,3 +37,10 @@ npm-debug.log*
 
 # JetBrain IDEs
 .idea
+
+# Installed skills (source lives in packages/skills/)
+.agents/skills/
+.claude/skills/
+.cursor/skills/
+.opencode/skills/
+skills-lock.json

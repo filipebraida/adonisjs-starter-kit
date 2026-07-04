@@ -1,0 +1,10 @@
+{
+  "name": "@workspace/skills",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "description": "Collection of skills for AI coding agents in this workspace",
+  "scripts": {
+    "format": "prettier --write ."
+  }
+}
