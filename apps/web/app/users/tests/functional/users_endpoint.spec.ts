@@ -34,6 +34,76 @@ test.group('Endpoint /users', (group) => {
     response.assertInertiaComponent('users/index')
   })
 
+  test('GET /users/create sem auth redireciona para login', async ({ client, assert }) => {
+    const response = await client.get('/users/create').redirects(0)
+    response.assertStatus(302)
+    assert.equal(response.header('location'), '/login')
+  })
+
+  test('GET /users/create como user comum eh barrado', async ({ client }) => {
+    const user = await UserFactory.create()
+    await withRole(user, ROLES.USER)
+
+    const response = await client.get('/users/create').loginAs(user).redirects(0)
+    assertForbiddenRedirect(response)
+  })
+
+  test('GET /users/create como admin renderiza modal users/create sobre users/index', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+
+    const response = await client.get('/users/create').loginAs(admin).withInertia()
+    response.assertStatus(200)
+    response.assertInertiaComponent('users/index')
+    assert.equal(response.inertiaProps.modal.component, 'users/create')
+    assert.equal(response.inertiaProps.modal.baseUrl, '/users')
+  })
+
+  test('GET /users/:id/edit sem auth redireciona para login', async ({ client, assert }) => {
+    const alvo = await UserFactory.create()
+
+    const response = await client.get(`/users/${alvo.id}/edit`).redirects(0)
+    response.assertStatus(302)
+    assert.equal(response.header('location'), '/login')
+  })
+
+  test('GET /users/:id/edit como user comum eh barrado', async ({ client }) => {
+    const user = await UserFactory.create()
+    await withRole(user, ROLES.USER)
+    const alvo = await UserFactory.create()
+
+    const response = await client.get(`/users/${alvo.id}/edit`).loginAs(user).redirects(0)
+    assertForbiddenRedirect(response)
+  })
+
+  test('GET /users/:id/edit como admin renderiza modal users/edit com user do alvo', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const alvo = await UserFactory.merge({ fullName: 'Alvo Edicao' }).create()
+    await withRole(alvo, ROLES.USER)
+
+    const response = await client.get(`/users/${alvo.id}/edit`).loginAs(admin).withInertia()
+    response.assertStatus(200)
+    response.assertInertiaComponent('users/index')
+    assert.equal(response.inertiaProps.modal.component, 'users/edit')
+    assert.equal(response.inertiaProps.modal.props.user.id, alvo.id)
+    assert.equal(response.inertiaProps.modal.props.user.fullName, 'Alvo Edicao')
+  })
+
+  test('GET /users/:id/edit com id inexistente retorna 404', async ({ client }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+
+    const response = await client.get('/users/99999999/edit').loginAs(admin).redirects(0)
+    response.assertStatus(404)
+  })
+
   test('POST /users cria user comum quando admin', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)

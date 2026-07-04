@@ -165,6 +165,9 @@ importers:
       '@japa/runner':
         specifier: ^5.3.0
         version: 5.3.0
+      '@poppinss/file-generator':
+        specifier: ^2.1.6
+        version: 2.1.6
       '@poppinss/ts-exec':
         specifier: ^1.4.4
         version: 1.4.4
@@ -1931,6 +1934,10 @@ packages:
 
   '@poppinss/exception@1.2.3':
     resolution: {integrity: sha512-dCED+QRChTVatE9ibtoaxc+WkdzOSjYTKi/+uacHWIsfodVfpsueo3+DKpgU5Px8qXjgmXkSvhXvSCz3fnP9lw==}
+
+  '@poppinss/file-generator@2.1.6':
+    resolution: {integrity: sha512-r/10w6DJ/c2TqA1q3m5w7m9uKYHstmEELI3iLAxtvxYOl6wv7QkyJIpAWosjq0b3VDrxjEhJWZnEh9i8dxS/fw==}
+    engines: {node: '>=18.16.0'}
 
   '@poppinss/hooks@7.3.0':
     resolution: {integrity: sha512-/H35z/bWqHg7085QOxWUDYMidx6Kl6b8kIyzIXlRYzWvsk1xm9hQOlXWdWEYch+Gmn8eL7tThx59MBj8BLxDrQ==}
@@ -7715,6 +7722,10 @@ snapshots:
       supports-color: 10.2.2
 
   '@poppinss/exception@1.2.3': {}
+
+  '@poppinss/file-generator@2.1.6':
+    dependencies:
+      bytes: 3.1.2
 
   '@poppinss/hooks@7.3.0': {}
 
