@@ -84,16 +84,24 @@ test.group('Endpoint /settings/tokens', (group) => {
     assert.lengthOf(restantes, 0)
   })
 
-  test('DELETE como user comum eh barrado', async ({ client }) => {
+  test('DELETE como user comum eh barrado e nao remove o token real', async ({
+    client,
+    assert,
+  }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
+    await new CreateToken().handle({ owner: user })
+    const [token] = await User.accessTokens.all(user)
 
     const response = await client
-      .delete('/settings/tokens/999')
+      .delete(`/settings/tokens/${token.identifier}`)
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
 
     assertForbiddenRedirect(response)
+    const restantes = await User.accessTokens.all(user)
+    assert.lengthOf(restantes, 1)
+    assert.equal(restantes[0].identifier, token.identifier)
   })
 })

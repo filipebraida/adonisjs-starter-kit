@@ -30,7 +30,13 @@ test.group('Endpoint /reset-password/:token', (group) => {
     assert.isNull(remaining)
   })
 
-  test('POST com token invalido volta para /forgot-password', async ({ client, assert }) => {
+  test('POST com token invalido nao muda senha e volta para /forgot-password', async ({
+    client,
+    assert,
+  }) => {
+    const user = await UserFactory.create()
+    const senhaOriginal = user.password
+
     const response = await client
       .post('/reset-password/token-que-nao-existe')
       .redirects(0)
@@ -39,10 +45,14 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/forgot-password')
+
+    await user.refresh()
+    assert.equal(user.password, senhaOriginal)
   })
 
-  test('POST com token expirado volta para /forgot-password', async ({ client, assert }) => {
+  test('POST com token expirado nao muda senha nem consome o token', async ({ client, assert }) => {
     const user = await UserFactory.create()
+    const senhaOriginal = user.password
     const { token } = await new PasswordResetService().generateToken(user)
 
     await ResetPasswordToken.query()
@@ -57,10 +67,16 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/forgot-password')
+
+    await user.refresh()
+    assert.equal(user.password, senhaOriginal)
+    const stillExists = await ResetPasswordToken.query().where('userId', user.id).first()
+    assert.isNotNull(stillExists)
   })
 
-  test('rejeita senha curta', async ({ client }) => {
+  test('rejeita senha curta, nao muda senha nem consome token', async ({ client, assert }) => {
     const user = await UserFactory.create()
+    const senhaOriginal = user.password
     const { token } = await new PasswordResetService().generateToken(user)
 
     const response = await client
@@ -71,6 +87,11 @@ test.group('Endpoint /reset-password/:token', (group) => {
       .json({ password: 'curta', passwordConfirmation: 'curta' })
 
     response.assertStatus(422)
+
+    await user.refresh()
+    assert.equal(user.password, senhaOriginal)
+    const stillExists = await ResetPasswordToken.query().where('userId', user.id).first()
+    assert.isNotNull(stillExists)
   })
 
   test('GET com token valido renderiza pagina', async ({ client }) => {

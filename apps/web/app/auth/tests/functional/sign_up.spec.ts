@@ -14,7 +14,7 @@ const payload = {
 test.group('Endpoint /sign-up', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('cria usuario e redireciona para /dashboard', async ({ client, assert }) => {
+  test('cria usuario, autentica e redireciona para /dashboard', async ({ client, assert }) => {
     const response = await client.post('/sign-up').redirects(0).withCsrfToken().json(payload)
 
     response.assertStatus(302)
@@ -24,10 +24,14 @@ test.group('Endpoint /sign-up', (group) => {
     assert.equal(user.fullName, payload.fullName)
     assert.isNotNull(user.password)
     assert.notEqual(user.password, payload.password)
+    assert.equal(response.session().auth_web, user.id)
   })
 
-  test('rejeita email ja cadastrado', async ({ client }) => {
-    await UserFactory.merge({ email: payload.email }).create()
+  test('rejeita email ja cadastrado e mantem apenas o user original', async ({
+    client,
+    assert,
+  }) => {
+    const original = await UserFactory.merge({ email: payload.email }).create()
 
     const response = await client
       .post('/sign-up')
@@ -37,9 +41,13 @@ test.group('Endpoint /sign-up', (group) => {
       .json(payload)
 
     response.assertStatus(422)
+    const rows = await User.query().where('email', payload.email)
+    assert.lengthOf(rows, 1)
+    assert.equal(rows[0].id, original.id)
+    assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejeita senha curta', async ({ client }) => {
+  test('rejeita senha curta e nao persiste usuario', async ({ client, assert }) => {
     const response = await client
       .post('/sign-up')
       .redirects(0)
@@ -48,9 +56,14 @@ test.group('Endpoint /sign-up', (group) => {
       .json({ ...payload, password: 'curta', passwordConfirmation: 'curta' })
 
     response.assertStatus(422)
+    assert.isNull(await User.findBy('email', payload.email))
+    assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejeita quando password_confirmation nao bate', async ({ client }) => {
+  test('rejeita quando password_confirmation nao bate e nao persiste', async ({
+    client,
+    assert,
+  }) => {
     const response = await client
       .post('/sign-up')
       .redirects(0)
@@ -59,5 +72,7 @@ test.group('Endpoint /sign-up', (group) => {
       .json({ ...payload, passwordConfirmation: 'diferente-1234' })
 
     response.assertStatus(422)
+    assert.isNull(await User.findBy('email', payload.email))
+    assert.isUndefined(response.session().auth_web)
   })
 })

@@ -10,8 +10,8 @@ const password = 'senha-secreta-123'
 test.group('Endpoint /login', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('redireciona para /dashboard com credenciais validas', async ({ client, assert }) => {
-    await UserFactory.merge({ email, password }).create()
+  test('estabelece sessao autenticada com credenciais validas', async ({ client, assert }) => {
+    const user = await UserFactory.merge({ email, password }).create()
 
     const response = await client
       .post('/login')
@@ -21,6 +21,9 @@ test.group('Endpoint /login', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/dashboard')
+
+    // Session key `auth_web` holds the user id — that's what the guard reads on subsequent requests.
+    assert.equal(response.session().auth_web, user.id)
   })
 
   test('respeita returnTo interno seguro salvo na sessao', async ({ client, assert }) => {
@@ -51,7 +54,7 @@ test.group('Endpoint /login', (group) => {
     assert.equal(response.header('location'), '/dashboard')
   })
 
-  test('redireciona de volta para /login com credenciais invalidas', async ({ client, assert }) => {
+  test('credenciais invalidas: nao estabelece sessao', async ({ client, assert }) => {
     await UserFactory.merge({ email, password }).create()
 
     const response = await client
@@ -62,6 +65,7 @@ test.group('Endpoint /login', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
+    assert.isUndefined(response.session().auth_web)
   })
 
   test('rejeita payload sem email/senha', async ({ client }) => {

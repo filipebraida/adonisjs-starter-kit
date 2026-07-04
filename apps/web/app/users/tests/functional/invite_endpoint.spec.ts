@@ -2,6 +2,7 @@ import emitter from '@adonisjs/core/services/emitter'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
+import ResetPasswordToken from '#users/models/reset_password_token'
 import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
@@ -64,6 +65,13 @@ test.group('Endpoint /users/invite', (group) => {
 
     const criado = await User.findByOrFail('email', 'convite@example.test')
     assert.equal(criado.email, 'convite@example.test')
+    const roles = await criado.related('roles').query().select('name')
+    assert.deepEqual(
+      roles.map((r) => r.name),
+      [ROLES.USER]
+    )
+    const token = await ResetPasswordToken.query().where('userId', criado.id).firstOrFail()
+    assert.isNotEmpty(token.token)
 
     fake.assertEmitted('user:registered')
   })

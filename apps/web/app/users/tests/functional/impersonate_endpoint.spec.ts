@@ -19,7 +19,7 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     assert.equal(response.header('location'), '/login')
   })
 
-  test('user comum eh barrado', async ({ client }) => {
+  test('user comum eh barrado (nao altera sessao)', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const alvo = await UserFactory.create()
@@ -31,9 +31,11 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
       .redirects(0)
 
     assertForbiddenRedirect(response)
+    assert.equal(response.session().auth_web, user.id)
+    assert.isUndefined(response.session().originalUserId)
   })
 
-  test('admin nao pode impersonar a si mesmo', async ({ client }) => {
+  test('admin nao pode impersonar a si mesmo (nao altera sessao)', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -44,9 +46,14 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
       .redirects(0)
 
     assertForbiddenRedirect(response)
+    assert.equal(response.session().auth_web, admin.id)
+    assert.isUndefined(response.session().originalUserId)
   })
 
-  test('admin impersona outro usuario e redireciona pro dashboard', async ({ client, assert }) => {
+  test('admin impersona outro: troca auth_web + guarda originalUserId', async ({
+    client,
+    assert,
+  }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -60,5 +67,7 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/dashboard')
+    assert.equal(response.session().auth_web, alvo.id)
+    assert.equal(response.session().originalUserId, admin.id)
   })
 })

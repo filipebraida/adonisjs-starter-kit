@@ -7,7 +7,13 @@ import { UserFactory } from '#users/database/factories/user'
 test.group('Endpoint PUT /settings/password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('sem auth redireciona para login', async ({ client, assert }) => {
+  test('sem auth redireciona para login e nao altera senha de ninguem', async ({
+    client,
+    assert,
+  }) => {
+    const alvo = await UserFactory.merge({ password: 'antiga-1234' }).create()
+    const hashOriginal = alvo.password
+
     const response = await client
       .put('/settings/password')
       .withCsrfToken()
@@ -16,6 +22,9 @@ test.group('Endpoint PUT /settings/password', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
+
+    await alvo.refresh()
+    assert.equal(alvo.password, hashOriginal)
   })
 
   test('user autenticado troca a propria senha', async ({ client, assert }) => {
@@ -35,8 +44,9 @@ test.group('Endpoint PUT /settings/password', (group) => {
     assert.isTrue(await hash.verify(user.password!, 'nova-1234'))
   })
 
-  test('rejeita senha curta com 422', async ({ client }) => {
-    const user = await UserFactory.create()
+  test('rejeita senha curta com 422 e mantem hash', async ({ client, assert }) => {
+    const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
+    const hashOriginal = user.password
 
     const response = await client
       .put('/settings/password')
@@ -47,10 +57,13 @@ test.group('Endpoint PUT /settings/password', (group) => {
       .json({ password: 'curta', passwordConfirmation: 'curta' })
 
     response.assertStatus(422)
+    await user.refresh()
+    assert.equal(user.password, hashOriginal)
   })
 
-  test('rejeita quando confirmacao nao bate', async ({ client }) => {
-    const user = await UserFactory.create()
+  test('rejeita quando confirmacao nao bate e mantem hash', async ({ client, assert }) => {
+    const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
+    const hashOriginal = user.password
 
     const response = await client
       .put('/settings/password')
@@ -61,5 +74,7 @@ test.group('Endpoint PUT /settings/password', (group) => {
       .json({ password: 'nova-1234', passwordConfirmation: 'outra-1234' })
 
     response.assertStatus(422)
+    await user.refresh()
+    assert.equal(user.password, hashOriginal)
   })
 })
