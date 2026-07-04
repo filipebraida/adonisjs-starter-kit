@@ -14,7 +14,17 @@ AdonisJS 7 (session auth + Bouncer + Lucid), Inertia + React 19, Tailwind 4 + sh
 - `pnpm test` — full suite
 - `pnpm typecheck && pnpm lint` — before saying "done"
 - `pnpm infra:up` — Postgres + Mailpit via compose
-- `pnpm --filter web exec node ace <cmd>` — Adonis CLI
+- `pnpm ace <cmd>` — Adonis CLI from the repo root (shortcut for `pnpm --filter web exec node ace <cmd>`)
+
+## Import aliases
+
+Declared in `apps/web/package.json` → `"imports"`:
+
+- `#auth/*`, `#users/*`, `#common/*`, `#core/*`, `#marketing/*`, `#analytics/*` → `app/<mod>/`
+- `#app/*`, `#start/*`, `#config/*`, `#providers/*`, `#tests/*` → matching root dirs
+- `#generated/*` → `.adonisjs/server/` (typed data / pages, regenerated on codegen)
+
+Bootstrapping a new module always includes adding a matching `#<mod>/*` alias here.
 
 ## Architecture — module per feature
 
@@ -37,7 +47,7 @@ app/<module>/
 
 Existing modules: `auth`, `users`, `marketing`, `analytics`, `common`, `core`.
 
-**Rules:**
+**Invariants:**
 
 - Controllers are thin: validate → call action → render/redirect. No business logic inline.
 - Actions never touch `HttpContext` directly. They take a plain input and return values or throw.
@@ -59,7 +69,8 @@ No autoloader — preloads and database paths are explicit.
 - **Policy checks**: `bouncer.with(XPolicy).authorize('method', resource?)` inside the controller.
 - **Auth guards**: `web` (session cookie, default) and `api` (access tokens on User).
 - **RBAC**: `WithRoles` mixin exposes `assignRole`/`syncRoles`/`revokeRole`/`hasRole`/`hasPermission`. `ROLES` and `PERMISSIONS` are const objects — extend them there, not inline.
-- **i18n**: three locales (`en`, `fr`, `pt`). Adding a key requires updating all three JSON files.
+- **i18n**: three locales (`en`, `fr`, `pt`). Adding a key requires updating all three JSON files. `User.locale` is authoritative when authenticated — the switch endpoint persists to DB + cookie; login flows sync the cookie from `user.locale`. Pre-login pages fall back to cookie / `Accept-Language`.
+- **Migrations**: this is a starter kit — no production data. Prefer editing the existing `create_<table>_table.ts` migration and running `pnpm ace migration:fresh` over layering an `alter_table` migration on top. Downstream projects can adopt a stricter policy.
 
 ## Frontend
 
@@ -68,33 +79,52 @@ Pages under `app/<mod>/ui/pages/`:
 - Single entity → `pages/<name>.tsx` (`index.tsx`, `create.tsx`, `edit.tsx`, …)
 - Multiple entities → `pages/<entity>/<name>.tsx` following the same filenames
 
-Components mirror the same rule at `app/<mod>/ui/components/` (`components/<name>.tsx` or `components/<entity>/<name>.tsx`). Shared UI kit at `packages/ui`.
+Components mirror the same rule at `app/<mod>/ui/components/`. Shared UI kit at `packages/ui`.
 
-- Tailwind 4 + shadcn primitives (Radix).
-- Follow standard React best practices (hooks discipline, key on lists, no side effects in render).
+### Layout shells
+
+Every page imports its shell explicitly. There is no runtime layout chooser — variants coexist as distinct components you delete if unused:
+
+- `admin_layout` (`app/common/ui/components/`) — sidebar shell for admin/backoffice pages.
+- `authenticated_layout` (`app/common/ui/components/`) — top-nav shell for regular logged-in pages.
+- `auth_layout` (`app/auth/ui/components/`) — split-screen shell for sign-in/sign-up/password flows.
+- `marketing_layout` (`app/marketing/ui/components/`) — public shell with header + footer.
+
+Add a shell only when a page truly needs a new shape. Adjust `variant`/`collapsible`/direction inside the shell file itself — never expose them as props or user-facing toggles.
 
 ## Testing
 
 Specs at `app/<mod>/tests/{unit,functional}/*.spec.ts`. Match the shape of the nearest existing spec.
 
+- Tests run against the same Postgres as dev, wrapped in a per-test transaction via `testUtils.db().wrapInGlobalTransaction()`. No separate test DB config.
 - **Fakes are mandatory** for anything that reaches out: attachments (`drive.fake`), mail (`mail.fake`), events (`emitter.fake`).
 - **Prefer factories** (`app/<mod>/database/factories/`) over hand-built fixtures.
 - **Sinon** for stubbing services, drivers, and external dependencies.
+- POST/PUT/DELETE routes must include `.withCsrfToken()` in tests (shield middleware is active).
 
-## Git
+## Code style
 
-- Prefixes: `feat`, `fix(<mod>)`, `refactor`, `test`, `ci`, `db`, `chore`.
-- Subject ≤ 70 chars, imperative. Body explains WHY, not WHAT.
+- Comments only for non-obvious WHY — a hidden constraint, a subtle invariant, a workaround. Don't narrate what the code does; the diff and identifiers already do that.
+- Don't create README / doc files unless the user asks for them.
+- Prefer editing existing files over creating new ones.
+
+## Gotchas
+
+- `ctx.auth.user` doesn't always populate after `authenticate()` — use the return value: `const user = await ctx.auth.use('web').authenticate()`.
+- `apps/web/database/schema.ts` is auto-generated by ace (gitignored). `pnpm ace migration:fresh` regenerates it; the regenerated file sometimes needs `eslint --fix` to satisfy prettier.
+- Ace commands and codegen resolve paths against `apps/web/`. `pnpm ace` handles this from anywhere; scripts that rely on `import.meta.url` still resolve against the source location.
+
+## Skills
+
+Coding-agent skills live in `packages/skills/`, in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install into an agent with `npx skills add ./packages/skills --agent claude-code` (or `--all`). Prefer skills over duplicating conventions here — this file stays high-level, skills carry the workflow detail.
+
+Currently shipped:
+
+- `git-commit` — commit types, scopes, examples, workflow, safety protocol.
+
+## Git — non-negotiables
+
+Full workflow: `packages/skills/git-commit/SKILL.md`. Rules every agent must respect even without the skill loaded:
+
 - **Never** `--no-verify`, `git push --force`, `git reset --hard`, or amend a pushed commit.
 - **Never** commit or push without being asked.
-
-## Do / Don't
-
-- **DO** search for an existing example before writing something new.
-- **DO** keep controllers thin — logic in actions/services.
-- **DO** run `pnpm typecheck && pnpm lint && pnpm test` before proposing a commit.
-- **DO** use factories, fakes, and sinon in tests.
-- **DON'T** invent new patterns when one already exists.
-- **DON'T** call side-effect code directly from actions — emit an event.
-- **DON'T** narrate what code does in comments — only short WHY when non-obvious.
-- **DON'T** create README / doc files unprompted.

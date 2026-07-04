@@ -6,51 +6,44 @@ AdonisJS Starter Kit is a monorepo-based template for developing full-stack appl
   <img src="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/demo.gif" alt="Demo" width="600" />
 </p>
 
-## Features
+## Why this exists
 
-- **Monorepo Setup**: Efficient package management and build processes powered by TurboRepo and pnpm.
-- **Shared UI Package**: Reusable and customizable components provided by `@workspace/ui`, built on top of shadcn/ui.
-- **Frontend Integration**: Inertia.js delivers a modern single-page application (SPA) experience.
-- **Type-safe Routing & API Client**: Tuyau provides route-aware URLs and type-safe client calls.
-- **Styling**: Rapid and responsive UI development using Tailwind CSS.
-- **Database**: PostgreSQL ensures robust, scalable, and high-performance data storage.
-- **User Management**: Comprehensive user management system.
-- **Authorization & Authentication**: Role-based access control with typed capabilities, admin-lockout guards, and a typed `useCan()` hook on the frontend.
-- **Password Recovery**: Built-in functionality for password reset and recovery.
-- **Social Authentication**: Easily authenticate users via social providers (Google, GitHub, etc.) using the [@adonisjs/ally package](https://docs.adonisjs.com/guides/authentication/social-authentication).
-- **User Impersonation**: Administrators can temporarily assume any user's identity for support or testing purposes.
-- **API Tokens**: Users can generate and revoke personal access tokens for use in APIs.
-- **i18n Support**: Built-in internationalization with default support for English and Portuguese using [@adonisjs/i18n](https://docs.adonisjs.com/guides/i18n).
-- **Appearance Settings**: Comprehensive controls for Theme (Light/Dark), Layout (Sidebar/Header), Sidebar variants, and Direction (LTR/RTL), with local persistence.
+Personal starter kit I use to prototype projects with coding agents, and that my students use for their capstone projects. The idea: clone it and you already have auth, UI, i18n, RBAC, layout shells, tests, and CI wired up — go straight to the interesting part. Every decision here optimizes for **starting clean** over configuring at runtime; the pieces a given project doesn't need (say, the admin dashboard) come off by deletion, not by refactor.
 
-## Tools and Technologies
+## What's inside
 
-- **TurboRepo**: Monorepo management and build caching.
-- **pnpm**: Fast and efficient package management.
-- **shadcn/ui**: Baseline for the shared UI package.
-- **Inertia.js**: Seamless integration between frontend and backend.
-- **Tuyau**: Type-safe route generation and API client integration.
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling.
-- **PostgreSQL**: Reliable and high-performance relational database.
-- **Mailpit**: Small, fast, low memory, zero-dependency, multi-platform email testing tool & API for developers.
-- **PgAdmin**: Most popular and feature rich Open Source administration and development platform for PostgreSQL.
+**Backend** — AdonisJS 7 with session auth + Bouncer authorization + Lucid ORM + VineJS validation, rate limiting (`@adonisjs/limiter`), mail, drive, file uploads with derived variants (`@jrmc/adonis-attachment`), social auth (`@adonisjs/ally`) with Google preconfigured, API tokens for programmatic access.
+
+**Frontend** — Inertia + React 19, Tuyau for type-safe URLs and API calls, shared UI package built on shadcn/ui + Tailwind 4, Inertia-native modals (`adonis-inertia-modal`), theme (light/dark/system) via `ThemeProvider`, language switcher wired to the backend.
+
+**Layout shells** — Purpose-built shells that coexist as distinct components — `admin_layout` (sidebar), `authenticated_layout` (top-nav), `auth_layout` (split-screen), `marketing_layout` (public). Pages import the shell they need. Delete the ones you don't use — no refactor required.
+
+**i18n** — English, French, and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
+
+**RBAC** — Static catalog of typed capabilities (`PERMISSIONS`) + role slugs (`ROLES`) enforced through Bouncer abilities and per-resource policies. Frontend consumes a typed `useCan()` hook. User impersonation is available to admins.
+
+**Data + infra** — PostgreSQL 16 with Mailpit and pgAdmin, brought up with `pnpm infra:up`.
+
+**DevX** — Turbo monorepo caching, `pnpm ace` shortcut for the Adonis CLI from anywhere, hot reload via `hot-hook`, Vite HMR for the frontend, Prettier + ESLint scoped per package.
+
+**Testing + CI** — 166 spec-based tests (Japa) running against a real Postgres wrapped in a per-test transaction, factories, mandatory fakes (`drive.fake`, `mail.fake`, `emitter.fake`) and Sinon stubs. Coverage runs via `c8` and shows up in the PR summary automatically. GitHub Actions CI on every push and pull request.
+
+**Coding-agent skills** — `@workspace/skills` package ships shareable skills for Claude Code, OpenCode, and Cursor in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills`. Currently: `git-commit`.
 
 ## Requirements
 
 - Node.js `>=24`
-- pnpm `10.33.0` — install with `npm install -g pnpm@10.33.0`
+- pnpm `11.9.0` — activated automatically via `corepack` from the `packageManager` field in `package.json`
 
-## Installation
+## Quick start
 
-### Cloning the Repository
-
-To create a new project using this starter kit, run:
+Create a project from this starter:
 
 ```bash
 pnpm create adonisjs@latest -K="filipebraida/adonisjs-starter-kit"
 ```
 
-Or, if cloning directly:
+Or clone directly:
 
 ```bash
 git clone https://github.com/filipebraida/adonisjs-starter-kit.git
@@ -58,95 +51,58 @@ cd adonisjs-starter-kit
 pnpm install
 ```
 
-### Setting Up the Environment
-
-1. **Copy the Example Environment File**  
-   Duplicate the example file to create your own environment configuration.
+Set up env, key, and database:
 
 ```bash
 cp apps/web/.env.example apps/web/.env
-```
-
-> **Note:** Some features (email, social auth, file storage) are optional but their environment variables must still be present with placeholder values due to startup validation. The `.env.example` file already includes all required placeholders.
-
-2. **Generate the App Key**  
-   Generate a cryptographically secure key and assign it to the `APP_KEY` environment variable.
-
-```bash
-node apps/web/ace generate:key
-```
-
-3. **Configure Social Auth & Email**
-   Social authentication and email settings can be configured later as needed.
-
-### Database Setup
-
-The project includes a Dockerfile that automatically initializes the necessary configurations using your environment variables. To set up the database:
-
-1. **Start the Infrastructure with Docker**
-   Launch PostgreSQL, pgAdmin and Mailpit:
-
-```bash
+pnpm ace generate:key
 pnpm infra:up
+pnpm ace migration:run
+pnpm ace db:seed
 ```
 
-To tear it down later, run `pnpm infra:down`.
-
-2. **Run Migrations**  
-   Apply all migrations to create the database schema:
+Run the dev server:
 
 ```bash
-pnpm --filter web exec node ace migration:run
+pnpm dev
 ```
 
-3. **Seed the Database**  
-   Populate the database with initial data (e.g., default users and roles):
+> `pnpm ace <cmd>` is a root shortcut for `pnpm --filter web exec node ace <cmd>` — runs from anywhere in the monorepo with the correct working directory.
+>
+> Some features (email, social auth, file storage) are optional but their environment variables must still be present with placeholder values due to startup validation. `.env.example` already includes every required placeholder.
+>
+> Tear down infra later with `pnpm infra:down`.
+
+## Project structure
 
 ```bash
-pnpm --filter web exec node ace db:seed
+root/
+├── apps/
+│   └── web/                 # Full-stack AdonisJS + Inertia app
+├── packages/
+│   ├── ui/                  # Shared shadcn/ui-based components
+│   ├── skills/              # Skills for coding agents (Vercel format)
+│   ├── eslint-config/
+│   └── typescript-config/
+├── pnpm-workspace.yaml
+└── turbo.json
 ```
 
-## Running the Development Server
+- **apps/** — runnable applications. `web/` is the full-stack AdonisJS app (backend + Inertia frontend).
+- **packages/** — shared libraries and tooling.
+- **pnpm-workspace.yaml** defines workspace boundaries.
+- **turbo.json** configures TurboRepo pipelines (build, lint, test, dev).
 
-Start the development server with the following command:
+## Feature-based organization
 
-```bash
-pnpm run dev
-```
+Inside `apps/web/app/`, the codebase is organized by domain (`auth`, `users`, `marketing`, `analytics`, `common`, `core`) instead of by technical type. Related controllers, actions, validators, UI components, hooks, routes, tests, and i18n keys all live together under one module.
 
-This command launches the AdonisJS server along with any associated applications.
-
-## Project Structure
-
-```bash
-    root/
-    ├── apps/
-    │   └── web/        # Backend and frontend application using AdonisJS with Inertia.js
-    ├── packages/       # Shared packages and utilities
-    ├── pnpm-workspace.yaml  # Monorepo configuration
-    └── turbo.json      # TurboRepo configuration
-```
-
-This project follows a monorepo architecture using **TurboRepo**. Here's a quick breakdown of the structure:
-
-- **apps/** contains runnable applications. In this case, `web/` is the full-stack AdonisJS application, including both backend and frontend (via Inertia.js).
-- **packages/** holds shared libraries and tooling, such as the shared UI package and shared lint/type configurations.
-- **pnpm-workspace.yaml** defines the workspace boundaries.
-- **turbo.json** configures TurboRepo pipelines for tasks like build, lint, test, and dev.
-
-This modular design allows you to isolate features, enforce code reuse, and scale your architecture with clarity. For example, you can add more apps in `apps/` or extract common logic into `packages/` as your project grows.
-
-## Feature-based Organization
-
-The `apps/web` application follows a feature-based structure inside the `app/` directory. Instead of grouping files only by technical type, the codebase is organized by domain areas such as `auth`, `users`, `marketing`, `common`, and `core`.
-
-This approach keeps related controllers, validators, UI components, hooks, routes, and supporting files close to each other, which makes the project easier to navigate and scale over time.
-
-For example, a feature can look like this:
+Example:
 
 ```bash
 apps/web/app/
 ├── auth/
+│   ├── actions/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── routes.ts
@@ -159,66 +115,55 @@ apps/web/app/
 │   └── ui/
 ```
 
-This structure is a project convention and does not depend on an external modules package.
+Full architectural conventions (module invariants, aliases, gotchas) live in [`AGENTS.md`](./AGENTS.md).
+
+## Testing & CI
+
+```bash
+pnpm test        # full suite (~9s locally)
+pnpm typecheck   # tsc across apps + packages
+pnpm lint        # eslint + prettier
+```
+
+Tests run against a real Postgres wrapped in a per-test transaction, so factories create real rows and rollbacks are automatic. Fakes for `drive`, `mail`, and `emitter` are mandatory whenever the code under test would otherwise reach out. Coverage via `c8` posts to the PR summary in GitHub Actions.
 
 ## Authorization
 
-Access control is role-based with a static catalog of capabilities. There is no dedicated authorization library — the pattern is implemented in plain code on top of AdonisJS Bouncer.
+Role-based access control lives at `apps/web/app/users/enums/`. `PERMISSIONS` is the single source of truth for every capability the app supports (e.g. `users.create`, `tokens.view_list`); `ROLES` are role slugs with weights. Controllers gate with `bouncer.authorize('hasPermission', PERMISSIONS.usersCreate)` or through a resource policy; the frontend uses a typed `useCan()` hook. Escalation is protected in depth — `SyncUserRoles` refuses to remove the executor's own admin role and `requireManageRolesIfEscalating` guards create/invite paths.
 
-Four moving parts:
+## Adding a shadcn component
 
-- **`app/users/enums/permission.ts`** — the single source of truth. Declares every capability the app supports (e.g. `users.create`, `tokens.view_list`). Adding a permission means adding one entry here and referencing it wherever you gate.
-- **`app/users/enums/role.ts`** — role slugs (`user`, `admin`) with weights and helpers like `mainRole()` for display.
-- **`Role` model + `withRoles()` mixin** — roles store their granted permissions as a JSON column; the mixin composes into `User` (like `withAuthFinder`) and adds `assignRole`, `hasRole`, `hasPermission`, `getPermissions`.
-- **`hasPermission` Bouncer ability + policies** — controllers gate routes with `bouncer.authorize('hasPermission', PERMISSIONS.usersCreate)` or through a resource policy like `UserPolicy`.
-
-On the frontend, the Inertia middleware shares a typed `can: GlobalPermissions` prop; consume it via the argument-less `useCan()` hook:
-
-```tsx
-const can = useCan();
-if (!can.manageUsers) return null;
-```
-
-For per-resource permissions (e.g. "can I edit _this_ record?"), pass them as a `permissions` prop from the controller after calling `bouncer.with(Policy).allows(...)`.
-
-Escalation is protected in depth: `SyncUserRoles.handle` requires the `users.manage_roles` capability and refuses to remove the executor's own admin role. `requireManageRolesIfEscalating` protects create/invite paths from bypassing the validator.
-
-## Adding a New Component
-
-The shared UI package lives in `packages/ui` and uses `components.json` as the shadcn/ui source of truth.
-
-To add a new base component, run from the repository root:
+Shared components live in `packages/ui`. To add a new shadcn base component:
 
 ```bash
 pnpm dlx shadcn@latest add button --cwd packages/ui
 ```
 
-This command updates files inside `packages/ui`. Custom project-specific components such as `field`, `password-input`, `copy-button`, and `data-table` are maintained manually on top of that base.
+Custom project-specific components on top of shadcn (`field`, `password-input`, `copy-button`, `data-table`) are maintained manually.
 
-## Libraries Used
+## Libraries used
 
-This starter kit makes use of the following libraries to support file handling, SPA integration, type-safe routing, and structured data flow. Refer to their documentation for more details:
+Beyond the AdonisJS 7 defaults, this starter kit leans on a small set of libraries that shape the developer experience:
 
-- [@jrmc/adonis-attachment](https://github.com/batosai/adonis-attachment)
-- [@tuyau/inertia](https://github.com/Julien-R44/tuyau)
-- [@adocasts.com/dto](https://github.com/adocasts/package-dto)
+- [@jrmc/adonis-attachment](https://github.com/batosai/adonis-attachment) — file uploads with derived variants (e.g., avatar thumbnails).
+- [@tuyau/inertia](https://github.com/Julien-R44/tuyau) — type-safe route generation and API client shared between backend and Inertia pages.
+- [adonis-inertia-modal](https://github.com/adonis-inertia-modal/adonis-inertia-modal) — Inertia-native modal stack (used for `users/create` and `users/edit` over `users/index`).
+- [@vinejs/vine](https://vinejs.dev/) — server-side validation, wired into `request.validateUsing(...)` and reused for typed frontend errors via `useForm`.
 
 ## Inspirations
 
-This project draws inspiration from the following sources:
-
-- [ShadCN UI](https://ui.shadcn.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
 - [AdonisJS Starter Kit by Batosai](https://github.com/batosai/adonis-starter-kit)
-- [ShadCN Blocks](https://www.shadcnblocks.com/)
-- [ShadCN Admin by Satnaing](https://github.com/satnaing/shadcn-admin)
+- [shadcn Blocks](https://www.shadcnblocks.com/)
+- [shadcn Admin by Satnaing](https://github.com/satnaing/shadcn-admin)
 - [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
 
 ## Contributing
 
-Contributions are welcome! Please feel free to open issues or submit pull requests with improvements and suggestions to enhance this starter kit.
+Contributions are welcome — please open issues or submit pull requests with improvements.
 
-**Contributors:** [Sayed Ahmed](https://github.com/sayeed205), [Lupiac](https://github.com/Lupiac) and [Corentin Clichy](https://github.com/corentinclichy)
+**Contributors:** [Sayed Ahmed](https://github.com/sayeed205), [Lupiac](https://github.com/Lupiac), [Corentin Clichy](https://github.com/corentinclichy).
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+MIT — see [LICENSE](LICENSE).
