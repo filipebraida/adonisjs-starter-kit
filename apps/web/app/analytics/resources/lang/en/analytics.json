@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "breadcrumb": "Dashboard",
+    "title": "Overview",
+    "welcome": "Welcome back — here's what's happening today.",
+    "period": {
+      "7d": "7D",
+      "30d": "30D",
+      "90d": "90D"
+    },
+    "kpi": {
+      "revenue": "Revenue",
+      "activeUsers": "Active users",
+      "subscriptions": "Subscriptions",
+      "churn": "Churn rate"
+    },
+    "chart": {
+      "revenueTitle": "Revenue",
+      "revenueDescription": "Recurring revenue over time",
+      "signupsTitle": "New signups",
+      "signupsDescription": "Volume per period"
+    }
+  }
+}

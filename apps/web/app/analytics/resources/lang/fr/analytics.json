@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "breadcrumb": "Tableau de bord",
+    "title": "Vue d'ensemble",
+    "welcome": "Bon retour — voici ce qui se passe aujourd'hui.",
+    "period": {
+      "7d": "7J",
+      "30d": "30J",
+      "90d": "90J"
+    },
+    "kpi": {
+      "revenue": "Revenu",
+      "activeUsers": "Utilisateurs actifs",
+      "subscriptions": "Abonnements",
+      "churn": "Taux d'attrition"
+    },
+    "chart": {
+      "revenueTitle": "Revenu",
+      "revenueDescription": "Revenu récurrent au fil du temps",
+      "signupsTitle": "Nouvelles inscriptions",
+      "signupsDescription": "Volume par période"
+    }
+  }
+}

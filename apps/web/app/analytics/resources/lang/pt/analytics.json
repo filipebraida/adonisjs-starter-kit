@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "breadcrumb": "Dashboard",
+    "title": "Visão geral",
+    "welcome": "Bem-vindo de volta — veja o que está acontecendo hoje.",
+    "period": {
+      "7d": "7D",
+      "30d": "30D",
+      "90d": "90D"
+    },
+    "kpi": {
+      "revenue": "Receita",
+      "activeUsers": "Usuários ativos",
+      "subscriptions": "Assinaturas",
+      "churn": "Taxa de cancelamento"
+    },
+    "chart": {
+      "revenueTitle": "Receita",
+      "revenueDescription": "Receita recorrente ao longo do tempo",
+      "signupsTitle": "Novos cadastros",
+      "signupsDescription": "Volume por período"
+    }
+  }
+}

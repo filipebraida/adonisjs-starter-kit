@@ -28,6 +28,9 @@ const i18nConfig = defineConfig({
     loaders.fs({
       location: app.makePath('app/auth/resources/lang'),
     }),
+    loaders.fs({
+      location: app.makePath('app/analytics/resources/lang'),
+    }),
   ],
 })
 
