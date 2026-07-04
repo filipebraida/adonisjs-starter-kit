@@ -116,11 +116,7 @@ export default function InviteUserPage() {
             </Field>
 
             {progress && (
-              <Progress
-                value={progress.percentage}
-                max={100}
-                className="w-full h-2 rounded mt-2"
-              />
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
             )}
           </form>
 

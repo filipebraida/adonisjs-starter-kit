@@ -24,9 +24,13 @@ export function LanguageSwitcher() {
   const { changeLanguage } = useTranslation()
 
   function switchLocale(code: string) {
-    router.post(urlFor('locale.switch', { locale: code }), {}, {
-      onSuccess: () => changeLanguage(code),
-    })
+    router.post(
+      urlFor('locale.switch', { locale: code }),
+      {},
+      {
+        onSuccess: () => changeLanguage(code),
+      }
+    )
   }
 
   return (

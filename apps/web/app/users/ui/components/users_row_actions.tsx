@@ -22,7 +22,9 @@ import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_d
 
 import type { Data } from '@generated/data'
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users.User.Variants['forList']>) {
+export function DataTableRowActions({
+  row,
+}: DataTableRowActionsProps<Data.Users.User.Variants['forList']>) {
   const user = useUser()
   const { t } = useTranslation()
 
@@ -68,11 +70,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<Data.Users
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <UsersDeleteDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        currentRow={row.original}
-      />
+      <UsersDeleteDialog open={openDelete} onOpenChange={setOpenDelete} currentRow={row.original} />
       <UsersImpersonateDialog
         open={openImpersonate}
         onOpenChange={setOpenImpersonate}

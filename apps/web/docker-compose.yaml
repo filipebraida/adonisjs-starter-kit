@@ -10,7 +10,7 @@ services:
       - pgsql:/var/lib/postgresql
       - ./../../.github/postgres/dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
     ports:
-      - "5432:5432"
+      - '5432:5432'
     restart: always
     networks:
       - sail
@@ -26,9 +26,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL:-admin@repo.com}'
       PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
       PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
-      PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
+      PGADMIN_REPLACE_SERVERS_ON_STARTUP: 'True'
     ports:
-      - "5050:80"
+      - '5050:80'
     restart: always
     volumes:
       - pgadmin:/root/.pgadmin
@@ -41,15 +41,15 @@ services:
     image: axllent/mailpit
     restart: unless-stopped
     volumes:
-        - ./tmp/mailpit:/data
+      - ./tmp/mailpit:/data
     ports:
-        - 8025:8025
-        - 1025:1025
+      - 8025:8025
+      - 1025:1025
     environment:
-        MP_MAX_MESSAGES: 5000
-        MP_DATABASE: /data/mailpit.db
-        MP_SMTP_AUTH_ACCEPT_ANY: 1
-        MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 networks:
   sail:
     driver: bridge

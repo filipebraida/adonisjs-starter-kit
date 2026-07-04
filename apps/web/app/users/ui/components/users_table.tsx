@@ -64,11 +64,7 @@ export default function UsersTable({
       const next = typeof updater === 'function' ? updater(sorting) : updater
       const first = next[0]
       const nextSort = (first?.id ?? undefined) as UsersSortBy | undefined
-      const nextOrder: SortDirection | undefined = first
-        ? first.desc
-          ? 'desc'
-          : 'asc'
-        : undefined
+      const nextOrder: SortDirection | undefined = first ? (first.desc ? 'desc' : 'asc') : undefined
 
       router.get(
         '/users',

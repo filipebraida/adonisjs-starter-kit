@@ -1,7 +1,8 @@
+import { UserFactory } from '#users/database/factories/user'
 import { ALL_PERMISSIONS, type Permission } from '#users/enums/permission'
 import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 import Role from '#users/models/role'
-import type User from '#users/models/user'
+import User from '#users/models/user'
 
 // Call after `wrapInGlobalTransaction` — otherwise the seeded rows leak.
 export async function ensureBaseRoles(): Promise<void> {
@@ -25,4 +26,37 @@ export async function withPermissions(
   await role.syncPermissions(permissions)
   await user.assignRole(role)
   return role
+}
+
+// Bypasses the WithRoles mixin's in-memory cache, which stays stale after syncRoles/assignRole.
+export async function currentRoleNames(user: User): Promise<string[]> {
+  const rows = await user.related('roles').query().select('name')
+  return rows.map((row) => row.name)
+}
+
+// Idempotent: reuses the row if a prior run left it behind, overwrites password + role.
+export async function ensureUser(input: {
+  email: string
+  password: string
+  fullName?: string
+  role?: RoleSlug
+}): Promise<User> {
+  const existing = await User.query().where('email', input.email).first()
+
+  const user = existing
+    ? await existing
+        .merge({
+          password: input.password,
+          fullName: input.fullName ?? existing.fullName,
+        })
+        .save()
+    : await UserFactory.merge({
+        email: input.email,
+        password: input.password,
+        fullName: input.fullName,
+      }).create()
+
+  if (input.role) await withRole(user, input.role)
+
+  return user
 }

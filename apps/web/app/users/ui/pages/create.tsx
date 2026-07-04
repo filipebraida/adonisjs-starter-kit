@@ -28,9 +28,7 @@ export default function CreateUserPage() {
         <div className="space-y-4">
           <header className="text-left space-y-1">
             <h2 className="text-lg font-semibold">{t('users.action.create.title')}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t('users.action.create.description')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('users.action.create.description')}</p>
           </header>
 
           <form
@@ -55,11 +53,7 @@ export default function CreateUserPage() {
             />
 
             {progress && (
-              <Progress
-                value={progress.percentage}
-                max={100}
-                className="w-full h-2 rounded mt-4"
-              />
+              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-4" />
             )}
           </form>
 

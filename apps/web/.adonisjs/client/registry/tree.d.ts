@@ -4,69 +4,69 @@ import type { routes } from './index.ts'
 export interface ApiDefinition {
   drive: {
     fs: {
-      serve: typeof routes['drive.fs.serve']
+      serve: (typeof routes)['drive.fs.serve']
     }
   }
   marketing: {
-    show: typeof routes['marketing.show']
+    show: (typeof routes)['marketing.show']
   }
   auth: {
     signIn: {
-      show: typeof routes['auth.sign_in.show']
-      handle: typeof routes['auth.sign_in.handle']
+      show: (typeof routes)['auth.sign_in.show']
+      handle: (typeof routes)['auth.sign_in.handle']
     }
     signOut: {
-      handle: typeof routes['auth.sign_out.handle']
+      handle: (typeof routes)['auth.sign_out.handle']
     }
     signUp: {
-      show: typeof routes['auth.sign_up.show']
-      handle: typeof routes['auth.sign_up.handle']
+      show: (typeof routes)['auth.sign_up.show']
+      handle: (typeof routes)['auth.sign_up.handle']
     }
     forgotPassword: {
-      show: typeof routes['auth.forgot_password.show']
-      handle: typeof routes['auth.forgot_password.handle']
+      show: (typeof routes)['auth.forgot_password.show']
+      handle: (typeof routes)['auth.forgot_password.handle']
     }
     resetPassword: {
-      show: typeof routes['auth.reset_password.show']
-      handle: typeof routes['auth.reset_password.handle']
+      show: (typeof routes)['auth.reset_password.show']
+      handle: (typeof routes)['auth.reset_password.handle']
     }
   }
   social: {
-    create: typeof routes['social.create']
-    callback: typeof routes['social.callback']
+    create: (typeof routes)['social.create']
+    callback: (typeof routes)['social.callback']
   }
   locale: {
-    switch: typeof routes['locale.switch']
+    switch: (typeof routes)['locale.switch']
   }
   users: {
     invite: {
-      show: typeof routes['users.invite.show']
-      handle: typeof routes['users.invite.handle']
+      show: (typeof routes)['users.invite.show']
+      handle: (typeof routes)['users.invite.handle']
     }
     impersonate: {
-      handle: typeof routes['users.impersonate.handle']
+      handle: (typeof routes)['users.impersonate.handle']
     }
-    index: typeof routes['users.index']
-    create: typeof routes['users.create']
-    store: typeof routes['users.store']
-    edit: typeof routes['users.edit']
-    update: typeof routes['users.update']
-    destroy: typeof routes['users.destroy']
+    index: (typeof routes)['users.index']
+    create: (typeof routes)['users.create']
+    store: (typeof routes)['users.store']
+    edit: (typeof routes)['users.edit']
+    update: (typeof routes)['users.update']
+    destroy: (typeof routes)['users.destroy']
   }
   settings: {
-    index: typeof routes['settings.index']
+    index: (typeof routes)['settings.index']
   }
   profile: {
-    update: typeof routes['profile.update']
+    update: (typeof routes)['profile.update']
   }
   password: {
-    update: typeof routes['password.update']
+    update: (typeof routes)['password.update']
   }
   tokens: {
-    destroy: typeof routes['tokens.destroy']
-    store: typeof routes['tokens.store']
+    destroy: (typeof routes)['tokens.destroy']
+    store: (typeof routes)['tokens.store']
   }
   dashboard: {
-    show: typeof routes['dashboard.show']
+    show: (typeof routes)['dashboard.show']
   }
 }

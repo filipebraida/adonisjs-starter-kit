@@ -8,8 +8,7 @@ export { FieldError } from '#common/ui/components/field_error'
 
 type InertiaChildren = React.ComponentProps<typeof InertiaForm>['children']
 type FormSlotProps = InertiaChildren extends
-  | React.ReactNode
-  | ((props: infer Props) => React.ReactNode)
+  React.ReactNode | ((props: infer Props) => React.ReactNode)
   ? Props
   : never
 

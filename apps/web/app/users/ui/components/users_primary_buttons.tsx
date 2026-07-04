@@ -18,10 +18,7 @@ export function UsersPrimaryButtons() {
         <span>{t('users.index.toolbar.invite')}</span>
         <MailPlus size={18} />
       </ModalLink>
-      <ModalLink
-        href={urlFor('users.create')}
-        className={buttonVariants({ size: 'sm' })}
-      >
+      <ModalLink href={urlFor('users.create')} className={buttonVariants({ size: 'sm' })}>
         <span>{t('users.index.toolbar.add')}</span>
         <UserPlus size={18} />
       </ModalLink>
