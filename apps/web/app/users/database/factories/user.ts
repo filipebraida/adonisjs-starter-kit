@@ -5,8 +5,7 @@ import User from '#users/models/user'
 export const UserFactory = Factory.define(User, ({ faker }) => {
   return {
     fullName: faker.internet.username(),
-    // Match the validators (which lowercase); otherwise factory users fail login lookups.
-    email: faker.internet.email().toLowerCase(),
+    email: faker.internet.email(),
     password: faker.internet.password(),
   }
 }).build()

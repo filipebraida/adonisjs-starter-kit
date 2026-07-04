@@ -1,6 +1,6 @@
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { column, hasMany } from '@adonisjs/lucid/orm'
+import { beforeSave, column, hasMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
@@ -39,6 +39,13 @@ export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
 
   @hasMany(() => ResetPasswordToken)
   declare resetPasswordTokens: HasMany<typeof ResetPasswordToken>
+
+  @beforeSave()
+  static async normalizeEmail(user: User) {
+    if (user.$dirty.email && typeof user.email === 'string') {
+      user.email = user.email.trim().toLowerCase()
+    }
+  }
 
   static async preComputeUrls(models: User | User[]) {
     if (Array.isArray(models)) {

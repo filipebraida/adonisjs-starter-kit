@@ -25,7 +25,7 @@ test.group('ListUsers', (group) => {
   })
 
   test('filtra pela substring do email (ilike)', async ({ assert }) => {
-    const tag = marker('email')
+    const tag = marker('email').toLowerCase()
     await UserFactory.merge({ email: `${tag}-alpha@example.test` }).create()
     await UserFactory.merge({ email: `${tag}-beta@example.test` }).create()
 
