@@ -175,11 +175,11 @@ Four moving parts:
 On the frontend, the Inertia middleware shares a typed `can: GlobalPermissions` prop; consume it via the argument-less `useCan()` hook:
 
 ```tsx
-const can = useCan()
-if (!can.manageUsers) return null
+const can = useCan();
+if (!can.manageUsers) return null;
 ```
 
-For per-resource permissions (e.g. "can I edit *this* record?"), pass them as a `permissions` prop from the controller after calling `bouncer.with(Policy).allows(...)`.
+For per-resource permissions (e.g. "can I edit _this_ record?"), pass them as a `permissions` prop from the controller after calling `bouncer.with(Policy).allows(...)`.
 
 Escalation is protected in depth: `SyncUserRoles.handle` requires the `users.manage_roles` capability and refuses to remove the executor's own admin role. `requireManageRolesIfEscalating` protects create/invite paths from bypassing the validator.
 

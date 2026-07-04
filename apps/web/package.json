@@ -108,7 +108,9 @@
   "prettier": "@adonisjs/prettier-config",
   "c8": {
     "all": true,
-    "include": ["app/**/*.ts"],
+    "include": [
+      "app/**/*.ts"
+    ],
     "exclude": [
       "app/**/tests/**",
       "app/**/database/factories/**",

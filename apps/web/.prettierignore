@@ -1,0 +1,4 @@
+node_modules
+.adonisjs
+build
+app/core/database/schema.ts
