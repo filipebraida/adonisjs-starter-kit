@@ -46,7 +46,8 @@ jobs:
         working-directory: apps/web
         run: |
           cp .env.example .env
-          echo "APP_KEY=$(openssl rand -base64 32)" >> .env
+          sed -i '/^APP_KEY=/d' .env
+          printf '\nAPP_KEY=%s\n' "$(openssl rand -base64 32)" >> .env
 
       - name: Run migrations
         working-directory: apps/web
