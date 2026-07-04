@@ -46,8 +46,7 @@ jobs:
         working-directory: apps/web
         run: |
           cp .env.example .env
-          sed -i '/^APP_KEY=/d' .env
-          printf '\nAPP_KEY=%s\n' "$(openssl rand -base64 32)" >> .env
+          node ace generate:key --force
 
       - name: Run migrations
         working-directory: apps/web
