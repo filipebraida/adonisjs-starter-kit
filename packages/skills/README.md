@@ -12,6 +12,11 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `inertia` — page resolver, shared props, `useForm`, `urlFor`, modals, and the client provider tree.
 - `i18n` — three locales, per-module JSON, `useTranslation()`, `ctx.i18n.t()`, and `User.locale` persistence.
 - `layout-shells` — four coexisting shells (admin, authenticated, auth, marketing) — pages import explicitly, no runtime toggle.
+- `authorization` — `PERMISSIONS` + `ROLES` + `WithRoles` + Bouncer policies + `useCan()` + escalation guards.
+- `mail` — `BaseMail` classes, MJML templates via `@email.layout`, `mailContext()` for appName/appUrl.
+- `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count, emission via events.
+- `attachment` — `@jrmc/adonis-attachment` with converters, model decoration, `preComputeUrls`, Transformer helpers.
+- `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
 
 ## Structure
 
