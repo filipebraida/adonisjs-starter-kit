@@ -1,51 +1,40 @@
 ---
 name: queries
-description: 'Read-only query patterns in this repo — two flavors. `List queries` for CRUD tables (Lucid paginator with search + filter + sort). `Read models` for aggregate screens (dashboards, reports) with one query per business concept composed by the controller. Types live in the query file and cross to the frontend via `import type`. Trigger on: "query", "list users", "dashboard data", "read model", "fetch data", "aggregate", "read side".'
+description: 'Read-only query patterns in an AdonisJS + Inertia app — two flavors. **List queries** for CRUD tables (Lucid paginator with search + filter + sort). **Read models** for aggregate screens (dashboards, reports) with one query per business concept composed by the controller. Types live in the query file and cross to the frontend via `import type`. Trigger on: "query", "list users", "dashboard data", "read model", "fetch data", "aggregate", "read side".'
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 # Queries
 
-Reads live in `<mod>/queries/` — never `services/` (services are for behavior with side effects). Two flavors: **list queries** for paginated CRUD lists (Lucid + `ModelPaginatorContract`), and **read models** for aggregate screens where a controller composes several per-concept queries. Split by **business concept**, not by widget and not per screen. Types are defined inside the query file; the frontend consumes them via `import type`, so there is no duplication and no separate `types/` file.
+Reads live in `app/<mod>/queries/` — never `services/` (services are for behavior with side effects). Two flavors: **list queries** for paginated CRUD lists (Lucid + `ModelPaginatorContract`), and **read models** for aggregate screens where a controller composes several per-concept queries. Split by **business concept**, not by widget and not per screen. Types are defined inside the query file; the frontend consumes them via `import type`, so there is no duplication and no separate `types/` file.
 
-## Conventions
+## Rules
 
 - **Location**: `app/<mod>/queries/<verb>_<subject>.ts` — e.g., `list_users.ts`, `get_revenue_metrics.ts`.
-- **Shape**: default-export a class with `async handle(input)`. Input is a plain `type` or `interface`. No `HttpContext`.
-- **Return `type` (not `interface`)** when the shape flows through `inertia.render(...)`. Inertia's `InertiaProps<T extends JSONDataTypes>` requires an index signature that `interface` doesn't satisfy — you'll hit `Type 'X' is not assignable to type 'JSONDataTypes'` at typecheck.
+- **Shape**: default-export a class with `async handle(input)`. `Input` is a plain `type` or `interface`. No `HttpContext`.
+- **Return `type` (not `interface`)** when the shape flows through `inertia.render(...)`. Inertia's `InertiaProps<T extends JSONDataTypes>` requires an index signature that `interface` doesn't satisfy — the typecheck fails with `Type 'X' is not assignable to type 'JSONDataTypes'`.
 - **Composition happens in the controller**, not inside a query. If a screen needs three concepts, the controller does `Promise.all([...])`; each query stays pure and reusable.
 - **One query per business concept** — not one per widget (fragmentation), not one per screen (couples the query to a specific UI).
-- **Frontend consumes types via `import type`** from the query file (`import type { RevenueMetrics } from '#analytics/queries/get_revenue_metrics'`). Type-only imports are stripped at build so the frontend never bundles server code.
-- **Never return raw Lucid model instances to Inertia** — for lists, run through a Transformer variant (see [[crud]]); for read models, return a plain object shape.
+- **Frontend consumes types via `import type`** from the query file. Type-only imports are stripped at build so the frontend never bundles server code.
+- **Never return raw Lucid instances to Inertia** — for lists run through a Transformer variant ([[crud]]); for read models return a plain object shape.
+- **Paginated queries always add an `id` tiebreaker at the end of `orderBy`** — without it, two rows sharing the sorted column can swap pages between requests.
 
 ## Two flavors
 
 ### 1. List queries — for CRUD list pages
 
-Paginated Lucid queries with search, filter, sort. Input is `{filters, pagination}`; return is `ModelPaginatorContract<Model>`. Consumed by a resource `index` action + Inertia list page.
-
-Example: `apps/web/app/users/queries/list_users.ts` — search on `full_name`/`email`, filter by role, sort with tiebreaker on `id`, paginate.
+Paginated Lucid queries with search, filter, sort. Input is `{ filters, pagination }`; return is `ModelPaginatorContract<Model>`. Consumed by a resource `index` action + Inertia list page.
 
 ### 2. Read models — for aggregate screens
 
-Per-concept read models for dashboards, reports, homepage widgets. Input is just the scope (`{period}`, `{tenantId}`, `{userId}`). Return is a plain object with KPIs / trends / lists needed for that concept. Controller composes multiple with `Promise.all([...])`.
-
-Example: `apps/web/app/analytics/queries/{get_revenue_metrics, get_user_metrics, get_subscription_metrics}.ts` — dashboard splits into three concepts (revenue, user, subscription); controller runs them in parallel.
-
-## Repo refs
-
-- Canonical list query (search + filter + sort + paginator): `apps/web/app/users/queries/list_users.ts`.
-- Canonical read models (per concept): `apps/web/app/analytics/queries/get_revenue_metrics.ts`, `get_user_metrics.ts`, `get_subscription_metrics.ts`.
-- Composition in controller: `apps/web/app/analytics/controllers/dashboard_controller.ts` (`Promise.all` of the three queries).
-- List controller pattern: `apps/web/app/users/controllers/users_controller.ts:index` (validate → list query → transformer variant → render).
-- Type consumer via `import type`: `apps/web/app/analytics/ui/pages/dashboard.tsx`.
+Per-concept read models for dashboards, reports, homepage widgets. Input is just the scope (`{ period }`, `{ tenantId }`, `{ userId }`). Return is a plain object with KPIs / trends / lists needed for that concept. Controller composes multiple with `Promise.all([...])`.
 
 ## Doc refs
 
 - Lucid pagination — https://lucid.adonisjs.com/docs/pagination
 - CQRS reads (Martin Fowler) — https://martinfowler.com/bliki/CQRS.html
-- DDD read models — https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
+- Read models in CQRS — https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
 
 ## Workflow
 
@@ -54,23 +43,34 @@ Example: `apps/web/app/analytics/queries/{get_revenue_metrics, get_user_metrics,
 1. Create `app/<mod>/queries/list_<entities>.ts`.
 2. Define input types:
    ```ts
-   export interface ListInvoicesFilters { q?: string; status?: InvoiceStatus[]; sort?: InvoicesSortBy; order?: SortDirection }
+   export interface ListInvoicesFilters {
+     q?: string
+     status?: InvoiceStatus[]
+     sort?: InvoicesSortBy
+     order?: SortDirection
+   }
    export interface ListInvoicesPagination { page: number; perPage: number }
    ```
 3. Class with `handle` returning the paginator:
    ```ts
    export default class ListInvoices {
-     async handle(filters: ListInvoicesFilters = {}, pag: ListInvoicesPagination = { page: 1, perPage: 10 }) {
+     async handle(
+       filters: ListInvoicesFilters = {},
+       pag: ListInvoicesPagination = { page: 1, perPage: 10 }
+     ) {
        const query = Invoice.query()
        if (filters.q) query.where('reference', 'ilike', `%${filters.q}%`)
        if (filters.status?.length) query.whereIn('status', filters.status)
-       query.orderBy(filters.sort ? SORT_COLUMN[filters.sort] : 'created_at', filters.order ?? 'desc')
-       query.orderBy('id', 'asc')  // tiebreaker prevents page swaps
+       query.orderBy(
+         filters.sort ? SORT_COLUMN[filters.sort] : 'created_at',
+         filters.order ?? 'desc'
+       )
+       query.orderBy('id', 'asc') // tiebreaker prevents page swaps
        return query.paginate(pag.page, pag.perPage)
      }
    }
    ```
-4. Controller: validate → call query → transformer variant → `inertia.render`. See [[crud]].
+4. Controller: `authorize → validate → call query → transformer variant → inertia.render`. See [[crud]].
 
 ### Add a read model
 
@@ -86,7 +86,7 @@ Example: `apps/web/app/analytics/queries/{get_revenue_metrics, get_user_metrics,
 4. Class:
    ```ts
    export default class GetRevenueMetrics {
-     async handle({ period }: { period: Period }): Promise<RevenueMetrics> { ... }
+     async handle({ period }: { period: Period }): Promise<RevenueMetrics> { /* ... */ }
    }
    ```
 5. Controller composes:
@@ -100,7 +100,7 @@ Example: `apps/web/app/analytics/queries/{get_revenue_metrics, get_user_metrics,
    ```
 6. Page consumes types via `import type`:
    ```ts
-   import type { RevenueMetrics } from '#analytics/queries/get_revenue_metrics'
+   import type { RevenueMetrics } from '#<mod>/queries/get_revenue_metrics'
    type PageProps = InertiaProps<{ period: Period; revenue: RevenueMetrics /* ... */ }>
    ```
 
@@ -110,13 +110,14 @@ Unit-test the query directly (`await new ListInvoices().handle({...})`) with a f
 
 ## Anti-patterns
 
-- ❌ One megaquery returning everything a screen needs — couples the read to a specific UI; not reusable when the same concept appears elsewhere.
-- ❌ One query per widget — fragmentation. Controller becomes a 6-item Promise.all with barely any logic per query.
-- ❌ Using `interface` for a return type that flows through Inertia — fails `JSONDataTypes` typecheck. Use `type`.
+- ❌ One megaquery returning everything a screen needs — couples the read to a specific UI, not reusable when the same concept appears elsewhere.
+- ❌ One query per widget — fragmentation. The controller becomes a 6-item `Promise.all` with barely any logic per query.
+- ❌ Using `interface` for a return type that flows through Inertia — fails the `JSONDataTypes` typecheck. Use `type`.
 - ❌ Putting reads in `services/` — services are for behavior with side effects. Reads go in `queries/`.
 - ❌ Duplicating the return type in the page file — use `import type` from the query. TypeScript strips it at build.
-- ❌ Screen-specific data assembly inside a query (e.g., `getDashboardKpis` returning a dashboard-shaped blob) — assembly happens in the controller.
-- ❌ Returning raw Lucid models to Inertia — use a Transformer variant for CRUD ([[crud]]), or a plain object shape for read models.
+- ❌ Screen-shaped assembly inside a query (a `get_dashboard_kpis` returning a dashboard blob) — assembly happens in the controller.
+- ❌ Returning raw Lucid instances to Inertia — use a Transformer variant for CRUD lists ([[crud]]), or a plain object shape for read models.
+- ❌ Paginating without an `id` tiebreaker — rows tied on the sorted column can swap between pages.
 
 ## Related skills
 

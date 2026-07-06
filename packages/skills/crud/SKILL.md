@@ -1,37 +1,34 @@
 ---
 name: crud
-description: 'Build an end-to-end CRUD in this repo — resource route → controller (thin) → validator (VineJS) → policy (Bouncer) → action → transformer (with variants) → Inertia page. Follow the users module as the canonical example. Trigger on: "add CRUD for X", "create resource", "list/create/edit/delete X", "resource endpoint".'
+description: 'Build an end-to-end CRUD stack in AdonisJS + Inertia: resource route → thin controller → VineJS validator → Bouncer policy → single-purpose action → transformer variant → Inertia page. Trigger on: "add CRUD for X", "create resource", "list/create/edit/delete X", "resource endpoint".'
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 # CRUD
 
-A CRUD feature in this repo is a stack: `router.resource(...)` in the module's `routes.ts`, a controller with 5–7 thin methods, one VineJS validator per mutation, a `BasePolicy` gating every action, single-purpose action classes for writes, a transformer with per-page variants, an optional `queries/` for list-search-pagination, and Inertia pages under `<mod>/ui/pages/`. Follow the `users` module verbatim — every file that exists there is worth reading before writing your own.
+A CRUD feature is a stack, not a single file. The route declares one `router.resource(...)` scoped by auth middleware; the controller has 5–7 tiny methods that only orchestrate; each mutation has a VineJS validator; a `BasePolicy` gates every method; each write goes through a single-purpose action class; a transformer produces per-page shape variants; the read side lives in `queries/`; the UI is Inertia pages under `<mod>/ui/pages/`. The point is that no single layer holds more than its own responsibility, and adding the next resource is copy-shape, not think-shape.
 
-## Conventions
+## Rules
 
-- **Route shape**: `router.resource('/entities', EntitiesController).only([...]).use('*', middleware.auth())`. Optional actions (impersonate, invite, publish, etc.) are separate `router.post(...)` calls in the same file.
-- **Controller (thin)**: one method per resource action. Order per method: `policy → validator → action call → render/redirect`. No business logic, no queries longer than one line, no ORM calls beyond `Model.findOrFail`.
-- **Validator**: VineJS `vine.create({...})` per mutation, exported from `<mod>/validators/<entity>.ts` (one file per entity — `validators/users.ts`, `validators/tokens.ts`). Use `vine.withMetaData<{...}>().create({...})` when the rule depends on route params (e.g. unique-except-self on edit). `vine.compile()` is **deprecated** — use `vine.create()`.
-- **Policy**: `BasePolicy` subclass at `<mod>/policies/<entity>_policy.ts`. One method per gated action. Return boolean or `AuthorizerResponse`. Always gate before validating: `await bouncer.with(XPolicy).authorize('action', resource?)`.
-- **Action**: one class per write in `<mod>/actions/<verb_entity>.ts`. Never takes `HttpContext` — see [[actions-events]].
-- **Transformer**: `BaseTransformer<Model>` with `toObject()` as the base + variants (`forList`, `forEdit`, `forSharedProps`, `forProfile`). Call `Transformer.transform(model).useVariant('forList')` or `Transformer.paginate(rows, meta).useVariant('forList')`. Never send raw model instances to Inertia.
-- **Query**: read-only, in `<mod>/queries/list_<entities>.ts`. Full patterns (list queries + read models for aggregate screens) live in [[queries]].
-- **Inertia pages**: at `<mod>/ui/pages/<entity>/`. `index.tsx` (list) is a full page; `create.tsx` and `edit.tsx` are modals mounted over the index via `modal(inertia, 'users/create', {}, { route: 'users.index' })`. See [[inertia]].
+Every HTTP method — including `index` — follows the same 3-step spine:
 
-## Repo refs (users is the canonical CRUD)
+1. **Authorize** via `bouncer.with(XPolicy).authorize(...)`. A `where('owner_id', user.id)` clause in the query is **not** a substitute — the policy is the source of truth.
+2. **Validate** via `request.validateUsing(...)`.
+3. **Render / redirect** — either `inertia.render('...', props)` for reads or `response.redirect().back()` / `.toRoute(...)` for writes. Writes call an action in between.
 
-- Route: `apps/web/app/users/routes.ts:35` (`router.resource('/users', UsersController).only([...])`).
-- Controller: `apps/web/app/users/controllers/users_controller.ts` — 5-method thin controller.
-- Validators: `apps/web/app/users/validators/users.ts` + `apps/web/app/users/validators/tokens.ts` (`createUserValidator`, `editUserValidator` with `withMetaData` for unique-except-self, `listUserValidator`, `createTokenValidator`).
-- Policy: `apps/web/app/users/policies/user_policy.ts` — every method returns `PERMISSIONS.usersX` via `hasPermission`.
-- Actions: `apps/web/app/users/actions/{create,update,delete}_user.ts`.
-- Transformer: `apps/web/app/users/transformers/user_transformer.ts` — `toObject()` + `forList`, `forEdit`, `forSharedProps`, `forProfile` variants.
-- List query: `apps/web/app/users/queries/list_users.ts` — search + role filter + sort + pagination.
-- Modal helper: `apps/web/app/core/inertia/modal.ts` — used by `create`/`edit` controller methods.
-- List page: `apps/web/app/users/ui/pages/index.tsx`.
-- Modal pages: `apps/web/app/users/ui/pages/users/{create,edit}.tsx`.
+Authentication is the middleware's job — controllers never call `authenticate()`; use `auth.getUserOrFail()` when the handler needs the user. Anything past `.authorize()` that also does an owner check is redundant; anything before it that touches the DB other than loading the resource being authorized is a leak.
+
+### Layer conventions
+
+- **Route** — `router.resource('/entities', EntitiesController).only([...])`. Guard by wrapping in a `router.group(() => {...}).middleware(middleware.auth())` block (see [[routes]]). Custom verbs go as separate `router.post(...)` calls, not extra controller methods.
+- **Controller (thin)** — one method per resource action. Body order: `policy → validator → action call → render/redirect`. No business logic, no queries longer than one line, no ORM calls beyond `Model.findOrFail`.
+- **Validator** — VineJS `vine.create({...})` per mutation, exported from `<mod>/validators/<entity>.ts` (one file per entity — `validators/users.ts`, `validators/tokens.ts`). Use `vine.withMetaData<{...}>().create({...})` when a rule depends on route params (e.g. unique-except-self on edit). `vine.compile()` is **deprecated** — use `vine.create()`.
+- **Policy** — `BasePolicy` subclass at `<mod>/policies/<entity>_policy.ts`. One method per gated action. Return `boolean | AuthorizerResponse`. Gate before validating: `await bouncer.with(XPolicy).authorize('action', resource?)`. See [[authorization]].
+- **Action** — one class per write in `<mod>/actions/<verb_entity>.ts`. `Input` is a plain interface; the class has one `async handle(input)` method. Never takes `HttpContext`. Side effects go through domain events — see [[actions-events]].
+- **Transformer** — `BaseTransformer<Model>` with `toObject()` as the base + variants (`forList`, `forEdit`, `forSharedProps`, `forProfile`). Call `Transformer.transform(model).useVariant('forEdit')` or `Transformer.paginate(rows, meta).useVariant('forList')`. Never send raw Lucid instances to Inertia — the shape leaks and the response type drifts.
+- **Query** — read-only, `<mod>/queries/list_<entities>.ts`. Full patterns (list queries + read models for aggregate screens) live in [[queries]].
+- **Inertia pages** — under `<mod>/ui/pages/<entity>/`. Index is a full page; create/edit are modals mounted over the index. See [[inertia]].
 
 ## Doc refs
 
@@ -42,17 +39,15 @@ A CRUD feature in this repo is a stack: `router.resource(...)` in the module's `
 
 ## Workflow
 
-Prerequisite: module exists — see [[module-scaffolding]].
+Prerequisite: the module exists — see [[module-scaffolding]].
 
 ### 1. Model + migration + factory
 
-- `app/<mod>/models/<entity>.ts` — Lucid model extending `BaseModel` from `#common/models/base_model`.
-- `app/<mod>/database/migrations/<ts>_create_<entities>_table.ts` — starter kit convention is to fold columns into a single create migration ([[migrations]]).
+- `app/<mod>/models/<entity>.ts` — Lucid `BaseModel` subclass with `@column()` declarations. Relationships and computed getters live here too.
+- `app/<mod>/database/migrations/<ts>_create_<entities>_table.ts` — see [[migrations]].
 - `app/<mod>/database/factories/<entity>.ts` — `Factory.define(Model, ({ faker }) => ({...})).build()`.
 
-### 2. Validators (one per mutation)
-
-Split by entity — one file per resource. For an `Entity`, use `<mod>/validators/entities.ts` (plural of the entity):
+### 2. Validators (one file per entity)
 
 ```ts
 // app/<mod>/validators/entities.ts
@@ -69,8 +64,11 @@ export const editEntityValidator = vine.withMetaData<{ entityId: number }>().cre
     .string()
     .email()
     .unique(async (_, value, field) => {
-      const row = await Entity.query().where('email', value).whereNot('id', field.meta.entityId).first()
-      return row ? false : true
+      const row = await Entity.query()
+        .where('email', value)
+        .whereNot('id', field.meta.entityId)
+        .first()
+      return !row
     }),
 })
 
@@ -80,7 +78,7 @@ export const listEntityValidator = vine.create({
 })
 ```
 
-Use `vine.create({...})` — `vine.compile()` is deprecated. If the module has multiple entities (e.g. `users` also has `tokens`), split into separate files: `validators/users.ts`, `validators/tokens.ts`.
+If the module has multiple entities (e.g. `users` also has `tokens`), split them into separate files: `validators/users.ts`, `validators/tokens.ts`.
 
 ### 3. Policy
 
@@ -95,44 +93,60 @@ export default class EntityPolicy extends BasePolicy {
 }
 ```
 
-Add matching `PERMISSIONS.entity*` to `app/users/enums/permission.ts` — see [[authorization]].
+Register matching `PERMISSIONS.entity*` in the RBAC catalog — see [[authorization]].
 
 ### 4. Actions (one per write)
 
-`app/<mod>/actions/create_entity.ts`, `update_entity.ts`, `delete_entity.ts`. Each has an `interface Input` + `.handle(input)`. See [[actions-events]].
+`app/<mod>/actions/create_entity.ts`, `update_entity.ts`, `delete_entity.ts`. Each exposes an `Input` interface and an `async handle(input)`. See [[actions-events]].
 
 ### 5. Transformer
 
 ```ts
 // app/<mod>/transformers/entity_transformer.ts
 export default class EntityTransformer extends BaseTransformer<Entity> {
-  toObject() { return { id: this.resource.id, name: this.resource.name } }
-  forList() { return { ...this.toObject(), createdAt: this.resource.createdAt.toISO()! } }
-  forEdit() { return { ...this.toObject(), /* extras only edit needs */ } }
+  toObject() {
+    return { id: this.resource.id, name: this.resource.name }
+  }
+  forList() {
+    return { ...this.toObject(), createdAt: this.resource.createdAt.toISO()! }
+  }
+  forEdit() {
+    return { ...this.toObject(), /* extras only edit needs */ }
+  }
 }
 ```
 
-Consumers call:
+Consumers:
 - Single: `EntityTransformer.transform(entity).useVariant('forEdit')`
-- List: `EntityTransformer.paginate(rows, paginator.getMeta()).useVariant('forList')`
+- Paginated: `EntityTransformer.paginate(rows, paginator.getMeta()).useVariant('forList')`
 
-### 6. List query (if index has filters)
+### 6. List query (when index has filters)
 
-`app/<mod>/queries/list_entities.ts` — takes `{ q, filters, sort, order }` + `{ page, perPage }`, returns paginated result.
+`app/<mod>/queries/list_entities.ts` — takes `{ q, filters, sort, order }` + `{ page, perPage }`, returns paginated result. See [[queries]].
 
 ### 7. Controller (thin)
 
-Follow `apps/web/app/users/controllers/users_controller.ts` verbatim — every branch is worth mirroring:
-
 ```ts
 public async index({ bouncer, inertia, request }: HttpContext) {
-  await bouncer.with(EntityPolicy).authorize('viewList')
-  const payload = await request.validateUsing(listEntityValidator)
-  const rows = await new ListEntities().handle({ /* filters */ }, { page: payload.page, perPage: payload.perPage })
-  return inertia.render('entities/index', {
+  await bouncer.with(EntityPolicy).authorize('viewList')                       // 1
+  const payload = await request.validateUsing(listEntityValidator)             // 2
+  const rows = await new ListEntities().handle({ /* filters */ }, payload)     // 3
+  return inertia.render('entities/index', {                                    // 4
     entities: EntityTransformer.paginate(rows.all(), rows.getMeta()).useVariant('forList'),
-    // ...
   })
+}
+```
+
+Nested resource (`parents.children`) — load the owner first, gate on it:
+
+```ts
+public async store({ auth, bouncer, params, request, response }: HttpContext) {
+  const user = auth.getUserOrFail()
+  const parent = await Parent.findOrFail(params.parent_id)
+  await bouncer.with(ChildPolicy).authorize('create', parent)
+  const payload = await request.validateUsing(createChildValidator)
+  await new CreateChild().handle({ userId: user.id, parentId: parent.id, ...payload })
+  return response.redirect().back()
 }
 ```
 
@@ -143,39 +157,45 @@ public async index({ bouncer, inertia, request }: HttpContext) {
 const EntitiesController = () => import('#<mod>/controllers/entities_controller')
 
 router
-  .resource('/entities', EntitiesController)
-  .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
-  .use('*', middleware.auth())
-  .as('entities')
+  .group(() => {
+    router
+      .resource('/entities', EntitiesController)
+      .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+      .where('id', router.matchers.number())
+      .as('entities')
+  })
+  .middleware(middleware.auth())
 ```
+
+See [[routes]] for verb vs. resource, numeric matchers, nested resources.
 
 ### 9. Inertia pages
 
-- `<mod>/ui/pages/<entities>/index.tsx` — list page inside `AdminLayout`.
-- `<mod>/ui/pages/<entities>/create.tsx` + `edit.tsx` — modals launched by controller `create`/`edit` methods via `modal(...)`.
+- `<mod>/ui/pages/<entities>/index.tsx` — list page.
+- `<mod>/ui/pages/<entities>/create.tsx` + `edit.tsx` — modals launched by controller `create`/`edit` methods.
 
-See [[inertia]] for `<Form>`, `useForm`, `usePageProps`, and `urlFor`.
+See [[inertia]] for `<Form>`, `useForm`, `usePageProps`, `urlFor`, and modal wiring.
 
 ### 10. i18n
 
-Add keys in all three locales — see [[i18n]].
+Every UI string used in the pages needs an entry in every supported locale JSON — see [[i18n]].
 
 ### 11. Tests
 
-- Functional: `app/<mod>/tests/functional/<entities>_endpoint.spec.ts` — cover unauth (302 → /login), forbidden (302 → /), validation (422), and happy paths for each of the 5 methods.
+- Functional: `app/<mod>/tests/functional/<entities>_endpoint.spec.ts` — cover unauth (302 → login), forbidden (302 → home), validation (422), happy path per method.
 - Unit: one per action.
 - See [[testing]].
 
 ## Anti-patterns
 
 - ❌ Business logic in the controller — move it to an action.
-- ❌ Skipping `bouncer.authorize(...)` on any mutation — every write must be gated.
-- ❌ Sending a Lucid model to Inertia without a transformer — types will leak and shape drifts.
-- ❌ Transformer that has one variant with everything — over-fetch. Trim variants per page.
-- ❌ Validator inline in the controller — always in `<mod>/validators.ts`.
-- ❌ Using `#generated/controllers` in `routes.ts` when the codegen hasn't run yet for the new module — use direct dynamic imports (`const X = () => import('#<mod>/controllers/x_controller')`).
-- ❌ Adding controller methods that aren't `index/create/store/edit/update/destroy` to the resource — put them as separate `router.post(...)` calls in `routes.ts`.
+- ❌ Skipping `bouncer.authorize(...)` on any mutation — every write must be gated. A `where` clause is not authorization.
+- ❌ Sending a Lucid model to Inertia without a transformer — the shape leaks and page prop types drift.
+- ❌ A transformer with one variant returning everything — over-fetch, hurts the response payload. Trim variants per page.
+- ❌ Validator declared inline in the controller — always in `<mod>/validators/<entity>.ts`.
+- ❌ Custom verbs (`activate`, `publish`) added as extra methods on the resource controller — put them as separate `router.post(...)` calls with their own controller (or method), keeping the resource `.only([...])` list clean.
+- ❌ Controllers calling `auth.authenticate()` — the `auth()` middleware ran first; use `auth.getUserOrFail()`.
 
 ## Related skills
 
-[[module-scaffolding]] · [[actions-events]] · [[authorization]] · [[inertia]] · [[testing]] · [[i18n]] · [[migrations]]
+[[module-scaffolding]] · [[routes]] · [[actions-events]] · [[queries]] · [[authorization]] · [[inertia]] · [[testing]] · [[i18n]] · [[migrations]]
