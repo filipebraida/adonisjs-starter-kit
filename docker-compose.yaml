@@ -1,4 +1,4 @@
-name: repo
+name: adonisjs-starter-kit
 
 include:
   - ./apps/web/docker-compose.yaml

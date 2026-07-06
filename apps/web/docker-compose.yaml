@@ -1,7 +1,7 @@
 services:
   pgsql:
     container_name: '${COMPOSE_PROJECT_NAME}_pgsql'
-    image: postgres:18
+    image: postgres:18-alpine
     environment:
       POSTGRES_DB: '${DB_DATABASE:-default}'
       POSTGRES_USER: '${DB_USER?:err}'
@@ -11,17 +11,18 @@ services:
       - ./../../.github/postgres/dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
     ports:
       - '5432:5432'
-    restart: always
+    restart: unless-stopped
     networks:
       - sail
     healthcheck:
       test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE:-default}', '-U', '${DB_USER}']
-      retries: 3
+      interval: 10s
       timeout: 5s
+      retries: 3
 
   pgadmin:
     container_name: '${COMPOSE_PROJECT_NAME}_pgadmin'
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:9
     environment:
       PGADMIN_DEFAULT_EMAIL: '${PGADMIN_MAIL:-admin@repo.com}'
       PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PW:-secret}'
@@ -29,7 +30,7 @@ services:
       PGADMIN_REPLACE_SERVERS_ON_STARTUP: 'True'
     ports:
       - '5050:80'
-    restart: always
+    restart: unless-stopped
     volumes:
       - pgadmin:/root/.pgadmin
       - ./../../.github/pgadmin/servers.json:/pgadmin4/servers.json
@@ -38,7 +39,7 @@ services:
 
   mailpit:
     container_name: '${COMPOSE_PROJECT_NAME}_mailpit'
-    image: axllent/mailpit
+    image: axllent/mailpit:v1.21
     restart: unless-stopped
     volumes:
       - ./tmp/mailpit:/data

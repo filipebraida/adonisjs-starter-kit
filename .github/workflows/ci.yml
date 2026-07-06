@@ -63,7 +63,7 @@ jobs:
         run: pnpm coverage
 
       - name: Coverage summary
-        if: always()
+        if: success()
         working-directory: apps/web
         run: |
           {
