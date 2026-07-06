@@ -1,6 +1,6 @@
 import env from '#start/env'
-import { defineConfig } from '@adonisjs/lucid'
 import app from '@adonisjs/core/services/app'
+import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
   connection: 'postgres',
@@ -21,6 +21,9 @@ const dbConfig = defineConfig({
       },
       seeders: {
         paths: ['app/users/database/seeders'],
+      },
+      schemaGeneration: {
+        outputPath: './app/core/database/schema.ts',
       },
       debug: app.inDev,
     },
