@@ -1,6 +1,12 @@
 import { ArrowDown, ArrowUp } from 'lucide-react'
 
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@workspace/ui/components/card'
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@workspace/ui/components/card'
 import { cn } from '@workspace/ui/lib/utils'
 
 import { Sparkline } from '#analytics/ui/components/sparkline'

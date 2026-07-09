@@ -1,14 +1,15 @@
 @mjml()
   <mjml>
     <mj-head>
-      <mj-title>
-        {{ $props.get('title', appName) }}
-      </mj-title>
-      @if ($props.has('preview'))
+      <mj-title>{{ $props.get('title', appName) }}</mj-title>
+      @if($props.has('preview'))
         <mj-preview>{{ $props.get('preview') }}</mj-preview>
       @end
+
       <mj-attributes>
-        <mj-all font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" />
+        <mj-all
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        />
         <mj-text color="#1F2430" font-size="15px" line-height="1.55" padding="0" />
         <mj-button
           background-color="#141820"
@@ -19,13 +20,14 @@
           font-size="14px"
         />
       </mj-attributes>
-      <mj-style>
-        a { color: #2f67f6; text-decoration: none; }
-      </mj-style>
+      <mj-style>a { color: #2f67f6; text-decoration: none; }</mj-style>
     </mj-head>
-
     <mj-body background-color="#f7f7f8" width="600px">
-      <mj-section background-color="#ffffff" padding="28px 40px 20px" border-bottom="1px solid #E6E7EB">
+      <mj-section
+        background-color="#ffffff"
+        padding="28px 40px 20px"
+        border-bottom="1px solid #E6E7EB"
+      >
         <mj-column>
           <mj-text
             font-size="16px"
@@ -38,9 +40,7 @@
           </mj-text>
         </mj-column>
       </mj-section>
-
       {{{ await $slots.main() }}}
-
       <mj-section background-color="#f7f7f8" padding="24px 40px 32px">
         <mj-column>
           <mj-text padding="0" font-size="12px" color="#6E7585" align="center">

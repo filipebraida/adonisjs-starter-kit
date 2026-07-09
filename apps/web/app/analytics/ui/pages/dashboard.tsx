@@ -207,10 +207,7 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
                   <ChartTooltip
                     cursor={false}
                     content={
-                      <ChartTooltipContent
-                        hideLabel
-                        formatter={(value) => number(Number(value))}
-                      />
+                      <ChartTooltipContent hideLabel formatter={(value) => number(Number(value))} />
                     }
                   />
                   <Area
