@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react'
+import { Modal } from 'adonis-inertia-modal/react'
 import { MailPlus, Send } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -20,7 +21,6 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { urlFor } from '~/app/client'
 
-import { AppModal } from '#common/ui/components/app_modal'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
 import { ROLES, type Role as RoleSlug } from '#users/enums/role'
@@ -40,7 +40,7 @@ export default function InviteUserPage() {
   })
 
   return (
-    <AppModal maxWidth="md">
+    <Modal maxWidth="md">
       {({ close }) => (
         <div className="space-y-4">
           <header className="text-left space-y-1">
@@ -130,6 +130,6 @@ export default function InviteUserPage() {
           </footer>
         </div>
       )}
-    </AppModal>
+    </Modal>
   )
 }

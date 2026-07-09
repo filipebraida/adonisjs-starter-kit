@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react'
+import { Modal } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
 import { Progress } from '@workspace/ui/components/progress'
@@ -6,7 +7,6 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { urlFor } from '~/app/client'
 
-import { AppModal } from '#common/ui/components/app_modal'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
 import { ROLES } from '#users/enums/role'
@@ -23,7 +23,7 @@ export default function CreateUserPage() {
   })
 
   return (
-    <AppModal maxWidth="md">
+    <Modal maxWidth="md">
       {({ close }) => (
         <div className="space-y-4">
           <header className="text-left space-y-1">
@@ -68,6 +68,6 @@ export default function CreateUserPage() {
           </footer>
         </div>
       )}
-    </AppModal>
+    </Modal>
   )
 }

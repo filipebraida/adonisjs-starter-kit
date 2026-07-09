@@ -3,8 +3,9 @@
 import * as React from "react";
 import { Select as SelectPrimitive } from "radix-ui";
 
+import { useModalContainer } from "adonis-inertia-modal/react";
+
 import { cn } from "@workspace/ui/lib/utils";
-import { usePortalContainer } from "@workspace/ui/hooks/use-portal-container";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
 
 function Select({
@@ -68,8 +69,8 @@ function SelectContent({
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
   container?: React.ComponentProps<typeof SelectPrimitive.Portal>["container"];
 }) {
-  const contextContainer = usePortalContainer();
-  const resolvedContainer = container ?? contextContainer;
+  const modalContainer = useModalContainer();
+  const resolvedContainer = container ?? modalContainer;
   return (
     <SelectPrimitive.Portal container={resolvedContainer}>
       <SelectPrimitive.Content
