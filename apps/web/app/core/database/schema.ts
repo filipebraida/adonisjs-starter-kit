@@ -8,18 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class AuthAccessTokenSchema extends BaseModel {
-  static $columns = [
-    'abilities',
-    'createdAt',
-    'expiresAt',
-    'hash',
-    'id',
-    'lastUsedAt',
-    'name',
-    'tokenableId',
-    'type',
-    'updatedAt',
-  ] as const
+  static $columns = ['abilities', 'createdAt', 'expiresAt', 'hash', 'id', 'lastUsedAt', 'name', 'tokenableId', 'type', 'updatedAt'] as const
   $columns = AuthAccessTokenSchema.$columns
   @column()
   declare abilities: string
@@ -44,15 +33,7 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class NotificationPreferenceSchema extends BaseModel {
-  static $columns = [
-    'channels',
-    'createdAt',
-    'id',
-    'notificationName',
-    'tenantId',
-    'updatedAt',
-    'userId',
-  ] as const
+  static $columns = ['channels', 'createdAt', 'id', 'notificationName', 'tenantId', 'updatedAt', 'userId'] as const
   $columns = NotificationPreferenceSchema.$columns
   @column()
   declare channels: any
@@ -71,19 +52,7 @@ export class NotificationPreferenceSchema extends BaseModel {
 }
 
 export class NotificationSchema extends BaseModel {
-  static $columns = [
-    'content',
-    'createdAt',
-    'id',
-    'notifiableId',
-    'readAt',
-    'seenAt',
-    'status',
-    'tags',
-    'tenantId',
-    'type',
-    'updatedAt',
-  ] as const
+  static $columns = ['content', 'createdAt', 'id', 'notifiableId', 'readAt', 'seenAt', 'status', 'tags', 'tenantId', 'type', 'updatedAt'] as const
   $columns = NotificationSchema.$columns
   @column()
   declare content: any
@@ -166,17 +135,7 @@ export class UserRoleSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = [
-    'avatar',
-    'avatarUrl',
-    'createdAt',
-    'email',
-    'fullName',
-    'id',
-    'locale',
-    'password',
-    'updatedAt',
-  ] as const
+  static $columns = ['avatar', 'avatarUrl', 'createdAt', 'email', 'fullName', 'id', 'locale', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column()
   declare avatar: any | null

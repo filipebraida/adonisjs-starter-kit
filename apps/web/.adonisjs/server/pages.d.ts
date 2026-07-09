@@ -25,10 +25,5 @@ declare module '@adonisjs/inertia/types' {
     'users/index': ExtractProps<(typeof import('../../app/users/ui/pages/index.tsx'))['default']>
     'users/invite': ExtractProps<(typeof import('../../app/users/ui/pages/invite.tsx'))['default']>
     'users/settings': ExtractProps<(typeof import('../../app/users/ui/pages/settings.tsx'))['default']>
-    'analytics/validators/dashboard': ExtractProps<(typeof import('../../app/analytics/validators/dashboard.ts'))['default']>
-    'analytics/enums/period': ExtractProps<(typeof import('../../app/analytics/enums/period.ts'))['default']>
-    'analytics/queries/get_revenue_metrics': ExtractProps<(typeof import('../../app/analytics/queries/get_revenue_metrics.ts'))['default']>
-    'analytics/queries/get_user_metrics': ExtractProps<(typeof import('../../app/analytics/queries/get_user_metrics.ts'))['default']>
-    'analytics/queries/get_subscription_metrics': ExtractProps<(typeof import('../../app/analytics/queries/get_subscription_metrics.ts'))['default']>
   }
 }
