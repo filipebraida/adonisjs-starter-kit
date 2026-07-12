@@ -87,8 +87,9 @@ export default class MakeModule extends BaseCommand {
     this.make(
       'routes.ts',
       `import router from '@adonisjs/core/services/router'\n\n` +
-        `const ${pascal}Controller = () => import('#${name}/controllers/${name}_controller')\n\n` +
-        `router.get('/${name}', [${pascal}Controller, 'index']).as('${name}.index')\n`
+        `import { controllers } from '#generated/controllers'\n\n` +
+        `const { ${pascal} } = controllers.${name}\n\n` +
+        `router.get('/${name}', [${pascal}, 'index']).as('${name}.index')\n`
     )
     this.make(
       `controllers/${name}_controller.ts`,
@@ -100,8 +101,7 @@ export default class MakeModule extends BaseCommand {
     )
     this.make(
       'ui/pages/index.tsx',
-      `export default function ${pascal}IndexPage() {\n` +
-        `  return <h1>${pascal}</h1>\n}\n`
+      `export default function ${pascal}IndexPage() {\n` + `  return <h1>${pascal}</h1>\n}\n`
     )
     this.make(
       `tests/functional/${name}.spec.ts`,
@@ -208,7 +208,8 @@ export default class MakeModule extends BaseCommand {
     }
     const updated = src.replace(
       /(migrations:\s*\{[^}]*paths:\s*\[)([^\]]*)(\])/,
-      (_match, pre, list, post) => `${pre}${list.trimEnd().replace(/,\s*$/, '')}, '${needle}'${post}`
+      (_match, pre, list, post) =>
+        `${pre}${list.trimEnd().replace(/,\s*$/, '')}, '${needle}'${post}`
     )
     if (updated === src) {
       this.logger.error('could not wire config/database.ts — add the migrations path by hand')
@@ -223,6 +224,9 @@ export default class MakeModule extends BaseCommand {
     this.logger.info(`Module app/${this.name}/ created and wired.`)
     this.logger.info('Next: run `pnpm dev` (or `node ace ...`) to regenerate route/page types,')
     this.logger.info('then `pnpm typecheck`.')
-    if (this.db) this.logger.info('DB: add migrations under database/migrations, then `pnpm ace migration:fresh`.')
+    if (this.db)
+      this.logger.info(
+        'DB: add migrations under database/migrations, then `pnpm ace migration:fresh`.'
+      )
   }
 }

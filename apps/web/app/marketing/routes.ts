@@ -8,6 +8,8 @@
 */
 import router from '@adonisjs/core/services/router'
 
-const MarketingController = () => import('#marketing/controllers/marketing_controller')
+import { controllers } from '#generated/controllers'
 
-router.get('/', [MarketingController]).as('marketing.show')
+const { Marketing } = controllers.marketing
+
+router.get('/', [Marketing]).as('marketing.show')

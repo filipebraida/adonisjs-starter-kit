@@ -6,58 +6,45 @@
 | The routes file is used for defining the HTTP routes.
 |
 */
-import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
-const UsersController = () => import('#users/controllers/users_controller')
-const SettingsController = () => import('#users/controllers/settings_controller')
-const ProfileController = () => import('#users/controllers/profile_controller')
-const PasswordController = () => import('#users/controllers/password_controller')
-const InviteController = () => import('#users/controllers/invite_controller')
-const ImpersonatesController = () => import('#users/controllers/impersonates_controller')
-const TokensController = () => import('#users/controllers/tokens_controller')
+import { controllers } from '#generated/controllers'
+import { middleware } from '#start/kernel'
 
+const { Users, Settings, Profile, Password, Invite, Impersonates, Tokens } = controllers.users
+
+router.get('/users/invite', [Invite, 'show']).middleware(middleware.auth()).as('users.invite.show')
 router
-  .get('/users/invite', [InviteController, 'show'])
-  .middleware(middleware.auth())
-  .as('users.invite.show')
-router
-  .post('/users/invite', [InviteController, 'handle'])
+  .post('/users/invite', [Invite, 'handle'])
   .middleware(middleware.auth())
   .as('users.invite.handle')
 
 router
-  .post('/users/impersonate/:id', [ImpersonatesController, 'store'])
+  .post('/users/impersonate/:id', [Impersonates, 'store'])
   .middleware(middleware.auth())
   .as('users.impersonate.handle')
 
 router
-  .resource('/users', UsersController)
+  .resource('/users', Users)
   .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
   .use('*', middleware.auth())
   .as('users')
 
-router
-  .get('/settings', [SettingsController, 'show'])
-  .middleware(middleware.auth())
-  .as('settings.index')
+router.get('/settings', [Settings, 'show']).middleware(middleware.auth()).as('settings.index')
 
 router
-  .put('/settings/profile', [ProfileController, 'handle'])
+  .put('/settings/profile', [Profile, 'handle'])
   .middleware(middleware.auth())
   .as('profile.update')
 
 router
-  .put('/settings/password', [PasswordController, 'handle'])
+  .put('/settings/password', [Password, 'handle'])
   .middleware(middleware.auth())
   .as('password.update')
 
 router
-  .delete('/settings/tokens/:id', [TokensController, 'destroy'])
+  .delete('/settings/tokens/:id', [Tokens, 'destroy'])
   .middleware(middleware.auth())
   .as('tokens.destroy')
 
-router
-  .post('/settings/tokens', [TokensController, 'store'])
-  .middleware(middleware.auth())
-  .as('tokens.store')
+router.post('/settings/tokens', [Tokens, 'store']).middleware(middleware.auth()).as('tokens.store')

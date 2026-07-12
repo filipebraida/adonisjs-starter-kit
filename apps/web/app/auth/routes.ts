@@ -7,41 +7,38 @@
 |
 */
 import router from '@adonisjs/core/services/router'
+
+import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
 
-const SignInController = () => import('#auth/controllers/sign_in_controller')
-const SignOutController = () => import('#auth/controllers/sign_out_controller')
-const SignUpController = () => import('#auth/controllers/sign_up_controller')
-const ForgotPasswordController = () => import('#auth/controllers/forgot_password_controller')
-const ResetPasswordController = () => import('#auth/controllers/reset_password_controller')
-const SocialController = () => import('#auth/controllers/social_controller')
+const { SignIn, SignOut, SignUp, ForgotPassword, ResetPassword, Social } = controllers.auth
 
-router.get('/login', [SignInController, 'show']).use(middleware.guest()).as('auth.sign_in.show')
-router.post('/login', [SignInController]).as('auth.sign_in.handle')
-router.post('/logout', [SignOutController]).as('auth.sign_out.handle')
+router.get('/login', [SignIn, 'show']).use(middleware.guest()).as('auth.sign_in.show')
+router.post('/login', [SignIn]).as('auth.sign_in.handle')
+router.post('/logout', [SignOut]).as('auth.sign_out.handle')
 
-router.get('/sign-up', [SignUpController, 'show']).use(middleware.guest()).as('auth.sign_up.show')
+router.get('/sign-up', [SignUp, 'show']).use(middleware.guest()).as('auth.sign_up.show')
 
-router.post('/sign-up', [SignUpController]).use(middleware.guest()).as('auth.sign_up.handle')
+router.post('/sign-up', [SignUp]).use(middleware.guest()).as('auth.sign_up.handle')
 router
-  .get('/forgot-password', [ForgotPasswordController, 'show'])
+  .get('/forgot-password', [ForgotPassword, 'show'])
   .as('auth.forgot_password.show')
   .use(middleware.guest())
-router.post('/forgot-password', [ForgotPasswordController]).as('auth.forgot_password.handle')
+router.post('/forgot-password', [ForgotPassword]).as('auth.forgot_password.handle')
 router
-  .get('/reset-password/:token', [ResetPasswordController, 'show'])
+  .get('/reset-password/:token', [ResetPassword, 'show'])
   .use(middleware.guest())
   .as('auth.reset_password.show')
 router
-  .post('/reset-password/:token', [ResetPasswordController])
+  .post('/reset-password/:token', [ResetPassword])
   .use(middleware.guest())
   .as('auth.reset_password.handle')
 
 router
-  .get('/:provider/redirect', [SocialController, 'redirect'])
+  .get('/:provider/redirect', [Social, 'redirect'])
   .where('provider', /google/)
   .as('social.create')
-router.get('/:provider/callback', [SocialController, 'callback']).where('provider', /google/)
+router.get('/:provider/callback', [Social, 'callback']).where('provider', /google/)
 router
   .post('/switch/:locale', () => {})
   .use(middleware.switchLocale())
