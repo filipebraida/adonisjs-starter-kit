@@ -20,6 +20,7 @@ AdonisJS 7 (session auth + Bouncer + Lucid), Inertia + React 19, Tailwind 4 + sh
 - `pnpm typecheck && pnpm lint` — before saying "done"
 - `pnpm infra:up` — Postgres + Mailpit via compose
 - `pnpm ace <cmd>` — Adonis CLI from the repo root (shortcut for `pnpm --filter web exec node ace <cmd>`)
+- `pnpm ace make:module <name> [--db] [--i18n] [--events]` — scaffold a module and wire every touchpoint (alias, preload, migration path, tsconfig include, i18n loader)
 
 ## Done criteria
 
@@ -59,7 +60,7 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 
 **Backbone**
 
-- `module-scaffolding` — bootstrap a new `app/<mod>/` (dirs + alias + preload + migration paths).
+- `module-scaffolding` — bootstrap a new `app/<mod>/` via `node ace make:module` (wires alias + preload + migration paths + tsconfig include).
 - `crud` — full stack (route → controller → validator → policy → action → transformer → Inertia page).
 - `routes` — resource vs. verb routes, numeric matchers, naming.
 - `queries` — read side: list queries + per-concept read models composed in the controller.
