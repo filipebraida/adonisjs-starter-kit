@@ -2,7 +2,7 @@
 
 Per-concept read models for dashboards, reports, and homepage widgets. Input is just the scope (`{ period }`, `{ tenantId }`, `{ userId }`). Return is a plain object with the KPIs / trends / lists for that one concept. The controller composes several with `Promise.all([...])`.
 
-Canonical: `app/analytics/queries/get_revenue_metrics.ts`, composed in `app/analytics/controllers/dashboard_controller.ts`.
+Canonical shape + composition: `app/analytics/controllers/dashboard_controller.ts` composes `app/analytics/queries/get_*_metrics.ts` with `Promise.all`. Caveat: those query bodies return **demo data** (synthesized, marked `// Demo data` in-file) — the kit ships no DB-backed read model yet. Copy the return-`type` and the controller composition; write real Lucid aggregates in the body (don't copy the placeholder generator).
 
 ## Rules
 
