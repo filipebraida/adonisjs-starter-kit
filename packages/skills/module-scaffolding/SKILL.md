@@ -41,7 +41,7 @@ Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**`
 - Migration paths: `apps/web/config/database.ts` → `migrations.paths`.
 - tsconfig include (client typecheck): `apps/web/app/core/ui/tsconfig.json` → `include` (see the `auth`/`users` `ui/**` + `types/**` entries).
 - Generator: `apps/web/commands/make_module.ts`.
-- Simplest module (only routes + controllers): `apps/web/app/analytics/`.
+- Smallest module — just `routes.ts` + a controller; add other layers only as the module needs them.
 - Full-featured module (actions, policies, transformers, migrations, seeders, tests): `apps/web/app/users/`.
 - Module with events + notifications: `apps/web/app/users/start/events.ts` + `apps/web/app/users/notifications/user_welcome_notification.ts`.
 
