@@ -87,6 +87,7 @@ In-app notifications persist as rows in the `notifications` table and stream to 
    })
    ```
 4. Frontend rendering reads `content.title` / `content.body` / `content.link` from the persisted row — the bell renders every notification uniformly. `kind` on the transmit message is available for client-side filtering by type if needed.
+5. Verify: a functional spec that emits the event and asserts a notification row persisted for the user. Don't fake the emitter in a listener spec — see [[testing]].
 
 ### Custom SSE channel (not a Facteur notification)
 

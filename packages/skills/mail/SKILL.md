@@ -83,6 +83,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 3. **Mount the edge namespace** for the module — `app/<mod>/start/view.ts` calls `edge.mount('<mod>', new URL('ui', BASE_URL))`. Preload the file via `adonisrc.ts` — see [[module-scaffolding]].
 4. **i18n**: add `emails.<name>.{subject,title,subtitle,actionBtn,defaultMessage}` to the locale JSON — see [[i18n]].
 5. **Trigger via event**: emit the domain event from the action; the listener in `<mod>/start/events.ts` calls `mail.send(new Mail(...))` — see [[actions-events]].
+6. **Verify**: a spec that asserts the send with `mail.fake()` (see Testing below) — not done until it confirms the mail dispatches.
 
 ### Change the shared look
 

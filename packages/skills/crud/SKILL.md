@@ -186,6 +186,10 @@ Every UI string used in the pages needs an entry in every supported locale JSON 
 - Unit: one per action.
 - See [[testing]].
 
+### 12. Verify
+
+Not done until it runs green. Run `pnpm typecheck && pnpm lint`, then the module's functional spec (`pnpm ace test --files="<entities>"`). Writing the specs in step 11 is not the finish line — an unrun or red spec means the feature isn't done.
+
 ## Anti-patterns
 
 - ❌ Business logic in the controller — move it to an action.
