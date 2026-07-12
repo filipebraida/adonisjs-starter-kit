@@ -40,11 +40,13 @@ app/<module>/
   queries/            # read-only Lucid query classes
   policies/           # extend BasePolicy, one per resource
   models/, mixins/, services/, exceptions/, enums/
+  middleware/         # singular — HTTP middleware (registered in start/kernel.ts)
   transformers/
   validators/         # one file per entity — validators/users.ts, validators/tokens.ts
   database/{factories,migrations,seeders}/
   resources/lang/     # i18n JSON, per module per locale
   ui/                 # Inertia pages + React components
+  mails/              # BaseMail classes — *_notification.ts (see the mail skill)
   notifications/      # Notification classes (if the module emits)
   start/{events,view}.ts
   routes.ts
@@ -87,6 +89,15 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 - Comments only for non-obvious WHY — a hidden constraint, subtle invariant, workaround. Don't narrate what the code does.
 - Don't create README / doc files unless the user asks for them.
 - Prefer editing existing files over creating new ones.
+
+## UI layers — which to import
+
+Two tiers, by design (not duplication):
+
+- `@workspace/ui/*` (`packages/ui`) — **headless primitives** (shadcn/Radix): `Field`, `FieldError`, `toast`, buttons, tables. No app or Inertia knowledge.
+- `#common/ui/*` — **Inertia-aware composition** that wraps the primitives: `Form`/`Field`/`FieldError` bind form errors via `FormErrorsContext` + `FieldNameContext`; `useFlashToasts` pipes Inertia flash into the primitive `toast`.
+
+Rule: inside Inertia pages/forms import from `#common/ui`; reach for `@workspace/ui` directly only for a primitive that has no app wrapper. Add new primitives to `packages/ui`, new app-composition to `#common/ui`.
 
 ## Git — non-negotiables
 
