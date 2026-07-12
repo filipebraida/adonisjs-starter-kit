@@ -21,6 +21,11 @@ Inertia is the bridge between AdonisJS routes and React pages: controllers call 
 - **Navigation between pages**: `router.visit(url)`; `router.reload({ only: ['propName'], async: true })` for partial reloads; `router.get/post/put/delete(url, data, options)` for programmatic form submits.
 - **Types**: server-generated data types come from an ace codegen; the client alias makes them available across pages. Don't duplicate the type in the page — `import type` from the codegen path.
 
+## Repo refs
+
+- Page resolver: `app/core/ui/app/app.tsx`. Shared props (`share()`): `app/core/middleware/inertia_middleware.ts`.
+- Modal helper: `app/core/inertia/modal.ts`. Form: `app/users/ui/components/profile_form.tsx`. Page + typed props: `app/users/ui/pages/index.tsx`.
+
 ## Doc refs
 
 - AdonisJS Inertia — https://docs.adonisjs.com/guides/views-and-templates/inertia

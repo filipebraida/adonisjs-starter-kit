@@ -2,6 +2,8 @@
 
 Paginated Lucid queries with search, filter, and sort. Input is `{ filters, pagination }`; return is `ModelPaginatorContract<Model>`. Consumed by a resource `index` action + Inertia list page.
 
+Canonical: `app/users/queries/list_users.ts`, consumed by `app/users/controllers/users_controller.ts`.
+
 ## Rule
 
 - **Add an `id` tiebreaker at the end of `orderBy`** — without it, two rows sharing the sorted column can swap pages between requests.

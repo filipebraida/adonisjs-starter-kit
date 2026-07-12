@@ -67,6 +67,11 @@ Two options, in order of preference:
 1. **Hardcode the pattern + add a spec that guards it.** Export the pattern as a constant, and write a functional test asserting the constant equals `router.findOrFail(name).pattern`. If the route ever renames, the test breaks before deploy.
 2. **Defer with `app.ready(...)`.** Only works when the pattern is needed at request-handling time. `app.ready` fires before `router.commit()`, so it does **not** rescue `transmit.authorize`.
 
+## Repo refs
+
+- Resourceful + verb routes with numeric matchers: `app/users/routes.ts`.
+- Verb-only routes: `app/notifications/routes.ts`.
+
 ## Anti-patterns
 
 - ❌ Numeric `:id` without `.where('id', router.matchers.number())` — 500 on any non-numeric URL.

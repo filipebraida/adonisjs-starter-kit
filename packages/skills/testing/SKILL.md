@@ -42,6 +42,12 @@ const events = emitter.fake(['user:registered']) // ✅
 - **JSON vs HTML**: chain `.accept('json')` when asserting a JSON response body, `.withInertia()` for Inertia flows so the exception handler treats the request as UI.
 - **DB assertions**: `db.assertHas('table', { column: value })`, `db.assertMissing('table', { ... })` — plugin from `@adonisjs/lucid/plugins/db`.
 
+## Repo refs
+
+- Functional spec (per-test transaction via `client`): `app/users/tests/functional/users_endpoint.spec.ts`.
+- Unit spec (sinon, action in isolation): `app/users/tests/unit/create_user.spec.ts`.
+- RBAC helper: `tests/helpers/rbac.ts`. Bootstrap fakes: `tests/bootstrap.ts`.
+
 ## Doc refs
 
 - Japa runner — https://japa.dev/docs

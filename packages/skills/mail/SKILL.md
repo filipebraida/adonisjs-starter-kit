@@ -20,6 +20,12 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 - **Env**: `EMAIL_FROM` required; `APP_NAME` optional (has a fallback); `APP_URL` required. SMTP vars for local dev (typically Mailpit) and the prod driver's API key (e.g. `RESEND_API_KEY`).
 - **i18n**: the translation shape is a plain interface (`subject`, `title`, `subtitle`, `actionBtn`, `defaultMessage`). Passed from the caller. Keys live per module under `emails.<name>.*` in the locale JSON — see [[i18n]].
 
+## Repo refs
+
+- Mail class + `prepare()`: `app/auth/mails/reset_password_notification.ts`, `app/users/mails/welcome_notification.ts`.
+- Shared MJML layout: `resources/views/components/email/layout.edge`. Template: `app/users/ui/emails/welcome.edge`.
+- `mailContext()`: `app/common/services/mail_context.ts`.
+
 ## Doc refs
 
 - AdonisJS Mail — https://docs.adonisjs.com/guides/digging-deeper/mail

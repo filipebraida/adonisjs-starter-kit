@@ -33,6 +33,11 @@ Public marketing pages typically **do not use a shell** — they compose their o
 
 Any additional shell (checkout, kiosk, print-friendly) is added only when its chrome is truly distinct.
 
+## Repo refs
+
+- The four shells: `app/common/ui/components/admin_layout.tsx`, `app/common/ui/components/authenticated_layout.tsx`, `app/auth/ui/components/auth_layout.tsx`, `app/marketing/ui/components/marketing_layout.tsx`.
+- Nav config (single file): `app/common/ui/config/navigation.config.ts`.
+
 ## Doc refs
 
 - shadcn/ui Sidebar block (typical upstream of the sidebar primitive) — https://ui.shadcn.com/blocks#sidebar

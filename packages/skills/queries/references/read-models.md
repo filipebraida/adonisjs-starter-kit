@@ -2,6 +2,8 @@
 
 Per-concept read models for dashboards, reports, and homepage widgets. Input is just the scope (`{ period }`, `{ tenantId }`, `{ userId }`). Return is a plain object with the KPIs / trends / lists for that one concept. The controller composes several with `Promise.all([...])`.
 
+Canonical: `app/analytics/queries/get_revenue_metrics.ts`, composed in `app/analytics/controllers/dashboard_controller.ts`.
+
 ## Rules
 
 - **One query per business concept** — not one per widget (fragmentation), not one per screen (couples the query to a specific UI).

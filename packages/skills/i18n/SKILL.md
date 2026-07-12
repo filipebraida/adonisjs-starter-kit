@@ -25,6 +25,11 @@ Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `
 - **Locale switcher UI**: `<LanguageSwitcher />` lives in every logged-in shell — see [[layout-shells]].
 - **Adding a locale** means updating `supportedLocales` in `config/i18n.ts`, adding a folder under every module's `resources/lang/`, and confirming every key exists in the new locale.
 
+## Repo refs
+
+- Locale config + per-module loaders: `config/i18n.ts`. Keys: `app/users/resources/lang/{en,fr,pt}/users.json`.
+- Frontend hook: `app/common/ui/hooks/use_translation.ts`. Detection middleware: `app/core/middleware/detect_user_locale_middleware.ts`.
+
 ## Doc refs
 
 - AdonisJS i18n — https://docs.adonisjs.com/guides/digging-deeper/i18n

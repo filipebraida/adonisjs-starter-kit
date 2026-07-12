@@ -33,6 +33,14 @@ On the frontend a typed `GlobalPermissions` object flows through Inertia's share
   - `requireManageRolesIfEscalating(executor, desiredRoles)` — enforces the check even when a validator accepted a non-default role. Call at create / invite paths.
   - `AdminLockoutException` — prevents a user from removing their own `admin` role. Raised inside `SyncUserRoles` when target and executor are the same and admin is being dropped.
 
+## Repo refs
+
+- Capabilities + roles: `app/users/enums/permission.ts`, `app/users/enums/role.ts`.
+- `WithRoles` mixin: `app/users/mixins/with_roles.ts`. Policy: `app/users/policies/user_policy.ts`.
+- Escalation guards: `app/users/actions/sync_user_roles.ts`.
+- Shared `can` prop → frontend `useCan`: `app/users/services/global_permissions.ts`, `app/common/ui/hooks/use_can.ts`.
+- Central registries: `app/core/policies/main.ts`, `app/core/abilities/main.ts`.
+
 ## Doc refs
 
 - AdonisJS Bouncer — https://docs.adonisjs.com/guides/security/authorization

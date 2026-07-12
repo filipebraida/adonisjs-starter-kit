@@ -32,6 +32,12 @@ Business logic lives in **actions**; cross-cutting effects run through **events*
 - **Guards as helper functions** at the top of the action file — e.g. `requireManageRoles(executor)` throws if not permitted. Keeps the action body short and the guard reusable across actions.
 - **Controllers call actions**: `await new Action().handle(input)`. Never instantiate an action inside another action; if two actions need shared work, extract a service (behavior with side effects) or a query (read-only).
 
+## Repo refs
+
+- Action shape (`.handle`, no `HttpContext`): `app/users/actions/create_user.ts`.
+- Reusable defense-in-depth guards: `app/users/actions/sync_user_roles.ts`.
+- Event typing (declaration merge): `app/users/types/events.ts`; listener wiring: `app/users/start/events.ts`.
+
 ## Doc refs
 
 - AdonisJS emitter — https://docs.adonisjs.com/guides/digging-deeper/emitter

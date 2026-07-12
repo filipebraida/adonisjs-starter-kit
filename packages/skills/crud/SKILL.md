@@ -30,6 +30,15 @@ Authentication is the middleware's job — controllers never call `authenticate(
 - **Query** — read-only, `<mod>/queries/list_<entities>.ts`. Full patterns (list queries + read models for aggregate screens) live in [[queries]].
 - **Inertia pages** — under `<mod>/ui/pages/<entity>/`. Index is a full page; create/edit are modals mounted over the index. See [[inertia]].
 
+## Repo refs
+
+The users module is the canonical end-to-end CRUD:
+
+- Route → `app/users/routes.ts`. Thin controller → `app/users/controllers/users_controller.ts`.
+- Validator → `app/users/validators/users.ts`. Policy → `app/users/policies/user_policy.ts`.
+- Action → `app/users/actions/create_user.ts`. Transformer variants → `app/users/transformers/user_transformer.ts`.
+- List query → `app/users/queries/list_users.ts`. Pages → `app/users/ui/pages/`.
+
 ## Doc refs
 
 - Routing (resource routes) — https://docs.adonisjs.com/guides/basics/routing#resourceful-routes

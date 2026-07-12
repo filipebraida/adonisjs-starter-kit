@@ -41,6 +41,11 @@ File uploads are managed by [`@jrmc/adonis-attachment`](https://github.com/batos
 - **Fallback URL**: Transformers usually resolve `variant.url ?? this.resource.<remoteUrl>` so an externally-hosted URL (social-auth avatar, S3 direct link) works when no local upload exists.
 - **Drive config** picks the disk (`fs`, `s3`, `gcs`, …). The `DRIVE_DISK` env var selects it.
 
+## Repo refs
+
+- `@attachment` field + `preComputeUrls` on read: `app/users/models/user.ts` (avatar).
+- Converters (resize / webp): `config/attachment.ts`.
+
 ## Doc refs
 
 - Package README — https://github.com/batosai/adonis-attachment
