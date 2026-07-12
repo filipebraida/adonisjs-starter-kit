@@ -1,6 +1,7 @@
 ---
 name: git-commit
-description: 'Execute a git commit that follows semantic conventional-commits — type, optional scope, imperative subject in English under 70 chars, body explaining WHY. Use when the user asks to commit changes, create a git commit, or types "/commit".'
+description: 'Execute a git commit that follows semantic conventional-commits — type, optional scope, imperative subject in English under 70 chars, body explaining WHY. User-invoked via /git-commit or "/commit".'
+disable-model-invocation: true
 license: MIT
 allowed-tools: Bash
 ---
@@ -121,13 +122,8 @@ EOF
 )"
 ```
 
-## Best practices
+## Repo conventions
 
-- One logical change per commit. If the diff is doing two things, split it.
-- Imperative mood: `add`, `fix`, `replace` — not `added`, `fixed`, `replaces`.
-- Subject in English, lowercase, ≤ 70 chars, no trailing period.
-- Body wraps around 72 chars.
-- Reference issues in the footer (`Closes #123`, `Refs #456`), not the subject.
 - **Do not** add `Co-Authored-By` or coauthor trailers unless the user explicitly requests them.
 - Avoid emojis unless the user asks for them.
 

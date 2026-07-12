@@ -49,6 +49,7 @@ app/<module>/
   ui/                 # Inertia pages + React components
   mails/              # BaseMail classes — *_notification.ts (see the mail skill)
   notifications/      # Notification classes (if the module emits)
+  types/events.ts     # EventsList declaration merge (if the module emits)
   start/{events,view}.ts
   routes.ts
   tests/{unit,functional}/

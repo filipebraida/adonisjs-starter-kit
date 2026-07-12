@@ -24,7 +24,6 @@ Standard Lucid migrations — `BaseSchema` subclasses in `app/<mod>/database/mig
 - **Migration paths**: append `'app/<mod>/database/migrations'` to `apps/web/config/database.ts` when the module first gets a migration. Same for seeder paths (`seeders.paths`).
 - **Postgres types**: `text` for strings without hard limits, `jsonb` for JSON payloads (not `json` — `jsonb` is queryable and indexable), `timestamp` for datetimes.
 - **Indexes**: declare with `table.index([...])` in the same migration. For lookup columns (`user_id`, `tenant_id`, `notifiable_id`), always add.
-- **`schema.ts` is regenerated** on every `migration:run` / `migration:fresh` — commit the diff alongside the migration change. Framework-owned; don't hand-edit or lint it.
 
 ## Repo refs
 

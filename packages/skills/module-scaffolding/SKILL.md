@@ -1,6 +1,7 @@
 ---
 name: module-scaffolding
-description: 'How to add a new module to this AdonisJS monorepo. Prefer `node ace make:module` — it scaffolds and wires every touchpoint. Otherwise there is no autoloader: preloads, aliases, migration paths, tsconfig includes and (optionally) events + view mounts are all explicit, and missing one makes the module (or its event types) silently break. Trigger on: "create new module", "add module X", "bootstrap module", "scaffold module".'
+description: 'How to add a new module to this AdonisJS monorepo — prefer `node ace make:module`, which scaffolds and wires every touchpoint. User-invoked via /module-scaffolding when wiring a module by hand or adding a piece later.'
+disable-model-invocation: true
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
@@ -26,26 +27,7 @@ Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**`
 
 ## Conventions
 
-- **Existing modules**: `auth`, `users`, `marketing`, `analytics`, `common`, `core`, `notifications`.
-- **Module dir tree** (create only the pieces you need — none are required):
-  ```
-  app/<mod>/
-    actions/            # single-purpose class with .handle(input)
-    controllers/        # thin: validate → action → redirect/render
-    queries/            # read-only Lucid query classes
-    policies/           # extend BasePolicy, one per resource
-    models/, mixins/, services/, exceptions/, enums/
-    transformers/
-    validators.ts
-    database/{factories,migrations,seeders}/
-    resources/lang/     # i18n JSON, per module per locale
-    ui/                 # Inertia pages + React components
-    types/events.ts     # EventsList declaration merge (if the module emits)
-    notifications/      # Notification classes (if the module emits)
-    start/{events,view}.ts
-    routes.ts
-    tests/{unit,functional}/
-  ```
+- **Module dir tree & existing modules** — see AGENTS.md → "Architecture — module per bounded context" (always in context). Create only the pieces you need; `routes.ts` is the only mandatory file.
 - **Aliases go in** `apps/web/package.json` → `"imports"`. Add `"#<mod>/*": "./app/<mod>/*.js"`.
 - **Preloads go in** `apps/web/adonisrc.ts` → `preloads`. Always add `() => import('#<mod>/routes')` at minimum. Add `#<mod>/start/events` if the module emits or listens. Add `#<mod>/start/view` if it mounts edge templates.
 - **Migrations/seeders** paths append to `apps/web/config/database.ts` → `connections.postgres.migrations.paths` and `seeders.paths`.

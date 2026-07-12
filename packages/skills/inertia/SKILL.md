@@ -119,7 +119,7 @@ Good for badges and counters that mutate independently of the current page.
 ## Anti-patterns
 
 - ❌ Hardcoding URLs (`/users/${id}`) — use `urlFor('users.edit', { id })`.
-- ❌ Sending Lucid models to `inertia.render(...)` — always run through a Transformer variant. The shape leaks and the response type drifts.
+- ❌ Sending Lucid models to `inertia.render(...)` — run through a Transformer variant ([[crud]]).
 - ❌ Adding page-only providers at the page level — providers belong at the root client entry.
 - ❌ Sharing per-page data via the middleware's `share()` — that inflates every response. Per-request data goes in the controller's `inertia.render(...)`.
 - ❌ Using `<a href>` for internal navigation — use `<Link>` from `@adonisjs/inertia/react` or `router.visit`.

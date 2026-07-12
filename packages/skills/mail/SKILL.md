@@ -18,7 +18,6 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 - **Shared MJML layout** is the single source of truth for typography, colors, header, footer. Change once, all emails update.
 - **`mailContext()`** returns `{ appName, appUrl }` from env with a fallback name. Every mail class spreads it into `htmlView` props so the layout can render brand chrome.
 - **Env**: `EMAIL_FROM` required; `APP_NAME` optional (has a fallback); `APP_URL` required. SMTP vars for local dev (typically Mailpit) and the prod driver's API key (e.g. `RESEND_API_KEY`).
-- **Trigger via events, not directly from actions** — the listener in `<mod>/start/events.ts` calls `mail.send(new Mail(...))`. See [[actions-events]].
 - **i18n**: the translation shape is a plain interface (`subject`, `title`, `subtitle`, `actionBtn`, `defaultMessage`). Passed from the caller. Keys live per module under `emails.<name>.*` in the locale JSON — see [[i18n]].
 
 ## Doc refs
