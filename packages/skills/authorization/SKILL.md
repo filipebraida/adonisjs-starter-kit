@@ -18,7 +18,7 @@ On the frontend a typed `GlobalPermissions` object flows through Inertia's share
 
 ## Rules
 
-- **Single source of truth for capabilities** in a `PERMISSIONS` const object under the `users` module. Naming: `<mod>.<action>` (`users.create`, `tokens.view_list`). Adding a permission = adding one entry + referencing it wherever it's gated.
+- **Single source of truth for capabilities** in a `PERMISSIONS` const object under the `users` module. Naming: `<mod>.<action>` (`users.create`, `tokens.view_list`). Adding a permission = adding one entry + referencing it wherever it's gated. A new module's capabilities go in this **same** const — the `<mod>.<action>` naming already namespaces them; don't fork a second `PERMISSIONS`. One central catalog; the policies that consume it stay in each module.
 - **Role slugs** live in a `ROLES` const with a matching `ROLE_WEIGHTS` map. The weights drive `mainRole()` for display ordering. Adding a role = new entry + a seed that grants its permissions.
 - **Roles store their own permissions** on the `Role` model as a JSON column (`role.permissions: Permission[]`). Seed with `Role.updateOrCreate({ name }, { permissions: [...] })`.
 - **`WithRoles` mixin** composes into `User` next to `withAuthFinder`. It exposes:

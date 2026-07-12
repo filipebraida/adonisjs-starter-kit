@@ -55,6 +55,17 @@ app/<module>/
   tests/{unit,functional}/
 ```
 
+### Dependency direction
+
+Feature modules (`auth`, `users`, `marketing`, `analytics`, `notifications`) depend only on `common`, `core`, and themselves. The one sanctioned exception is `auth → users` — auth is behavior over the identity aggregate that `users` owns. `core` and `common` may import `User`: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
+
+### Naming is wiring
+
+Two conventions the tooling enforces silently — get the name wrong and there's no error, just a missing entry:
+
+- **Filename globs feed the typed registries.** `*_controller.ts` and `*_transformer.ts` are indexed by `indexEntities` into `#generated/controllers` and the shared-props types. A different suffix is silently absent from the registry.
+- **Transformer variants are named `for<Screen>`** — `forList`, `forEdit`, `forProfile`, `forSharedProps` — over a `toObject()` base, consumed as `Transformer.transform(x).useVariant('forEdit')`. See `app/users/transformers/user_transformer.ts`.
+
 ## Skills — where the detailed workflows live
 
 Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills --agent claude-code` (or `--all`). **Prefer loading the relevant skill over guessing** — every skill has repo refs to canonical examples and external doc links. Only the invariants below need to hold when a skill isn't loaded.

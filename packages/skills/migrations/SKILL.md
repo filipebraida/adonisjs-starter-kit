@@ -24,6 +24,11 @@ Standard Lucid migrations — `BaseSchema` subclasses in `app/<mod>/database/mig
 - **Migration paths**: append `'app/<mod>/database/migrations'` to `apps/web/config/database.ts` when the module first gets a migration. Same for seeder paths (`seeders.paths`).
 - **Postgres types**: `text` for strings without hard limits, `jsonb` for JSON payloads (not `json` — `jsonb` is queryable and indexable), `timestamp` for datetimes.
 - **Indexes**: declare with `table.index([...])` in the same migration. For lookup columns (`user_id`, `tenant_id`, `notifiable_id`), always add.
+- **Cross-module FKs live with the table's owner.** An `alter_table` or foreign-key column on another module's table belongs in that module's migration, not yours. If ownership is muddy, add a join table in your own module instead — don't reach into a table you don't own.
+
+## Leaving the seed (real data)
+
+The edit-in-place + `migration:fresh` convention holds **only while there is no data you can't drop**. Once a deployment has real rows, switch to the standard policy: never edit a shipped migration, never `migration:fresh` — add a new `alter_table` migration per change and run `migration:run`. The starter-kit rule is a bootstrapping affordance, not a production one.
 
 ## Repo refs
 
