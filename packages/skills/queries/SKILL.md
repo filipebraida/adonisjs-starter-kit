@@ -13,8 +13,8 @@ Reads live in `app/<mod>/queries/` — never `services/` (those are for behavior
 
 The two shapes never coexist in one task. Choose by what you're building:
 
-- **List query** — a paginated CRUD table (search / filter / sort), returning `ModelPaginatorContract<Model>` for a resource `index`. → read `references/list-queries.md`.
-- **Read model** — an aggregate screen (dashboard, report): one query per business concept, composed by the controller with `Promise.all([...])`. → read `references/read-models.md`.
+- **List query** — a paginated CRUD table (search / filter / sort), returning `ModelPaginatorContract<Model>` for a resource `index`. → [references/list-queries.md](references/list-queries.md).
+- **Read model** — an aggregate screen (dashboard, report): one query per business concept, composed by the controller with `Promise.all([...])`. → [references/read-models.md](references/read-models.md).
 
 ## Rules (both flavors)
 
