@@ -34,7 +34,7 @@ The kit ships no DB-backed read model yet — `analytics` is demo data (synthesi
      new GetUserMetrics().handle({ period }),
      new GetSubscriptionMetrics().handle({ period }),
    ])
-   return inertia.render('analytics/dashboard', { period, revenue, users, subscriptions })
+   return inertia.render('<mod>/dashboard', { period, revenue, users, subscriptions })
    ```
 6. Page consumes types via `import type`:
    ```ts
