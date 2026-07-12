@@ -40,13 +40,16 @@ export default class SignInController {
     const key = `login_${request.ip()}_${email}`
 
     const [errors, user] = await this.loginLimiter.penalize(key, async () => {
-      return new SignIn().handle({ email, password, auth, session })
+      return new SignIn().handle({ email, password })
     })
 
     if (errors) {
       session.flash('error', i18n.t('errors.E_TOO_MANY_REQUESTS'))
       return response.redirect().toRoute('auth.sign_in.show')
     }
+
+    session.regenerate()
+    await auth.use('web').login(user)
 
     if (user.locale) {
       setUserLocaleCookie(response, user.locale)

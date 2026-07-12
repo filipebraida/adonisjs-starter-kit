@@ -20,8 +20,9 @@ export default class SignUpController {
       email: payload.email,
       password: payload.password,
       locale: i18n.locale,
-      auth,
     })
+
+    await auth.use('web').login(user)
 
     if (user.locale) {
       setUserLocaleCookie(response, user.locale)
