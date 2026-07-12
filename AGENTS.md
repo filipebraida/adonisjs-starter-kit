@@ -6,7 +6,7 @@
 
 ## Scope
 
-- Prefer the smallest change that satisfies the request. Don't refactor unrelated code, don't rename identifiers "on the way", don't restructure imports beyond the diff.
+- **Minimal diff.** Prefer the smallest change that satisfies the request — don't refactor unrelated code, rename identifiers "on the way", or restructure imports beyond the diff.
 - If the task drifts, ask before expanding scope.
 
 ## Stack

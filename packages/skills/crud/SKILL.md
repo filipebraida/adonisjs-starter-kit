@@ -41,6 +41,8 @@ Authentication is the middleware's job — controllers never call `authenticate(
 
 Prerequisite: the module exists — see [[module-scaffolding]].
 
+Build in a **vertical slice**: wire `index` end-to-end first (policy → query → transformer → page) until the list renders and its spec is green, then widen to create/edit/delete. A thin working path surfaces wiring breakage before you've written seven validators and policies against it. The steps below are the layers each slice passes through, not a breadth-first "all validators, then all policies" order.
+
 ### 1. Model + migration + factory
 
 - `app/<mod>/models/<entity>.ts` — Lucid `BaseModel` subclass with `@column()` declarations. Relationships and computed getters live here too.

@@ -18,7 +18,7 @@ File uploads are managed by [`@jrmc/adonis-attachment`](https://github.com/batos
   ```
   `preComputeUrl: false` keeps model reads cheap — URLs are computed on demand by the static helper.
 - **Converters** live in `config/attachment.ts` as a keyed record. Each converter declares options (resize, format, etc.). The variant names in `@attachment({ variants: [...] })` reference those keys.
-- **Type augmentation** happens in the config file's `declare module '@jrmc/adonis-attachment'` block — that's how TypeScript knows `variants: ['thumbnail']` is a valid key.
+- **Declaration merge** happens in the config file's `declare module '@jrmc/adonis-attachment'` block — that's how TypeScript knows `variants: ['thumbnail']` is a valid key.
 - **Validate uploads** with VineJS `vine.file({...})`:
   ```ts
   avatar: vine.file({ extnames: ['png', 'jpg', 'jpeg', 'gif'], size: 1 * 1024 * 1024 }).nullable()
