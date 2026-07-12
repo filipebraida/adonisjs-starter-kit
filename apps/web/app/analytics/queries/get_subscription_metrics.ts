@@ -41,6 +41,7 @@ function walk(from: number, to: number, steps: number, jitter: number): number[]
   return out
 }
 
+// Demo data — replace with real Lucid aggregates.
 export default class GetSubscriptionMetrics {
   async handle({ period }: GetSubscriptionMetricsInput): Promise<SubscriptionMetrics> {
     const steps = PERIOD_STEPS[period]
