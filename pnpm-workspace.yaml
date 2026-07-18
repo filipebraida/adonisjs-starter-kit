@@ -8,4 +8,4 @@ allowBuilds:
   msw: true
   sharp: true
 minimumReleaseAgeExclude:
-  - adonis-inertia-modal@0.1.0-beta.6
+  - adonis-inertia-modal@0.1.0-beta.7

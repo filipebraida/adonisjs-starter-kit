@@ -1,7 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-import { modal } from '#core/inertia/modal'
-
 import CreateUser from '#users/actions/create_user'
 import DeleteUser from '#users/actions/delete_user'
 import UpdateUser from '#users/actions/update_user'
@@ -37,7 +35,7 @@ export default class UsersController {
   public async create({ bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
-    return modal(inertia, 'users/create', {}, { route: 'users.index' })
+    return inertia.modal('users/create', {}, { route: 'users.index' })
   }
 
   public async store({ auth, bouncer, request, response }: HttpContext) {
@@ -62,8 +60,7 @@ export default class UsersController {
 
     await bouncer.with(UserPolicy).authorize('update', user)
 
-    return modal(
-      inertia,
+    return inertia.modal(
       'users/edit',
       { user: UserTransformer.transform(user).useVariant('forEdit') },
       { route: 'users.index' }
