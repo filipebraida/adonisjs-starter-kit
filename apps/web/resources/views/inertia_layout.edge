@@ -26,17 +26,14 @@
     <meta name="twitter:description" content="A full-featured starter kit using AdonisJS, Inertia, React, Tailwind, and Vite." />
     <meta name="twitter:image" content="https://raw.githubusercontent.com/filipebraida/adonisjs-starter-kit/main/.github/screenshot.png" />
 
-    <title inertia>
+    <title data-inertia>
       StarterKit
     </title>
 
     @stack('dumper')
     @viteReactRefresh()
     @inertiaHead()
-    @vite([
-    'resources/js/app.js',
-    'app/core/ui/app/app.tsx'
-    ])
+    @vite(['app/core/ui/app/app.tsx'])
   </head>
 
   <body class="min-h-screen w-screen font-sans">

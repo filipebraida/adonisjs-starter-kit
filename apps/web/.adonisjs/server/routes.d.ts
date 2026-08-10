@@ -18,10 +18,6 @@ export type ScannedRoutes = {
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
-    'notifications.index': { paramsTuple?: []; params?: {} }
-    'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
-    'notifications.markAllRead': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -37,6 +33,10 @@ export type ScannedRoutes = {
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.store': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'notifications.index': { paramsTuple?: []; params?: {} }
+    'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
+    'notifications.markAllRead': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -47,13 +47,13 @@ export type ScannedRoutes = {
     'auth.reset_password.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
-    'notifications.index': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'notifications.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -64,13 +64,13 @@ export type ScannedRoutes = {
     'auth.reset_password.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
-    'notifications.index': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'notifications.index': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }
@@ -79,13 +79,13 @@ export type ScannedRoutes = {
     'auth.forgot_password.handle': { paramsTuple?: []; params?: {} }
     'auth.reset_password.handle': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
-    'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
-    'notifications.markAllRead': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.store': { paramsTuple?: []; params?: {} }
     'tokens.store': { paramsTuple?: []; params?: {} }
+    'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
+    'notifications.markAllRead': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

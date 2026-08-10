@@ -1,6 +1,6 @@
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { TuyauProvider } from '@adonisjs/inertia/react'
-import { createInertiaApp } from '@inertiajs/react'
+import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { ThemeProvider } from '@workspace/ui/components/theme-provider'
 import { TooltipProvider } from '@workspace/ui/components/tooltip'
@@ -23,9 +23,9 @@ createInertiaApp({
   resolve: (name) => {
     const firstPart = name.split('/')[0]
     const rest = name.split('/').slice(1).join('/')
-    return resolvePageComponent(
+    return resolvePageComponent<ResolvedComponent>(
       `/app/${firstPart}/ui/pages/${rest}.tsx`,
-      import.meta.glob('/app/*/ui/pages/**/*.tsx')
+      import.meta.glob<ResolvedComponent>('/app/*/ui/pages/**/*.tsx')
     )
   },
 

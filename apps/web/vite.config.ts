@@ -1,4 +1,3 @@
-import inertia from '@adonisjs/inertia/vite'
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
@@ -7,10 +6,11 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    inertia({ ssr: { enabled: true, entrypoint: 'app/core/ui/app/ssr.tsx' } }),
     react(),
     adonisjs({
-      entrypoints: ['resources/js/app.js', 'app/core/ui/app/app.tsx'],
+      entryPoints: ['app/core/ui/app/app.tsx'],
+      serverEntryPoints: ['app/core/ui/app/ssr.tsx'],
+      assets: ['resources/images/**'],
       reload: ['resources/views/**/*.edge'],
     }),
   ],

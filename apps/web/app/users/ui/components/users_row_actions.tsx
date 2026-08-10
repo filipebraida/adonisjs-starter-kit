@@ -60,13 +60,17 @@ export function DataTableRowActions({
               </DropdownMenuShortcut>
             </ModalLink>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setOpenDelete(true)} className="text-destructive">
-            {t('users.index.table.row_actions.delete')}
-            <DropdownMenuShortcut>
-              <TrashIcon size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
+          {user.id !== row.original.id && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setOpenDelete(true)} className="text-destructive">
+                {t('users.index.table.row_actions.delete')}
+                <DropdownMenuShortcut>
+                  <TrashIcon size={16} />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

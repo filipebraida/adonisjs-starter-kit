@@ -1,5 +1,5 @@
 import { TuyauProvider } from '@adonisjs/inertia/react'
-import { createInertiaApp } from '@inertiajs/react'
+import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 import ReactDOMServer from 'react-dom/server'
 import { ModalStackProvider } from 'adonis-inertia-modal/react'
 import { client } from './client'
@@ -15,7 +15,9 @@ export default function render(page: any) {
       const firstPart = name.split('/')[0]
       const rest = name.split('/').slice(1).join('/')
 
-      const pages = import.meta.glob('/app/*/ui/pages/**/*.tsx', { eager: true })
+      const pages = import.meta.glob<ResolvedComponent>('/app/*/ui/pages/**/*.tsx', {
+        eager: true,
+      })
       return pages[`/app/${firstPart}/ui/pages/${rest}.tsx`]
     },
     setup: ({ App, props }) => {

@@ -38,12 +38,6 @@ export interface ApiDefinition {
   locale: {
     switch: typeof routes['locale.switch']
   }
-  notifications: {
-    index: typeof routes['notifications.index']
-    markRead: typeof routes['notifications.markRead']
-    markAllSeen: typeof routes['notifications.markAllSeen']
-    markAllRead: typeof routes['notifications.markAllRead']
-  }
   users: {
     invite: {
       show: typeof routes['users.invite.show']
@@ -74,5 +68,11 @@ export interface ApiDefinition {
   }
   dashboard: {
     show: typeof routes['dashboard.show']
+  }
+  notifications: {
+    index: typeof routes['notifications.index']
+    markRead: typeof routes['notifications.markRead']
+    markAllSeen: typeof routes['notifications.markAllSeen']
+    markAllRead: typeof routes['notifications.markAllRead']
   }
 }

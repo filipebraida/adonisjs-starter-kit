@@ -1,1 +1,0 @@
-import.meta.glob(['../images/**'])

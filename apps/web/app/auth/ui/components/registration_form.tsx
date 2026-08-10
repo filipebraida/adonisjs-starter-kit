@@ -1,8 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 
 import { Field, FieldError, Form } from '#common/ui/components/form'
 import { useTranslation } from '#common/ui/hooks/use_translation'
-import useFlashMessage from '#common/ui/hooks/use_flash_message'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -14,7 +14,7 @@ import { PasswordInput } from '@workspace/ui/components/password-input'
 export function RegistrationForm({ className }: { className?: string }) {
   const { t } = useTranslation()
 
-  const errorMessage = useFlashMessage('error')
+  const { error: errorMessage } = usePage().flash
 
   return (
     <Form

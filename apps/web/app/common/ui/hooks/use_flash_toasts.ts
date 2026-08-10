@@ -1,17 +1,16 @@
+import { usePage } from '@inertiajs/react'
 import { useEffect } from 'react'
 
-import useFlashMessage from '#common/ui/hooks/use_flash_message'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 export default function useFlashToasts() {
-  const error = useFlashMessage('error')
-  const success = useFlashMessage('success')
+  const { flash } = usePage()
 
   useEffect(() => {
-    if (error) toast.error(error)
-  }, [error])
+    if (flash.error) toast.error(flash.error)
+  }, [flash.error])
 
   useEffect(() => {
-    if (success) toast.success(success)
-  }, [success])
+    if (flash.success) toast.success(flash.success)
+  }, [flash.success])
 }

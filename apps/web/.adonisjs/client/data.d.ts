@@ -5,7 +5,7 @@
 
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
-import type { InferSharedProps } from '@adonisjs/inertia/types'
+import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
 import type NotificationsNotificationTransformer from '#app/notifications/transformers/notification_transformer'
 import type UsersTokenTransformer from '#app/users/transformers/token_transformer'
 import type UsersUserTransformer from '#app/users/transformers/user_transformer'
@@ -29,4 +29,5 @@ export namespace Data {
     }
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>
+  export type FlashMessages = InferFlashData<InertiaMiddleware>
 }
