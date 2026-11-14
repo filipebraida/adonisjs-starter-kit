@@ -1,15 +1,29 @@
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  columnFacetingFeature,
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  createFacetedRowModel,
+  createFacetedUniqueValues,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  filterFn_arrIncludesSome,
+  filterFn_includesString,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  OnChangeFn,
-  PaginationState,
-  Row,
-  SortingState,
-  useReactTable,
+  metaHelper,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  tableFeatures,
+  useTable,
+  type Column as TanstackColumn,
+  type ColumnDef as TanstackColumnDef,
+  type ColumnFiltersState,
+  type OnChangeFn,
+  type PaginationState,
+  type ReactTable,
+  type Row as TanstackRow,
+  type RowData,
+  type SortingState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -23,13 +37,54 @@ import { DataTablePagination } from "@workspace/ui/components/data-table/data-ta
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+export interface ColumnMeta {
+  columnClasses?: string;
+}
+
+/**
+ * The table features every DataTable registers. v9 exposes an API (sorting,
+ * filtering, faceting, selection, pagination) only when its feature is listed
+ * here; the row models apply when the table is local, and the manual flags
+ * skip them for a remote table whose rows arrive already processed.
+ */
+export const dataTableFeatures = tableFeatures({
+  columnVisibilityFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  columnFilteringFeature,
+  columnFacetingFeature,
+  rowPaginationFeature,
+  filteredRowModel: createFilteredRowModel(),
+  facetedRowModel: createFacetedRowModel(),
+  facetedUniqueValues: createFacetedUniqueValues(),
+  paginatedRowModel: createPaginatedRowModel(),
+  filterFns: {
+    includesString: filterFn_includesString,
+    arrIncludesSome: filterFn_arrIncludesSome,
+  },
+  columnMeta: metaHelper<ColumnMeta>(),
+});
+
+export type DataTableFeatures = typeof dataTableFeatures;
+
+// The v9 types take the feature set first; these keep screens on `ColumnDef<Row>`.
+export type ColumnDef<
+  TData extends RowData,
+  TValue = unknown,
+> = TanstackColumnDef<DataTableFeatures, TData, TValue>;
+export type Column<TData extends RowData, TValue = unknown> = TanstackColumn<
+  DataTableFeatures,
+  TData,
+  TValue
+>;
+export type Row<TData extends RowData> = TanstackRow<DataTableFeatures, TData>;
+export type Table<TData extends RowData> = ReactTable<DataTableFeatures, TData>;
+
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<TData>[];
   data: TData[];
   className?: string;
-  Toolbar?: React.ComponentType<{
-    table: ReturnType<typeof useReactTable<TData>>;
-  }>;
+  Toolbar?: React.ComponentType<{ table: Table<TData> }>;
   t: (key: string, options?: Record<string, unknown>) => string;
   remoteTableOptions?: RemoteTableOptions;
 }
@@ -44,22 +99,18 @@ export interface RemoteTableOptions {
   onSortingChange?: OnChangeFn<SortingState>;
 }
 
-export interface ColumnMeta {
-  columnClasses?: string;
-}
-
-export interface DataTableRowActionsProps<TData> {
+export interface DataTableRowActionsProps<TData extends RowData> {
   row: Row<TData>;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   Toolbar,
   t,
   remoteTableOptions,
   className = "table-fixed md:table-auto",
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [localPagination, setLocalPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -69,10 +120,10 @@ export function DataTable<TData, TValue>({
 
   const isRemote = !!remoteTableOptions;
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
 
     manualPagination: isRemote,
     manualSorting: isRemote,
@@ -99,10 +150,6 @@ export function DataTable<TData, TValue>({
     onSortingChange: isRemote
       ? remoteTableOptions!.onSortingChange
       : setLocalSorting,
-
-    ...(isRemote ? {} : { getPaginationRowModel: getPaginationRowModel() }),
-
-    getFilteredRowModel: getFilteredRowModel(),
   });
 
   return (
@@ -119,10 +166,7 @@ export function DataTable<TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      className={
-                        (header.column.columnDef.meta as ColumnMeta)
-                          ?.columnClasses
-                      }
+                      className={header.column.columnDef.meta?.columnClasses}
                     >
                       {header.isPlaceholder ? null : canSort ? (
                         <button
@@ -164,10 +208,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={
-                        (cell.column.columnDef.meta as ColumnMeta)
-                          ?.columnClasses
-                      }
+                      className={cell.column.columnDef.meta?.columnClasses}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

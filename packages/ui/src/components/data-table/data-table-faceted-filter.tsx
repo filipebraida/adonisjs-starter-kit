@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Column } from "@tanstack/react-table";
+import type { RowData } from "@tanstack/react-table";
+import type { Column } from "@workspace/ui/components/data-table/data-table";
 import { Check, PlusCircle } from "lucide-react";
 
 import { cn } from "@workspace/ui/lib/utils";
@@ -21,7 +22,7 @@ import {
 } from "@workspace/ui/components/popover";
 import { Separator } from "@workspace/ui/components/separator";
 
-interface DataTableFacetedFilterProps<TData, TValue> {
+interface DataTableFacetedFilterProps<TData extends RowData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
   options: {
@@ -32,7 +33,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   t: (key: string, options?: Record<string, unknown>) => string;
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function DataTableFacetedFilter<TData extends RowData, TValue>({
   column,
   title,
   options,

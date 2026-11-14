@@ -1,4 +1,5 @@
-import { Table } from "@tanstack/react-table";
+import type { RowData } from "@tanstack/react-table";
+import type { Table } from "@workspace/ui/components/data-table/data-table";
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,18 +16,18 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 
-interface DataTablePaginationProps<TData> {
+interface DataTablePaginationProps<TData extends RowData> {
   table: Table<TData>;
   t: (key: string, options?: Record<string, unknown>) => string;
 }
 
-export function DataTablePagination<TData>({
+export function DataTablePagination<TData extends RowData>({
   table,
   t,
 }: DataTablePaginationProps<TData>) {
-  const pageIndex = table.getState().pagination.pageIndex;
+  const pageIndex = table.state.pagination.pageIndex;
   const pageCount = table.getPageCount();
-  const pageSize = table.getState().pagination.pageSize;
+  const pageSize = table.state.pagination.pageSize;
 
   return (
     <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-end sm:gap-6 lg:gap-8">
