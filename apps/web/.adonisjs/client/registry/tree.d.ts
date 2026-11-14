@@ -80,4 +80,7 @@ export interface ApiDefinition {
     markAllSeen: typeof routes['notifications.markAllSeen']
     markAllRead: typeof routes['notifications.markAllRead']
   }
+  eventStream: typeof routes['event_stream']
+  subscribe: typeof routes['subscribe']
+  unsubscribe: typeof routes['unsubscribe']
 }

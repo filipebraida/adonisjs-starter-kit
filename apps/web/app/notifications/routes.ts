@@ -1,4 +1,5 @@
 import router from '@adonisjs/core/services/router'
+import transmit from '@adonisjs/transmit/services/main'
 
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
@@ -23,3 +24,12 @@ router
       .as('notifications.markAllRead')
   })
   .use([middleware.auth()])
+
+// The bell's realtime feed: SSE endpoints for signed-in users only, and each
+// user may subscribe to their own channel and no one else's.
+transmit.registerRoutes((route) => route.use(middleware.auth()))
+
+transmit.authorize<{ id: string }>(
+  'notifications/users/:id',
+  (ctx, { id }) => ctx.auth.user?.id === Number(id)
+)

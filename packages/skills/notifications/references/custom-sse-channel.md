@@ -1,12 +1,12 @@
 # Custom SSE channel (not a Facteur notification)
 
-When a background task needs to push resource-scoped state (job progress, live status), skip Facteur and broadcast directly on a per-resource channel. Requires opting into a `start/transmit.ts` preload (the default provider only auto-registers the `/__transmit/*` routes). Two rules:
+When a background task needs to push resource-scoped state (job progress, live status), skip Facteur and broadcast directly on a per-resource channel. The `/__transmit/*` routes are registered in `app/notifications/routes.ts`; put the new channel's `transmit.authorize` next to the bell's. Two rules:
 
 1. **Channel name is the URL of the resource's route.** The backend generates it with `urlFor(...)` from `@adonisjs/core/services/url_builder`; the frontend generates it with the typed URL client. Same string, single source of truth (the route registry).
-2. **Every private channel needs `transmit.authorize(pattern, callback)`** in `start/transmit.ts`. Without it any authenticated user can subscribe to any other resource's channel.
+2. **Every private channel needs `transmit.authorize(pattern, callback)`** next to the bell's in `app/notifications/routes.ts`, with each param a whole path segment (`orders/:order_id`, not `order-:order_id`). Without it any authenticated user can subscribe to any other resource's channel.
 
 ```ts
-// start/transmit.ts
+// app/<mod>/routes.ts (or app/notifications/routes.ts)
 // The pattern is hardcoded because routes aren't committed during preload — see [[routes]].
 // A functional spec asserts it equals router.findOrFail(name).pattern.
 export const ORDER_CHANNEL_PATTERN = '/orders/:order_id/status'
@@ -40,10 +40,10 @@ const sub = transmit.subscription(channel)
 sub.onMessage(handler)
 ```
 
-The bell's `notifications/user-<id>` channel is the exception — per-user, Facteur enforces the target internally. Any new custom channel gets its own `transmit.authorize`.
+The bell's `notifications/users/<id>` channel is authorized the same way: Facteur picks where to publish, not who may subscribe. Any new custom channel gets its own `transmit.authorize`.
 
 ## Anti-patterns
 
 - ❌ Adding a custom channel without `transmit.authorize(pattern, callback)` — any authenticated user can subscribe.
-- ❌ `router.findOrFail('...').pattern` at the top level of `start/transmit.ts` — routes aren't committed yet during preload. Hardcode the pattern and guard it with a spec — see [[routes]].
+- ❌ `router.findOrFail('...').pattern` at the top level of the routes file — routes aren't committed yet during preload. Hardcode the pattern and guard it with a spec — see [[routes]].
 - ❌ Broadcasting from inside the task or from a listener — emit a `resource:state` event; its listener schedules a workflow and the broadcast is a step of it. Future consumers (mail, log, webhook) then attach without touching the task. See [[actions-events]].

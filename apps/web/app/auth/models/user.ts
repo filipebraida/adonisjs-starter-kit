@@ -66,12 +66,12 @@ export default class User extends compose(BaseModel, AuthFinder, hasPermissions(
   /**
    * Delivery targets used by facteur per channel. `database` persists
    * the notification row; `transmit` pushes the SSE event on the user's
-   * personal channel (`notifications/user-<id>`).
+   * personal channel (`notifications/users/<id>`).
    */
   notificationTargets() {
     return {
       database: { notifiableId: String(this.id) },
-      transmit: { channel: `notifications/user-${this.id}` },
+      transmit: { channel: `notifications/users/${this.id}` },
     }
   }
 

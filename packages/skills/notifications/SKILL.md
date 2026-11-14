@@ -26,7 +26,7 @@ In-app notifications persist as rows in the `notifications` table and stream to 
   ```ts
   {
     database: { notifiableId: String(this.id) },
-    transmit: { channel: `notifications/user-${this.id}` },
+    transmit: { channel: `notifications/users/${this.id}` },
   }
   ```
   Facteur maps each channel's target automatically.
@@ -40,8 +40,9 @@ In-app notifications persist as rows in the `notifications` table and stream to 
   A mail and its in-app notification are two steps of the same workflow, so a mail retry never notifies twice (`app/users/workflows/send_welcome_workflow.ts`).
 - **Shared prop `unseenNotifications`** (count) is computed in the Inertia middleware when a user is authenticated. It powers the bell badge on first render — the SSE stream keeps it in sync afterward.
 - **Bell UI** subscribes to the per-user channel via `useNotificationsChannel(user.id, onIncoming)`, hits the endpoint to fetch the list when opened, marks-all-seen on open, marks-read on click.
+- **Channel params are whole path segments.** Transmit matches channels like routes (`matchit`): `notifications/users/:id` works, `notifications/user-:id` is read as literal text, never matches, and leaves the channel unauthorized for everyone.
 - **Frontend SSE client** is a lazy singleton: one `EventSource` on `/__transmit/events`, all channels multiplex through it.
-- **SSE transport** — `apps/web/config/transmit.ts` defaults to `transport: null` (in-memory, single-node). The `@adonisjs/transmit` provider auto-registers the `/__transmit/*` routes, so the bell works out of the box. Swap `transport` for a distributed driver (Redis) when horizontally scaling.
+- **SSE transport** — `apps/web/config/transmit.ts` defaults to `transport: null` (in-memory, single-node). The provider does **not** register the `/__transmit/*` routes: `app/notifications/routes.ts` calls `transmit.registerRoutes(...)` behind `auth()` and `transmit.authorize('notifications/users/:id', ...)` so each user reads only their own channel. Swap `transport` for a distributed driver (Redis) when horizontally scaling.
 
 ## Doc refs
 
@@ -113,7 +114,7 @@ See [[testing]].
 ## Anti-patterns
 
 - ❌ Calling `facteur.notification(...).send()` from an action or a listener — emit an event; the listener schedules a workflow; the workflow's step sends.
-- ❌ Hardcoding `notifications/user-<id>` in components — use the per-user subscription hook.
+- ❌ Hardcoding `notifications/users/<id>` in components — use the per-user subscription hook.
 - ❌ Storing render logic in the transmit message — the DB row is the durable copy; transmit is just a nudge (`{ kind: '...' }` is enough).
 - ❌ Sending massive payloads over transmit — the browser refetches the list on notification; keep transmit small.
 

@@ -4,7 +4,7 @@ import { getTransmitSingleton } from '#core/ui/hooks/use_transmit'
 
 /**
  * Subscribes the logged-in user to their personal SSE channel
- * (`notifications/user-<id>`) and calls `onMessage` on every event. Reuses
+ * (`notifications/users/<id>`) and calls `onMessage` on every event. Reuses
  * the singleton Transmit client: one EventSource per tab.
  */
 export function useNotificationsChannel(userId: number | undefined, onMessage: () => void) {
@@ -18,7 +18,7 @@ export function useNotificationsChannel(userId: number | undefined, onMessage: (
       const transmit = await getTransmitSingleton()
       if (cancelled) return
 
-      const sub = transmit.subscription(`notifications/user-${userId}`)
+      const sub = transmit.subscription(`notifications/users/${userId}`)
       sub.onMessage(() => onMessage())
       void sub.create()
       subscription = sub

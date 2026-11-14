@@ -40,6 +40,9 @@ export type ScannedRoutes = {
     'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
     'notifications.markAllRead': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -60,6 +63,7 @@ export type ScannedRoutes = {
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'notifications.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -80,6 +84,7 @@ export type ScannedRoutes = {
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'notifications.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }
@@ -95,6 +100,8 @@ export type ScannedRoutes = {
     'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
     'notifications.markAllRead': { paramsTuple?: []; params?: {} }
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

@@ -224,6 +224,24 @@ const routes = {
     tokens: [[0,"notifications"],[0,"read"]],
     types: placeholder as Registry['notifications.markAllRead']['types'],
   },
+  'event_stream': {
+    methods: ["GET","HEAD"],
+    pattern: '/__transmit/events',
+    tokens: [[0,"__transmit"],[0,"events"]],
+    types: placeholder as Registry['event_stream']['types'],
+  },
+  'subscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/subscribe',
+    tokens: [[0,"__transmit"],[0,"subscribe"]],
+    types: placeholder as Registry['subscribe']['types'],
+  },
+  'unsubscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/unsubscribe',
+    tokens: [[0,"__transmit"],[0,"unsubscribe"]],
+    types: placeholder as Registry['unsubscribe']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }
