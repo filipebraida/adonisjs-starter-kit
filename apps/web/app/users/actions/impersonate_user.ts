@@ -1,9 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
+import { IMPERSONATION_SESSION_KEY } from '#auth/enums/impersonation'
 import type User from '#auth/models/user'
-
-const IMPERSONATION_KEY = 'impersonation'
 
 /** Who started the impersonation and whom it targets, kept in the session. */
 export interface ImpersonationMark {
@@ -20,10 +19,10 @@ export function currentImpersonation(
   session: HttpContext['session'],
   currentUserId: number | undefined
 ): ImpersonationMark | null {
-  const mark = session.get(IMPERSONATION_KEY) as ImpersonationMark | undefined
+  const mark = session.get(IMPERSONATION_SESSION_KEY) as ImpersonationMark | undefined
   if (!mark) return null
   if (mark.targetUserId !== currentUserId) {
-    session.forget(IMPERSONATION_KEY)
+    session.forget(IMPERSONATION_SESSION_KEY)
     return null
   }
   return mark
@@ -51,7 +50,7 @@ export default class ImpersonateUser {
       originalUserId: input.originalUserId,
       targetUserId: input.impersonated.id,
     }
-    input.session.put(IMPERSONATION_KEY, mark)
+    input.session.put(IMPERSONATION_SESSION_KEY, mark)
     await input.auth.use('web').login(input.impersonated)
   }
 }
