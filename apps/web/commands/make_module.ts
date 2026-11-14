@@ -163,9 +163,10 @@ export default class MakeModule extends BaseCommand {
       )
       this.make(
         'start/events.ts',
-        `// Register domain event listeners here, e.g.:\n` +
+        `// Bind each domain event to a listener class that only schedules a\n` +
+          `// durable workflow (see the actions-events skill), e.g.:\n` +
           `//   import emitter from '@adonisjs/core/services/emitter'\n` +
-          `//   emitter.on('${name}:created', (event) => { ... })\n\n` +
+          `//   emitter.on('${name}:created', [() => import('#${name}/listeners/notify_created')])\n\n` +
           `export {}\n`
       )
     }

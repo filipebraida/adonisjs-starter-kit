@@ -74,7 +74,7 @@ export function ProfileForm({ user }: Props) {
                 <Button type="button" onClick={() => avatarInputRef.current?.click()}>
                   {t('users.action.actions.change_avatar')}
                 </Button>
-                <p className="mt-2 text-xs/5">JPG, GIF or PNG. 1MB max.</p>
+                <p className="mt-2 text-xs/5">{t('users.action.actions.avatar_hint')}</p>
               </div>
             </div>
 

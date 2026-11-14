@@ -34,6 +34,7 @@ router
 router
   .resource('/users', controllers.users.Users)
   .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+  .where('id', router.matchers.number())
   .use('*', middleware.auth())
   .as('users')
 

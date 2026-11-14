@@ -126,7 +126,8 @@
       "add": "Add",
       "save": "Save",
       "close": "Close",
-      "change_avatar": "Change avatar"
+      "change_avatar": "Change avatar",
+      "avatar_hint": "JPG, GIF or PNG. 1MB max."
     },
     "toast": {
       "title": "You submitted the following values:",
