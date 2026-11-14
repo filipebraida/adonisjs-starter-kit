@@ -89,7 +89,7 @@
     "@tuyau/core": "^1.3.0",
     "@vinejs/vine": "^4.4.0",
     "@workspace/ui": "workspace:*",
-    "adonis-inertia-modal": "0.1.0-beta.8",
+    "adonis-inertia-modal": "1.0.0",
     "axios": "^1.21.1",
     "edge.js": "^6.5.1",
     "i18next": "^26.3.4",
