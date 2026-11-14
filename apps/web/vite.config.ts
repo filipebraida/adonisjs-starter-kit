@@ -28,6 +28,9 @@ export default defineConfig({
   },
 
   server: {
+    // Extra hosts allowed to reach the dev server by another name, comma-separated
+    // in .env: VITE_ALLOWED_HOSTS=machine.local
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS?.split(',').filter(Boolean),
     watch: {
       ignored: ['**/storage/**', '**/tmp/**'],
     },
