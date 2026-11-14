@@ -1,19 +1,19 @@
-import type { SimpleTFunction } from '#common/ui/hooks/use_translation'
+import type { SimpleTFunction } from '#core/ui/hooks/use_translation'
 
 import { LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
-import type { NavMainItem, NavUserOptionsGroup } from '#common/ui/types/navigation'
+import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/types/navigation'
 
 export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
   return [
     [
       {
-        title: t('common.layout.navUser.settings'),
+        title: t('core.layout.navUser.settings'),
         url: '/settings',
         icon: Settings,
       },
       {
-        title: t('common.layout.navUser.adminPanel'),
+        title: t('core.layout.navUser.adminPanel'),
         url: '/users',
         icon: Shield,
         can: 'manageUsers',
@@ -21,7 +21,7 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
     ],
     [
       {
-        title: t('common.layout.navUser.logout'),
+        title: t('core.layout.navUser.logout'),
         url: '/logout',
         icon: LogOut,
         method: 'post',
@@ -33,7 +33,7 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
 export function getMainNav(t: SimpleTFunction): NavMainItem[] {
   return [
     {
-      title: t('common.layout.navMain.dashboard'),
+      title: t('core.layout.navMain.dashboard'),
       url: '/dashboard',
     },
   ]
@@ -42,15 +42,15 @@ export function getMainNav(t: SimpleTFunction): NavMainItem[] {
 export function getAdminNav(t: SimpleTFunction): NavMainItem[] {
   return [
     {
-      title: t('common.layout.navMain.dashboard'),
+      title: t('core.layout.navMain.dashboard'),
       url: '/dashboard',
       icon: LayoutDashboard,
     },
     {
-      title: t('common.layout.navMain.administration'),
+      title: t('core.layout.navMain.administration'),
       items: [
         {
-          title: t('common.layout.navMain.users'),
+          title: t('core.layout.navMain.users'),
           url: '/users',
           icon: Users,
           can: 'manageUsers',

@@ -8,7 +8,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
 import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
 
-import BaseModel from '#common/models/base_model'
+import BaseModel from '#core/models/base_model'
 
 import { withRoles } from '#users/mixins/with_roles'
 import ResetPasswordToken from '#users/models/reset_password_token'

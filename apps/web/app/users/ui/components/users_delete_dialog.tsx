@@ -7,8 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/al
 import { Input } from '@workspace/ui/components/input'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { ConfirmDialog } from '#core/ui/components/confirm_dialog'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { ROLES, mainRole } from '#users/enums/role'

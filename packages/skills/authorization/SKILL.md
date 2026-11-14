@@ -38,7 +38,7 @@ On the frontend a typed `GlobalPermissions` object flows through Inertia's share
 - Capabilities + roles: `app/users/enums/permission.ts`, `app/users/enums/role.ts`.
 - `WithRoles` mixin: `app/users/mixins/with_roles.ts`. Policy: `app/users/policies/user_policy.ts`.
 - Escalation guards: `app/users/actions/sync_user_roles.ts`.
-- Shared `can` prop → frontend `useCan`: `app/users/services/global_permissions.ts`, `app/common/ui/hooks/use_can.ts`.
+- Shared `can` prop → frontend `useCan`: `app/users/services/global_permissions.ts`, `app/core/ui/hooks/use_can.ts`.
 - Central registries: `app/core/policies/main.ts`, `app/core/abilities/main.ts`.
 
 ## Doc refs

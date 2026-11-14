@@ -5,7 +5,7 @@ import { CheckCircle2, Plus, Ticket, Trash2, X } from 'lucide-react'
 import { TokensActionDialog } from '#users/ui/components/tokens_action_dialog'
 import { TokensDeleteDialog } from '#users/ui/components/tokens_delete_dialog'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
 import { CopyButton } from '@workspace/ui/components/copy-button'

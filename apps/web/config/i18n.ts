@@ -3,7 +3,7 @@ import { defineConfig, formatters, loaders } from '@adonisjs/i18n'
 
 const i18nConfig = defineConfig({
   defaultLocale: 'en',
-  supportedLocales: ['en', 'fr', 'pt'],
+  supportedLocales: ['en', 'pt'],
   formatter: formatters.icu(),
 
   loaders: [
@@ -13,7 +13,7 @@ const i18nConfig = defineConfig({
      *
      * Each subdirectory represents a locale. For example:
      *   - "resources/lang/en"
-     *   - "resources/lang/fr"
+     *   - "resources/lang/pt"
      *   - "resources/lang/it"
      */
     // loaders.fs({
@@ -23,7 +23,7 @@ const i18nConfig = defineConfig({
       location: app.makePath('app/users/resources/lang'),
     }),
     loaders.fs({
-      location: app.makePath('app/common/resources/lang'),
+      location: app.makePath('app/core/resources/lang'),
     }),
     loaders.fs({
       location: app.makePath('app/auth/resources/lang'),

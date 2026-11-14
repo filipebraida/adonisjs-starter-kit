@@ -1,4 +1,4 @@
-import { TokenUtils } from '#common/utils/token_utils'
+import { TokenUtils } from '#core/utils/token_utils'
 import { DateTime } from 'luxon'
 
 import type User from '#users/models/user'

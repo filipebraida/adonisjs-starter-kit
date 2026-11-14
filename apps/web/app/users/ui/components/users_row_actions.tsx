@@ -15,7 +15,7 @@ import {
 
 import { urlFor } from '~/app/client'
 import useUser from '#auth/ui/hooks/use_user'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'

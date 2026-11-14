@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { column, manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 
-import BaseModel from '#common/models/base_model'
+import BaseModel from '#core/models/base_model'
 import User from '#users/models/user'
 
 import { isPermission, type Permission } from '#users/enums/permission'

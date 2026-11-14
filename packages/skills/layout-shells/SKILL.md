@@ -13,7 +13,7 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
 
 - **Every page imports its shell explicitly** at the top of the page file. No wrapper picks the shell based on route, role, or props.
   ```tsx
-  import AppLayout from '#common/ui/components/app_layout'
+  import AppLayout from '#core/ui/components/app_layout'
   export default function Page() { return <AppLayout>...</AppLayout> }
   ```
 - **Shell decisions are hardcoded**: variant, collapsible, direction, max-width live inside the shell file. Do not accept them as props.
@@ -35,8 +35,8 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 
 ## Repo refs
 
-- The four shells: `app/common/ui/components/admin_layout.tsx`, `app/common/ui/components/authenticated_layout.tsx`, `app/auth/ui/components/auth_layout.tsx`, `app/marketing/ui/components/marketing_layout.tsx`.
-- Nav config (single file): `app/common/ui/config/navigation.config.ts`.
+- The four shells: `app/core/ui/components/admin_layout.tsx`, `app/core/ui/components/authenticated_layout.tsx`, `app/auth/ui/components/auth_layout.tsx`, `app/marketing/ui/components/marketing_layout.tsx`.
+- Nav config (single file): `app/core/ui/config/navigation.config.ts`.
 
 ## Doc refs
 

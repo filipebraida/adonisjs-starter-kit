@@ -9,10 +9,10 @@ import {
   SheetHeader,
 } from '@workspace/ui/components/sheet'
 
-import { AppLogo } from '#common/ui/components/app_logo'
-import { isSection, type NavMainItem } from '#common/ui/types/navigation'
-import useCan from '#common/ui/hooks/use_can'
-import useCurrentUrl, { isNavItemActive } from '#common/ui/hooks/use_is_active'
+import { AppLogo } from '#core/ui/components/app_logo'
+import { isSection, type NavMainItem } from '#core/ui/types/navigation'
+import useCan from '#core/ui/hooks/use_can'
+import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 const sidebarMenuButtonVariants =
   'text-sidebar-foreground flex w-full items-center gap-2 overflow-hidden ' +

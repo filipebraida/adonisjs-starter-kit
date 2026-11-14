@@ -1,8 +1,8 @@
 import { useForm } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 
-import { UserAvatar } from '#common/ui/components/user_avatar'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { UserAvatar } from '#core/ui/components/user_avatar'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'

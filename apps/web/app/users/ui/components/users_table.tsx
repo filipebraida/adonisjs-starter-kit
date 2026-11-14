@@ -9,7 +9,7 @@ import {
 } from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'

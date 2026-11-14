@@ -7,7 +7,7 @@ import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { CheckboxFilter } from '@workspace/ui/components/checkbox-filter'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { Role } from '#users/ui/components/users_types'
 
 export default function UsersTableFilters({

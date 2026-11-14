@@ -4,7 +4,7 @@ import { afterAuthRedirectRoute } from '#config/auth'
 
 import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
 
-import { setUserLocaleCookie } from '#common/services/user_locale'
+import { setUserLocaleCookie } from '#core/services/user_locale'
 
 export default class SocialController {
   async redirect({ ally, params }: HttpContext) {

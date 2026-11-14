@@ -4,19 +4,19 @@ import { ModalRoot } from 'adonis-inertia-modal/react'
 import { Toaster } from '@workspace/ui/components/sonner'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@workspace/ui/components/sidebar'
 
-import { AppSidebar } from '#common/ui/components/app_sidebar'
-import Breadcrumb from '#common/ui/components/breadcrumbs'
-import { NavUser } from '#common/ui/components/nav_user'
-import { LanguageSwitcher } from '#common/ui/components/language_switcher'
-import { NotificationBell } from '#common/ui/components/notification_bell'
-import { ToggleTheme } from '#common/ui/components/toggle_theme'
-import { getCookie } from '#common/ui/utils/cookie_helper'
+import { AppSidebar } from '#core/ui/components/app_sidebar'
+import Breadcrumb from '#core/ui/components/breadcrumbs'
+import { NavUser } from '#core/ui/components/nav_user'
+import { LanguageSwitcher } from '#core/ui/components/language_switcher'
+import { NotificationBell } from '#core/ui/components/notification_bell'
+import { ToggleTheme } from '#core/ui/components/toggle_theme'
+import { getCookie } from '#core/ui/utils/cookie_helper'
 
 import useUser from '#auth/ui/hooks/use_user'
-import useFlashToasts from '#common/ui/hooks/use_flash_toasts'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getAdminNav, getNavUser } from '#common/ui/config/navigation.config'
+import { getAdminNav, getNavUser } from '#core/ui/config/navigation.config'
 
 interface BreadcrumbItemProps {
   label: string

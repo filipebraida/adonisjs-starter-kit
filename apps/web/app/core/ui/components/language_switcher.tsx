@@ -2,8 +2,8 @@ import { Globe } from 'lucide-react'
 import { router } from '@inertiajs/react'
 
 import { urlFor } from '~/app/client'
-import usePageProps from '#common/ui/hooks/use_page_props'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import usePageProps from '#core/ui/hooks/use_page_props'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -15,7 +15,6 @@ import {
 
 const LOCALES = [
   { code: 'en', label: 'English' },
-  { code: 'fr', label: 'Français' },
   { code: 'pt', label: 'Português' },
 ] as const
 

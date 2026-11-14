@@ -13,9 +13,9 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { urlFor } from '~/app/client'
 
-import AuthenticatedLayout from '#common/ui/components/authenticated_layout'
-import { Main } from '#common/ui/components/main'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import { Main } from '#core/ui/components/main'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { KpiCard } from '#analytics/ui/components/kpi_card'
 

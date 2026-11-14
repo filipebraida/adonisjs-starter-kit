@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { NavSidebarMain } from '#common/ui/components/nav_sidebar_main'
-import { AppLogo } from '#common/ui/components/app_logo'
+import { NavSidebarMain } from '#core/ui/components/nav_sidebar_main'
+import { AppLogo } from '#core/ui/components/app_logo'
 
-import type { NavMainItem } from '#common/ui/types/navigation'
+import type { NavMainItem } from '#core/ui/types/navigation'
 
 import {
   Sidebar,

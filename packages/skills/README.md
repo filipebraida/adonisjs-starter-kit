@@ -11,7 +11,7 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `actions-events` — action pattern (`.handle(input)`) and event-based side effects.
 - `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
 - `inertia` — page resolver, shared props, `useForm`, `urlFor`, modals, and the client provider tree.
-- `i18n` — three locales, per-module JSON, `useTranslation()`, `ctx.i18n.t()`, and `User.locale` persistence.
+- `i18n` — two locales (`en`, `pt`), per-module JSON, `useTranslation()`, `ctx.i18n.t()`, and `User.locale` persistence.
 - `layout-shells` — four coexisting shells (admin, authenticated, auth, marketing) — pages import explicitly, no runtime toggle.
 - `authorization` — `PERMISSIONS` + `ROLES` + `WithRoles` + Bouncer policies + `useCan()` + escalation guards.
 - `mail` — `BaseMail` classes, MJML templates via `@email.layout`, `mailContext()` for appName/appUrl.

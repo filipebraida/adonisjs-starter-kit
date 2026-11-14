@@ -20,7 +20,7 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **Notifications + SSE** — In-app notifications persisted in Postgres and streamed in realtime over Server-Sent Events (`@facteurjs/adonisjs` + `@adonisjs/transmit`). Bell + unread badge wired into the top nav, notification classes per domain (`app/<mod>/notifications/`), delivery via event listeners so actions stay pure. Demo: `UserWelcomeNotification` fires on `user:registered`.
 
-**i18n** — English, French, and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
+**i18n** — English and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
 
 **RBAC** — Static catalog of typed capabilities (`PERMISSIONS`) + role slugs (`ROLES`) enforced through Bouncer abilities and per-resource policies. Frontend consumes a typed `useCan()` hook. User impersonation is available to admins.
 
@@ -97,7 +97,7 @@ root/
 
 ## Feature-based organization
 
-Inside `apps/web/app/`, the codebase is organized by domain (`auth`, `users`, `marketing`, `analytics`, `common`, `core`) instead of by technical type. Related controllers, actions, validators, UI components, hooks, routes, tests, and i18n keys all live together under one module.
+Inside `apps/web/app/`, the codebase is organized by domain (`auth`, `users`, `marketing`, `analytics`, `core`, `notifications`) instead of by technical type. Related controllers, actions, validators, UI components, hooks, routes, tests, and i18n keys all live together under one module.
 
 Example:
 

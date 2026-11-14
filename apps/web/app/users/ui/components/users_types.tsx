@@ -1,6 +1,6 @@
 import { LucideIcon, Shield, User } from 'lucide-react'
 
-import { SimpleTFunction } from '#common/ui/hooks/use_translation'
+import { SimpleTFunction } from '#core/ui/hooks/use_translation'
 
 import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 

@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-import { baseSearchValidator } from '#common/validators/search'
+import { baseSearchValidator } from '#core/validators/search'
 
 import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'

@@ -7,16 +7,16 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # i18n
 
-Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `loaders`). Translation JSON lives per module at `app/<mod>/resources/lang/<locale>/<mod>.json`. Keys are namespaced by module (`common.layout.navMain.dashboard`), so the file at `app/common/resources/lang/en/common.json` doesn't repeat `common.` inside — the loader adds it. Backend uses `ctx.i18n.t('key')`; frontend uses `useTranslation()`. Locale detection runs as an HTTP middleware that prefers an `X-User-Language` header → a `user-locale` cookie → the browser's `Accept-Language`. Authenticated users have `User.locale` as the authoritative source: the switch endpoint writes both cookie and DB; every login flow syncs the cookie from `user.locale` if set.
+Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `loaders`). Translation JSON lives per module at `app/<mod>/resources/lang/<locale>/<mod>.json`. Keys are namespaced by module (`core.layout.navMain.dashboard`), so the file at `app/core/resources/lang/en/core.json` doesn't repeat `core.` inside — the loader adds it. Backend uses `ctx.i18n.t('key')`; frontend uses `useTranslation()`. Locale detection runs as an HTTP middleware that prefers an `X-User-Language` header → a `user-locale` cookie → the browser's `Accept-Language`. Authenticated users have `User.locale` as the authoritative source: the switch endpoint writes both cookie and DB; every login flow syncs the cookie from `user.locale` if set.
 
 ## Rules
 
 - **Adding a key requires an entry in every supported locale**. There is no auto-generate. Missing keys fall back to the default locale at runtime — the mixed-language UI is the symptom.
-- **Key naming**: `<mod>.<section>.<key>`. The `<mod>` prefix comes from the file location; inside `<mod>.json` you don't repeat it. E.g. inside `common.json`:
+- **Key naming**: `<mod>.<section>.<key>`. The `<mod>` prefix comes from the file location; inside `<mod>.json` you don't repeat it. E.g. inside `core.json`:
   ```json
   { "layout": { "navMain": { "dashboard": "Dashboard" } } }
   ```
-  and consumed as `t('common.layout.navMain.dashboard')`.
+  and consumed as `t('core.layout.navMain.dashboard')`.
 - **Frontend**: `useTranslation()` returns `{ t, changeLanguage, language }`. `t(key, params?)` supports ICU interpolation.
 - **Backend**: `ctx.i18n.t('key', params?)`. The i18n instance is bound to `HttpContext` by the locale-detection middleware. Use in controllers, actions (if `i18n` was in the input), and mail classes.
 - **ICU interpolation**: `{name}` in the string, `t('key', { name: 'Alice' })` at the call site. Also supports plurals and selectors.
@@ -27,8 +27,8 @@ Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `
 
 ## Repo refs
 
-- Locale config + per-module loaders: `config/i18n.ts`. Keys: `app/users/resources/lang/{en,fr,pt}/users.json`.
-- Frontend hook: `app/common/ui/hooks/use_translation.ts`. Detection middleware: `app/core/middleware/detect_user_locale_middleware.ts`.
+- Locale config + per-module loaders: `config/i18n.ts`. Keys: `app/users/resources/lang/{en,pt}/users.json`.
+- Frontend hook: `app/core/ui/hooks/use_translation.ts`. Detection middleware: `app/core/middleware/detect_user_locale_middleware.ts`.
 
 ## Doc refs
 
@@ -40,12 +40,12 @@ Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `
 
 ### Add a translation key
 
-1. Pick the module. If the string is shared UI (nav, buttons, layout), put it in `common`.
+1. Pick the module. If the string is shared UI (nav, buttons, layout), put it in `core`.
 2. Open the JSON file for every supported locale: `app/<mod>/resources/lang/<locale>/<mod>.json`.
 3. Add the same key path in every file with the localized value.
 4. Frontend: `t('<mod>.<path>')` via `useTranslation()`.
 5. Backend: `ctx.i18n.t('<mod>.<path>')`.
-6. Verify parity: grep the key across `app/<mod>/resources/lang/*/` — it must appear in all three locales. Present in only one → it falls back silently and ships a mixed-language UI.
+6. Verify parity: grep the key across `app/<mod>/resources/lang/*/` — it must appear in both locales. Present in only one → it falls back silently and ships a mixed-language UI.
 
 ### Add a new module's translations
 
@@ -63,7 +63,7 @@ Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `
 ```
 
 ```ts
-t('common.welcome', { name: user.fullName })
+t('core.welcome', { name: user.fullName })
 ```
 
 Plural / selector:
@@ -95,11 +95,11 @@ The next login flow writes the cookie for them.
 ## Anti-patterns
 
 - ❌ Adding a key in one locale but not the others — runtime falls back silently to the default and users see mixed languages.
-- ❌ Hardcoding strings in components (`<span>Save</span>` instead of `t('common.save')`).
+- ❌ Hardcoding strings in components (`<span>Save</span>` instead of `t('core.save')`).
 - ❌ Reading `req.cookies['user-locale']` directly instead of `ctx.i18n.locale` — bypasses the detection priority (header → cookie → Accept-Language).
 - ❌ Persisting locale to the cookie without also updating `user.locale` when the user is authenticated — the switch endpoint handles both; don't reimplement.
-- ❌ Deep key paths (`common.a.b.c.d.e.f`) — collapse the JSON tree, keep depth ≤ 3.
-- ❌ Repeating the module prefix inside the JSON file (`common.json` with a `common` root) — the loader adds it.
+- ❌ Deep key paths (`core.a.b.c.d.e.f`) — collapse the JSON tree, keep depth ≤ 3.
+- ❌ Repeating the module prefix inside the JSON file (`core.json` with a `core` root) — the loader adds it.
 
 ## Related skills
 

@@ -21,7 +21,6 @@
     "#start/*": "./start/*.js",
     "#config/*": "./config/*.js",
     "#core/*": "./app/core/*.js",
-    "#common/*": "./app/common/*.js",
     "#auth/*": "./app/auth/*.js",
     "#users/*": "./app/users/*.js",
     "#marketing/*": "./app/marketing/*.js",

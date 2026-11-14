@@ -1,15 +1,15 @@
 import type { InertiaProps } from '#core/ui/types'
 import type { Data } from '@generated/data'
 
-import AuthenticatedLayout from '#common/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
 import { PasswordForm } from '#users/ui/components/password_form'
 import { ProfileForm } from '#users/ui/components/profile_form'
 import { SettingsSection } from '#users/ui/components/settings_section'
 import { TokensSection } from '#users/ui/components/tokens_section'
 
-import useCan from '#common/ui/hooks/use_can'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import useCan from '#core/ui/hooks/use_can'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 type PageProps = InertiaProps<{
   profile: Data.Users.User.Variants['forProfile']

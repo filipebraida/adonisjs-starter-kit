@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Field as BaseField } from '@workspace/ui/components/field'
 
-import { FieldNameContext } from '#common/ui/components/form_context'
+import { FieldNameContext } from '#core/ui/components/form_context'
 
 export function Field({
   name,

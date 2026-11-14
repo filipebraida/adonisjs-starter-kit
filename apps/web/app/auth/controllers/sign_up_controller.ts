@@ -5,7 +5,7 @@ import { afterAuthRedirectRoute } from '#config/auth'
 import SignUp from '#auth/actions/sign_up'
 import { signUpValidator } from '#auth/validators/auth'
 
-import { setUserLocaleCookie } from '#common/services/user_locale'
+import { setUserLocaleCookie } from '#core/services/user_locale'
 
 export default class SignUpController {
   async show({ inertia }: HttpContext) {

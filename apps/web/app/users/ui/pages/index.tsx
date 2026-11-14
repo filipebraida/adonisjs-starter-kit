@@ -1,14 +1,14 @@
 import type { InertiaProps } from '#core/ui/types'
 
-import AdminLayout from '#common/ui/components/admin_layout'
-import Heading from '#common/ui/components/heading'
-import { Main } from '#common/ui/components/main'
+import AdminLayout from '#core/ui/components/admin_layout'
+import Heading from '#core/ui/components/heading'
+import { Main } from '#core/ui/components/main'
 
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
 import UsersTable from '#users/ui/components/users_table'
 import { userRoles } from '#users/ui/components/users_types'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import type { Data } from '@generated/data'
 

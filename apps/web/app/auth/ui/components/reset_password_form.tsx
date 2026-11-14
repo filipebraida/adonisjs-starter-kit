@@ -1,4 +1,4 @@
-import { Field, FieldError, Form } from '#common/ui/components/form'
+import { Field, FieldError, Form } from '#core/ui/components/form'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'

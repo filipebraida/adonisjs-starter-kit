@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Toaster } from '@workspace/ui/components/sonner'
 
-import { AppLogo } from '#common/ui/components/app_logo'
-import { LanguageSwitcher } from '#common/ui/components/language_switcher'
+import { AppLogo } from '#core/ui/components/app_logo'
+import { LanguageSwitcher } from '#core/ui/components/language_switcher'
 
 import illustration from '../images/login_illustration.png'
 

@@ -1,7 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
 
-import { Field, FieldError, Form } from '#common/ui/components/form'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { Field, FieldError, Form } from '#core/ui/components/form'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'

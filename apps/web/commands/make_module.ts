@@ -26,7 +26,7 @@ export default class MakeModule extends BaseCommand {
 
   @flags.boolean({
     flagName: 'i18n',
-    description: 'Add resources/lang (en/fr/pt) and register the i18n loader',
+    description: 'Add resources/lang (en/pt) and register the i18n loader',
   })
   declare i18n: boolean
 
@@ -141,7 +141,7 @@ export default class MakeModule extends BaseCommand {
 
     // ---- optional: i18n -----------------------------------------------------
     if (this.i18n) {
-      for (const locale of ['en', 'fr', 'pt']) {
+      for (const locale of ['en', 'pt']) {
         this.make(`resources/lang/${locale}/${name}.json`, '{}\n')
       }
       this.wire(

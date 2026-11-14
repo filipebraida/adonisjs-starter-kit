@@ -20,7 +20,7 @@ node ace make:module <mod> --db --i18n --events
 ```
 
 - `--db` — adds `database/migrations/` and registers its path in `config/database.ts`.
-- `--i18n` — adds `resources/lang/{en,fr,pt}/<mod>.json` and registers the i18n loader.
+- `--i18n` — adds `resources/lang/{en,pt}/<mod>.json` and registers the i18n loader.
 - `--events` — adds `start/events.ts` + `types/events.ts`, preloads events, **and** adds the `types/**` glob to the core tsconfig (skip that and the `EventsList` merge breaks the client typecheck).
 
 Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**` tsconfig include. After running it, `pnpm dev` (or any `node ace`) regenerates route/page types, then `pnpm typecheck`. The rest of this skill is what the command does under the hood — use it to add a piece later or to wire a module by hand.
@@ -32,7 +32,7 @@ Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**`
 - **Preloads go in** `apps/web/adonisrc.ts` → `preloads`. Always add `() => import('#<mod>/routes')` at minimum. Add `#<mod>/start/events` if the module emits or listens. Add `#<mod>/start/view` if it mounts edge templates.
 - **Migrations/seeders** paths append to `apps/web/config/database.ts` → `connections.postgres.migrations.paths` and `seeders.paths`.
 - **tsconfig include** — when the module has `ui/`, add `../../<mod>/ui/**/*.ts` and `../../<mod>/ui/**/*.tsx` to `apps/web/app/core/ui/tsconfig.json` → `include`. Add `../../<mod>/types/**/*.ts` when it has `types/events.ts`, or the `EventsList` merge is invisible to the client tsc and event typechecks break.
-- **i18n** — if the module has UI strings, drop JSON in `resources/lang/{en,fr,pt}/<mod>.json`. Three locales are canonical; all three must exist.
+- **i18n** — if the module has UI strings, drop JSON in `resources/lang/{en,pt}/<mod>.json`. Two locales are canonical; both must exist.
 
 ## Repo refs
 
@@ -92,7 +92,7 @@ Prefer `node ace make:module <mod> [--db] [--i18n] [--events]` (see Quick start)
      ...
    ]
    ```
-7. **If it has i18n keys**, create `app/<mod>/resources/lang/{en,fr,pt}/<mod>.json`. See [[i18n]].
+7. **If it has i18n keys**, create `app/<mod>/resources/lang/{en,pt}/<mod>.json`. See [[i18n]].
 8. **If it has UI**, follow [[inertia]] for the page resolver and [[layout-shells]] for which shell to import.
 9. **If it needs CRUD**, follow [[crud]] to fill in the controller / actions / validators / policy / transformer / tests.
 10. **Run typecheck** — `pnpm typecheck` — before writing more code, so alias/preload/tsconfig wiring is verified early.

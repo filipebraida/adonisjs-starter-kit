@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react'
 
-import { isSection, type NavMainItem } from '#common/ui/types/navigation'
+import { isSection, type NavMainItem } from '#core/ui/types/navigation'
 
 import {
   SidebarGroup,
@@ -11,8 +11,8 @@ import {
   SidebarMenuItem,
 } from '@workspace/ui/components/sidebar'
 
-import useCan from '#common/ui/hooks/use_can'
-import useCurrentUrl, { isNavItemActive } from '#common/ui/hooks/use_is_active'
+import useCan from '#core/ui/hooks/use_can'
+import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 export interface NavSidebarMainProps {
   items: NavMainItem[]

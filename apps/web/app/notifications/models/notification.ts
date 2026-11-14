@@ -1,7 +1,7 @@
 import { column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
-import BaseModel from '#common/models/base_model'
+import BaseModel from '#core/models/base_model'
 
 export type NotificationStatus = 'unseen' | 'seen' | 'read'
 

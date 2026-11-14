@@ -21,7 +21,7 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { urlFor } from '~/app/client'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
 import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 

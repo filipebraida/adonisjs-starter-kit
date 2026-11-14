@@ -2,10 +2,10 @@ import { Link } from '@inertiajs/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 
-import { isSection, type NavMainItem } from '#common/ui/types/navigation'
-import HeaderDropdown from '#common/ui/components/header_dropdown'
-import useCan from '#common/ui/hooks/use_can'
-import useCurrentUrl, { isNavItemActive } from '#common/ui/hooks/use_is_active'
+import { isSection, type NavMainItem } from '#core/ui/types/navigation'
+import HeaderDropdown from '#core/ui/components/header_dropdown'
+import useCan from '#core/ui/hooks/use_can'
+import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 export interface NavHeaderMainProps {
   items: NavMainItem[]

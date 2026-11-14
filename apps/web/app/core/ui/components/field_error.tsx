@@ -2,7 +2,7 @@ import React, { use } from 'react'
 
 import { FieldError as BaseFieldError } from '@workspace/ui/components/field'
 
-import { FieldNameContext, FormErrorsContext } from '#common/ui/components/form_context'
+import { FieldNameContext, FormErrorsContext } from '#core/ui/components/form_context'
 
 export function FieldError(props: React.ComponentProps<typeof BaseFieldError>) {
   const errors = use(FormErrorsContext)

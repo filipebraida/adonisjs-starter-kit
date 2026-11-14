@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
 
-import { UserAvatar } from '#common/ui/components/user_avatar'
-import useCan from '#common/ui/hooks/use_can'
-import type { NavUserProps } from '#common/ui/types/navigation'
+import { UserAvatar } from '#core/ui/components/user_avatar'
+import useCan from '#core/ui/hooks/use_can'
+import type { NavUserProps } from '#core/ui/types/navigation'
 
 import {
   DropdownMenu,

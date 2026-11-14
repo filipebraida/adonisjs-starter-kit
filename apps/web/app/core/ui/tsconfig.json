@@ -20,8 +20,6 @@
     "../../users/types/**/*.ts",
     "../../marketing/ui/**/*.ts",
     "../../marketing/ui/**/*.tsx",
-    "../../common/ui/**/*.ts",
-    "../../common/ui/**/*.tsx",
     "../../analytics/ui/**/*.ts",
     "../../analytics/ui/**/*.tsx",
     "../../../config/auth.ts",

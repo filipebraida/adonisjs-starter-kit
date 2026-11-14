@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from '@inertiajs/react'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'

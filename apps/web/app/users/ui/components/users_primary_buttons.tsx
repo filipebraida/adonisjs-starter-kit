@@ -4,7 +4,7 @@ import { ModalLink } from 'adonis-inertia-modal/react'
 import { buttonVariants } from '@workspace/ui/components/button'
 
 import { urlFor } from '~/app/client'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 export function UsersPrimaryButtons() {
   const { t } = useTranslation()

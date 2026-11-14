@@ -18,15 +18,15 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     response.assertCookie('user-locale', 'pt')
   })
 
-  test('aceita fr tambem', async ({ client }) => {
+  test('aceita en tambem', async ({ client }) => {
     const response = await client
-      .post('/switch/fr')
+      .post('/switch/en')
       .withCsrfToken()
       .header('referer', '/')
       .redirects(0)
 
     response.assertStatus(302)
-    response.assertCookie('user-locale', 'fr')
+    response.assertCookie('user-locale', 'en')
   })
 
   test('rejeita locale nao suportado (nao sobrescreve com xx)', async ({ client }) => {
@@ -51,17 +51,17 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     const user = await UserFactory.merge({ locale: null }).create()
 
     const response = await client
-      .post('/switch/fr')
+      .post('/switch/pt')
       .loginAs(user)
       .withCsrfToken()
       .header('referer', '/dashboard')
       .redirects(0)
 
     response.assertStatus(302)
-    response.assertCookie('user-locale', 'fr')
+    response.assertCookie('user-locale', 'pt')
 
     await user.refresh()
-    assert.equal(user.locale, 'fr')
+    assert.equal(user.locale, 'pt')
   })
 
   test('user anonimo nao tenta persistir em user (so seta cookie)', async ({ client }) => {

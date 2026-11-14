@@ -7,8 +7,8 @@ import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@workspace/ui/components/popover'
 
-import { useNotificationsChannel } from '#common/ui/hooks/use_notifications_channel'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useNotificationsChannel } from '#core/ui/hooks/use_notifications_channel'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '#core/ui/app/client'
 
 interface NotificationContent {
@@ -141,7 +141,7 @@ export function NotificationBell() {
           variant="ghost"
           size="icon"
           className="relative"
-          aria-label={t('common.notifications.ariaLabel')}
+          aria-label={t('core.notifications.ariaLabel')}
         >
           <Bell className="size-5" />
           {unseen > 0 && (
@@ -157,10 +157,10 @@ export function NotificationBell() {
 
       <PopoverContent align="end" collisionPadding={16} className="w-96 p-0">
         <div className="flex items-center justify-between border-b px-4 py-3">
-          <span className="text-sm font-semibold">{t('common.notifications.title')}</span>
+          <span className="text-sm font-semibold">{t('core.notifications.title')}</span>
           {hasUnread && (
             <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" onClick={markAllRead}>
-              <CheckCheck className="size-3.5" /> {t('common.notifications.markAllRead')}
+              <CheckCheck className="size-3.5" /> {t('core.notifications.markAllRead')}
             </Button>
           )}
         </div>
@@ -172,7 +172,7 @@ export function NotificationBell() {
             </div>
           ) : items.length === 0 ? (
             <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-              {t('common.notifications.empty')}
+              {t('core.notifications.empty')}
             </div>
           ) : (
             <ul className="divide-y">

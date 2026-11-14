@@ -2,13 +2,13 @@ import { useForm } from '@inertiajs/react'
 import { useMemo, useState } from 'react'
 import { Trans } from 'react-i18next'
 
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
+import { ConfirmDialog } from '#core/ui/components/confirm_dialog'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { Input } from '@workspace/ui/components/input'
 import { toast } from '@workspace/ui/hooks/use-toast'
 import { AlertTriangleIcon } from 'lucide-react'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import type { Data } from '@generated/data'

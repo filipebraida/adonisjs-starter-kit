@@ -6,8 +6,8 @@ import { UserIcon } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@workspace/ui/components/alert'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-import { ConfirmDialog } from '#common/ui/components/confirm_dialog'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { ConfirmDialog } from '#core/ui/components/confirm_dialog'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { ROLES, mainRole } from '#users/enums/role'

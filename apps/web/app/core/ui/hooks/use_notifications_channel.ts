@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { getTransmitSingleton } from '#common/ui/hooks/use_transmit'
+import { getTransmitSingleton } from '#core/ui/hooks/use_transmit'
 
 /**
  * Subscribes the logged-in user to their personal SSE channel

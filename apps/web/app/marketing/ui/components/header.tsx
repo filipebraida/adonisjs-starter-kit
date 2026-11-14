@@ -3,7 +3,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { MenuIcon } from 'lucide-react'
 
 import Container from '#marketing/ui/components/container'
-import { AppLogo } from '#common/ui/components/app_logo'
+import { AppLogo } from '#core/ui/components/app_logo'
 
 export default function HeaderSection() {
   const [menuOpen, setMenuOpen] = useState(false)

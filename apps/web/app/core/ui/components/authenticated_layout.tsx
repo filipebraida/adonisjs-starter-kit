@@ -3,20 +3,20 @@ import React from 'react'
 import { ModalRoot } from 'adonis-inertia-modal/react'
 import { Toaster } from '@workspace/ui/components/sonner'
 
-import { AppLogo } from '#common/ui/components/app_logo'
-import Breadcrumb from '#common/ui/components/breadcrumbs'
-import { NavHeaderMain } from '#common/ui/components/nav_header_main'
-import { NavHeaderMobile } from '#common/ui/components/nav_header_mobile'
-import { NavUser } from '#common/ui/components/nav_user'
-import { LanguageSwitcher } from '#common/ui/components/language_switcher'
-import { NotificationBell } from '#common/ui/components/notification_bell'
-import { ToggleTheme } from '#common/ui/components/toggle_theme'
+import { AppLogo } from '#core/ui/components/app_logo'
+import Breadcrumb from '#core/ui/components/breadcrumbs'
+import { NavHeaderMain } from '#core/ui/components/nav_header_main'
+import { NavHeaderMobile } from '#core/ui/components/nav_header_mobile'
+import { NavUser } from '#core/ui/components/nav_user'
+import { LanguageSwitcher } from '#core/ui/components/language_switcher'
+import { NotificationBell } from '#core/ui/components/notification_bell'
+import { ToggleTheme } from '#core/ui/components/toggle_theme'
 
 import useUser from '#auth/ui/hooks/use_user'
-import useFlashToasts from '#common/ui/hooks/use_flash_toasts'
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getMainNav, getNavUser } from '#common/ui/config/navigation.config'
+import { getMainNav, getNavUser } from '#core/ui/config/navigation.config'
 
 interface BreadcrumbItemProps {
   label: string

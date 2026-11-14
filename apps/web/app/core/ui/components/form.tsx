@@ -1,10 +1,10 @@
 import React from 'react'
 import { Form as InertiaForm } from '@adonisjs/inertia/react'
 
-import { FormErrors, FormErrorsContext } from '#common/ui/components/form_context'
+import { FormErrors, FormErrorsContext } from '#core/ui/components/form_context'
 
-export { Field } from '#common/ui/components/field'
-export { FieldError } from '#common/ui/components/field_error'
+export { Field } from '#core/ui/components/field'
+export { FieldError } from '#core/ui/components/field_error'
 
 type InertiaChildren = React.ComponentProps<typeof InertiaForm>['children']
 type FormSlotProps = InertiaChildren extends

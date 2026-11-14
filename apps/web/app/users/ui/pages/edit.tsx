@@ -7,7 +7,7 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { urlFor } from '~/app/client'
 
-import { useTranslation } from '#common/ui/hooks/use_translation'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
 import { mainRole, ROLES } from '#users/enums/role'
 
