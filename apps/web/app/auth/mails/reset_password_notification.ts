@@ -6,6 +6,7 @@ import { mailContext } from '#core/utils/mail_context'
 import type User from '#auth/models/user'
 import { type MailBasicTranslation } from '#core/models/mail_basic_translation'
 
+/** The reset password email, with a signed link valid for 30 minutes. */
 export default class ResetPasswordNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
   subject = `Reset your password for app`

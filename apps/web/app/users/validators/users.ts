@@ -8,6 +8,7 @@ import { SORT_DIRECTIONS, USERS_SORT_BY } from '#users/enums/sort'
 
 const roleValues = Object.values(ROLES)
 
+/** A user created by an admin. Without a password the account gets an unguessable one. */
 export const createUserValidator = vine.create({
   fullName: vine.string().trim().minLength(3).maxLength(255),
   email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),
@@ -20,6 +21,10 @@ export const createUserValidator = vine.create({
     .optional(),
 })
 
+/**
+ * A user edited by an admin. The email stays unique among the other users,
+ * and without a password the current one is kept.
+ */
 export const editUserValidator = vine.withMetaData<{ userId: number }>().create({
   fullName: vine.string().trim().minLength(3).maxLength(255),
   email: vine
@@ -40,6 +45,7 @@ export const editUserValidator = vine.withMetaData<{ userId: number }>().create(
     .optional(),
 })
 
+/** Filters of the users list: search, roles and sort, paginated. */
 export const listUserValidator = vine.create({
   ...baseSearchValidator.getProperties(),
   roles: vine.array(vine.enum(roleValues)).optional(),
@@ -47,12 +53,14 @@ export const listUserValidator = vine.create({
   order: vine.enum(SORT_DIRECTIONS).optional(),
 })
 
+/** An invitation: the email to invite, its role and an optional note for the mail. */
 export const inviteUserValidator = vine.create({
   email: vine.string().email().toLowerCase().trim().unique({ table: 'users', column: 'email' }),
   description: vine.string().trim().optional(),
   role: vine.enum(roleValues),
 })
 
+/** The signed-in user's profile: name and an optional avatar image up to 1 MB. */
 export const updateProfileValidator = vine.create({
   fullName: vine.string().trim().minLength(3).maxLength(255),
   avatar: vine
@@ -63,6 +71,7 @@ export const updateProfileValidator = vine.create({
     .nullable(),
 })
 
+/** The signed-in user's new password, typed twice. */
 export const updatePasswordValidator = vine.create({
   password: vine
     .string()

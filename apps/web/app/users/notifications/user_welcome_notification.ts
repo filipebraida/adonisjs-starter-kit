@@ -11,7 +11,7 @@ export interface UserWelcomeParams {
 }
 
 /**
- * Delivered on user:registered — welcomes the freshly invited or signed-up
+ * Delivered on user:registered: welcomes the freshly invited or signed-up
  * user (in-app persistence + realtime SSE). The transactional email is a
  * separate channel handled by the existing WelcomeNotification mail.
  */

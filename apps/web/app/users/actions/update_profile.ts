@@ -9,6 +9,7 @@ export interface UpdateProfileInput {
   avatar?: MultipartFile | null
 }
 
+/** Updates a user's name and, when one is sent, replaces the avatar. */
 export default class UpdateProfile {
   async handle(input: UpdateProfileInput): Promise<User> {
     if (input.avatar) {

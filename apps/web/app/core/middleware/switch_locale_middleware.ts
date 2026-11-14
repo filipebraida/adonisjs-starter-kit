@@ -19,7 +19,7 @@ export default class SwitchLocaleMiddleware {
       user.locale = locale
       await user.save()
     } catch {
-      // Anonymous request — cookie fallback is enough.
+      // Anonymous request: the cookie fallback is enough.
     }
 
     return ctx.response.redirect().back()

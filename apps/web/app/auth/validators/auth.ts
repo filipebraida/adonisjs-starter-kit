@@ -12,15 +12,18 @@ export const signUpValidator = vine.create({
   passwordConfirmation: vine.string(),
 })
 
+/** The sign in form: email and password, checked against the account by the action. */
 export const signInValidator = vine.create({
   email: vine.string().email().toLowerCase().trim(),
   password: vine.string(),
 })
 
+/** The forgot password form. The email may be unknown: the action stays silent about it. */
 export const forgotPasswordValidator = vine.create({
   email: vine.string().email().trim().normalizeEmail({ gmail_remove_dots: false }),
 })
 
+/** The new password chosen from the reset link, typed twice. The token comes from the URL. */
 export const resetPasswordValidator = vine.create({
   password: vine.string().minLength(8).confirmed({ confirmationField: 'passwordConfirmation' }),
 })

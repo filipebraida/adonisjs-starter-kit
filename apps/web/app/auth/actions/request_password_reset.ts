@@ -9,8 +9,12 @@ export interface RequestPasswordResetInput {
   i18n: I18n
 }
 
+/**
+ * Requests a password reset: issues a token and emits `auth:forgot_password`,
+ * whose listener mails the link. An unknown email is a silent no-op, so the
+ * form cannot be used to find out who has an account.
+ */
 export default class RequestPasswordReset {
-  // Silent no-op when the email is not registered — prevents user enumeration.
   async handle(input: RequestPasswordResetInput): Promise<void> {
     const user = await User.findBy('email', input.email)
     if (!user) return

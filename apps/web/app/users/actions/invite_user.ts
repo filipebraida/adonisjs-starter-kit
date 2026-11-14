@@ -15,6 +15,11 @@ export interface InviteUserInput {
   i18n: I18n
 }
 
+/**
+ * Invites a user: creates the account with its role and a reset token, then
+ * emits `user:registered`, whose listeners send the welcome mail and notification.
+ * @throws ManageRolesUnauthorizedException if granting a role above user without the capability.
+ */
 export default class InviteUser {
   async handle(input: InviteUserInput): Promise<User> {
     await requireManageRolesIfEscalating(input.executor, [input.role])

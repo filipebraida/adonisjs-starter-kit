@@ -6,6 +6,7 @@ import { mailContext } from '#core/utils/mail_context'
 import type User from '#auth/models/user'
 import { type MailBasicTranslation } from '#core/models/mail_basic_translation'
 
+/** The invitation email, with a signed link to choose a password, valid for 30 minutes. */
 export default class WelcomeNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
   subject = 'Welcome!'

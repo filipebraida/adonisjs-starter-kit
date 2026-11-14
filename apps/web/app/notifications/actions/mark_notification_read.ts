@@ -7,8 +7,13 @@ export interface MarkNotificationReadInput {
   id: number | string
 }
 
+/**
+ * Marks one notification of an inbox as read, and as seen if it was not.
+ * Scoped by notifiableId, so a foreign id 404s instead of 403 and its
+ * existence does not leak.
+ * @throws E_ROW_NOT_FOUND if the inbox holds no such notification.
+ */
 export default class MarkNotificationRead {
-  // Scoped by notifiableId so a foreign id 404s instead of 403 (no existence leak).
   async handle({ notifiableId, id }: MarkNotificationReadInput): Promise<Notification> {
     const notification = await Notification.query()
       .where('notifiableId', notifiableId)

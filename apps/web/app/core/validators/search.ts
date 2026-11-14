@@ -2,6 +2,7 @@ import vine from '@vinejs/vine'
 
 export const MAX_PER_PAGE = 50
 
+/** Page, page size and search term every list screen accepts; spread into its own validator. */
 export const baseSearchValidator = vine.object({
   page: vine.number().withoutDecimals().positive().optional(),
   perPage: vine.number().withoutDecimals().positive().max(MAX_PER_PAGE).optional(),

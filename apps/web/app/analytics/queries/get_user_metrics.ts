@@ -30,7 +30,10 @@ function walk(from: number, to: number, steps: number, jitter: number): number[]
   return out
 }
 
-// Demo data — replace with real Lucid aggregates.
+/**
+ * Active users for a period, with their change and the sign up series.
+ * Demo data: replace with real Lucid aggregates.
+ */
 export default class GetUserMetrics {
   async handle({ period }: GetUserMetricsInput): Promise<UserMetrics> {
     const steps = PERIOD_STEPS[period]

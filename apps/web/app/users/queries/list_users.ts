@@ -16,6 +16,7 @@ export interface ListUsersPagination {
   perPage: number
 }
 
+/** Users with their roles, searched by name or email, filtered by role and sorted, one page at a time. */
 export default class ListUsers {
   async handle(
     filters: ListUsersFilters = {},

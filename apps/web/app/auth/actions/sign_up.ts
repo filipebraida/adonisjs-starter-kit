@@ -7,6 +7,7 @@ export interface SignUpInput {
   locale: string
 }
 
+/** Signs a visitor up: creates the account with the locale they browsed in. */
 export default class SignUp {
   async handle(input: SignUpInput): Promise<User> {
     return User.create({

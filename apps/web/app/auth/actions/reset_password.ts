@@ -7,6 +7,10 @@ export interface ResetPasswordInput {
   ip: string
 }
 
+/**
+ * Resets a password from a reset token. Returns null for an unknown or
+ * expired token; on success the user's tokens and sign in rate limit are cleared.
+ */
 export default class ResetPassword {
   async handle(input: ResetPasswordInput): Promise<User | null> {
     const service = new PasswordResetService()

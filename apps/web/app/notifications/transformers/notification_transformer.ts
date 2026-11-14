@@ -2,6 +2,7 @@ import { BaseTransformer } from '@adonisjs/core/transformers'
 
 import type Notification from '#notifications/models/notification'
 
+/** A notification as the bell reads it, dates in ISO. */
 export default class NotificationTransformer extends BaseTransformer<Notification> {
   toObject() {
     const notification = this.resource

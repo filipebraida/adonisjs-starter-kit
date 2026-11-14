@@ -11,6 +11,10 @@ export interface CreatedToken {
   token: string
 }
 
+/**
+ * Creates an API token for its owner and audits it. The secret is returned
+ * here once and never stored in clear.
+ */
 export default class CreateToken {
   async handle(input: CreateTokenInput): Promise<CreatedToken> {
     const token = await User.accessTokens.create(input.owner, undefined, {

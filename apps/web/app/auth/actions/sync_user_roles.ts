@@ -12,14 +12,22 @@ import { CAPABILITIES_AUTH } from '#auth/enums/capability'
 import { ROLES, type Role } from '#auth/enums/role'
 import type User from '#auth/models/user'
 
+/**
+ * Requires the executor to hold `users.manage_roles`.
+ * @throws ManageRolesUnauthorizedException if they do not.
+ */
 export async function requireManageRoles(executor: User) {
   const authorizer = await app.container.make(Authorizer)
   const allowed = await authorizer.can(executor, CAPABILITIES_AUTH.usersManageRoles)
   if (!allowed) throw new ManageRolesUnauthorizedException()
 }
 
-// Defense-in-depth for create/invite: enforce manage-roles even if the
-// validator accepted a non-default role.
+/**
+ * Requires `users.manage_roles` only when a role other than the default user
+ * is granted. Defense in depth for create and invite: it holds even if the
+ * validator accepted the role.
+ * @throws ManageRolesUnauthorizedException if escalating without the capability.
+ */
 export async function requireManageRolesIfEscalating(executor: User, roles: string[]) {
   const escalating = roles.some((role) => role !== ROLES.USER)
   if (escalating) await requireManageRoles(executor)
@@ -31,6 +39,13 @@ export interface SyncUserRolesInput {
   executor: User
 }
 
+/**
+ * Replaces a user's roles with the desired ones, in one transaction, and
+ * audits the change. Removes before granting, so a failure halfway leaves less
+ * privilege, never more.
+ * @throws ManageRolesUnauthorizedException if the executor may not manage roles.
+ * @throws AdminLockoutException if the executor would remove their own admin role.
+ */
 export default class SyncUserRoles {
   async handle({ target, desiredRoles, executor }: SyncUserRolesInput): Promise<void> {
     await requireManageRoles(executor)

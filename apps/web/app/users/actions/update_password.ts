@@ -5,6 +5,7 @@ export interface UpdatePasswordInput {
   password: string
 }
 
+/** Sets a user's password; the model hashes it on save. */
 export default class UpdatePassword {
   async handle(input: UpdatePasswordInput): Promise<User> {
     input.target.password = input.password

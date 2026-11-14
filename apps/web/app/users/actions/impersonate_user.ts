@@ -36,6 +36,10 @@ export interface ImpersonateUserInput {
   auth: HttpContext['auth']
 }
 
+/**
+ * Signs the session in as another user, marking who started it so the audit
+ * trail attributes the actions to the admin.
+ */
 export default class ImpersonateUser {
   async handle(input: ImpersonateUserInput): Promise<void> {
     // Recorded before the login swaps the session, so the actor is still the admin.

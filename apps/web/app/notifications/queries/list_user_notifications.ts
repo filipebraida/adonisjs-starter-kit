@@ -12,6 +12,7 @@ export interface UserNotifications {
 
 const DEFAULT_LIMIT = 20
 
+/** An inbox's latest notifications, newest first, with its unseen count. */
 export default class ListUserNotifications {
   async handle({
     notifiableId,

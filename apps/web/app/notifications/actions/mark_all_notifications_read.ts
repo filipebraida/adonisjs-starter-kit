@@ -6,6 +6,7 @@ export interface MarkAllNotificationsReadInput {
   notifiableId: string
 }
 
+/** Marks every unread notification of an inbox as read, and so as seen. */
 export default class MarkAllNotificationsRead {
   async handle({ notifiableId }: MarkAllNotificationsReadInput): Promise<void> {
     const now = DateTime.now()

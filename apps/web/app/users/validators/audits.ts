@@ -3,6 +3,7 @@ import vine from '@vinejs/vine'
 import { AUDIT_EVENT_KEYS } from '#auth/enums/audit_event'
 import { baseSearchValidator } from '#core/validators/search'
 
+/** Filters of the activity page: search, actor and event, paginated. */
 export const listAuditsValidator = vine.create({
   ...baseSearchValidator.getProperties(),
   actorId: vine.number().withoutDecimals().positive().optional(),

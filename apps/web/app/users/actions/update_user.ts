@@ -11,6 +11,12 @@ export interface UpdateUserInput {
   executor: User
 }
 
+/**
+ * Updates a user on behalf of an admin, then syncs the role. A missing
+ * password keeps the current one.
+ * @throws ManageRolesUnauthorizedException if the executor may not manage roles.
+ * @throws AdminLockoutException if the executor would remove their own admin role.
+ */
 export default class UpdateUser {
   async handle(input: UpdateUserInput): Promise<User> {
     input.target.merge({

@@ -12,6 +12,10 @@ export interface NotificationContent {
   [key: string]: unknown
 }
 
+/**
+ * A notification in a user's inbox, written by the Facteur database channel.
+ * Its status moves from unseen to seen (the bell opened) to read (clicked).
+ */
 export default class Notification extends BaseModel {
   static table = 'notifications'
 

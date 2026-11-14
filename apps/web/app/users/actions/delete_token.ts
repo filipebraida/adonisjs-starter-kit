@@ -6,6 +6,7 @@ export interface DeleteTokenInput {
   tokenId: string
 }
 
+/** Revokes one of the owner's API tokens, auditing it only when one was deleted. */
 export default class DeleteToken {
   async handle(input: DeleteTokenInput): Promise<void> {
     const deleted = await User.accessTokens.delete(input.owner, input.tokenId)
