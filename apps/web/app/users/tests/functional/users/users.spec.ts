@@ -4,6 +4,7 @@ import { test } from '@japa/runner'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('Endpoint /users', (group) => {
@@ -103,12 +104,13 @@ test.group('Endpoint /users', (group) => {
   })
 
   test('POST /users cria user comum quando admin', async ({ client, db, assert }) => {
+    const email = taggedEmail(marker('novo-por-admin'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
     const response = await client.post('/users').loginAs(admin).withCsrfToken().redirects(0).json({
       fullName: 'Novo Usuario',
-      email: 'novo-por-admin@example.test',
+      email,
       role: ROLES.USER,
     })
 
@@ -116,29 +118,30 @@ test.group('Endpoint /users', (group) => {
     assert.equal(response.header('location'), '/users')
 
     await db.assertHas('users', {
-      email: 'novo-por-admin@example.test',
+      email,
       full_name: 'Novo Usuario',
     })
   })
 
   test('POST /users com user comum eh barrado e nao cria', async ({ client, db }) => {
+    const email = taggedEmail(marker('barrado'))
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
     const response = await client.post('/users').loginAs(user).withCsrfToken().redirects(0).json({
       fullName: 'Novo',
-      email: 'barrado@example.test',
+      email,
       role: ROLES.USER,
     })
 
     assertForbiddenRedirect(response)
-    await db.assertMissing('users', { email: 'barrado@example.test' })
+    await db.assertMissing('users', { email })
   })
 
   test('POST /users com email duplicado retorna 422', async ({ client }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    await UserFactory.merge({ email: 'existe@example.test' }).create()
+    const existente = await UserFactory.create()
 
     const response = await client
       .post('/users')
@@ -148,7 +151,7 @@ test.group('Endpoint /users', (group) => {
       .redirects(0)
       .json({
         fullName: 'Duplicado',
-        email: 'existe@example.test',
+        email: existente.email,
         role: ROLES.USER,
       })
 
@@ -158,7 +161,7 @@ test.group('Endpoint /users', (group) => {
   test('PUT /users/:id atualiza como admin', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    const alvo = await UserFactory.merge({ email: 'antes@example.test' }).create()
+    const alvo = await UserFactory.create()
     await withRole(alvo, ROLES.USER)
 
     const response = await client
@@ -168,7 +171,7 @@ test.group('Endpoint /users', (group) => {
       .redirects(0)
       .json({
         fullName: 'Nome Alterado',
-        email: 'antes@example.test',
+        email: alvo.email,
         role: ROLES.USER,
       })
 

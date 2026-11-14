@@ -33,10 +33,7 @@ test.group('Exception handler', (group) => {
   })
 
   test('E_INVALID_CREDENTIALS em JSON retorna 401 com message', async ({ client, assert }) => {
-    const user = await UserFactory.merge({
-      email: 'x@example.test',
-      password: 'certa-123',
-    }).create()
+    const user = await UserFactory.merge({ password: 'certa-123' }).create()
 
     const response = await client
       .post('/login')
@@ -51,10 +48,7 @@ test.group('Exception handler', (group) => {
   })
 
   test('E_INVALID_CREDENTIALS em HTML redireciona pra /login', async ({ client, assert }) => {
-    const user = await UserFactory.merge({
-      email: 'y@example.test',
-      password: 'certa-123',
-    }).create()
+    const user = await UserFactory.merge({ password: 'certa-123' }).create()
 
     const response = await client
       .post('/login')

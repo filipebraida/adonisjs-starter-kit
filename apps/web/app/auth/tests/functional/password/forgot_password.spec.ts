@@ -8,14 +8,9 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint /forgot-password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  let fake: ReturnType<typeof emitter.fake>
-  group.each.setup(() => {
-    fake = emitter.fake(['auth:forgot_password'])
-    return () => emitter.restore()
-  })
-
   test('gera token e emite evento para email cadastrado', async ({ client, assert }) => {
-    const user = await UserFactory.merge({ email: 'reset-alvo@example.test' }).create()
+    using fake = emitter.fake(['auth:forgot_password'])
+    const user = await UserFactory.create()
 
     const response = await client
       .post('/forgot-password')
@@ -36,6 +31,7 @@ test.group('Endpoint /forgot-password', (group) => {
     client,
     assert,
   }) => {
+    using fake = emitter.fake(['auth:forgot_password'])
     const response = await client
       .post('/forgot-password')
       .redirects(0)

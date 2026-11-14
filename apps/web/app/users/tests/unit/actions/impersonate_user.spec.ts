@@ -6,9 +6,6 @@ import ImpersonateUser from '#users/actions/impersonate_user'
 import type User from '#auth/models/user'
 import { UserFactory } from '#auth/database/factories/user'
 
-type Handle = ImpersonateUser['handle']
-type Input = Parameters<Handle>[0]
-
 test.group('ImpersonateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.teardown(() => sinon.restore())
@@ -16,6 +13,7 @@ test.group('ImpersonateUser', (group) => {
   test('guarda a marca de impersonacao na sessao e faz login como o impersonado', async ({
     assert,
   }) => {
+    type Input = Parameters<ImpersonateUser['handle']>[0]
     const original = await UserFactory.create()
     const alvo = await UserFactory.create()
 

@@ -4,23 +4,22 @@ import { test } from '@japa/runner'
 import { ROLES } from '#auth/enums/role'
 import UserTransformer from '#users/transformers/user_transformer'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('UserTransformer', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('toObject expõe id, fullName, email', async ({ assert }) => {
-    const user = await UserFactory.merge({
-      fullName: 'Fulano',
-      email: 'fulano@example.test',
-    }).create()
+    const email = taggedEmail(marker('fulano'))
+    const user = await UserFactory.merge({ fullName: 'Fulano', email }).create()
 
     const out = new UserTransformer(user).toObject()
 
     assert.deepEqual(out, {
       id: user.id,
       fullName: 'Fulano',
-      email: 'fulano@example.test',
+      email,
     })
   })
 

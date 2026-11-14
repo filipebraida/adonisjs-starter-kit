@@ -22,7 +22,7 @@ test.group('Endpoint /login', (group) => {
     response.assertStatus(302)
     assert.equal(response.header('location'), '/dashboard')
 
-    // Session key `auth_web` holds the user id — that's what the guard reads on subsequent requests.
+    // Session key `auth_web` holds the user id: that's what the guard reads on subsequent requests.
     assert.equal(response.session().auth_web, user.id)
   })
 

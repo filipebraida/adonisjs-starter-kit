@@ -4,25 +4,28 @@ import { test } from '@japa/runner'
 
 import SignUp from '#auth/actions/sign_up'
 import User from '#auth/models/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 
 test.group('SignUp', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('cria o usuario com senha hasheada', async ({ db, assert }) => {
+    const email = taggedEmail(marker('novo'))
     const user = await new SignUp().handle({
       fullName: 'Filipe Teste',
-      email: 'novo@example.test',
+      email,
       password: 'senha-inicial-123',
       locale: 'pt',
     })
 
     await db.assertHas('users', {
-      email: 'novo@example.test',
+      id: user.id,
+      email,
       full_name: 'Filipe Teste',
       locale: 'pt',
     })
 
-    const persisted = await User.findByOrFail('email', 'novo@example.test')
+    const persisted = await User.findByOrFail('email', email)
     assert.equal(persisted.id, user.id)
     assert.isNotNull(persisted.password)
     assert.notEqual(persisted.password, 'senha-inicial-123')

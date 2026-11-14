@@ -5,18 +5,13 @@ import sinon from 'sinon'
 
 import User from '#auth/models/user'
 import { UserFactory } from '#auth/database/factories/user'
-
-interface SocialUser {
-  email: string
-  name: string
-  avatarUrl: string
-}
+import { marker, taggedEmail } from '#tests/helpers/marker'
 
 function makeDriver(overrides: {
   accessDenied?: boolean
   stateMisMatch?: boolean
   hasError?: boolean
-  user?: SocialUser
+  user?: { email: string; name: string; avatarUrl: string }
   redirect?: sinon.SinonSpy
 }) {
   return {
@@ -82,10 +77,11 @@ test.group('Endpoint /:provider (social)', (group) => {
     db,
     assert,
   }) => {
+    const email = taggedEmail(marker('social-novo'))
     sinon.stub(AllyManager.prototype, 'use').returns(
       makeDriver({
         user: {
-          email: 'social-novo@example.test',
+          email,
           name: 'Social Novo',
           avatarUrl: 'https://cdn/x.png',
         },
@@ -98,20 +94,20 @@ test.group('Endpoint /:provider (social)', (group) => {
     assert.equal(response.header('location'), '/dashboard')
 
     await db.assertHas('users', {
-      email: 'social-novo@example.test',
+      email,
       full_name: 'Social Novo',
       avatar_url: 'https://cdn/x.png',
     })
-    const user = await User.findByOrFail('email', 'social-novo@example.test')
+    const user = await User.findByOrFail('email', email)
     assert.equal(response.session().auth_web, user.id)
   })
 
   test('callback sucesso reusa user existente pelo email', async ({ client, db, assert }) => {
-    const existente = await UserFactory.merge({ email: 'social-existe@example.test' }).create()
+    const existente = await UserFactory.create()
     sinon.stub(AllyManager.prototype, 'use').returns(
       makeDriver({
         user: {
-          email: 'social-existe@example.test',
+          email: existente.email,
           name: 'Ignorado',
           avatarUrl: 'https://cdn/y.png',
         },
@@ -122,7 +118,7 @@ test.group('Endpoint /:provider (social)', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/dashboard')
-    await db.assertHas('users', { email: 'social-existe@example.test' }, 1)
+    await db.assertHas('users', { email: existente.email }, 1)
     assert.equal(response.session().auth_web, existente.id)
   })
 })

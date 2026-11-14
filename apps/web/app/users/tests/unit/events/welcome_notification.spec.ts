@@ -1,5 +1,6 @@
 import emitter from '@adonisjs/core/services/emitter'
 import mail from '@adonisjs/mail/services/main'
+import router from '@adonisjs/core/services/router'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
@@ -16,14 +17,13 @@ const translations = {
 
 test.group('User welcome notification', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => {
-    mail.fake()
-    return () => mail.restore()
-  })
 
   test('user:registered fires the listener and persists the welcome notification', async ({
     assert,
   }) => {
+    using _mail = mail.fake()
+    // The welcome mail signs a named route; only the functional suite's HTTP server commits them.
+    router.commit()
     const user = await UserFactory.create()
 
     await emitter.emit('user:registered', {

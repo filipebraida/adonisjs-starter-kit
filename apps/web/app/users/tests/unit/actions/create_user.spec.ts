@@ -5,24 +5,26 @@ import CreateUser from '#users/actions/create_user'
 import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('CreateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('admin cria user comum com role atribuido', async ({ db, assert }) => {
+    const email = taggedEmail(marker('joao-novo'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
     const created = await new CreateUser().handle({
       fullName: 'Joao Novo',
-      email: 'joao-novo@example.test',
+      email,
       role: ROLES.USER,
       password: 'senha-inicial-123',
       executor: admin,
     })
 
-    await db.assertHas('users', { email: 'joao-novo@example.test', full_name: 'Joao Novo' })
+    await db.assertHas('users', { id: created.id, email, full_name: 'Joao Novo' })
     assert.deepEqual(await created.getRoles(), [ROLES.USER])
   })
 
@@ -59,6 +61,7 @@ test.group('CreateUser', (group) => {
   })
 
   test('user comum NAO pode criar admin', async ({ db, assert }) => {
+    const email = taggedEmail(marker('escalador'))
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
@@ -66,29 +69,30 @@ test.group('CreateUser', (group) => {
       () =>
         new CreateUser().handle({
           fullName: 'Escalador',
-          email: 'escalador@example.test',
+          email,
           role: ROLES.ADMIN,
           executor,
         }),
       ManageRolesUnauthorizedException
     )
 
-    await db.assertMissing('users', { email: 'escalador@example.test' })
+    await db.assertMissing('users', { email })
   })
 
   test('escalation guard so protege contra papel != USER (block user->user cabe a policy)', async ({
     db,
   }) => {
+    const email = taggedEmail(marker('ok-user'))
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
-    await new CreateUser().handle({
+    const created = await new CreateUser().handle({
       fullName: 'Ok User',
-      email: 'ok-user@example.test',
+      email,
       role: ROLES.USER,
       executor,
     })
 
-    await db.assertHas('users', { email: 'ok-user@example.test' })
+    await db.assertHas('users', { id: created.id, email })
   })
 })

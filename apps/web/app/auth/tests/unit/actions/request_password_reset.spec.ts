@@ -10,16 +10,10 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('RequestPasswordReset', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  // Fake the event; the real listener's mail.prepare() calls signedUrlFor and needs a live router.
-  let fake: ReturnType<typeof emitter.fake>
-  group.each.setup(() => {
-    fake = emitter.fake(['auth:forgot_password'])
-    return () => emitter.restore()
-  })
-
   const i18n = () => i18nManager.locale(i18nManager.defaultLocale)
 
   test('emite auth:forgot_password com token novo para email conhecido', async ({ assert }) => {
+    using fake = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })
@@ -32,6 +26,7 @@ test.group('RequestPasswordReset', (group) => {
   })
 
   test('no-op silencioso quando o email nao existe (nao vaza usuario)', async () => {
+    using fake = emitter.fake(['auth:forgot_password'])
     await new RequestPasswordReset().handle({
       email: 'nao-existe@example.test',
       i18n: i18n(),
@@ -44,6 +39,8 @@ test.group('RequestPasswordReset', (group) => {
     db,
     assert,
   }) => {
+    // The real listener's mail.prepare() calls signedUrlFor and needs a live router.
+    using _events = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })

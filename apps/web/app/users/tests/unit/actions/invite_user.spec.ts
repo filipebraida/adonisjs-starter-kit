@@ -8,17 +8,11 @@ import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unau
 import ResetPasswordToken from '#auth/models/reset_password_token'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('InviteUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-
-  // Fake the event so the mail listener (which builds a signed URL) doesn't run.
-  let fake: ReturnType<typeof emitter.fake>
-  group.each.setup(() => {
-    fake = emitter.fake(['user:registered'])
-    return () => emitter.restore()
-  })
 
   const i18n = () => i18nManager.locale(i18nManager.defaultLocale)
 
@@ -26,18 +20,21 @@ test.group('InviteUser', (group) => {
     db,
     assert,
   }) => {
+    // Fake the event so the mail listener (which builds a signed URL) doesn't run.
+    using fake = emitter.fake(['user:registered'])
+    const email = taggedEmail(marker('convidado'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
     const convidado = await new InviteUser().handle({
-      email: 'convidado@example.test',
+      email,
       role: ROLES.USER,
       description: 'Seja bem-vindo',
       executor: admin,
       i18n: i18n(),
     })
 
-    await db.assertHas('users', { email: 'convidado@example.test' })
+    await db.assertHas('users', { id: convidado.id, email })
 
     const roles = await convidado.getRoles()
     assert.deepEqual(roles, [ROLES.USER])
@@ -49,13 +46,15 @@ test.group('InviteUser', (group) => {
   })
 
   test('user comum NAO pode convidar admin', async ({ db, assert }) => {
+    using fake = emitter.fake(['user:registered'])
+    const email = taggedEmail(marker('escalador'))
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
 
     await assert.rejects(
       () =>
         new InviteUser().handle({
-          email: 'escalador@example.test',
+          email,
           role: ROLES.ADMIN,
           executor,
           i18n: i18n(),
@@ -63,7 +62,7 @@ test.group('InviteUser', (group) => {
       ManageRolesUnauthorizedException
     )
 
-    await db.assertMissing('users', { email: 'escalador@example.test' })
+    await db.assertMissing('users', { email })
     fake.assertNoneEmitted()
   })
 })

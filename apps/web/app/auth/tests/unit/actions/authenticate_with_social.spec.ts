@@ -3,16 +3,17 @@ import { test } from '@japa/runner'
 
 import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 
 test.group('AuthenticateWithSocial', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('reusa user existente pelo email', async ({ db, assert }) => {
-    const existente = await UserFactory.merge({ email: 'ja-existe@example.test' }).create()
+    const existente = await UserFactory.create()
 
     const result = await new AuthenticateWithSocial().handle({
       socialUser: {
-        email: 'ja-existe@example.test',
+        email: existente.email,
         name: 'Nome do Google',
         avatarUrl: 'https://cdn.google/avatar.png',
       },
@@ -20,13 +21,14 @@ test.group('AuthenticateWithSocial', (group) => {
     })
 
     assert.equal(result.id, existente.id)
-    await db.assertHas('users', { email: 'ja-existe@example.test' }, 1)
+    await db.assertHas('users', { email: existente.email }, 1)
   })
 
   test('cria novo user quando email nao existe (password null)', async ({ db, assert }) => {
+    const email = taggedEmail(marker('novo-social'))
     const result = await new AuthenticateWithSocial().handle({
       socialUser: {
-        email: 'novo-social@example.test',
+        email,
         name: 'Google User',
         avatarUrl: 'https://cdn.google/x.png',
       },
@@ -34,7 +36,8 @@ test.group('AuthenticateWithSocial', (group) => {
     })
 
     await db.assertHas('users', {
-      email: 'novo-social@example.test',
+      id: result.id,
+      email,
       full_name: 'Google User',
       avatar_url: 'https://cdn.google/x.png',
       locale: 'pt',

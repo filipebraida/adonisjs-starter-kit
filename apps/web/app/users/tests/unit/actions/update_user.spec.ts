@@ -14,7 +14,7 @@ test.group('UpdateUser', (group) => {
   test('admin atualiza fullName, email e role do alvo', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    const alvo = await UserFactory.merge({ email: 'antes@example.test' }).create()
+    const alvo = await UserFactory.create()
     await withRole(alvo, ROLES.USER)
 
     await new UpdateUser().handle({

@@ -1,21 +1,19 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import User from '#auth/models/user'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 
 test.group('User model — email normalization', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('User.create normaliza email pra lowercase e trim', async ({ db }) => {
-    await User.create({
-      fullName: 'Mixed Case',
-      email: '  Fulano@Example.TEST  ',
-      password: 'senha-1234',
-    })
+    const mark = marker('Fulano')
+    const rawEmail = `  ${mark}@Example.TEST  `
+    const user = await UserFactory.merge({ email: rawEmail }).create()
 
-    await db.assertHas('users', { email: 'fulano@example.test' })
-    await db.assertMissing('users', { email: '  Fulano@Example.TEST  ' })
+    await db.assertHas('users', { id: user.id, email: taggedEmail(mark) })
+    await db.assertMissing('users', { id: user.id, email: rawEmail })
   })
 
   test('UserFactory produz email lowercase mesmo sem override explicito', async ({ assert }) => {

@@ -7,16 +7,11 @@ import User from '#auth/models/user'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
+import { marker, taggedEmail } from '#tests/helpers/marker'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('Endpoint /users/invite', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-
-  let fake: ReturnType<typeof emitter.fake>
-  group.each.setup(() => {
-    fake = emitter.fake(['user:registered'])
-    return () => emitter.restore()
-  })
 
   test('POST sem auth redireciona para login', async ({ client, assert }) => {
     const response = await client
@@ -29,6 +24,8 @@ test.group('Endpoint /users/invite', (group) => {
   })
 
   test('POST como user comum eh barrado e nao emite evento', async ({ client, db }) => {
+    using fake = emitter.fake(['user:registered'])
+    const email = taggedEmail(marker('barrado-convite'))
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -37,14 +34,16 @@ test.group('Endpoint /users/invite', (group) => {
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
-      .json({ email: 'barrado-convite@example.test', role: ROLES.USER })
+      .json({ email, role: ROLES.USER })
 
     assertForbiddenRedirect(response)
     fake.assertNoneEmitted()
-    await db.assertMissing('users', { email: 'barrado-convite@example.test' })
+    await db.assertMissing('users', { email })
   })
 
   test('POST como admin cria user + gera token + emite evento', async ({ client, db, assert }) => {
+    using fake = emitter.fake(['user:registered'])
+    const email = taggedEmail(marker('convite'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -54,7 +53,7 @@ test.group('Endpoint /users/invite', (group) => {
       .withCsrfToken()
       .redirects(0)
       .json({
-        email: 'convite@example.test',
+        email,
         role: ROLES.USER,
         description: 'seja bem-vindo',
       })
@@ -62,9 +61,9 @@ test.group('Endpoint /users/invite', (group) => {
     response.assertStatus(302)
     assert.equal(response.header('location'), '/users')
 
-    await db.assertHas('users', { email: 'convite@example.test' })
+    await db.assertHas('users', { email })
 
-    const criado = await User.findByOrFail('email', 'convite@example.test')
+    const criado = await User.findByOrFail('email', email)
     const roles = await criado.related('roles').query().select('name')
     assert.deepEqual(
       roles.map((r) => r.name),
@@ -77,9 +76,10 @@ test.group('Endpoint /users/invite', (group) => {
   })
 
   test('POST como admin com email duplicado retorna 422', async ({ client }) => {
+    using fake = emitter.fake(['user:registered'])
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    await UserFactory.merge({ email: 'ja-existe@example.test' }).create()
+    const existente = await UserFactory.create()
 
     const response = await client
       .post('/users/invite')
@@ -87,7 +87,7 @@ test.group('Endpoint /users/invite', (group) => {
       .withCsrfToken()
       .accept('json')
       .redirects(0)
-      .json({ email: 'ja-existe@example.test', role: ROLES.USER })
+      .json({ email: existente.email, role: ROLES.USER })
 
     response.assertStatus(422)
     fake.assertNoneEmitted()

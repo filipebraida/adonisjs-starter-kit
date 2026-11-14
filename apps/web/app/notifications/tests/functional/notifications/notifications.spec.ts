@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import { DateTime } from 'luxon'
 
 import Notification from '#notifications/models/notification'
+import { NotificationFactory } from '#notifications/database/factories/notification'
 import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint /notifications', (group) => {
@@ -16,26 +16,11 @@ test.group('Endpoint /notifications', (group) => {
 
   test('GET lista as ultimas notificacoes + count de nao-vistas', async ({ client, assert }) => {
     const user = await UserFactory.create()
-    const now = DateTime.now()
+    const notifiableId = String(user.id)
 
-    await Notification.createMany([
-      { notifiableId: String(user.id), type: 'test', content: { title: 'A' }, status: 'unseen' },
-      {
-        notifiableId: String(user.id),
-        type: 'test',
-        content: { title: 'B' },
-        status: 'seen',
-        seenAt: now,
-      },
-      {
-        notifiableId: String(user.id),
-        type: 'test',
-        content: { title: 'C' },
-        status: 'read',
-        readAt: now,
-        seenAt: now,
-      },
-    ])
+    await NotificationFactory.merge({ notifiableId }).create()
+    await NotificationFactory.merge({ notifiableId }).apply('seen').create()
+    await NotificationFactory.merge({ notifiableId }).apply('read').create()
 
     const response = await client.get('/notifications').loginAs(user).accept('json')
 
@@ -48,12 +33,7 @@ test.group('Endpoint /notifications', (group) => {
     const user = await UserFactory.create()
     const other = await UserFactory.create()
 
-    await Notification.create({
-      notifiableId: String(other.id),
-      type: 'test',
-      content: { title: 'Not mine' },
-      status: 'unseen',
-    })
+    await NotificationFactory.merge({ notifiableId: String(other.id) }).create()
 
     const response = await client.get('/notifications').loginAs(user).accept('json')
 
@@ -67,12 +47,7 @@ test.group('Endpoint /notifications', (group) => {
     assert,
   }) => {
     const user = await UserFactory.create()
-    const notif = await Notification.create({
-      notifiableId: String(user.id),
-      type: 'test',
-      content: { title: 'A' },
-      status: 'unseen',
-    })
+    const notif = await NotificationFactory.merge({ notifiableId: String(user.id) }).create()
 
     const response = await client
       .post(`/notifications/${notif.id}/read`)
@@ -92,12 +67,7 @@ test.group('Endpoint /notifications', (group) => {
     const user = await UserFactory.create()
     const other = await UserFactory.create()
 
-    const notif = await Notification.create({
-      notifiableId: String(other.id),
-      type: 'test',
-      content: { title: 'A' },
-      status: 'unseen',
-    })
+    const notif = await NotificationFactory.merge({ notifiableId: String(other.id) }).create()
 
     const response = await client
       .post(`/notifications/${notif.id}/read`)
@@ -110,10 +80,7 @@ test.group('Endpoint /notifications', (group) => {
 
   test('POST /seen marca todas como vistas mas nao lidas', async ({ client, assert }) => {
     const user = await UserFactory.create()
-    await Notification.createMany([
-      { notifiableId: String(user.id), type: 'test', content: { title: 'A' }, status: 'unseen' },
-      { notifiableId: String(user.id), type: 'test', content: { title: 'B' }, status: 'unseen' },
-    ])
+    await NotificationFactory.merge({ notifiableId: String(user.id) }).createMany(2)
 
     const response = await client
       .post('/notifications/seen')
@@ -131,17 +98,9 @@ test.group('Endpoint /notifications', (group) => {
 
   test('POST /read marca todas como lidas', async ({ client, assert }) => {
     const user = await UserFactory.create()
-    const now = DateTime.now()
-    await Notification.createMany([
-      { notifiableId: String(user.id), type: 'test', content: { title: 'A' }, status: 'unseen' },
-      {
-        notifiableId: String(user.id),
-        type: 'test',
-        content: { title: 'B' },
-        status: 'seen',
-        seenAt: now,
-      },
-    ])
+    const notifiableId = String(user.id)
+    await NotificationFactory.merge({ notifiableId }).create()
+    await NotificationFactory.merge({ notifiableId }).apply('seen').create()
 
     const response = await client
       .post('/notifications/read')
