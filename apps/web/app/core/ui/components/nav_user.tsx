@@ -39,7 +39,7 @@ export function NavUser({ user, options }: NavUserProps) {
         </div>
         <DropdownMenuSeparator />
         {visibleGroups.map((group, groupIndex) => (
-          <React.Fragment key={groupIndex}>
+          <React.Fragment key={group.map((option) => option.title).join('|')}>
             {groupIndex > 0 && <DropdownMenuSeparator />}
 
             {group.map((option) => (

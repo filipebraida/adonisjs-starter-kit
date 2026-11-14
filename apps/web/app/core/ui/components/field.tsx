@@ -9,8 +9,8 @@ export function Field({
   ...props
 }: React.ComponentProps<typeof BaseField> & { name?: string }) {
   return (
-    <FieldNameContext.Provider value={name}>
+    <FieldNameContext value={name}>
       <BaseField {...props} />
-    </FieldNameContext.Provider>
+    </FieldNameContext>
   )
 }

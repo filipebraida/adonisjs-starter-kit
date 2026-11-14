@@ -22,9 +22,9 @@ export function Form(props: AppFormProps) {
   return (
     <InertiaForm {...(formProps as any)}>
       {(slotProps) => (
-        <FormErrorsContext.Provider value={slotProps.errors as FormErrors | undefined}>
+        <FormErrorsContext value={slotProps.errors as FormErrors | undefined}>
           {typeof children === 'function' ? children(slotProps) : children}
-        </FormErrorsContext.Provider>
+        </FormErrorsContext>
       )}
     </InertiaForm>
   )

@@ -5,7 +5,7 @@ import { getTransmitSingleton } from '#core/ui/hooks/use_transmit'
 /**
  * Subscribes the logged-in user to their personal SSE channel
  * (`notifications/user-<id>`) and calls `onMessage` on every event. Reuses
- * the singleton Transmit client — one EventSource per tab.
+ * the singleton Transmit client: one EventSource per tab.
  */
 export function useNotificationsChannel(userId: number | undefined, onMessage: () => void) {
   useEffect(() => {

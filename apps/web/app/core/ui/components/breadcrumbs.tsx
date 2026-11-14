@@ -20,7 +20,7 @@ export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbs.map((item, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={`${item.href ?? ''}:${item.label}`}>
                 <BreadcrumbItem>
                   {item.href ? (
                     <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>

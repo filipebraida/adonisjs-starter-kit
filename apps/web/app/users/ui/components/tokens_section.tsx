@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { DateTime } from 'luxon'
+import { useState } from 'react'
 import { CheckCircle2, Plus, Ticket, Trash2, X } from 'lucide-react'
 
 import { TokensActionDialog } from '#users/ui/components/tokens_action_dialog'
 import { TokensDeleteDialog } from '#users/ui/components/tokens_delete_dialog'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { formatDate, formatRelativeTime } from '#core/ui/format/date'
 
 import { Button } from '@workspace/ui/components/button'
 import { CopyButton } from '@workspace/ui/components/copy-button'
@@ -26,14 +26,17 @@ interface Props {
 }
 
 export function TokensSection({ tokens, newToken }: Props) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [addOpen, setAddOpen] = useState(false)
   const [toDelete, setToDelete] = useState<Data.Users.Token | null>(null)
-  const [revealed, setRevealed] = useState<NewToken | null>(null)
+  const [revealed, setRevealed] = useState<NewToken | null>(newToken)
+  const [lastNewToken, setLastNewToken] = useState(newToken)
 
-  useEffect(() => {
+  // A token generated after mount arrives as a new prop: reveal it once.
+  if (newToken !== lastNewToken) {
+    setLastNewToken(newToken)
     if (newToken) setRevealed(newToken)
-  }, [newToken])
+  }
 
   return (
     <div>
@@ -99,7 +102,7 @@ export function TokensSection({ tokens, newToken }: Props) {
                 <div className="min-w-0">
                   <div className="truncate text-sm font-medium">{token.name}</div>
                   <div className="mt-0.5 text-xs text-muted-foreground">
-                    {formatTokenMeta(token, t)}
+                    {formatTokenMeta(token, t, language)}
                   </div>
                 </div>
               </div>
@@ -133,13 +136,14 @@ export function TokensSection({ tokens, newToken }: Props) {
 
 function formatTokenMeta(
   token: Data.Users.Token,
-  t: (key: string, opts?: Record<string, unknown>) => string
+  t: (key: string, opts?: Record<string, unknown>) => string,
+  locale: string
 ) {
-  const created = DateTime.fromISO(token.createdAt).toLocaleString(DateTime.DATE_MED)
+  const created = formatDate(token.createdAt, locale, { dateStyle: 'medium' })
   const parts = [t('users.tokens.created_word', { date: created })]
 
   if (token.lastUsedAt) {
-    const lastUsed = DateTime.fromISO(token.lastUsedAt).toRelative() ?? ''
+    const lastUsed = formatRelativeTime(token.lastUsedAt, locale)
     parts.push(t('users.tokens.last_used_word', { time: lastUsed }))
   }
 
