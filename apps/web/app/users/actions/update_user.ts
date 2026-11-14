@@ -1,4 +1,4 @@
-import SyncUserRoles from '#auth/actions/sync_user_roles'
+import SyncUserRoles, { requireManageRoles } from '#auth/actions/sync_user_roles'
 import type { Role as RoleSlug } from '#auth/enums/role'
 import type User from '#auth/models/user'
 
@@ -13,12 +13,17 @@ export interface UpdateUserInput {
 
 /**
  * Updates a user on behalf of an admin, then syncs the role. A missing
- * password keeps the current one.
+ * password keeps the current one. A role change is authorized before anything
+ * is written, so a refused change saves nothing.
  * @throws ManageRolesUnauthorizedException if the executor may not manage roles.
  * @throws AdminLockoutException if the executor would remove their own admin role.
  */
 export default class UpdateUser {
   async handle(input: UpdateUserInput): Promise<User> {
+    const current = await input.target.getRoles()
+    const changingRole = current.length !== 1 || current[0] !== input.role
+    if (changingRole) await requireManageRoles(input.executor)
+
     input.target.merge({
       fullName: input.fullName,
       email: input.email,
@@ -26,11 +31,13 @@ export default class UpdateUser {
     })
     await input.target.save()
 
-    await new SyncUserRoles().handle({
-      target: input.target,
-      desiredRoles: [input.role],
-      executor: input.executor,
-    })
+    if (changingRole) {
+      await new SyncUserRoles().handle({
+        target: input.target,
+        desiredRoles: [input.role],
+        executor: input.executor,
+      })
+    }
 
     return input.target
   }
