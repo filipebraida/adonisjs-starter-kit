@@ -1,0 +1,22 @@
+# The commit checks only what it carries: Prettier and ESLint on the staged
+# files, in parallel, ESLint with its cache. What needs the whole repository
+# runs later: the typecheck before a push, and everything in CI, the gate.
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{ts,tsx,js,mjs,cjs,json,md,yml,yaml,css}"
+      run: pnpm exec prettier --check --ignore-unknown {staged_files}
+    lint-web:
+      root: "apps/web/"
+      glob: "*.{ts,tsx,js,mjs,cjs}"
+      run: pnpm exec eslint --cache --cache-location node_modules/.cache/eslint/ --no-warn-ignored {staged_files}
+    lint-ui:
+      root: "packages/ui/"
+      glob: "*.{ts,tsx}"
+      run: pnpm exec eslint --cache --cache-location node_modules/.cache/eslint/ --no-warn-ignored {staged_files}
+
+pre-push:
+  commands:
+    typecheck:
+      run: pnpm typecheck

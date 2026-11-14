@@ -48,15 +48,31 @@ jobs:
           cp .env.example .env
           node ace generate:key --force
 
+      # .adonisjs/ is committed: fail when the codegen would change it.
+      - name: Generated files in sync
+        run: |
+          pnpm ace codegen
+          git diff --exit-code -- apps/web/.adonisjs
+          test -z "$(git status --porcelain -- apps/web/.adonisjs)"
+
+      # schema.ts is committed: fail when the one generated from a database
+      # migrated from scratch differs.
+      - name: Migrations from scratch match the committed schema
+        run: |
+          pnpm ace migration:run --force
+          git diff --exit-code -- apps/web/app/core/database/schema.ts
+
       - name: Typecheck
         run: pnpm typecheck
 
       - name: Lint
         run: pnpm lint
 
+      # A stray async handle (an upload's variant, an open socket) can keep the
+      # runner alive after the last spec; the timeout turns a hang into a failure.
       - name: Test + coverage
         working-directory: apps/web
-        run: pnpm coverage
+        run: timeout -k 10 900 pnpm coverage
 
       - name: Coverage summary
         if: success()
