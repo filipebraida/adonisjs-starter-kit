@@ -1,3 +1,5 @@
+// useForm and not <Form>: the avatar upload reports its progress and previews the picked
+// file before the submit.
 import { useForm } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 

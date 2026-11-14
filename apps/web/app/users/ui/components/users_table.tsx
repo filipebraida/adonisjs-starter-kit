@@ -45,7 +45,7 @@ interface DataTableProps {
 
 export default function UsersTable({
   users,
-  roles,
+  roles: roleOptions,
   q,
   selectedRoles,
   sort,
@@ -69,7 +69,7 @@ export default function UsersTable({
       const nextOrder: SortDirection | undefined = first ? (first.desc ? 'desc' : 'asc') : undefined
 
       router.get(
-        '/users',
+        urlFor('users.index'),
         {
           q: querySearch.length > 0 ? querySearch : undefined,
           roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
@@ -92,7 +92,7 @@ export default function UsersTable({
     data: users,
     visit: ({ page, perPage }) => {
       return router.get(
-        '/users',
+        urlFor('users.index'),
         {
           page,
           perPage,
@@ -120,7 +120,7 @@ export default function UsersTable({
       cell: ({ row }) => {
         const user = row.original
         const slug: RoleSlug = mainRole(user.roles) ?? ROLES.USER
-        const userRole = roles.find(({ value }) => value === slug)
+        const userRole = roleOptions.find(({ value }) => value === slug)
         return (
           <div className="min-w-0">
             <div className="truncate font-medium">
@@ -163,7 +163,7 @@ export default function UsersTable({
       meta: { columnClasses: 'hidden md:table-cell' },
       cell: ({ row }) => {
         const slug: RoleSlug = mainRole(row.original.roles) ?? ROLES.USER
-        const userRole = roles.find(({ value }) => value === slug)
+        const userRole = roleOptions.find(({ value }) => value === slug)
 
         if (!userRole) {
           return null
@@ -197,7 +197,7 @@ export default function UsersTable({
   return (
     <div className="space-y-4">
       <UsersTableFilters
-        roles={roles}
+        roles={roleOptions}
         querySearch={querySearch}
         setQuerySearch={setQuerySearch}
         selectedRoles={selectedRoleSlugs}

@@ -45,7 +45,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
   const visit = React.useCallback(
     (params: { q: string; event: AuditEvent | ''; page?: number; perPage: number }) => {
       router.get(
-        '/users/activity',
+        urlFor('users.activity'),
         {
           q: params.q.length > 0 ? params.q : undefined,
           event: params.event || undefined,
@@ -79,7 +79,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
   const clearAll = () => {
     setQuerySearch('')
     setSelectedEvent('')
-    router.get('/users/activity', { perPage }, { preserveScroll: true, replace: true })
+    router.get(urlFor('users.activity'), { perPage }, { preserveScroll: true, replace: true })
   }
 
   const columns: ColumnDef<AuditRow>[] = [

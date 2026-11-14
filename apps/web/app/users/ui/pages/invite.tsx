@@ -1,3 +1,5 @@
+// useForm and not <Form>: the role is a Radix Select driven by the form state, and the
+// success toast names the invited email.
 import { useForm } from '@inertiajs/react'
 import { Modal } from 'adonis-inertia-modal/react'
 import { MailPlus, Send } from 'lucide-react'
@@ -6,7 +8,6 @@ import { Button } from '@workspace/ui/components/button'
 import { Field, FieldLabel } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 import { Input } from '@workspace/ui/components/input'
-import { Progress } from '@workspace/ui/components/progress'
 import {
   Select,
   SelectContent,
@@ -29,7 +30,7 @@ export default function InviteUserPage() {
   const { t } = useTranslation()
   const roles = userRoles(t)
 
-  const { data, setData, errors, post, progress, processing } = useForm<{
+  const { data, setData, errors, post, processing } = useForm<{
     email: string
     role: RoleSlug
     description: string | null
@@ -114,10 +115,6 @@ export default function InviteUserPage() {
               />
               <FieldErrorBag errors={errors} field="description" />
             </Field>
-
-            {progress && (
-              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
-            )}
           </form>
 
           <footer className="flex justify-end gap-2">

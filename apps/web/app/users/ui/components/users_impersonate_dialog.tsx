@@ -1,3 +1,5 @@
+// useForm and not <Form>: nothing is typed into a form here. The confirm button sits in
+// the footer of ConfirmDialog and shows the request in flight through `processing`.
 import { useForm } from '@inertiajs/react'
 import { useMemo } from 'react'
 import { Trans } from 'react-i18next'

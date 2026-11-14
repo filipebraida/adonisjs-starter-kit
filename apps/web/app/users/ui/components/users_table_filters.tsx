@@ -7,6 +7,7 @@ import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { CheckboxFilter } from '@workspace/ui/components/checkbox-filter'
 
+import { urlFor } from '~/app/client'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { Role } from '#users/ui/components/users_types'
 
@@ -35,7 +36,7 @@ export default function UsersTableFilters({
         perPage: perPage,
       }
 
-      router.get('/users', data, {
+      router.get(urlFor('users.index'), data, {
         preserveScroll: true,
         preserveState: true,
         replace: true,

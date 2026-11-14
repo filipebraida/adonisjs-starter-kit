@@ -1,8 +1,9 @@
+// useForm and not <Form>: create and edit share the controlled UserFormFields, whose
+// confirmation stays disabled until a password is typed.
 import { useForm } from '@inertiajs/react'
 import { Modal } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
-import { Progress } from '@workspace/ui/components/progress'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
 import { urlFor } from '~/app/client'
@@ -14,7 +15,7 @@ import { ROLES } from '#auth/enums/role'
 export default function CreateUserPage() {
   const { t } = useTranslation()
 
-  const { data, setData, errors, post, progress, processing, reset } = useForm<UserFormData>({
+  const { data, setData, errors, post, processing, reset } = useForm<UserFormData>({
     fullName: '',
     email: '',
     role: ROLES.USER,
@@ -52,10 +53,6 @@ export default function CreateUserPage() {
               errors={errors}
               setData={(key, value) => setData(key, value as never)}
             />
-
-            {progress && (
-              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-4" />
-            )}
           </form>
 
           <footer className="flex justify-end gap-2">

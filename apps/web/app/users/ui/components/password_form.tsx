@@ -1,11 +1,12 @@
 import React from 'react'
+// useForm and not <Form>: the confirmation stays disabled until a password is typed, so
+// the screen reads the value as it changes.
 import { useForm } from '@inertiajs/react'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'
-import { Progress } from '@workspace/ui/components/progress'
 import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
@@ -15,7 +16,7 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 export function PasswordForm() {
   const { t } = useTranslation()
 
-  const { data, setData, errors, put, progress, reset } = useForm({
+  const { data, setData, errors, put, reset } = useForm({
     password: '',
     passwordConfirmation: '',
   })
@@ -70,11 +71,6 @@ export function PasswordForm() {
             />
             <FieldErrorBag errors={errors} field="passwordConfirmation" />
           </Field>
-          {progress && (
-            <Field>
-              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
-            </Field>
-          )}
 
           <Field orientation="responsive">
             <Button type="submit">{t('users.action.actions.save')}</Button>

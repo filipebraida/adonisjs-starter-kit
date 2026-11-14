@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { useMemo, useState } from 'react'
 import { Trans } from 'react-i18next'
 
@@ -21,13 +21,12 @@ interface Props {
 
 export function TokensDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const [value, setValue] = useState('')
-  const { delete: destroy } = useForm()
   const { t } = useTranslation()
 
   const handleDelete = () => {
     if (value.trim() !== currentRow.name) return
 
-    destroy(urlFor('tokens.destroy', { id: currentRow.id }), {
+    router.delete(urlFor('tokens.destroy', { id: currentRow.id }), {
       preserveScroll: true,
       onSuccess: () => {
         onOpenChange(false)
