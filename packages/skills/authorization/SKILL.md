@@ -31,7 +31,7 @@ On the frontend the shared `authz` prop (`{ roles, permissions }`, built by `bui
   - `requireManageRolesIfEscalating(executor, roles)` — enforces it on create/invite when a non-default role is requested.
   - `AdminLockoutException` — `SyncUserRoles` refuses to remove the executor's own `admin`.
   - `SyncUserRoles` removes before granting, inside one transaction: a failure halfway leaves less privilege, never more.
-- **Permission cache**: `ContainerBindingsMiddleware` binds one `PermissionCache` per request; `providers/authz_cache_provider.ts` gives a fresh one outside HTTP (unit specs, jobs, ace). Grants changed mid-request apply from the next request.
+- **Permission cache**: the library caches role and permission reads per request on its own (AsyncLocalStorage is on in `config/app.ts`), so every check in a request costs one read; outside a request each check reads the store. Don't pass a `cache` of your own. Grants changed mid-request apply from the next request.
 
 ## Repo refs
 

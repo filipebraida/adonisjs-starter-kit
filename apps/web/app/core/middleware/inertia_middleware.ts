@@ -3,7 +3,6 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
-import { PermissionCache } from '@adonis-agora/authz'
 import authz from '@adonis-agora/authz/services/main'
 import { buildAuthzShare } from '@adonis-agora/authz-react/server'
 
@@ -23,15 +22,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      */
     const { auth } = ctx as Partial<HttpContext>
 
-    // The same per-request cache the policies' `authz.can()` reads.
-    const cache = await ctx.containerResolver.make(PermissionCache)
-    const authzShare = await buildAuthzShare(
-      {
-        effectiveRoles: (user, scope) => authz.effectiveRoles(user, scope, { cache }),
-        effectivePermissions: (user, scope) => authz.effectivePermissions(user, scope, { cache }),
-      },
-      auth?.user ?? null
-    )
+    // Reads through the library's request cache, the one the policies' checks share.
+    const authzShare = await buildAuthzShare(authz, auth?.user ?? null)
 
     let unseenNotifications = 0
 

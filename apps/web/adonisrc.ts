@@ -75,7 +75,6 @@ export default defineConfig({
     () => import('@adonisjs/transmit/transmit_provider'),
     () => import('@facteurjs/adonisjs/facteur_provider'),
     () => import('@adonis-agora/authz/authz_provider'),
-    () => import('#providers/authz_cache_provider'),
     () => import('@adonis-agora/durable/durable_provider'),
     () => import('@filipebraida/adonis-auditing/auditing_provider'),
   ],
