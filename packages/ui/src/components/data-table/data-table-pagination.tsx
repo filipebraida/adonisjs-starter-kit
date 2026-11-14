@@ -32,7 +32,7 @@ export function DataTablePagination<TData>({
     <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-end sm:gap-6 lg:gap-8">
       <div className="hidden items-center gap-2 sm:flex">
         <p className="text-sm font-medium">
-          {t("common.table.pagination.rows_per_page")}
+          {t("core.table.pagination.rows_per_page")}
         </p>
         <Select
           value={`${pageSize}`}
@@ -53,7 +53,7 @@ export function DataTablePagination<TData>({
 
       <div className="flex items-center justify-between gap-3 sm:gap-2">
         <div className="text-sm font-medium">
-          {t("common.table.pagination.page_of", {
+          {t("core.table.pagination.page_of", {
             current: pageIndex + 1,
             total: pageCount,
           })}
@@ -66,7 +66,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">
-              {t("common.table.pagination.go_first_page")}
+              {t("core.table.pagination.go_first_page")}
             </span>
             <ChevronsLeft />
           </Button>
@@ -77,7 +77,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">
-              {t("common.table.pagination.go_previous_page")}
+              {t("core.table.pagination.go_previous_page")}
             </span>
             <ChevronLeft />
           </Button>
@@ -88,7 +88,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">
-              {t("common.table.pagination.go_next_page")}
+              {t("core.table.pagination.go_next_page")}
             </span>
             <ChevronRight />
           </Button>
@@ -99,7 +99,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">
-              {t("common.table.pagination.go_last_page")}
+              {t("core.table.pagination.go_last_page")}
             </span>
             <ChevronsRight />
           </Button>

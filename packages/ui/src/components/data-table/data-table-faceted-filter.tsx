@@ -62,8 +62,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValues.size}{" "}
-                    {t("common.table.filters.nb_selected")}
+                    {selectedValues.size} {t("core.table.filters.nb_selected")}
                   </Badge>
                 ) : (
                   options
@@ -87,7 +86,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>{t("common.filters.no_results")}</CommandEmpty>
+            <CommandEmpty>{t("core.table.filters.no_results")}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -137,7 +136,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    {t("common.table.filters.clear_filters")}
+                    {t("core.table.filters.clear_filters")}
                   </CommandItem>
                 </CommandGroup>
               </>
