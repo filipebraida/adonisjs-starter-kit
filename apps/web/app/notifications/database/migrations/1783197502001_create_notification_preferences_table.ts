@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.text('user_id').notNullable()
       table.text('tenant_id').nullable()
       table.text('notification_name').nullable()
-      table.json('channels').notNullable()
+      table.jsonb('channels').notNullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
