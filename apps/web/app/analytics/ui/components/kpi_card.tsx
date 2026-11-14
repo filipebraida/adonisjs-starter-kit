@@ -33,7 +33,7 @@ export function KpiCard({ label, value, change, data }: KpiCardProps) {
         <span
           className={cn(
             'inline-flex items-center gap-1 text-xs font-medium tabular-nums',
-            positive ? 'text-emerald-500' : 'text-rose-500'
+            positive ? 'text-success' : 'text-destructive'
           )}
         >
           <Arrow className="size-3" />

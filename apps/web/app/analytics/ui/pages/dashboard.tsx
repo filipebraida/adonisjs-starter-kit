@@ -89,10 +89,16 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
                   key={p}
                   variant={period === p ? 'default' : 'ghost'}
                   size="sm"
-                  className={cn('text-xs', period !== p && 'text-muted-foreground')}
                   onClick={() => setPeriod(p)}
                 >
-                  {t(`analytics.dashboard.period.${p}`)}
+                  <span
+                    className={cn(
+                      'text-xs',
+                      period !== p && 'text-muted-foreground group-hover/button:text-foreground'
+                    )}
+                  >
+                    {t(`analytics.dashboard.period.${p}`)}
+                  </span>
                 </Button>
               ))}
             </div>
@@ -137,41 +143,43 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
                   {t('analytics.dashboard.chart.revenueDescription')}
                 </CardDescription>
               </CardHeader>
-              <ChartContainer config={chartConfig} className="h-[220px] w-full px-4 pb-4">
-                <AreaChart
-                  accessibilityLayer
-                  data={revenueSeries}
-                  margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="i"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    interval="preserveStartEnd"
-                    minTickGap={40}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={
-                      <ChartTooltipContent
-                        hideLabel
-                        formatter={(value) => currency(Number(value))}
-                      />
-                    }
-                  />
-                  <Area
-                    dataKey="value"
-                    type="natural"
-                    stroke="var(--color-value)"
-                    strokeWidth={2}
-                    fill="var(--color-value)"
-                    fillOpacity={0.35}
-                    isAnimationActive={false}
-                  />
-                </AreaChart>
-              </ChartContainer>
+              <div className="px-4 pb-4">
+                <ChartContainer config={chartConfig} className="h-51 w-full">
+                  <AreaChart
+                    accessibilityLayer
+                    data={revenueSeries}
+                    margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="i"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      interval="preserveStartEnd"
+                      minTickGap={40}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={
+                        <ChartTooltipContent
+                          hideLabel
+                          formatter={(value) => currency(Number(value))}
+                        />
+                      }
+                    />
+                    <Area
+                      dataKey="value"
+                      type="natural"
+                      stroke="var(--color-value)"
+                      strokeWidth={2}
+                      fill="var(--color-value)"
+                      fillOpacity={0.35}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              </div>
             </Card>
 
             <Card>
@@ -181,38 +189,43 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
                   {t('analytics.dashboard.chart.signupsDescription')}
                 </CardDescription>
               </CardHeader>
-              <ChartContainer config={chartConfig} className="h-[220px] w-full px-4 pb-4">
-                <AreaChart
-                  accessibilityLayer
-                  data={signupsSeries}
-                  margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="i"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    interval="preserveStartEnd"
-                    minTickGap={40}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={
-                      <ChartTooltipContent hideLabel formatter={(value) => number(Number(value))} />
-                    }
-                  />
-                  <Area
-                    dataKey="value"
-                    type="natural"
-                    stroke="var(--color-value)"
-                    strokeWidth={2}
-                    fill="var(--color-value)"
-                    fillOpacity={0.35}
-                    isAnimationActive={false}
-                  />
-                </AreaChart>
-              </ChartContainer>
+              <div className="px-4 pb-4">
+                <ChartContainer config={chartConfig} className="h-51 w-full">
+                  <AreaChart
+                    accessibilityLayer
+                    data={signupsSeries}
+                    margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="i"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      interval="preserveStartEnd"
+                      minTickGap={40}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={
+                        <ChartTooltipContent
+                          hideLabel
+                          formatter={(value) => number(Number(value))}
+                        />
+                      }
+                    />
+                    <Area
+                      dataKey="value"
+                      type="natural"
+                      stroke="var(--color-value)"
+                      strokeWidth={2}
+                      fill="var(--color-value)"
+                      fillOpacity={0.35}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              </div>
             </Card>
           </section>
         </div>

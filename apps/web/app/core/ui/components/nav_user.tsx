@@ -9,7 +9,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -29,15 +28,15 @@ export function NavUser({ user, options }: NavUserProps) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" side="bottom" align="end">
-        <DropdownMenuLabel className="p-0 font-normal">
+        <div className="text-muted-foreground">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <UserAvatar className="rounded-lg" user={user} />
+            <UserAvatar user={user} />
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{user.fullName ?? ''}</span>
               <span className="truncate text-xs">{user.email}</span>
             </div>
           </div>
-        </DropdownMenuLabel>
+        </div>
         <DropdownMenuSeparator />
         {visibleGroups.map((group, groupIndex) => (
           <React.Fragment key={groupIndex}>

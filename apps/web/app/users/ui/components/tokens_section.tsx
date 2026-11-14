@@ -106,11 +106,13 @@ export function TokensSection({ tokens, newToken }: Props) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-8 text-muted-foreground hover:text-destructive"
                 aria-label={t('users.delete_token.confirm_button')}
                 onClick={() => setToDelete(token)}
               >
-                <Trash2 size={16} />
+                <Trash2
+                  size={16}
+                  className="text-muted-foreground group-hover/button:text-destructive"
+                />
               </Button>
             </li>
           ))}

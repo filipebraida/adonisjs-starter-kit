@@ -34,7 +34,7 @@ function SectionTitle({
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
       {showReset && onReset && (
-        <Button size="icon" variant="ghost" className="size-8 rounded-full" onClick={onReset}>
+        <Button size="icon" variant="ghost" className="rounded-full" onClick={onReset}>
           <RotateCcw className="size-4" />
         </Button>
       )}
@@ -62,7 +62,7 @@ function RadioGroupItem({
     >
       <div
         className={cn(
-          'relative rounded-[6px] ring-[1px] ring-border',
+          'relative rounded-sm ring-1 ring-border',
           'group-data-[state=checked]:shadow-2xl group-data-[state=checked]:ring-primary',
           'group-focus-visible:ring-2'
         )}

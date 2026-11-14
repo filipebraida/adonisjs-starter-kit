@@ -36,18 +36,14 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+          <Globe className="size-4" />
           <span className="sr-only">Switch language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {LOCALES.map(({ code, label }) => (
-          <DropdownMenuItem
-            key={code}
-            onClick={() => switchLocale(code)}
-            className={locale === code ? 'font-semibold' : ''}
-          >
-            {label}
+          <DropdownMenuItem key={code} onClick={() => switchLocale(code)}>
+            <span className={locale === code ? 'font-semibold' : undefined}>{label}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

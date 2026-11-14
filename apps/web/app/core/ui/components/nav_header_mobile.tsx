@@ -37,100 +37,100 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
     <div className="lg:hidden">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="mr-2 h-[34px] w-[34px]">
+          <Button variant="ghost" size="icon" className="mr-2 h-8.5 w-8.5">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
 
         <SheetContent
           side="left"
-          className="flex h-full w-72 flex-col items-stretch justify-between bg-sidebar px-1"
+          className="flex h-full w-72 flex-col items-stretch justify-between"
         >
-          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <div className="flex flex-1 flex-col items-stretch justify-between gap-4 bg-sidebar px-1">
+            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 
-          <SheetHeader className="flex justify-start px-3 text-left">
-            <AppLogo />
-          </SheetHeader>
+            <SheetHeader className="-mx-1 flex justify-start text-left">
+              <AppLogo />
+            </SheetHeader>
 
-          <div className="mt-2 flex h-full flex-1 flex-col space-y-4 px-2">
-            <div className="flex flex-col space-y-8 text-sm">
-              {items.map((item) => {
-                if (isSection(item)) {
-                  const visibleItems = item.items.filter(
-                    (subItem) => allows(subItem.can)
-                  )
-                  if (visibleItems.length === 0) return null
+            <div className="mt-2 flex h-full flex-1 flex-col space-y-4 px-2">
+              <div className="flex flex-col space-y-8 text-sm">
+                {items.map((item) => {
+                  if (isSection(item)) {
+                    const visibleItems = item.items.filter((subItem) => allows(subItem.can))
+                    if (visibleItems.length === 0) return null
 
-                  return (
-                    <div key={item.title}>
-                      <h3 className="mb-1 px-2 text-xs font-medium text-sidebar-foreground/70">
-                        {item.title}
-                      </h3>
+                    return (
+                      <div key={item.title}>
+                        <h3 className="mb-1 px-2 text-xs font-medium text-sidebar-foreground/70">
+                          {item.title}
+                        </h3>
 
-                      <div className="flex flex-col space-y-1">
-                        {visibleItems.map((subItem) => {
-                          const active = isNavItemActive(subItem.url, currentUrl)
-                          if (subItem.external) {
+                        <div className="flex flex-col space-y-1">
+                          {visibleItems.map((subItem) => {
+                            const active = isNavItemActive(subItem.url, currentUrl)
+                            if (subItem.external) {
+                              return (
+                                <a
+                                  key={subItem.url}
+                                  href={subItem.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={sidebarMenuButtonVariants}
+                                >
+                                  {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
+                                  <span>{subItem.title}</span>
+                                </a>
+                              )
+                            }
                             return (
-                              <a
+                              <Link
                                 key={subItem.url}
                                 href={subItem.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                data-active={active}
                                 className={sidebarMenuButtonVariants}
                               >
                                 {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
                                 <span>{subItem.title}</span>
-                              </a>
+                              </Link>
                             )
-                          }
-                          return (
-                            <Link
-                              key={subItem.url}
-                              href={subItem.url}
-                              data-active={active}
-                              className={sidebarMenuButtonVariants}
-                            >
-                              {subItem.icon && <subItem.icon className="h-4 w-4 shrink-0" />}
-                              <span>{subItem.title}</span>
-                            </Link>
-                          )
-                        })}
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  )
-                } else {
-                  if (allows(item.can)) {
-                    const active = isNavItemActive(item.url, currentUrl)
-                    if (item.external) {
+                    )
+                  } else {
+                    if (allows(item.can)) {
+                      const active = isNavItemActive(item.url, currentUrl)
+                      if (item.external) {
+                        return (
+                          <a
+                            key={item.url}
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={sidebarMenuButtonVariants}
+                          >
+                            {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
+                            <span>{item.title}</span>
+                          </a>
+                        )
+                      }
                       return (
-                        <a
+                        <Link
                           key={item.url}
                           href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          data-active={active}
                           className={sidebarMenuButtonVariants}
                         >
                           {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       )
                     }
-                    return (
-                      <Link
-                        key={item.url}
-                        href={item.url}
-                        data-active={active}
-                        className={sidebarMenuButtonVariants}
-                      >
-                        {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
-                        <span>{item.title}</span>
-                      </Link>
-                    )
+                    return null
                   }
-                  return null
-                }
-              })}
+                })}
+              </div>
             </div>
           </div>
         </SheetContent>

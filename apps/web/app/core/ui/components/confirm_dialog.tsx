@@ -1,4 +1,3 @@
-import { cn } from '@workspace/ui/lib/utils'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -21,7 +20,6 @@ interface ConfirmDialogProps {
   destructive?: boolean
   handleConfirm: () => void
   isLoading?: boolean
-  className?: string
   children?: React.ReactNode
 }
 
@@ -30,7 +28,6 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
     title,
     desc,
     children,
-    className,
     confirmText,
     cancelBtnText,
     destructive,
@@ -41,7 +38,7 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
   } = props
   return (
     <AlertDialog {...actions}>
-      <AlertDialogContent className={cn(className && className)}>
+      <AlertDialogContent>
         <AlertDialogHeader className="text-left">
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription asChild>

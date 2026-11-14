@@ -166,7 +166,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
               setQuerySearch(e.target.value)
               debouncedVisit({ q: e.target.value, event: selectedEvent, perPage })
             }}
-            className="h-8 w-[150px] lg:w-[250px]"
+            className="h-8 w-37.5 lg:w-62.5"
           />
           <RadioFilter
             title={t('users.activity.table.filters.event')}
@@ -181,7 +181,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
         </div>
 
         {isFiltered && (
-          <Button variant="ghost" onClick={clearAll} className="h-8 px-2 lg:px-3">
+          <Button variant="ghost" onClick={clearAll}>
             {t('users.activity.table.filters.clear_filters')}
             <X />
           </Button>

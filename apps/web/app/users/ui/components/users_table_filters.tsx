@@ -73,7 +73,7 @@ export default function UsersTableFilters({
           placeholder={t('users.index.table.filters.search_placeholder')}
           value={querySearch}
           onChange={(e) => handleSearch(e.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-37.5 lg:w-62.5"
         />
 
         <CheckboxFilter
@@ -87,7 +87,7 @@ export default function UsersTableFilters({
       </div>
 
       {isFiltered && (
-        <Button variant="ghost" onClick={clearAll} className="h-8 px-2 lg:px-3">
+        <Button variant="ghost" onClick={clearAll}>
           {t('users.index.table.row_actions.clear')}
           <X />
         </Button>

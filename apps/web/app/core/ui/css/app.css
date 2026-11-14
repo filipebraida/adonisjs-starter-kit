@@ -1,2 +1,7 @@
 @import 'tailwindcss';
 @import '@workspace/ui/globals.css';
+
+@theme {
+  /* A rising metric: emerald 500, the same in both themes. */
+  --color-success: oklch(69.6% 0.17 162.48);
+}

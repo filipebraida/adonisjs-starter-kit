@@ -13,12 +13,7 @@ export default function HeroSection() {
       <Container className="relative z-10">
         <div className="flex flex-col gap-10 text-center items-center">
           <div className="relative flex flex-col gap-6 items-center max-w-3xl">
-            <div
-              style={{
-                transform: 'translate(-50%, -50%)',
-              }}
-              className="absolute left-1/2 top-1/2 -z-10 mx-auto size-[600px] rounded-full border p-16 opacity-40 [mask-image:linear-gradient(to_top,transparent,transparent,white,white,white,transparent,transparent)] md:size-[1000px] md:p-32"
-            >
+            <div className="absolute left-1/2 top-1/2 -z-10 mx-auto size-150 -translate-x-1/2 -translate-y-1/2 rounded-full border p-16 opacity-40 mask-y-from-67% mask-y-to-83% md:size-250 md:p-32">
               <div className="size-full rounded-full border p-16 md:p-32 bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
             </div>
 

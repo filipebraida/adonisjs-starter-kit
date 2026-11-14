@@ -39,12 +39,12 @@ export function DataTableRowActions({
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+          <Button variant="ghost" size="icon">
             <EllipsisIcon className="h-4 w-4" />
             <span className="sr-only">{t('users.index.table.row_actions.open_menu')}</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuContent align="end" className="w-40">
           {user.id !== row.original.id && (
             <DropdownMenuItem onClick={() => setOpenImpersonate(true)}>
               {t('users.index.table.row_actions.impersonate')}
@@ -80,7 +80,7 @@ export function DataTableRowActions({
           {user.id !== row.original.id && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setOpenDelete(true)} className="text-destructive">
+              <DropdownMenuItem onClick={() => setOpenDelete(true)} variant="destructive">
                 {t('users.index.table.row_actions.delete')}
                 <DropdownMenuShortcut>
                   <TrashIcon size={16} />
