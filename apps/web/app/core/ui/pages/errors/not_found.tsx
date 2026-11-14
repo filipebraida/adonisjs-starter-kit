@@ -1,10 +1,15 @@
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
 import { Button } from '@workspace/ui/components/button'
 
+import { useTranslation } from '#core/ui/hooks/use_translation'
+
 export default function NotFoundError() {
+  const { t } = useTranslation()
+
   return (
     <div className="h-svh">
+      <Head title={t('core.errors.not_found.title')} />
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
         <h1 className="text-[7rem] font-bold leading-tight">404</h1>
         <span className="font-medium">Oops! Page Not Found!</span>

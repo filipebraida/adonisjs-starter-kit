@@ -1,3 +1,4 @@
+import { Head } from '@inertiajs/react'
 import type { InertiaProps } from '#core/ui/app/types'
 
 import AdminLayout from '#core/ui/components/admin_layout'
@@ -39,6 +40,7 @@ export default function ActivityPage({ audits, events, q, actorId, event }: Page
         { label: t('users.activity.page.breadcrumbs.activity') },
       ]}
     >
+      <Head title={t('users.activity.page.title')} />
       <Main>
         <Heading
           title={t('users.activity.page.title')}

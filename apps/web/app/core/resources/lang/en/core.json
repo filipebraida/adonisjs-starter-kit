@@ -36,5 +36,13 @@
     "markAllRead": "Mark all as read",
     "empty": "You have no notifications.",
     "ariaLabel": "Notifications"
+  },
+  "errors": {
+    "not_found": {
+      "title": "Page not found"
+    },
+    "server_error": {
+      "title": "Server error"
+    }
   }
 }

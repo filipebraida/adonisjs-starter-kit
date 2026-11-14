@@ -36,5 +36,13 @@
     "markAllRead": "Marcar todas como lidas",
     "empty": "Você não tem notificações.",
     "ariaLabel": "Notificações"
+  },
+  "errors": {
+    "not_found": {
+      "title": "Página não encontrada"
+    },
+    "server_error": {
+      "title": "Erro no servidor"
+    }
   }
 }

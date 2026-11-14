@@ -1,10 +1,15 @@
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
 import { Button } from '@workspace/ui/components/button'
 
+import { useTranslation } from '#core/ui/hooks/use_translation'
+
 export default function ServerError() {
+  const { t } = useTranslation()
+
   return (
     <div className="h-svh w-full">
+      <Head title={t('core.errors.server_error.title')} />
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
         <h1 className="text-[7rem] font-bold leading-tight">500</h1>
         <span className="font-medium">Oops! Something went wrong {`:')`}</span>

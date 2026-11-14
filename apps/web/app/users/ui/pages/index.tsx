@@ -1,3 +1,4 @@
+import { Head } from '@inertiajs/react'
 import type { InertiaProps } from '#core/ui/app/types'
 
 import AdminLayout from '#core/ui/components/admin_layout'
@@ -40,6 +41,7 @@ export default function ListUsersPage({ users, q, selectedRoles, sort, order }: 
 
   return (
     <AdminLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
+      <Head title={t('users.index.page.title')} />
       <Main>
         <Heading
           title={t('users.index.page.title')}

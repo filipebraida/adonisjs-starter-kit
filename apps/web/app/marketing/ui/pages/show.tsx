@@ -1,3 +1,6 @@
+import { Head } from '@inertiajs/react'
+
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import MarketingLayout from '#marketing/ui/components/marketing_layout'
 import HeroSection from '#marketing/ui/components/hero'
 import StackSection from '#marketing/ui/components/stack'
@@ -6,8 +9,11 @@ import FeatureSection from '#marketing/ui/components/feature'
 import LogosSection from '#marketing/ui/components/logos'
 
 export default function Page() {
+  const { t } = useTranslation()
+
   return (
     <MarketingLayout>
+      <Head title={t('marketing.home.title')} />
       <HeroSection />
       <StackSection />
       <div id="features">

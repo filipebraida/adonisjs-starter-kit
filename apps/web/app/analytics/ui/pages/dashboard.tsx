@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import { Button } from '@workspace/ui/components/button'
@@ -73,6 +73,7 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
 
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('analytics.dashboard.breadcrumb') }]}>
+      <Head title={t('analytics.dashboard.breadcrumb')} />
       <Main>
         <div className="flex flex-1 flex-col gap-6 py-6">
           <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

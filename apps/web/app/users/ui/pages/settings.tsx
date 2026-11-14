@@ -1,3 +1,4 @@
+import { Head } from '@inertiajs/react'
 import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
@@ -25,6 +26,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
 
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
+      <Head title={t('users.layout.title')} />
       <div className="mx-auto w-full max-w-[840px] px-4 pt-8 pb-24 sm:px-6 lg:px-10">
         <header>
           <h1 className="text-2xl font-semibold tracking-tight">{t('users.layout.title')}</h1>
