@@ -6,6 +6,7 @@ import User from '#auth/models/user'
 import TokenPolicy from '#users/policies/token_policy'
 import { createTokenValidator } from '#users/validators/tokens'
 
+/** Creates and revokes the signed-in user's API tokens. A new secret is flashed to the settings page once. */
 export default class TokensController {
   async store({ auth, bouncer, request, response, session }: HttpContext) {
     await bouncer.with(TokenPolicy).authorize('create')

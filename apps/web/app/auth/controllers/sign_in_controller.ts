@@ -18,7 +18,14 @@ export function isSafeInternalPath(path?: string | null): path is string {
   return true
 }
 
+/**
+ * The sign in form and its submit. Public: the visitor is not signed in yet.
+ * Five failed attempts per IP and email lock the pair out for a minute, and a
+ * success returns to the internal page the auth middleware remembered.
+ */
 export default class SignInController {
+  static readonly public = true
+
   private loginLimiter: Limiter
 
   constructor() {
@@ -33,7 +40,7 @@ export default class SignInController {
     return inertia.render('auth/sign_in', {})
   }
 
-  async handle({ auth, request, response, session, i18n }: HttpContext) {
+  async store({ auth, request, response, session, i18n }: HttpContext) {
     const { email, password } = await request.validateUsing(signInValidator)
 
     const returnTo = session.pull(returnToKey, null)

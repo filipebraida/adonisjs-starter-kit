@@ -4,6 +4,10 @@ import InviteUser from '#users/actions/invite_user'
 import UserPolicy from '#users/policies/user_policy'
 import { inviteUserValidator } from '#users/validators/users'
 
+/**
+ * The invite form and its submit, which creates the account and mails the
+ * invitee a link to choose a password.
+ */
 export default class InviteController {
   public async show({ bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')
@@ -11,7 +15,7 @@ export default class InviteController {
     return inertia.modal('users/invite', {}, { route: 'users.index' })
   }
 
-  public async handle({ auth, i18n, bouncer, request, response }: HttpContext) {
+  public async store({ auth, i18n, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')
 
     const payload = await request.validateUsing(inviteUserValidator)

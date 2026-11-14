@@ -6,8 +6,12 @@ import ImpersonateUser from '#users/actions/impersonate_user'
 import User from '#auth/models/user'
 import ImpersonatePolicy from '#users/policies/impersonate_policy'
 
-export default class ImpersonatesController {
-  async store({ session, bouncer, params, response, auth }: HttpContext) {
+/**
+ * Signs the admin in as another user, remembering who to switch back to.
+ * Nobody impersonates themselves.
+ */
+export default class ImpersonateUserController {
+  async handle({ session, bouncer, params, response, auth }: HttpContext) {
     const impersonatedUser = await User.findOrFail(params.id)
 
     await bouncer.with(ImpersonatePolicy).authorize('create', impersonatedUser)

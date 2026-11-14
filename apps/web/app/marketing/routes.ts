@@ -10,6 +10,4 @@ import router from '@adonisjs/core/services/router'
 
 import { controllers } from '#generated/controllers'
 
-const { Marketing } = controllers.marketing
-
-router.get('/', [Marketing]).as('marketing.show')
+router.get('/', [controllers.marketing.Marketing]).as('marketing.show')

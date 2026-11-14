@@ -9,6 +9,7 @@ import ListUsers from '#users/queries/list_users'
 import UserTransformer from '#users/transformers/user_transformer'
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators/users'
 
+/** User management for admins: list, create, edit and delete, with forms in modals over the list. */
 export default class UsersController {
   public async index({ bouncer, inertia, request }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')

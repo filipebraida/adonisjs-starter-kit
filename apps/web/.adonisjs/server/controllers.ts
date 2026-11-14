@@ -8,22 +8,26 @@ export const controllers = {
     Dashboard: () => import('#app/analytics/controllers/dashboard_controller'),
   },
   auth: {
+    AuthenticateWithSocial: () => import('#app/auth/controllers/authenticate_with_social_controller'),
     ForgotPassword: () => import('#app/auth/controllers/forgot_password_controller'),
+    RedirectToProvider: () => import('#app/auth/controllers/redirect_to_provider_controller'),
     ResetPassword: () => import('#app/auth/controllers/reset_password_controller'),
     SignIn: () => import('#app/auth/controllers/sign_in_controller'),
     SignOut: () => import('#app/auth/controllers/sign_out_controller'),
     SignUp: () => import('#app/auth/controllers/sign_up_controller'),
-    Social: () => import('#app/auth/controllers/social_controller'),
   },
   marketing: {
     Marketing: () => import('#app/marketing/controllers/marketing_controller'),
   },
   notifications: {
+    MarkAllNotificationsRead: () => import('#app/notifications/controllers/mark_all_notifications_read_controller'),
+    MarkAllNotificationsSeen: () => import('#app/notifications/controllers/mark_all_notifications_seen_controller'),
+    MarkNotificationRead: () => import('#app/notifications/controllers/mark_notification_read_controller'),
     Notifications: () => import('#app/notifications/controllers/notifications_controller'),
   },
   users: {
     Activity: () => import('#app/users/controllers/activity_controller'),
-    Impersonates: () => import('#app/users/controllers/impersonates_controller'),
+    ImpersonateUser: () => import('#app/users/controllers/impersonate_user_controller'),
     Invite: () => import('#app/users/controllers/invite_controller'),
     Password: () => import('#app/users/controllers/password_controller'),
     Profile: () => import('#app/users/controllers/profile_controller'),

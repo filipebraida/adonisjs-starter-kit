@@ -6,12 +6,15 @@ import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
 
 import { setUserLocaleCookie } from '#core/utils/user_locale'
 
-export default class SocialController {
-  async redirect({ ally, params }: HttpContext) {
-    return ally.use(params.provider).redirect()
-  }
+/**
+ * The provider's callback: signs the visitor in, creating the account on the
+ * first visit. Public: the provider's answer is the credential. A denied or
+ * failed consent goes back to the sign up form with a flash error.
+ */
+export default class AuthenticateWithSocialController {
+  static readonly public = true
 
-  async callback({ ally, auth, i18n, params, response, session }: HttpContext) {
+  async handle({ ally, auth, i18n, params, response, session }: HttpContext) {
     const social = ally.use(params.provider)
 
     if (social.accessDenied()) {

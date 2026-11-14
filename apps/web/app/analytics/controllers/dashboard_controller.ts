@@ -4,10 +4,14 @@ import { DEFAULT_PERIOD } from '#analytics/enums/period'
 import GetRevenueMetrics from '#analytics/queries/get_revenue_metrics'
 import GetSubscriptionMetrics from '#analytics/queries/get_subscription_metrics'
 import GetUserMetrics from '#analytics/queries/get_user_metrics'
+import DashboardPolicy from '#analytics/policies/dashboard_policy'
 import { dashboardQueryValidator } from '#analytics/validators/dashboard'
 
+/** The analytics dashboard: revenue, user and subscription metrics for a period. */
 export default class DashboardController {
-  public async handle({ inertia, request }: HttpContext) {
+  public async handle({ bouncer, inertia, request }: HttpContext) {
+    await bouncer.with(DashboardPolicy).authorize('view')
+
     const payload = await request.validateUsing(dashboardQueryValidator, { data: request.qs() })
     const period = payload.period ?? DEFAULT_PERIOD
 

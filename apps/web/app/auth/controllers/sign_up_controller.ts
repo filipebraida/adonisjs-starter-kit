@@ -7,12 +7,18 @@ import { signUpValidator } from '#auth/validators/auth'
 
 import { setUserLocaleCookie } from '#core/utils/user_locale'
 
+/**
+ * The sign up form and its submit, which signs the new user in.
+ * Public: the visitor has no account yet.
+ */
 export default class SignUpController {
+  static readonly public = true
+
   async show({ inertia }: HttpContext) {
     return inertia.render('auth/sign_up', {})
   }
 
-  async handle({ auth, i18n, request, response }: HttpContext) {
+  async store({ auth, i18n, request, response }: HttpContext) {
     const payload = await request.validateUsing(signUpValidator)
 
     const user = await new SignUp().handle({

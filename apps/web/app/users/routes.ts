@@ -11,46 +11,54 @@ import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
 
-const { Users, Settings, Profile, Password, Invite, Impersonates, Tokens, Activity } =
-  controllers.users
-
-router.get('/users/invite', [Invite, 'show']).middleware(middleware.auth()).as('users.invite.show')
 router
-  .post('/users/invite', [Invite, 'handle'])
+  .get('/users/invite', [controllers.users.Invite, 'show'])
+  .middleware(middleware.auth())
+  .as('users.invite.show')
+router
+  .post('/users/invite', [controllers.users.Invite, 'store'])
   .middleware(middleware.auth())
   .as('users.invite.handle')
 
 router
-  .post('/users/impersonate/:id', [Impersonates, 'store'])
+  .post('/users/impersonate/:id', [controllers.users.ImpersonateUser])
+  .where('id', router.matchers.number())
   .middleware(middleware.auth())
   .as('users.impersonate.handle')
 
 router
-  .get('/users/activity', [Activity, 'handle'])
+  .get('/users/activity', [controllers.users.Activity, 'handle'])
   .middleware(middleware.auth())
   .as('users.activity')
 
 router
-  .resource('/users', Users)
+  .resource('/users', controllers.users.Users)
   .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
   .use('*', middleware.auth())
   .as('users')
 
-router.get('/settings', [Settings, 'show']).middleware(middleware.auth()).as('settings.index')
+router
+  .get('/settings', [controllers.users.Settings, 'show'])
+  .middleware(middleware.auth())
+  .as('settings.index')
 
 router
-  .put('/settings/profile', [Profile, 'handle'])
+  .put('/settings/profile', [controllers.users.Profile, 'handle'])
   .middleware(middleware.auth())
   .as('profile.update')
 
 router
-  .put('/settings/password', [Password, 'handle'])
+  .put('/settings/password', [controllers.users.Password, 'handle'])
   .middleware(middleware.auth())
   .as('password.update')
 
 router
-  .delete('/settings/tokens/:id', [Tokens, 'destroy'])
+  .delete('/settings/tokens/:id', [controllers.users.Tokens, 'destroy'])
+  .where('id', router.matchers.number())
   .middleware(middleware.auth())
   .as('tokens.destroy')
 
-router.post('/settings/tokens', [Tokens, 'store']).middleware(middleware.auth()).as('tokens.store')
+router
+  .post('/settings/tokens', [controllers.users.Tokens, 'store'])
+  .middleware(middleware.auth())
+  .as('tokens.store')

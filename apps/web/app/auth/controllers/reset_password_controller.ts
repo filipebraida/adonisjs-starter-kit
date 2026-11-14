@@ -4,7 +4,14 @@ import ResetPassword from '#auth/actions/reset_password'
 import { resetPasswordValidator } from '#auth/validators/auth'
 import PasswordResetService from '#auth/services/password_reset_service'
 
+/**
+ * The reset password form reached from the mailed link, and its submit.
+ * Public: the token in the URL is the credential. An unknown or expired token
+ * sends the visitor back to the forgot password form.
+ */
 export default class ResetPasswordController {
+  static readonly public = true
+
   async show({ params, inertia, response, session }: HttpContext) {
     const record = await new PasswordResetService().getToken(params.token)
 
@@ -16,7 +23,7 @@ export default class ResetPasswordController {
     return inertia.render('auth/reset_password', { token: record.token })
   }
 
-  async handle({ request, params, response, session }: HttpContext) {
+  async store({ request, params, response, session }: HttpContext) {
     const payload = await request.validateUsing(resetPasswordValidator)
 
     const user = await new ResetPassword().handle({

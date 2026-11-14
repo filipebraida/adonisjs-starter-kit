@@ -2,13 +2,17 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import UpdatePassword from '#users/actions/update_password'
 import User from '#auth/models/user'
+import UserPolicy from '#users/policies/user_policy'
 import { updatePasswordValidator } from '#users/validators/users'
 
+/** Changes the signed-in user's own password from the settings page. */
 export default class PasswordController {
-  public async handle({ auth, request, response }: HttpContext) {
-    const payload = await request.validateUsing(updatePasswordValidator)
-
+  public async handle({ auth, bouncer, request, response }: HttpContext) {
     const user = await User.findOrFail(auth.user!.id)
+
+    await bouncer.with(UserPolicy).authorize('update', user)
+
+    const payload = await request.validateUsing(updatePasswordValidator)
 
     await new UpdatePassword().handle({ target: user, password: payload.password })
 
