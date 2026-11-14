@@ -96,6 +96,14 @@ export default configApp(
     },
   },
   {
+    // `<module>/workflows/` is where @adonis-agora/durable discovers a module's
+    // workflows; the 0.6.0 preset knows neither the folder nor its spec layer.
+    // Fixed upstream (eslint-config-adonis 325ffdb); drop with the block above.
+    name: 'Durable workflows folder the 0.6.0 preset does not know yet',
+    files: ['app/*/workflows/**', 'app/*/tests/unit/workflows/**'],
+    rules: { 'adonis/module-allowed-dirs': 'off', 'adonis/unit-test-mirrors-layer': 'off' },
+  },
+  {
     // The theme previews draw light and dark mode whatever the current theme
     // is, and the Google mark has its brand colors: tokens would repaint them.
     name: 'Drawings and brand marks keep their own colors',

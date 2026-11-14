@@ -11,6 +11,7 @@
 /// <reference path="../../config/authz.ts" />
 /// <reference path="../../config/capabilities.ts" />
 /// <reference path="../../config/drive.ts" />
+/// <reference path="../../config/durable.ts" />
 /// <reference path="../../config/hash.ts" />
 /// <reference path="../../config/i18n.ts" />
 /// <reference path="../../config/limiter.ts" />

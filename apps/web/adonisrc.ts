@@ -2,6 +2,7 @@ import { indexAppUiPages } from '#core/hooks/index_pages_hook'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
+import { workflowsHook } from '@adonis-agora/durable/hooks/workflows'
 
 export default defineConfig({
   /*
@@ -33,6 +34,7 @@ export default defineConfig({
     () => import('@jrmc/adonis-attachment/commands'),
     () => import('@tuyau/core/commands'),
     () => import('@adonis-agora/authz/commands'),
+    () => import('@adonis-agora/durable/commands'),
     () => import('@filipebraida/adonis-auditing/commands'),
   ],
 
@@ -74,6 +76,7 @@ export default defineConfig({
     () => import('@facteurjs/adonisjs/facteur_provider'),
     () => import('@adonis-agora/authz/authz_provider'),
     () => import('#providers/authz_cache_provider'),
+    () => import('@adonis-agora/durable/durable_provider'),
     () => import('@filipebraida/adonis-auditing/auditing_provider'),
   ],
 
@@ -180,6 +183,9 @@ export default defineConfig({
       }),
       indexAppUiPages(),
       generateRegistry(),
+      async () => ({
+        default: workflowsHook({ source: ['app/auth/workflows', 'app/users/workflows'] }),
+      }),
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
