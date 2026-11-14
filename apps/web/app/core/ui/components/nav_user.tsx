@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 
 import { UserAvatar } from '#core/ui/components/user_avatar'
-import useCan from '#core/ui/hooks/use_can'
+import useAllows from '#core/ui/hooks/use_allows'
 import type { NavUserProps } from '#core/ui/types/navigation'
 
 import {
@@ -16,9 +16,9 @@ import {
 } from '@workspace/ui/components/dropdown-menu'
 
 export function NavUser({ user, options }: NavUserProps) {
-  const can = useCan()
+  const allows = useAllows()
   const visibleGroups = options
-    .map((group) => group.filter((option) => !option.can || can[option.can]))
+    .map((group) => group.filter((option) => allows(option.can)))
     .filter((group) => group.length > 0)
 
   return (

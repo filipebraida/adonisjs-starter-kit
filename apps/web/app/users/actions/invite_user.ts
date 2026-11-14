@@ -3,7 +3,6 @@ import type { I18n } from '@adonisjs/i18n'
 
 import { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
 import type { Role as RoleSlug } from '#users/enums/role'
-import Role from '#users/models/role'
 import User from '#users/models/user'
 import PasswordResetService from '#users/services/password_reset_service'
 
@@ -22,8 +21,7 @@ export default class InviteUser {
     const user = await User.create({ email: input.email })
     await user.save()
 
-    const role = await Role.findByOrFail('name', input.role)
-    await user.assignRole(role)
+    await user.assignRole(input.role)
 
     const { token } = await new PasswordResetService().generateToken(user)
 

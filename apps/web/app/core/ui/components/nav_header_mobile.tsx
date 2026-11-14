@@ -11,7 +11,7 @@ import {
 
 import { AppLogo } from '#core/ui/components/app_logo'
 import { isSection, type NavMainItem } from '#core/ui/types/navigation'
-import useCan from '#core/ui/hooks/use_can'
+import useAllows from '#core/ui/hooks/use_allows'
 import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 const sidebarMenuButtonVariants =
@@ -30,7 +30,7 @@ export interface NavHeaderMobileProps {
 }
 
 export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
-  const can = useCan()
+  const allows = useAllows()
   const currentUrl = useCurrentUrl()
 
   return (
@@ -57,7 +57,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
               {items.map((item) => {
                 if (isSection(item)) {
                   const visibleItems = item.items.filter(
-                    (subItem) => !subItem.can || can[subItem.can]
+                    (subItem) => allows(subItem.can)
                   )
                   if (visibleItems.length === 0) return null
 
@@ -100,7 +100,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                     </div>
                   )
                 } else {
-                  if (!item.can || can[item.can]) {
+                  if (allows(item.can)) {
                     const active = isNavItemActive(item.url, currentUrl)
                     if (item.external) {
                       return (

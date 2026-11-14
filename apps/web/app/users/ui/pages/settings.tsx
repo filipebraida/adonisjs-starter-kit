@@ -8,7 +8,9 @@ import { ProfileForm } from '#users/ui/components/profile_form'
 import { SettingsSection } from '#users/ui/components/settings_section'
 import { TokensSection } from '#users/ui/components/tokens_section'
 
-import useCan from '#core/ui/hooks/use_can'
+import { useCan } from '@adonis-agora/authz-react'
+
+import { CAPABILITIES_USERS } from '#users/enums/capability'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 type PageProps = InertiaProps<{
@@ -19,7 +21,7 @@ type PageProps = InertiaProps<{
 
 export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
   const { t } = useTranslation()
-  const can = useCan()
+  const canManageTokens = useCan(CAPABILITIES_USERS.tokensViewList)
 
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
@@ -46,12 +48,12 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
         <SettingsSection
           title={t('users.appearance.title')}
           description={t('users.appearance.description')}
-          last={!can.manageTokens}
+          last={!canManageTokens}
         >
           <AppearanceForm />
         </SettingsSection>
 
-        {can.manageTokens && (
+        {canManageTokens && (
           <SettingsSection
             title={t('users.tokens.title')}
             description={t('users.tokens.description')}

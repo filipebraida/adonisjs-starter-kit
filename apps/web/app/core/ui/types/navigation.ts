@@ -1,9 +1,7 @@
 import { type LucideIcon } from 'lucide-react'
 
-import type { GlobalPermissions } from '#users/services/global_permissions'
+import type { Capability } from '#core/authz/capability'
 import type { Data } from '@generated/data'
-
-export type CanKey = keyof GlobalPermissions
 
 interface ItemNav {
   title: string
@@ -11,7 +9,7 @@ interface ItemNav {
   icon?: LucideIcon
   isActive?: boolean
   external?: boolean
-  can?: CanKey
+  can?: Capability
 }
 
 interface NavMainSection {
@@ -35,7 +33,7 @@ export type NavUserOptionsGroup = {
   icon: LucideIcon
   shortcut?: string
   method?: 'get' | 'post'
-  can?: CanKey
+  can?: Capability
 }[]
 
 export interface NavUserProps {

@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from '@workspace/ui/components/sidebar'
 
-import useCan from '#core/ui/hooks/use_can'
+import useAllows from '#core/ui/hooks/use_allows'
 import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 export interface NavSidebarMainProps {
@@ -19,14 +19,14 @@ export interface NavSidebarMainProps {
 }
 
 export function NavSidebarMain({ items }: NavSidebarMainProps) {
-  const can = useCan()
+  const allows = useAllows()
   const currentUrl = useCurrentUrl()
 
   return (
     <>
       {items.map((item) => {
         if (isSection(item)) {
-          const visibleItems = item.items.filter((subItem) => !subItem.can || can[subItem.can])
+          const visibleItems = item.items.filter((subItem) => allows(subItem.can))
 
           if (visibleItems.length === 0) return null
 
@@ -67,7 +67,7 @@ export function NavSidebarMain({ items }: NavSidebarMainProps) {
             </SidebarGroup>
           )
         } else {
-          if (!item.can || can[item.can]) {
+          if (allows(item.can)) {
             const active = isNavItemActive(item.url, currentUrl)
             return (
               <SidebarGroup key={item.title}>

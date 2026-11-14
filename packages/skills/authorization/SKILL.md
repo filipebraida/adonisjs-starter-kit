@@ -1,81 +1,88 @@
 ---
 name: authorization
-description: 'RBAC + Bouncer pattern in an AdonisJS + Inertia app. Capabilities live in a `PERMISSIONS` const, role slugs in `ROLES`; a `WithRoles` mixin composes into `User` to expose `hasPermission` / `hasRole` / `syncRoles`; `BasePolicy` subclasses gate routes; the frontend consumes a typed `useCan()` prop. Escalation is protected in depth. Use when adding a capability, gating a route, adding a policy, extending role logic, or reading `can` on the frontend. Trigger on: "add permission", "gate route", "policy", "useCan", "role", "RBAC".'
+description: 'RBAC with @adonis-agora/authz on top of AdonisJS Bouncer. Each module declares its capabilities in `<mod>/enums/capability.ts`; `config/capabilities.ts` grants them to roles in code (`roleGrants`, nothing seeded); only the user → role assignment is stored. Policies check capabilities through `#core/authz/authorizer`; the frontend reads the shared `authz` prop with `useCan` / `<Can>` from `@adonis-agora/authz-react`. Escalation is protected in depth. Use when adding a capability, gating a route, adding a policy, adding a role, or gating UI. Trigger on: "add permission", "capability", "gate route", "policy", "useCan", "role", "RBAC", "authz".'
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 # Authorization
 
-Role-based access control implemented in plain code on top of AdonisJS Bouncer — no external RBAC library. Four moving parts:
+Role-based access control with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz) (DB-backed RBAC, wildcard matching) under AdonisJS Bouncer. Five moving parts:
 
-1. **`PERMISSIONS`** — a const catalog of every capability the app understands.
-2. **`ROLES`** — a const catalog of role slugs, each with a weight used to pick a display role.
-3. **`WithRoles`** — a mixin composed into `User` that grants `assignRole` / `hasRole` / `hasPermission` / `syncRoles`.
-4. **`BasePolicy` subclasses** — enforce `hasPermission(...)` at the controller.
+1. **Capabilities** — each module declares its own in `app/<mod>/enums/capability.ts` as a `CAPABILITIES_<MOD>` const of `<domain>.<action>` slugs.
+2. **Role grants** — `config/capabilities.ts` maps every role in `ROLES` to the capabilities it grants (`users.*` wildcards allowed). Read at check time from code: no seed, no screen can strip a capability the app depends on.
+3. **Assignments** — the only RBAC state in the database: `user.assignRole(ROLES.X)` writes a row in the authz tables (`users/database/migrations/*_create_authz_tables.ts`).
+4. **`Authorizer`** (`#core/authz/authorizer`) — `can(user, capability)` with the request's permission cache. Policies and actions inject it.
+5. **Bouncer policies** — `BasePolicy` subclasses that combine a capability with ownership/state and gate the controller.
 
-On the frontend a typed `GlobalPermissions` object flows through Inertia's shared props and is consumed via `useCan()`. Adding a permission is a two-line change (`PERMISSIONS` const + wherever it's gated); adding a role is a config + seed touch.
+On the frontend the shared `authz` prop (`{ roles, permissions }`, built by `buildAuthzShare` in `InertiaMiddleware`) is read with `useCan(capability)` or `<Can permission="...">` from `@adonis-agora/authz-react`, wildcard-aware.
 
 ## Rules
 
-- **Single source of truth for capabilities** in a `PERMISSIONS` const object under the `users` module. Naming: `<mod>.<action>` (`users.create`, `tokens.view_list`). Adding a permission = adding one entry + referencing it wherever it's gated. A new module's capabilities go in this **same** const — the `<mod>.<action>` naming already namespaces them; don't fork a second `PERMISSIONS`. One central catalog; the policies that consume it stay in each module.
-- **Role slugs** live in a `ROLES` const with a matching `ROLE_WEIGHTS` map. The weights drive `mainRole()` for display ordering. Adding a role = new entry + a seed that grants its permissions.
-- **Roles store their own permissions** on the `Role` model as a JSON column (`role.permissions: Permission[]`). Seed with `Role.updateOrCreate({ name }, { permissions: [...] })`.
-- **`WithRoles` mixin** composes into `User` next to `withAuthFinder`. It exposes:
-  - Mutations: `assignRole(role)`, `assignRoles(roles)`, `syncRoles(roles)`, `revokeRole(role)`, `revokeRoles(roles)`.
-  - Checks: `hasRole(name)`, `hasPermission(permission)`.
-  - Reads: `getRoleNames()`, `getPermissions()`, `preloadedRoles` (sync read of `.load('roles')`).
-- **Policies** subclass `BasePolicy` and live at `app/<mod>/policies/<entity>_policy.ts`. One method per gated action. Signature: `currentUser` first, resource second when applicable. Return `boolean | AuthorizerResponse`.
-- **Gate at the controller before validating**: `await bouncer.with(EntityPolicy).authorize('methodName', resource?)`. On deny it throws → 403 (JSON) or 302 back (HTML/Inertia). **Every mutation route (POST/PUT/PATCH/DELETE) must be gated by a Bouncer policy — no exceptions.**
-- **Frontend shared prop**: an Inertia middleware computes a small `can: GlobalPermissions` object (`manageUsers`, `manageTokens`, …) and shares it on every request. Read with `useCan()`. Extending the object = adding a boolean field to `global_permissions.ts` computed from `user.hasPermission(PERMISSIONS.x)`; `useCan` types update automatically.
-- **Escalation guards** are defense-in-depth on top of validators:
-  - `requireManageRoles(executor)` — throws if the executor lacks `users.manage_roles`.
-  - `requireManageRolesIfEscalating(executor, desiredRoles)` — enforces the check even when a validator accepted a non-default role. Call at create / invite paths.
-  - `AdminLockoutException` — prevents a user from removing their own `admin` role. Raised inside `SyncUserRoles` when target and executor are the same and admin is being dropped.
+- **Capabilities live with their module**: `app/<mod>/enums/capability.ts`, naming `<domain>.<action>` (`users.create`, `tokens.view_list`). Typed as `Capability` (`#core/authz/capability`) at the check site, so a typo is a compile error at the constant.
+- **Grants live in one place**: `config/capabilities.ts` → `roleGrants`. Adding a capability without granting it means nobody has it (except via wildcards such as `users.*`).
+- **Role slugs** live in `ROLES` (`app/users/enums/role.ts`) with `ROLE_WEIGHTS` for `mainRole()` display ordering. `roleGrants` is typed `Record<Role, string[]>`, so a new role must be granted.
+- **Checks go through `Authorizer.can`** in policies and actions — not `user.can()` from the mixin — so every check in a request shares one cached read.
+- **Policies** subclass `BasePolicy`, use `@inject()` with `Authorizer`, live at `app/<mod>/policies/<entity>_policy.ts`. One method per gated action; `currentUser` first, resource second.
+- **Gate at the controller before validating**: `await bouncer.with(EntityPolicy).authorize('method', resource?)`. Every mutation route must be gated by a policy.
+- **Reading roles in lists**: `User.roles` is a read-only `manyToMany` to `AuthzRole` via `authzRolesRelation()` — `preload('roles')` / `whereHas('roles', …)` work. Writes always go through the store (`assignRole`, `SyncUserRoles`), never `AuthzRole`.
+- **Escalation guards** are defense in depth on top of validators:
+  - `requireManageRoles(executor)` — throws `ManageRolesUnauthorizedException` without `users.manage_roles`.
+  - `requireManageRolesIfEscalating(executor, roles)` — enforces it on create/invite when a non-default role is requested.
+  - `AdminLockoutException` — `SyncUserRoles` refuses to remove the executor's own `admin`.
+  - `SyncUserRoles` removes before granting, inside one transaction: a failure halfway leaves less privilege, never more.
+- **Permission cache**: `ContainerBindingsMiddleware` binds one `PermissionCache` per request; `providers/authz_cache_provider.ts` gives a fresh one outside HTTP (unit specs, jobs, ace). Grants changed mid-request apply from the next request.
 
 ## Repo refs
 
-- Capabilities + roles: `app/users/enums/permission.ts`, `app/users/enums/role.ts`.
-- `WithRoles` mixin: `app/users/mixins/with_roles.ts`. Policy: `app/users/policies/user_policy.ts`.
+- Capabilities: `app/users/enums/capability.ts`. Roles: `app/users/enums/role.ts`. Grants: `config/capabilities.ts`. Lib config: `config/authz.ts`.
+- `Authorizer` + `Capability`: `app/core/authz/`. Policy: `app/users/policies/user_policy.ts`.
 - Escalation guards: `app/users/actions/sync_user_roles.ts`.
-- Shared `can` prop → frontend `useCan`: `app/users/services/global_permissions.ts`, `app/core/ui/hooks/use_can.ts`.
-- Central registries: `app/core/policies/main.ts`, `app/core/abilities/main.ts`.
+- Shared `authz` prop: `app/core/middleware/inertia_middleware.ts`. Nav filtering: `app/core/ui/hooks/use_allows.ts`.
+- Roles relation: `app/users/models/user.ts` (`roles`), `app/users/models/authz_role.ts`.
+- Central registries: `app/core/policies/main.ts`, `app/core/abilities/main.ts` (`can` / `hasRole` Bouncer abilities).
 
 ## Doc refs
 
+- @adonis-agora/authz — https://github.com/DavideCarvalho/adonis-agora-authz (also the skills shipped in `node_modules/@adonis-agora/authz/skills/`)
 - AdonisJS Bouncer — https://docs.adonisjs.com/guides/security/authorization
 
 ## Workflow
 
-### Add a new permission
+### Add a capability
 
-1. Add an entry to `PERMISSIONS`:
+1. Declare it in the module:
    ```ts
-   export const PERMISSIONS = {
-     ...,
+   // app/invoices/enums/capability.ts
+   export const CAPABILITIES_INVOICES = {
      invoicesCreate: 'invoices.create',
    } as const
    ```
-2. Reference it in the policy method that gates it:
+2. Grant it in `config/capabilities.ts` (`'invoices.*'` or the exact slug) to the roles that need it.
+3. Check it in the policy:
    ```ts
-   async create(user: User) { return user.hasPermission(PERMISSIONS.invoicesCreate) }
-   ```
-3. Grant it to the roles that need it (usually via the seeder for `admin`).
-4. If the frontend needs a boolean for the permission, extend `GlobalPermissions`:
-   ```ts
-   canCreateInvoices: user?.hasPermission(PERMISSIONS.invoicesCreate) ?? false,
+   @inject()
+   export default class InvoicePolicy extends BasePolicy {
+     constructor(private authz: Authorizer) {
+       super()
+     }
+
+     async create(user: User) {
+       return this.authz.can(user, CAPABILITIES_INVOICES.invoicesCreate)
+     }
+   }
    ```
 
-### Add a new role
+### Add a role
 
-1. Add slug to `ROLES` + weight to `ROLE_WEIGHTS`.
-2. Seed the role with its permissions in a seeder.
-3. Update `ensureBaseRoles()` in the test RBAC helpers if it's a base role every test needs.
+1. Add the slug to `ROLES` and a weight to `ROLE_WEIGHTS`.
+2. Add its entry to `roleGrants` in `config/capabilities.ts` (the type requires it).
+3. Nothing to seed: the role row is created on first assignment.
 
 ### Gate a route (mutation)
 
 ```ts
-public async store({ auth, bouncer, request, response }: HttpContext) {
+async store({ auth, bouncer, request, response }: HttpContext) {
   await bouncer.with(InvoicePolicy).authorize('create')
   const payload = await request.validateUsing(createInvoiceValidator)
   await new CreateInvoice().handle({ ...payload, executor: auth.getUserOrFail() })
@@ -88,47 +95,38 @@ Policy runs before the validator so a 403 doesn't leak field-level errors to una
 ### Gate a UI element
 
 ```tsx
-const can = useCan()
-if (!can.manageUsers) return null
+import { useCan } from '@adonis-agora/authz-react'
+
+const canCreate = useCan(CAPABILITIES_INVOICES.invoicesCreate)
 ```
 
-Or use the built-in `can: 'permissionKey'` field on nav items — see [[layout-shells]].
+For lists filtered in one render (nav items), set `can: CAPABILITIES_X.y` on the item — `useAllows()` filters them. See [[layout-shells]].
 
 ### Escalation-safe user creation / invite
 
-In the action that creates a user with a non-default role:
-
 ```ts
 await requireManageRolesIfEscalating(input.executor, [input.role])
+await user.assignRole(input.role)
 ```
-
-The validator alone isn't enough — a user with `users.create` but not `users.manage_roles` could try to escalate. This guard is defense-in-depth.
 
 ### Testing
 
-Set roles per test with the RBAC helpers:
-
 ```ts
 const admin = await UserFactory.create()
-await withRole(admin, ROLES.ADMIN)
-
-// or granular:
-const editor = await UserFactory.create()
-await withPermissions(editor, 'editor', [PERMISSIONS.invoicesCreate])
+await withRole(admin, ROLES.ADMIN) // tests/helpers/rbac.ts
 ```
 
-Cover the "unauth", "authenticated-but-forbidden", and "authorized" paths for each mutation. See [[testing]].
+What the role grants comes from `roleGrants`; the assignment is rolled back with the test's global transaction. Cover unauthenticated, authenticated-but-forbidden and authorized for each mutation. See [[testing]].
 
 ## Anti-patterns
 
-- ❌ Hardcoding role name strings (`'admin'`) — use `ROLES.ADMIN`.
-- ❌ Hardcoding permission strings (`'users.create'`) — use `PERMISSIONS.usersCreate`.
-- ❌ Skipping the policy call because "the validator already checked" — validators check payload shape, not authority.
-- ❌ Adding a permission to `PERMISSIONS` and forgetting the seeder — nobody will actually have it.
-- ❌ Gating only on the frontend (`if (can.x)`) — always mirror the check on the backend policy. Frontend gating is UX, not security.
-- ❌ Assigning role by slug string in tests instead of `withRole(user, ROLES.ADMIN)` — drifts if the slug ever changes.
-- ❌ Removing an escalation guard "because the validator handles it" — it's defense in depth for a reason.
-- ❌ Owner check via `.where('owner_id', user.id)` in a query instead of the policy — the policy is the source of truth; a query filter is an unrelated concern.
+- ❌ Hardcoding role or capability strings — use `ROLES.X` / `CAPABILITIES_<MOD>.x` (grants in `config/capabilities.ts` may use wildcards).
+- ❌ Seeding role → permission rows — grants are code (`roleGrants`); a seeded grant is invisible to review and drifts per environment.
+- ❌ Calling `user.can()` in a policy instead of `Authorizer.can` — it skips the request's shared cache.
+- ❌ Writing through `AuthzRole` or the authz tables directly — use `assignRole` / the store, so the lib's invariants hold.
+- ❌ Gating only on the frontend — `useCan` is UX, the policy is security.
+- ❌ Removing an escalation guard "because the validator handles it" — it's defense in depth.
+- ❌ Owner check via `.where('owner_id', user.id)` in a query instead of the policy.
 
 ## Related skills
 

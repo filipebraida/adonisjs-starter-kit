@@ -5,7 +5,7 @@ import { test } from '@japa/runner'
 import UserPolicy from '#users/policies/user_policy'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 async function policy() {
   return app.container.make(UserPolicy)
@@ -13,7 +13,6 @@ async function policy() {
 
 test.group('UserPolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin pode listar, ver, criar, atualizar, deletar e convidar', async ({ assert }) => {
     const admin = await UserFactory.create()

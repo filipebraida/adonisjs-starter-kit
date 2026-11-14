@@ -4,7 +4,7 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { isSection, type NavMainItem } from '#core/ui/types/navigation'
 import HeaderDropdown from '#core/ui/components/header_dropdown'
-import useCan from '#core/ui/hooks/use_can'
+import useAllows from '#core/ui/hooks/use_allows'
 import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 
 export interface NavHeaderMainProps {
@@ -20,14 +20,14 @@ const subLinkBase =
 const subLinkActive = 'bg-accent text-accent-foreground font-medium'
 
 export function NavHeaderMain({ items }: NavHeaderMainProps) {
-  const can = useCan()
+  const allows = useAllows()
   const currentUrl = useCurrentUrl()
 
   return (
     <nav className="flex items-center space-x-4">
       {items.map((item) => {
         if (isSection(item)) {
-          const visibleItems = item.items.filter((subItem) => !subItem.can || can[subItem.can])
+          const visibleItems = item.items.filter((subItem) => allows(subItem.can))
 
           if (visibleItems.length === 0) {
             return null
@@ -86,7 +86,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
           )
         }
 
-        if (item.can && !can[item.can]) return null
+        if (!allows(item.can)) return null
 
         const active = isNavItemActive(item.url, currentUrl)
 

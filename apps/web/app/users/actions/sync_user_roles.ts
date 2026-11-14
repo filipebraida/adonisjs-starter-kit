@@ -1,12 +1,19 @@
+import app from '@adonisjs/core/services/app'
+import db from '@adonisjs/lucid/services/db'
+
+import { AuthzService } from '@adonis-agora/authz'
+
+import Authorizer from '#core/authz/authorizer'
+
 import AdminLockoutException from '#users/exceptions/admin_lockout'
 import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
-import { PERMISSIONS } from '#users/enums/permission'
-import { ROLES, type Role as RoleSlug } from '#users/enums/role'
-import Role from '#users/models/role'
+import { CAPABILITIES_USERS } from '#users/enums/capability'
+import { ROLES, type Role } from '#users/enums/role'
 import type User from '#users/models/user'
 
 export async function requireManageRoles(executor: User) {
-  const allowed = await executor.hasPermission(PERMISSIONS.usersManageRoles)
+  const authorizer = await app.container.make(Authorizer)
+  const allowed = await authorizer.can(executor, CAPABILITIES_USERS.usersManageRoles)
   if (!allowed) throw new ManageRolesUnauthorizedException()
 }
 
@@ -19,7 +26,7 @@ export async function requireManageRolesIfEscalating(executor: User, roles: stri
 
 export interface SyncUserRolesInput {
   target: User
-  desiredRoles: RoleSlug[]
+  desiredRoles: Role[]
   executor: User
 }
 
@@ -27,15 +34,26 @@ export default class SyncUserRoles {
   async handle({ target, desiredRoles, executor }: SyncUserRolesInput): Promise<void> {
     await requireManageRoles(executor)
 
-    const currentNames = await target.getRoleNames()
+    const current = await target.getRoles()
 
     const removingOwnAdmin =
       target.id === executor.id &&
-      currentNames.includes(ROLES.ADMIN) &&
+      current.includes(ROLES.ADMIN) &&
       !desiredRoles.includes(ROLES.ADMIN)
     if (removingOwnAdmin) throw new AdminLockoutException()
 
-    const roles = await Role.query().whereIn('name', desiredRoles)
-    await target.syncRoles(roles)
+    const service = await app.container.make(AuthzService)
+    const ref = service.refOf(target)!
+
+    await db.transaction(async (trx) => {
+      const store = service.store.withClient(trx)
+      // Remove before granting: a failure halfway leaves less privilege, never more.
+      for (const role of current) {
+        if (!desiredRoles.includes(role as Role)) await store.removeRole(ref, role)
+      }
+      for (const role of desiredRoles) {
+        if (!current.includes(role)) await store.assignRole(ref, role)
+      }
+    })
   }
 }

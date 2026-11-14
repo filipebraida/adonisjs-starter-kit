@@ -87,7 +87,7 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 
 **Feature**
 
-- `authorization` — `PERMISSIONS` + `ROLES` + `WithRoles` + Bouncer policies + `useCan()` + escalation guards.
+- `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.
 - `mail` — `BaseMail` classes + MJML via `@email.layout` + `mailContext()`.
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count.
 - `attachment` — `@jrmc/adonis-attachment` converters + model decoration + `preComputeUrls`.

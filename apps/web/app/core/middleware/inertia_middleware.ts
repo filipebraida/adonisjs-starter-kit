@@ -3,9 +3,12 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
+import { PermissionCache } from '@adonis-agora/authz'
+import authz from '@adonis-agora/authz/services/main'
+import { buildAuthzShare } from '@adonis-agora/authz-react/server'
+
 import Notification from '#notifications/models/notification'
 import User from '#users/models/user'
-import { EMPTY_GLOBAL_PERMISSIONS, globalPermissions } from '#users/services/global_permissions'
 import UserTransformer from '#users/transformers/user_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -20,15 +23,21 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      */
     const { auth } = ctx as Partial<HttpContext>
 
-    let can = EMPTY_GLOBAL_PERMISSIONS
+    // The same per-request cache the policies' `authz.can()` reads.
+    const cache = await ctx.containerResolver.make(PermissionCache)
+    const authzShare = await buildAuthzShare(
+      {
+        effectiveRoles: (user, scope) => authz.effectiveRoles(user, scope, { cache }),
+        effectivePermissions: (user, scope) => authz.effectivePermissions(user, scope, { cache }),
+      },
+      auth?.user ?? null
+    )
+
     let unseenNotifications = 0
 
     if (auth?.user) {
       const user = auth.user as User
       await User.preComputeUrls(user)
-      await user.load('roles')
-
-      can = await globalPermissions(user)
 
       const row = await Notification.query()
         .where('notifiableId', String(user.id))
@@ -46,7 +55,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       locale: ctx.inertia.always(ctx.i18n?.locale ?? i18nManager.config.defaultLocale),
       fallbackLocale: ctx.inertia.always(ctx.i18n?.fallbackLocale ?? 'en'),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
-      can: ctx.inertia.always(can),
+      // Spread: `always` needs an index signature, which the interface lacks.
+      authz: ctx.inertia.always({ ...authzShare }),
       unseenNotifications: ctx.inertia.always(unseenNotifications),
     }
   }

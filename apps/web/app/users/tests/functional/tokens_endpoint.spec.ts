@@ -6,11 +6,10 @@ import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('Endpoint /settings/tokens', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('POST sem auth redireciona para login', async ({ client, assert }) => {
     const response = await client.post('/settings/tokens').withCsrfToken().redirects(0).json({})

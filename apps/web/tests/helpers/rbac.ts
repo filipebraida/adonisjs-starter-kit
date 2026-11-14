@@ -1,31 +1,15 @@
 import { UserFactory } from '#users/database/factories/user'
-import { ALL_PERMISSIONS, type Permission } from '#users/enums/permission'
-import { ROLES, type Role as RoleSlug } from '#users/enums/role'
-import Role from '#users/models/role'
+import type { Role } from '#users/enums/role'
 import User from '#users/models/user'
 
-// Call after `wrapInGlobalTransaction` — otherwise the seeded rows leak.
-export async function ensureBaseRoles(): Promise<void> {
-  const admin = await Role.updateOrCreate({ name: ROLES.ADMIN }, { permissions: ALL_PERMISSIONS })
-  await admin.syncPermissions(ALL_PERMISSIONS)
-  await Role.updateOrCreate({ name: ROLES.USER }, { permissions: [] })
-}
-
-export async function withRole(user: User, roleName: RoleSlug): Promise<Role> {
-  const role = await Role.firstOrCreate({ name: roleName }, { permissions: [] })
+/**
+ * Assigns a role in authz. What the role grants comes from `roleGrants` in
+ * config/capabilities.ts, resolved from code at check time, so there is no
+ * catalog to seed; the assignment row is rolled back with the test's global
+ * transaction.
+ */
+export async function withRole(user: User, role: Role): Promise<void> {
   await user.assignRole(role)
-  return role
-}
-
-export async function withPermissions(
-  user: User,
-  roleName: string,
-  permissions: Permission[]
-): Promise<Role> {
-  const role = await Role.firstOrCreate({ name: roleName }, { permissions })
-  await role.syncPermissions(permissions)
-  await user.assignRole(role)
-  return role
 }
 
 // Idempotent: reuses the row if a prior run left it behind, overwrites password + role.
@@ -33,7 +17,7 @@ export async function ensureUser(input: {
   email: string
   password: string
   fullName?: string
-  role?: RoleSlug
+  role?: Role
 }): Promise<User> {
   const existing = await User.query().where('email', input.email).first()
 

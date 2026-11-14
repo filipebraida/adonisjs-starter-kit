@@ -5,7 +5,7 @@ import { test } from '@japa/runner'
 import TokenPolicy from '#users/policies/token_policy'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 async function policy() {
   return app.container.make(TokenPolicy)
@@ -13,7 +13,6 @@ async function policy() {
 
 test.group('TokenPolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin pode criar/listar/deletar', async ({ assert }) => {
     const admin = await UserFactory.create()

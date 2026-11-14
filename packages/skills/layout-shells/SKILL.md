@@ -18,7 +18,7 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
   ```
 - **Shell decisions are hardcoded**: variant, collapsible, direction, max-width live inside the shell file. Do not accept them as props.
 - **Header widgets are shared** across shells that need them (`<NotificationBell />`, `<ToggleTheme />`, `<LanguageSwitcher />`, `<NavUser />`) — same visual identity, imported directly by each shell that mounts them.
-- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getFooterNav(t)`, `getNavUser(t)`, `getMobileFab(t)`). Nav items support a `can: 'permissionKey'` field for RBAC gating — see [[authorization]]. Nav items are never hardcoded inside the shell file.
+- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getFooterNav(t)`, `getNavUser(t)`, `getMobileFab(t)`). Nav items support a `can: CAPABILITIES_<MOD>.x` field for RBAC gating (filtered by `useAllows()`) — see [[authorization]]. Nav items are never hardcoded inside the shell file.
 - **Providers stay at the root client entry**, not inside shells. Theme, i18n, Tuyau, modal stack are mounted once so every shell renders inside them.
 - **Adding a shell** is only worth it when the shape is genuinely new (installer wizard chrome, kiosk, checkout). Otherwise reuse an existing shell — the same page can render inside two different shells if two contexts need it.
 
@@ -53,7 +53,7 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 
 ### Add a nav item
 
-Edit the navigation config file — `getMainNav(t)` for the primary nav, `getFooterNav(t)` for footer/utility items, `getNavUser(t)` for the user dropdown (shared across logged-in shells). Set `can: 'permissionKey'` to gate visibility. Do not put the item inside the shell file.
+Edit the navigation config file — `getMainNav(t)` for the primary nav, `getFooterNav(t)` for footer/utility items, `getNavUser(t)` for the user dropdown (shared across logged-in shells). Set `can: CAPABILITIES_<MOD>.x` to gate visibility. Do not put the item inside the shell file.
 
 ### Delete an unused shell in a downstream project
 

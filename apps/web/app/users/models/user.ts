@@ -1,16 +1,18 @@
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { beforeSave, column, hasMany } from '@adonisjs/lucid/orm'
+import { beforeSave, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
+import { authzRolesRelation } from '@adonis-agora/authz'
+import { hasPermissions } from '@adonis-agora/authz/mixins'
 import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
 import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
 
 import BaseModel from '#core/models/base_model'
 
-import { withRoles } from '#users/mixins/with_roles'
+import AuthzRole from '#users/models/authz_role'
 import ResetPasswordToken from '#users/models/reset_password_token'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
@@ -18,7 +20,7 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   passwordColumnName: 'password',
 })
 
-export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
+export default class User extends compose(BaseModel, AuthFinder, hasPermissions()) {
   @column({ isPrimary: true })
   declare id: number
 
@@ -39,6 +41,10 @@ export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
 
   @column()
   declare avatarUrl: string | null
+
+  /** Read-only view of the authz role assignments, for preload and `whereHas`. */
+  @manyToMany(() => AuthzRole, authzRolesRelation())
+  declare roles: ManyToMany<typeof AuthzRole>
 
   @hasMany(() => ResetPasswordToken)
   declare resetPasswordTokens: HasMany<typeof ResetPasswordToken>

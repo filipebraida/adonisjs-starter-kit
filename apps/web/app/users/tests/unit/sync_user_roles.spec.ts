@@ -6,11 +6,10 @@ import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_una
 import SyncUserRoles from '#users/actions/sync_user_roles'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('SyncUserRoles', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin promove um user comum para admin', async ({ assert }) => {
     const admin = await UserFactory.create()
@@ -24,7 +23,7 @@ test.group('SyncUserRoles', (group) => {
       executor: admin,
     })
 
-    const roles = await alvo.getRoleNames()
+    const roles = await alvo.getRoles()
     assert.deepEqual(roles, [ROLES.ADMIN])
   })
 
@@ -40,7 +39,7 @@ test.group('SyncUserRoles', (group) => {
       executor: admin,
     })
 
-    const roles = await outroAdmin.getRoleNames()
+    const roles = await outroAdmin.getRoles()
     assert.deepEqual(roles, [ROLES.USER])
   })
 
@@ -60,7 +59,7 @@ test.group('SyncUserRoles', (group) => {
       ManageRolesUnauthorizedException
     )
 
-    const roles = await alvo.getRoleNames()
+    const roles = await alvo.getRoles()
     assert.deepEqual(roles, [ROLES.USER])
   })
 
@@ -78,7 +77,7 @@ test.group('SyncUserRoles', (group) => {
       AdminLockoutException
     )
 
-    const roles = await admin.getRoleNames()
+    const roles = await admin.getRoles()
     assert.deepEqual(roles, [ROLES.ADMIN])
   })
 
@@ -92,7 +91,7 @@ test.group('SyncUserRoles', (group) => {
       executor: admin,
     })
 
-    const roles = await admin.getRoleNames()
+    const roles = await admin.getRoles()
     assert.deepEqual(roles, [ROLES.ADMIN])
   })
 })

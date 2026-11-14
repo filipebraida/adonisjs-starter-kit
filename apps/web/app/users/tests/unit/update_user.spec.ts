@@ -6,11 +6,10 @@ import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_una
 import UpdateUser from '#users/actions/update_user'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('UpdateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin atualiza fullName, email e role do alvo', async ({ assert }) => {
     const admin = await UserFactory.create()
@@ -29,7 +28,7 @@ test.group('UpdateUser', (group) => {
     await alvo.refresh()
     assert.equal(alvo.fullName, 'Nome Novo')
     assert.equal(alvo.email, 'depois@example.test')
-    assert.deepEqual(await alvo.getRoleNames(), [ROLES.ADMIN])
+    assert.deepEqual(await alvo.getRoles(), [ROLES.ADMIN])
   })
 
   test('senha opcional: mantem hash quando nao informada', async ({ assert }) => {

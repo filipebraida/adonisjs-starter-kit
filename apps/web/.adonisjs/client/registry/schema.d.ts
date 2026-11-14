@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 /// <reference path="../manifest.d.ts" />
 
-import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractResponse } from '@tuyau/core/types'
+import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractRawResponse, ExtractResponse, Method, PathWithRegistry, PatternsByMethod, RouteWithRegistry } from '@tuyau/core/types'
 import type { InferInput, SimpleError } from '@vinejs/vine/types'
+import type { routes } from './index.ts'
 
 export type ParamValue = string | number | bigint | boolean
 
@@ -17,6 +18,7 @@ export interface Registry {
       query: {}
       response: unknown
       errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
     }
   }
   'marketing.show': {
@@ -29,6 +31,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/marketing/controllers/marketing_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/marketing/controllers/marketing_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/marketing/controllers/marketing_controller').default['handle']>>>
     }
   }
   'auth.sign_in.show': {
@@ -41,6 +44,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['show']>>>
     }
   }
   'auth.sign_in.handle': {
@@ -53,6 +57,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').signInValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_in_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.sign_out.handle': {
@@ -65,6 +70,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_out_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_out_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_out_controller').default['handle']>>>
     }
   }
   'auth.sign_up.show': {
@@ -77,6 +83,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['show']>>>
     }
   }
   'auth.sign_up.handle': {
@@ -89,6 +96,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').signUpValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/sign_up_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.forgot_password.show': {
@@ -101,6 +109,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['show']>>>
     }
   }
   'auth.forgot_password.handle': {
@@ -113,6 +122,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').forgotPasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/forgot_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.reset_password.show': {
@@ -125,6 +135,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['show']>>>
     }
   }
   'auth.reset_password.handle': {
@@ -137,6 +148,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#auth/validators/auth').resetPasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/reset_password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'social.create': {
@@ -149,6 +161,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['redirect']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['redirect']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['redirect']>>>
     }
   }
   'social.callback': {
@@ -161,6 +174,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['callback']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['callback']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/social_controller').default['callback']>>>
     }
   }
   'locale.switch': {
@@ -173,6 +187,7 @@ export interface Registry {
       query: {}
       response: unknown
       errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
     }
   }
   'users.invite.show': {
@@ -185,6 +200,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['show']>>>
     }
   }
   'users.invite.handle': {
@@ -197,6 +213,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/users').inviteUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/invite_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'users.impersonate.handle': {
@@ -209,6 +226,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/impersonates_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/impersonates_controller').default['store']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/impersonates_controller').default['store']>>>
     }
   }
   'users.index': {
@@ -221,6 +239,7 @@ export interface Registry {
       query: ExtractQueryForGet<InferInput<(typeof import('#users/validators/users').listUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['index']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'users.create': {
@@ -233,6 +252,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['create']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['create']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['create']>>>
     }
   }
   'users.store': {
@@ -245,6 +265,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/users').createUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'users.edit': {
@@ -257,6 +278,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['edit']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['edit']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['edit']>>>
     }
   }
   'users.update': {
@@ -269,6 +291,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/users').editUserValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['update']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'users.destroy': {
@@ -281,6 +304,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['destroy']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/users_controller').default['destroy']>>>
     }
   }
   'settings.index': {
@@ -293,6 +317,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/settings_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/settings_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/settings_controller').default['show']>>>
     }
   }
   'profile.update': {
@@ -305,6 +330,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/users').updateProfileValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/profile_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/profile_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/profile_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'password.update': {
@@ -317,6 +343,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/users').updatePasswordValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/password_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/password_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'tokens.destroy': {
@@ -329,6 +356,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['destroy']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['destroy']>>>
     }
   }
   'tokens.store': {
@@ -341,6 +369,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#users/validators/tokens').createTokenValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/tokens_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'dashboard.show': {
@@ -353,6 +382,7 @@ export interface Registry {
       query: ExtractQueryForGet<InferInput<(typeof import('#analytics/validators/dashboard').dashboardQueryValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#app/analytics/controllers/dashboard_controller').default['handle']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/analytics/controllers/dashboard_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/analytics/controllers/dashboard_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'notifications.index': {
@@ -365,6 +395,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['index']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['index']>>>
     }
   }
   'notifications.markRead': {
@@ -377,6 +408,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markRead']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markRead']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markRead']>>>
     }
   }
   'notifications.markAllSeen': {
@@ -389,6 +421,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllSeen']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllSeen']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllSeen']>>>
     }
   }
   'notifications.markAllRead': {
@@ -401,6 +434,31 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllRead']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllRead']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/notifications/controllers/notifications_controller').default['markAllRead']>>>
     }
   }
+}
+
+export namespace Route {
+  export type Request<Name extends keyof typeof routes> = RouteWithRegistry.Request<typeof routes, Name>
+  export type Response<Name extends keyof typeof routes> = RouteWithRegistry.Response<typeof routes, Name>
+  export type Params<Name extends keyof typeof routes> = RouteWithRegistry.Params<typeof routes, Name>
+  export type Body<Name extends keyof typeof routes> = RouteWithRegistry.Body<typeof routes, Name>
+  export type Query<Name extends keyof typeof routes> = RouteWithRegistry.Query<typeof routes, Name>
+  export type Error<Name extends keyof typeof routes> = RouteWithRegistry.Error<typeof routes, Name>
+}
+
+export namespace Path {
+  export type Request<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Request<typeof routes, M, P>
+  export type Response<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Response<typeof routes, M, P>
+  export type Params<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Params<typeof routes, M, P>
+  export type Body<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Body<typeof routes, M, P>
+  export type Query<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Query<typeof routes, M, P>
+  export type Error<M extends Method, P extends PatternsByMethod<typeof routes, M>> =
+    PathWithRegistry.Error<typeof routes, M, P>
 }

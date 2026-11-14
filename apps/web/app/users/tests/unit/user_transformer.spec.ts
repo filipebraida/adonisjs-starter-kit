@@ -4,11 +4,10 @@ import { test } from '@japa/runner'
 import { ROLES } from '#users/enums/role'
 import UserTransformer from '#users/transformers/user_transformer'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('UserTransformer', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('toObject expõe id, fullName, email', async ({ assert }) => {
     const user = await UserFactory.merge({

@@ -95,16 +95,19 @@ If the module has multiple entities (e.g. `users` also has `tokens`), split them
 
 ```ts
 // app/<mod>/policies/<entity>_policy.ts
+@inject()
 export default class EntityPolicy extends BasePolicy {
-  async viewList(user: User) { return user.hasPermission(PERMISSIONS.entityViewList) }
-  async view(user: User, entity: Entity) { /* self OR permission */ }
-  async create(user: User) { return user.hasPermission(PERMISSIONS.entityCreate) }
-  async update(user: User, entity: Entity) { /* self OR permission */ }
-  async delete(user: User, entity: Entity) { /* deny self-delete + permission */ }
+  constructor(private authz: Authorizer) { super() }
+
+  async viewList(user: User) { return this.authz.can(user, CAPABILITIES_MOD.entityViewList) }
+  async view(user: User, entity: Entity) { /* self OR capability */ }
+  async create(user: User) { return this.authz.can(user, CAPABILITIES_MOD.entityCreate) }
+  async update(user: User, entity: Entity) { /* self OR capability */ }
+  async delete(user: User, entity: Entity) { /* deny self-delete + capability */ }
 }
 ```
 
-Register matching `PERMISSIONS.entity*` in the RBAC catalog — see [[authorization]].
+Declare `CAPABILITIES_<MOD>` in `app/<mod>/enums/capability.ts` and grant them in `config/capabilities.ts` — see [[authorization]].
 
 ### 4. Actions (one per write)
 

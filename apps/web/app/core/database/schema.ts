@@ -32,6 +32,67 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class AuthzPermissionSchema extends BaseModel {
+  static $columns = ['createdAt', 'guard', 'id', 'name'] as const
+  $columns = AuthzPermissionSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare guard: string | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+}
+
+export class AuthzRolePermissionSchema extends BaseModel {
+  static $columns = ['permissionId', 'roleId'] as const
+  $columns = AuthzRolePermissionSchema.$columns
+  @column()
+  declare permissionId: string
+  @column({ isPrimary: true })
+  declare roleId: string
+}
+
+export class AuthzRoleSchema extends BaseModel {
+  static $columns = ['createdAt', 'guard', 'id', 'name'] as const
+  $columns = AuthzRoleSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare guard: string | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+}
+
+export class AuthzSubjectPermissionSchema extends BaseModel {
+  static $columns = ['permissionId', 'subjectId', 'subjectType'] as const
+  $columns = AuthzSubjectPermissionSchema.$columns
+  @column()
+  declare permissionId: string
+  @column()
+  declare subjectId: number
+  @column({ isPrimary: true })
+  declare subjectType: string
+}
+
+export class AuthzSubjectRoleSchema extends BaseModel {
+  static $columns = ['roleId', 'source', 'subjectId', 'subjectType', 'tenantId'] as const
+  $columns = AuthzSubjectRoleSchema.$columns
+  @column()
+  declare roleId: string
+  @column()
+  declare source: string
+  @column()
+  declare subjectId: number
+  @column({ isPrimary: true })
+  declare subjectType: string
+  @column()
+  declare tenantId: string
+}
+
 export class NotificationPreferenceSchema extends BaseModel {
   static $columns = ['channels', 'createdAt', 'id', 'notificationName', 'tenantId', 'updatedAt', 'userId'] as const
   $columns = NotificationPreferenceSchema.$columns
@@ -104,34 +165,6 @@ export class ResetPasswordTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare userId: number | null
-}
-
-export class RoleSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'name', 'permissions', 'updatedAt'] as const
-  $columns = RoleSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare name: string
-  @column()
-  declare permissions: string
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class UserRoleSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'roleId', 'userId'] as const
-  $columns = UserRoleSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare roleId: number
-  @column()
-  declare userId: number
 }
 
 export class UserSchema extends BaseModel {

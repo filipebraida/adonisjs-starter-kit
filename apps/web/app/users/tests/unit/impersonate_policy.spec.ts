@@ -5,7 +5,7 @@ import { test } from '@japa/runner'
 import ImpersonatePolicy from '#users/policies/impersonate_policy'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 async function policy() {
   return app.container.make(ImpersonatePolicy)
@@ -13,7 +13,6 @@ async function policy() {
 
 test.group('ImpersonatePolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin pode impersonar outro usuario', async ({ assert }) => {
     const admin = await UserFactory.create()

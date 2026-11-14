@@ -5,11 +5,10 @@ import CreateUser from '#users/actions/create_user'
 import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('CreateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('admin cria user comum com role atribuido', async ({ db, assert }) => {
     const admin = await UserFactory.create()
@@ -24,7 +23,7 @@ test.group('CreateUser', (group) => {
     })
 
     await db.assertHas('users', { email: 'joao-novo@example.test', full_name: 'Joao Novo' })
-    assert.deepEqual(await created.getRoleNames(), [ROLES.USER])
+    assert.deepEqual(await created.getRoles(), [ROLES.USER])
   })
 
   test('admin promove ao criar (usersManageRoles necessario para admin)', async ({ assert }) => {
@@ -39,7 +38,7 @@ test.group('CreateUser', (group) => {
       executor: admin,
     })
 
-    assert.deepEqual(await created.getRoleNames(), [ROLES.ADMIN])
+    assert.deepEqual(await created.getRoles(), [ROLES.ADMIN])
   })
 
   test('usa UUID como senha quando nao informada (usuario nao consegue logar direto)', async ({

@@ -45,7 +45,8 @@ export default class UserTransformer extends BaseTransformer<User> {
     return thumbnail ?? this.resource.avatarUrl
   }
 
+  /** Needs `roles` preloaded (`ListUsers`, the edit controller). */
   private roleNames() {
-    return this.resource.preloadedRoles.map((role) => role.name)
+    return this.resource.roles.map((role) => role.name)
   }
 }

@@ -22,7 +22,7 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **i18n** — English and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
 
-**RBAC** — Static catalog of typed capabilities (`PERMISSIONS`) + role slugs (`ROLES`) enforced through Bouncer abilities and per-resource policies. Frontend consumes a typed `useCan()` hook. User impersonation is available to admins.
+**RBAC** — [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz) under Bouncer: each module declares typed capabilities, roles grant them in code (`config/capabilities.ts`), and per-resource policies enforce them. The frontend gates with `useCan()` from `@adonis-agora/authz-react`. User impersonation is available to admins.
 
 **Data + infra** — PostgreSQL 16 with Mailpit and pgAdmin, brought up with `pnpm infra:up`.
 
@@ -131,7 +131,7 @@ Tests run against a real Postgres wrapped in a per-test transaction, so factorie
 
 ## Authorization
 
-Role-based access control lives at `apps/web/app/users/enums/`. `PERMISSIONS` is the single source of truth for every capability the app supports (e.g. `users.create`, `tokens.view_list`); `ROLES` are role slugs with weights. Controllers gate with `bouncer.authorize('hasPermission', PERMISSIONS.usersCreate)` or through a resource policy; the frontend uses a typed `useCan()` hook. Escalation is protected in depth — `SyncUserRoles` refuses to remove the executor's own admin role and `requireManageRolesIfEscalating` guards create/invite paths.
+Role-based access control runs on `@adonis-agora/authz`. Each module declares its capabilities in `app/<mod>/enums/capability.ts` (e.g. `users.create`, `tokens.view_list`); `ROLES` are role slugs with weights; `config/capabilities.ts` grants capabilities to roles in code, so only the user → role assignment is stored. Controllers gate through resource policies that check capabilities with `#core/authz/authorizer`; the frontend uses `useCan()` from `@adonis-agora/authz-react`. Escalation is protected in depth — `SyncUserRoles` refuses to remove the executor's own admin role and `requireManageRolesIfEscalating` guards create/invite paths.
 
 ## Adding a shadcn component
 

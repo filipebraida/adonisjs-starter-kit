@@ -4,11 +4,10 @@ import { test } from '@japa/runner'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('Endpoint /users/impersonate/:id', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('sem auth redireciona para login', async ({ client, assert }) => {
     const alvo = await UserFactory.create()

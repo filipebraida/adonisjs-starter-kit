@@ -32,6 +32,7 @@ export default defineConfig({
     () => import('@adonisjs/bouncer/commands'),
     () => import('@jrmc/adonis-attachment/commands'),
     () => import('@tuyau/core/commands'),
+    () => import('@adonis-agora/authz/commands'),
   ],
 
   /*
@@ -70,6 +71,8 @@ export default defineConfig({
     () => import('adonis-inertia-modal/modal_provider'),
     () => import('@adonisjs/transmit/transmit_provider'),
     () => import('@facteurjs/adonisjs/facteur_provider'),
+    () => import('@adonis-agora/authz/authz_provider'),
+    () => import('#providers/authz_cache_provider'),
   ],
 
   /*

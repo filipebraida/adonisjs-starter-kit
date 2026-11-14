@@ -3,6 +3,7 @@ import type { SimpleTFunction } from '#core/ui/hooks/use_translation'
 import { LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/types/navigation'
+import { CAPABILITIES_USERS } from '#users/enums/capability'
 
 export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
   return [
@@ -16,7 +17,7 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
         title: t('core.layout.navUser.adminPanel'),
         url: '/users',
         icon: Shield,
-        can: 'manageUsers',
+        can: CAPABILITIES_USERS.usersViewList,
       },
     ],
     [
@@ -53,7 +54,7 @@ export function getAdminNav(t: SimpleTFunction): NavMainItem[] {
           title: t('core.layout.navMain.users'),
           url: '/users',
           icon: Users,
-          can: 'manageUsers',
+          can: CAPABILITIES_USERS.usersViewList,
         },
       ],
     },

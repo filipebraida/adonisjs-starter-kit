@@ -8,11 +8,10 @@ import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_una
 import ResetPasswordToken from '#users/models/reset_password_token'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('InviteUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   // Fake the event so the mail listener (which builds a signed URL) doesn't run.
   let fake: ReturnType<typeof emitter.fake>
@@ -40,7 +39,7 @@ test.group('InviteUser', (group) => {
 
     await db.assertHas('users', { email: 'convidado@example.test' })
 
-    const roles = await convidado.getRoleNames()
+    const roles = await convidado.getRoles()
     assert.deepEqual(roles, [ROLES.USER])
 
     const token = await ResetPasswordToken.query().where('userId', convidado.id).firstOrFail()

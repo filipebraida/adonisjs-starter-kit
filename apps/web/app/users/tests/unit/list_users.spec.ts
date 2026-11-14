@@ -4,12 +4,11 @@ import { test } from '@japa/runner'
 import ListUsers from '#users/queries/list_users'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 import { marker } from '#tests/helpers/marker'
 
 test.group('ListUsers', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('filtra pela substring do nome (ilike)', async ({ assert }) => {
     const tag = marker('nome')
@@ -103,7 +102,7 @@ test.group('ListUsers', (group) => {
 
     const encontrado = result.all().find((u) => u.id === user.id)
     assert.isNotNull(encontrado)
-    assert.lengthOf(encontrado!.preloadedRoles, 1)
-    assert.equal(encontrado!.preloadedRoles[0].name, ROLES.ADMIN)
+    assert.lengthOf(encontrado!.roles, 1)
+    assert.equal(encontrado!.roles[0].name, ROLES.ADMIN)
   })
 })

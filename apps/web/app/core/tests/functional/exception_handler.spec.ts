@@ -3,11 +3,10 @@ import { test } from '@japa/runner'
 
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { withRole } from '#tests/helpers/rbac'
 
 test.group('Exception handler', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
-  group.each.setup(() => ensureBaseRoles())
 
   test('E_AUTHORIZATION_FAILURE em JSON retorna 403 com message', async ({ client, assert }) => {
     const user = await UserFactory.create()

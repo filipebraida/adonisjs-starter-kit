@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto'
 
 import { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
 import type { Role as RoleSlug } from '#users/enums/role'
-import Role from '#users/models/role'
 import User from '#users/models/user'
 
 export interface CreateUserInput {
@@ -25,8 +24,7 @@ export default class CreateUser {
     })
     await user.save()
 
-    const role = await Role.findByOrFail('name', input.role)
-    await user.assignRole(role)
+    await user.assignRole(input.role)
 
     return user
   }
