@@ -110,6 +110,7 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 ## Code style
 
 - Comments only for non-obvious WHY — a hidden constraint, subtle invariant, workaround. Don't narrate what the code does.
+- Identifiers, files, routes and code comments in English; user-facing text only through i18n keys (`en`, `pt`).
 - Don't create README / doc files unless the user asks for them.
 - Prefer editing existing files over creating new ones.
 

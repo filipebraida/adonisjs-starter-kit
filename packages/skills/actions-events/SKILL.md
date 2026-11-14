@@ -1,13 +1,13 @@
 ---
 name: actions-events
-description: 'Action + event pattern for AdonisJS. Actions are single-purpose classes with `.handle(input)`; they never touch `HttpContext` and never call side-effect code (mail, notifications, transmit) directly — they emit a domain event and a listener wired in `<mod>/start/events.ts` runs the effect. Use when adding a new action, wiring a domain event, or when a listener is what should call mail/notification/transmit. Trigger on: "create action", "emit event", "add listener", "domain event".'
+description: 'Action + event pattern for AdonisJS. Actions are single-purpose classes with `.handle(input)`; they never touch `HttpContext` and never call side-effect code (mail, notifications, transmit) directly — they emit a domain event, a listener bound in `<mod>/start/events.ts` only schedules a durable workflow (`@adonis-agora/durable`), and the workflow runs the effect in checkpointed steps. Use when adding a new action, wiring a domain event, adding a listener or a workflow, or deciding where mail/notification/transmit is called. Trigger on: "create action", "emit event", "add listener", "domain event", "workflow", "durable".'
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 # Actions + events
 
-Business logic lives in **actions**; cross-cutting effects run through **events**. Controllers stay thin (`policy → validate → action → response`). Actions take a plain input, never `HttpContext`. When an action needs a side effect (mail, notification, transmit, external HTTP), it **emits a domain event**; a listener in the module's `start/events.ts` receives it and runs the effect. This keeps actions synchronous domain code, keeps side effects composable (a new listener is a new file, not an edit to the action), and makes testing effortless — fake the emitter, fake the mail.
+Business logic lives in **actions**; cross-cutting effects run through **events**. Controllers stay thin (`policy → validate → action → response`). Actions take a plain input, never `HttpContext`. When an action needs a side effect (mail, notification, transmit, external HTTP), it **emits a domain event**. The module's `start/events.ts` binds a listener class to it; the listener only **schedules** a durable workflow (`XWorkflow.dispatch(plainData)`), and the workflow performs the effect inside checkpointed steps that retry on failure. The in-process emitter has no retry, so an effect run inside a listener is lost when it fails; the workflow's run lives in Postgres and survives a crash. This keeps actions synchronous domain code, keeps side effects composable (a new listener is a new file, not an edit to the action), and makes each layer testable on its own — fake the emitter, stub `dispatch`, run the workflow on a test engine.
 
 ## Rules
 
@@ -15,32 +15,39 @@ Business logic lives in **actions**; cross-cutting effects run through **events*
 - **Shape**: default-export a class with a single public method `async handle(input): Promise<Result | void>`. `input` is a plain `interface`. No `HttpContext`.
 - **Return or throw**: return the primary value (a model, an id, void). Throw domain exceptions from `app/<mod>/exceptions/` for expected failure paths (rate limits, permission denials, invariant violations).
 - **Side effects go through events**. Anything that reaches out is emitted, not called inline:
+
   ```ts
   emitter.emit('user:registered', { user, token })
   ```
+
   This applies to every kind of effect without exception:
 
-  | Kind | Example call the action must **not** make |
-  | --- | --- |
-  | Mail | `mail.send(new WelcomeEmail(...))` |
-  | In-app notification | `facteur.notification(...).send()` |
-  | SSE / realtime broadcast | `transmit.broadcast(channel, payload)` |
-  | External HTTP | `fetch('https://api.stripe.com/...')` |
-  | Audit log write | any write to an `audits` / `activity_logs` table that's cross-cutting |
+  | Kind                     | Example call the action must **not** make                             |
+  | ------------------------ | --------------------------------------------------------------------- |
+  | Mail                     | `mail.send(new WelcomeEmail(...))`                                    |
+  | In-app notification      | `facteur.notification(...).send()`                                    |
+  | SSE / realtime broadcast | `transmit.broadcast(channel, payload)`                                |
+  | External HTTP            | `fetch('https://api.stripe.com/...')`                                 |
+  | Audit log write          | any write to an `audits` / `activity_logs` table that's cross-cutting |
 
-- **Listeners** live in `app/<mod>/start/events.ts`. Register with `emitter.on('event:name', async (data) => { ... })`. Preload the file from `adonisrc.ts` so it wires at boot (see [[module-scaffolding]]).
-- **Guards as helper functions** at the top of the action file — e.g. `requireManageRoles(executor)` throws if not permitted. Keeps the action body short and the guard reusable across actions.
-- **Controllers call actions**: `await new Action().handle(input)`. Never instantiate an action inside another action; if two actions need shared work, extract a service (behavior with side effects) or a query (read-only).
+- **Bindings** live in `app/<mod>/start/events.ts`, and only there: `emitter.on('event:name', [() => import('#<mod>/listeners/<name>')])` — a lazy import of a listener class, never an inline closure. Preload the file from `adonisrc.ts` so it wires at boot (see [[module-scaffolding]]).
+- **Listeners only schedule.** `app/<mod>/listeners/<verb_object>.ts` default-exports a class whose `handle(event)` calls `XWorkflow.dispatch({...})` with plain, serializable data (ids, tokens, already-translated strings), never a Lucid model. No `mail.send`, no `facteur`, no `transmit`, no DB read or write in the listener.
+- **Workflows do the effect.** `app/<mod>/workflows/<verb_object>_workflow.ts` extends `BaseWorkflow` with `static workflow = { name: '<mod>.<verb-object>', version: '1' }` and a `run(ctx, input)` whose every side effect sits in its own `ctx.localStep('<name>', fn, { retries, backoff })`. Each step is checkpointed, so a retry of a failed step does not repeat the steps that already succeeded. Reload models by id inside the step. The workflow folder must be listed in `workflowsPath` (`config/durable.ts`) **and** in the `workflowsHook` `source` of `adonisrc.ts`.
+- **Guards as helper functions** at the top of the action file — e.g. `requireManageRolesIfEscalating(executor, roles)` throws if not permitted. Keeps the action body short and the guard reusable across actions.
+- **Controllers call actions**: `await new Action().handle(input)`. An action never calls another action (the lint enforces it; `sync_user_roles` is the one named exception in `apps/web/eslint.config.js`); if two actions need shared work, extract a service (behavior with side effects), a model method, or a query (read-only).
 
 ## Repo refs
 
 - Action shape (`.handle`, no `HttpContext`): `app/users/actions/create_user.ts`.
 - Reusable defense-in-depth guards: `app/auth/actions/sync_user_roles.ts`.
-- Event typing (declaration merge): `app/users/types/events.ts`; listener wiring: `app/users/start/events.ts`.
+- Event typing (declaration merge): `app/users/types/events.ts`; binding: `app/users/start/events.ts`.
+- Listener that only schedules: `app/users/listeners/send_welcome.ts`. Workflow with two steps (mail + in-app notification): `app/users/workflows/send_welcome_workflow.ts`. Single-step workflow: `app/auth/workflows/send_password_reset_workflow.ts`.
+- Durable config (Postgres transport + store, embedded worker, retention of mail runs): `config/durable.ts`; codegen hook: `adonisrc.ts` → `workflowsHook`.
 
 ## Doc refs
 
 - AdonisJS emitter — https://docs.adonisjs.com/guides/digging-deeper/emitter
+- `@adonis-agora/durable` — the package ships its own skills in `apps/web/node_modules/@adonis-agora/durable/skills/` (`durable-workflows`, `durable-determinism`, `durable-reliability`). Read them before using anything beyond `ctx.localStep`.
 
 ## Workflow
 
@@ -72,12 +79,54 @@ Naming: `<mod>:<past-tense-verb>` — `user:registered`, `invoice:issued`, `role
 
 Payload: plain, serializable. Include the primary entity + whatever the listener needs. Never reach for `HttpContext` fields.
 
-### Add a listener
+### Add a listener + workflow
 
-1. Open (or create) `app/<mod>/start/events.ts`.
-2. Add `emitter.on('<event>', async (data) => { ... })`.
-3. Ensure `() => import('#<mod>/start/events')` is in `adonisrc.ts` preloads.
-4. Multiple listeners on the same event are fine — one per side effect (one mail, one notification, one webhook).
+1. **Workflow** at `app/<mod>/workflows/<verb_object>_workflow.ts`:
+   ```ts
+   import { BaseWorkflow, type WorkflowCtx } from '@adonis-agora/durable'
+   import mail from '@adonisjs/mail/services/main'
+
+   /** What the run keeps: plain data, never the model. */
+   export interface SendInvoiceInput {
+     invoiceId: number
+     translations: MailBasicTranslation
+   }
+
+   export default class SendInvoiceWorkflow extends BaseWorkflow {
+     static workflow = { name: 'billing.send-invoice', version: '1' }
+
+     async run(ctx: WorkflowCtx, input: SendInvoiceInput) {
+       await ctx.localStep(
+         'mail',
+         async () => {
+           const invoice = await Invoice.findOrFail(input.invoiceId)
+           await mail.send(new InvoiceIssuedNotification(invoice, input.translations))
+         },
+         { retries: 5, backoff: 'exp', backoffMs: 1000 }
+       )
+     }
+   }
+   ```
+   One `ctx.localStep` per effect (mail, notification, webhook), each with a stable name. Nothing with I/O outside a step: the body replays on every turn. Changing the steps of a live workflow means bumping `version` (see the `durable-determinism` skill).
+2. **First workflow of the module?** Add `'app/<mod>/workflows'` to `workflowsPath` in `config/durable.ts` and to `workflowsHook({ source: [...] })` in `adonisrc.ts`. Names are unique across folders — prefix them with the module.
+3. **Listener** at `app/<mod>/listeners/<verb_object>.ts`:
+   ```ts
+   import type { EventsList } from '@adonisjs/core/types'
+
+   import SendInvoiceWorkflow from '#billing/workflows/send_invoice_workflow'
+
+   /** Schedules the invoice mail; the workflow sends it. */
+   export default class SendInvoice {
+     async handle({ invoice, translations }: EventsList['invoice:issued']) {
+       await SendInvoiceWorkflow.dispatch({
+         invoiceId: invoice.id,
+         translations,
+       })
+     }
+   }
+   ```
+4. **Bind** it in `app/<mod>/start/events.ts`: `emitter.on('invoice:issued', [() => import('#billing/listeners/send_invoice')])`, and make sure `() => import('#<mod>/start/events')` is in `adonisrc.ts` preloads.
+5. Several listeners on the same event are fine — one per independent effect. Effects that belong together (a mail and its in-app notification) are two steps of one workflow.
 
 ### Concurrency — actions that read-then-write a sequence
 
@@ -119,14 +168,20 @@ Do heavy I/O (file upload, external HTTP) **outside** the transaction so the loc
 
 ### Testing
 
-- Unit-test the action with sinon stubs — see [[testing]].
-- Fake the emitter in endpoint tests to verify emission without running listeners: `emitter.fake(['user:registered'])` then `fake.assertEmitted('user:registered')`.
-- End-to-end listener test: `await emitter.emit('user:registered', payload)` and assert the side effect (mail sent, notification row created, etc).
+One spec per layer, each in the folder that mirrors its source — see [[testing]]:
+
+- **Action** (`tests/unit/actions/`): `using fake = emitter.fake(['user:registered'])`, call the action, `fake.assertEmitted('user:registered')`.
+- **Listener** (`tests/unit/listeners/`): `sinon.stub(XWorkflow, 'dispatch')`, call `new Listener().handle(payload)`, assert `dispatch` got the plain data. Canonical: `app/users/tests/unit/listeners/send_welcome.spec.ts`.
+- **Workflow** (`tests/unit/workflows/`): run it on `createTestEngine()` from `@adonis-agora/durable/testing`, `assertRunStatus(t.store, runId, 'completed')`, then assert the effect (`using mails = mail.fake()`, notification row). Canonical: `app/users/tests/unit/workflows/send_welcome_workflow.spec.ts`.
 
 ## Anti-patterns
 
 - ❌ Action takes `HttpContext` — extract the pieces it needs and pass those as plain fields.
-- ❌ Action calls `mail.send(...)` / `facteur.notification(...).send()` / `transmit.broadcast(...)` directly — emit an event, let the listener do it.
+- ❌ Action calls `mail.send(...)` / `facteur.notification(...).send()` / `transmit.broadcast(...)` directly — emit an event; the listener schedules a workflow that does it.
+- ❌ Listener that sends the mail or notification itself, or reads/writes the DB — it has no retry; dispatch a workflow.
+- ❌ Inline closure in `emitter.on(...)` — bind a listener class by lazy import.
+- ❌ A Lucid model in `dispatch(...)` input — the run stores JSON; pass the id and reload inside the step.
+- ❌ I/O in a workflow's `run` outside `ctx.localStep` — it re-executes on every replay and is never checkpointed.
 - ❌ Read-then-write on a computed column (next position, next sequence number) without `.forUpdate()` on the parent + `unique(...)` on the schema — the race produces duplicates.
 - ❌ Business logic in the controller (`if (user.isX) { ... } await something()`) — move it to an action.
 - ❌ Multiple public methods on an action — split into separate action files.

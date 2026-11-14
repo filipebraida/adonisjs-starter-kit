@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # i18n
 
-Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `loaders`). Translation JSON lives per module at `app/<mod>/resources/lang/<locale>/<mod>.json`. Keys are namespaced by module (`core.layout.navMain.dashboard`), so the file at `app/core/resources/lang/en/core.json` doesn't repeat `core.` inside — the loader adds it. Backend uses `ctx.i18n.t('key')`; frontend uses `useTranslation()`. Locale detection runs as an HTTP middleware that prefers an `X-User-Language` header → a `user-locale` cookie → the browser's `Accept-Language`. Authenticated users have `User.locale` as the authoritative source: the switch endpoint writes both cookie and DB; every login flow syncs the cookie from `user.locale` if set.
+Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `loaders`). Translation JSON lives per module at `app/<mod>/resources/lang/<locale>/<namespace>.json`. The file name is the namespace, on the backend loader and on the frontend glob alike (`core.json` → `core.layout.navMain.dashboard`), so the file doesn't repeat `core.` inside. A module's main file is named after it; a module may hold others (`auth/…/errors.json` → `errors.*`, `users/…/validator.json` for VineJS messages). Backend uses `ctx.i18n.t('key')`; frontend uses `useTranslation()`. Locale detection runs as an HTTP middleware that prefers an `X-User-Language` header → a `user-locale` cookie → the browser's `Accept-Language`. Authenticated users have `User.locale` as the authoritative source: the switch endpoint writes both cookie and DB; every login flow syncs the cookie from `user.locale` if set.
 
 ## Rules
 
@@ -22,6 +22,8 @@ Locales are declared in `config/i18n.ts` (`supportedLocales`, `defaultLocale`, `
 - **ICU interpolation**: `{name}` in the string, `t('key', { name: 'Alice' })` at the call site. Also supports plurals and selectors.
 - **Validation messages**: VineJS uses the request's i18n instance through the messages provider bound in the locale-detection middleware. Localize by adding keys under `<field>.<rule>` in `<mod>/resources/lang/<locale>/validator.json`.
 - **User preference**: `User.locale` is a nullable column. When authenticated, the switch endpoint updates both the cookie and `user.locale`. Login flows sync `user-locale` cookie from `user.locale` if set. Pre-login (marketing/auth pages) uses cookie / `Accept-Language`, never DB.
+- **Enum labels are keys, not code.** Each enum value has a `<mod>.<enum>.<value>` key in every locale (`users.roles.admin.name`, `users.activity.events.roles_synced`); transformers ship the raw value and the screen translates it. The enum file never holds display text.
+- **Server-built text is translated before it leaves the request**: mails get their strings in the action (see [[mail]]); a flash message uses `ctx.i18n.t(...)`.
 - **Locale switcher UI**: `<LanguageSwitcher />` lives in every logged-in shell — see [[layout-shells]].
 - **Adding a locale** means updating `supportedLocales` in `config/i18n.ts`, adding a folder under every module's `resources/lang/`, and confirming every key exists in the new locale.
 

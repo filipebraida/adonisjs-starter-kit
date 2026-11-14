@@ -68,9 +68,9 @@ File uploads are managed by [`@jrmc/adonis-attachment`](https://github.com/batos
    @attachment({ preComputeUrl: false, variants: ['hero'] })
    declare cover: Attachment
    ```
-3. **Migration**: add a JSON column for the attachment metadata:
+3. **Migration**: add a `jsonb` column for the attachment metadata (the lint requires `jsonb` over `json`):
    ```ts
-   table.json('cover').nullable()
+   table.jsonb('cover').nullable()
    ```
 4. **Static `preComputeUrls`** on the model — mirror the pattern used elsewhere:
    ```ts
@@ -94,9 +94,9 @@ Edit `config/attachment.ts`. Existing uploads keep their old variant unless you 
 
 ### Testing
 
-- Use a real file fixture (small PNG) with the API client's `.file(...)` method.
-- Fake Drive: `drive.fake()` in group setup — see [[testing]].
-- Assert the DB row has the attachment JSON populated; assert file existence via `disk.assertExists(...)`.
+- Generate the file in the test (`fileGenerator.generatePng(50 * 1024, 'avatar.png')` from `@poppinss/file-generator`) and send it with the API client's `.file(...)` method.
+- Fake Drive inside every test that uploads: `using disk = drive.fake(env.get('DRIVE_DISK') || 'fs')`, or `using _disk = ...` when the test asserts nothing on the disk — see [[testing]].
+- Assert the DB row has the attachment JSON populated; assert file existence via `await disk.exists(row.avatar.path!)`. Canonical: `app/users/tests/functional/settings/profile.spec.ts`.
 
 ## Anti-patterns
 

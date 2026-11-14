@@ -8,9 +8,10 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `module-scaffolding` — how to add a new `app/<mod>/` module end-to-end (alias, preload, migration paths).
 - `crud` — build a resource CRUD stack (route → controller → validator → policy → action → transformer → Inertia page).
 - `queries` — read side: list queries (Lucid paginator) + per-concept read models composed by the controller (`Promise.all`).
-- `actions-events` — action pattern (`.handle(input)`) and event-based side effects.
-- `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
-- `inertia` — page resolver, shared props, `useForm`, `urlFor`, modals, and the client provider tree.
+- `actions-events` — action pattern (`.handle(input)`) and event-based side effects: listeners only schedule, durable workflows do the effect.
+- `routes` — resource vs. verb routes, registry-referenced controllers, numeric matchers, naming.
+- `testing` — Japa functional + unit patterns (transactions, `using` fakes, sinon, factories, listener and workflow specs).
+- `inertia` — page resolver, `<Head>`, shared props, project `<Form>` (`useForm` only with a reason), `urlFor`, formatters, modals, and the client provider tree; `references/` covers forms, router, partial reloads, pagination, shared props, layouts, SSR and generated types.
 - `i18n` — two locales (`en`, `pt`), per-module JSON, `useTranslation()`, `ctx.i18n.t()`, and `User.locale` persistence.
 - `layout-shells` — four coexisting shells (admin, authenticated, auth, marketing) — pages import explicitly, no runtime toggle.
 - `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.

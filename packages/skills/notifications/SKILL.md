@@ -1,13 +1,13 @@
 ---
 name: notifications
-description: 'In-app notifications + realtime SSE in an AdonisJS + Inertia app. Stack: `@facteurjs/adonisjs` for the notification classes and delivery channels + `@adonisjs/transmit` for the SSE transport. Notifications persist to Postgres and push to a per-user SSE channel. Bell + unread badge in the logged-in shell. Emission goes through domain events. Use when adding a new notification type, wiring a listener, adding a custom SSE channel, or debugging the bell. Trigger on: "add notification", "notify user", "SSE", "bell", "facteur", "transmit".'
+description: 'In-app notifications + realtime SSE in an AdonisJS + Inertia app. Stack: `@facteurjs/adonisjs` for the notification classes and delivery channels + `@adonisjs/transmit` for the SSE transport. Notifications persist to Postgres and push to a per-user SSE channel. Bell + unread badge in the logged-in shell. Emission goes through domain events and a durable workflow. Use when adding a new notification type, wiring a listener, adding a custom SSE channel, or debugging the bell. Trigger on: "add notification", "notify user", "SSE", "bell", "facteur", "transmit".'
 license: MIT
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 # Notifications + SSE
 
-In-app notifications persist as rows in the `notifications` table and stream to the user's personal channel in realtime via SSE. Facteur (`@facteurjs/adonisjs`) is the framework: one `Notification<User, Params>` class per type, with a `deliverBy: { database, transmit }` config and per-channel methods (`asDatabaseMessage`, `asTransmitMessage`). Transmit (`@adonisjs/transmit`) is the SSE transport — in-memory / single-node by default (`transport: null` in `config/transmit.ts`); swap to a distributed transport (e.g. Redis) when scaling out to multiple instances. Emission always goes through domain events: actions emit, a listener calls `facteur.notification(...).params(...).to([user]).send()`.
+In-app notifications persist as rows in the `notifications` table and stream to the user's personal channel in realtime via SSE. Facteur (`@facteurjs/adonisjs`) is the framework: one `Notification<User, Params>` class per type, with a `deliverBy: { database, transmit }` config and per-channel methods (`asDatabaseMessage`, `asTransmitMessage`). Transmit (`@adonisjs/transmit`) is the SSE transport — in-memory / single-node by default (`transport: null` in `config/transmit.ts`); swap to a distributed transport (e.g. Redis) when scaling out to multiple instances. Emission always goes through domain events: actions emit, a listener schedules a durable workflow, and a `ctx.localStep` of that workflow calls `facteur.notification(...).params(...).to([user]).send()` (see [[actions-events]]).
 
 ## Rules
 
@@ -30,10 +30,14 @@ In-app notifications persist as rows in the `notifications` table and stream to 
   }
   ```
   Facteur maps each channel's target automatically.
-- **Emission goes through events** — see [[actions-events]]. The listener calls:
+- **Emission goes through events and a workflow** — see [[actions-events]]. The workflow's step calls:
   ```ts
-  await facteur.notification(SomeNotification).params({...}).to([user]).send()
+  await ctx.localStep('notification', async () => {
+    const user = await User.findOrFail(input.userId)
+    await facteur.notification(SomeNotification).params({...}).to([user]).send()
+  })
   ```
+  A mail and its in-app notification are two steps of the same workflow, so a mail retry never notifies twice (`app/users/workflows/send_welcome_workflow.ts`).
 - **Shared prop `unseenNotifications`** (count) is computed in the Inertia middleware when a user is authenticated. It powers the bell badge on first render — the SSE stream keeps it in sync afterward.
 - **Bell UI** subscribes to the per-user channel via `useNotificationsChannel(user.id, onIncoming)`, hits the endpoint to fetch the list when opened, marks-all-seen on open, marks-read on click.
 - **Frontend SSE client** is a lazy singleton: one `EventSource` on `/__transmit/events`, all channels multiplex through it.
@@ -77,17 +81,22 @@ In-app notifications persist as rows in the `notifications` table and stream to 
    ```ts
    emitter.emit('order:shipped', { user, orderId, trackingUrl })
    ```
-3. **Listener** in `<mod>/start/events.ts`:
+3. **Listener + workflow** — the listener (`app/<mod>/listeners/notify_order_shipped.ts`, bound in `<mod>/start/events.ts`) only calls `NotifyOrderShippedWorkflow.dispatch({ userId: user.id, orderId, trackingUrl })`; the workflow sends:
    ```ts
-   emitter.on('order:shipped', async ({ user, orderId, trackingUrl }) => {
-     await facteur.notification(OrderShippedNotification)
-       .params({ orderId, trackingUrl })
-       .to([user])
-       .send()
-   })
+   async run(ctx: WorkflowCtx, input: NotifyOrderShippedInput) {
+     await ctx.localStep('notification', async () => {
+       const user = await User.findOrFail(input.userId)
+       await facteur
+         .notification(OrderShippedNotification)
+         .params({ orderId: input.orderId, trackingUrl: input.trackingUrl })
+         .to([user])
+         .send()
+     })
+   }
    ```
+   Full listener/workflow wiring (folder registration in `config/durable.ts` + `adonisrc.ts`) in [[actions-events]].
 4. Frontend rendering reads `content.title` / `content.body` / `content.link` from the persisted row — the bell renders every notification uniformly. `kind` on the transmit message is available for client-side filtering by type if needed.
-5. Verify: a functional spec that emits the event and asserts a notification row persisted for the user. Don't fake the emitter in a listener spec — see [[testing]].
+5. Verify: a workflow spec that runs the workflow on `createTestEngine()` and asserts a notification row persisted for the user (`Notification.query().where('notifiableId', String(user.id)).where('type', '...')`) — see [[testing]].
 
 ### Custom SSE channel (not a Facteur notification)
 
@@ -96,13 +105,14 @@ For resource-scoped realtime (job progress, live status) that isn't a per-user F
 ### Testing
 
 - Endpoint test: insert rows directly via `Notification.create({...})` and hit the 4 endpoints.
-- End-to-end listener test: `mail.fake()` first (to keep any co-fired mail from actually sending), then `await emitter.emit('event:name', payload)`, then assert the `Notification` row exists.
+- Workflow test: run it on `createTestEngine()` from `@adonis-agora/durable/testing`, with `using mails = mail.fake()` when a step also mails, then assert the `Notification` row of the user the test created. Canonical: `app/users/tests/unit/workflows/send_welcome_workflow.spec.ts`.
+- Listener test: stub `XWorkflow.dispatch` with sinon and assert the plain data it received.
 
 See [[testing]].
 
 ## Anti-patterns
 
-- ❌ Calling `facteur.notification(...).send()` directly from an action — emit an event; the listener sends.
+- ❌ Calling `facteur.notification(...).send()` from an action or a listener — emit an event; the listener schedules a workflow; the workflow's step sends.
 - ❌ Hardcoding `notifications/user-<id>` in components — use the per-user subscription hook.
 - ❌ Storing render logic in the transmit message — the DB row is the durable copy; transmit is just a nudge (`{ kind: '...' }` is enough).
 - ❌ Sending massive payloads over transmit — the browser refetches the list on notification; keep transmit small.

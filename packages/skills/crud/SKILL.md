@@ -13,7 +13,7 @@ A CRUD feature is a stack, not a single file. The route declares one `router.res
 
 Every HTTP method — including `index` — follows the same 3-step spine:
 
-1. **Authorize** via `bouncer.with(XPolicy).authorize(...)`. A `where('owner_id', user.id)` clause in the query is **not** a substitute — the policy is the source of truth.
+1. **Authorize** via `bouncer.with(XPolicy).authorize(...)`, before anything else (the lint fails a `validateUsing` that runs first: the 422 would tell an unauthorized user what the form expects). A `where('owner_id', user.id)` clause in the query is **not** a substitute — the policy is the source of truth. A controller that is public on purpose (sign-in, landing page, health probe) declares `static readonly public = true` instead.
 2. **Validate** via `request.validateUsing(...)`.
 3. **Render / redirect** — either `inertia.render('...', props)` for reads or `response.redirect().back()` / `.toRoute(...)` for writes. Writes call an action in between.
 
@@ -21,14 +21,21 @@ Authentication is the middleware's job — controllers never call `authenticate(
 
 ### Layer conventions
 
-- **Route** — `router.resource('/entities', EntitiesController).only([...])`. Guard by wrapping in a `router.group(() => {...}).middleware(middleware.auth())` block (see [[routes]]). Custom verbs go as separate `router.post(...)` calls, not extra controller methods.
-- **Controller (thin)** — one method per resource action. Body order: `policy → validator → action call → render/redirect`. No business logic, no queries longer than one line, no ORM calls beyond `Model.findOrFail`.
+- **Route** — `router.resource('/entities', controllers.<mod>.Entities).only([...])`, controllers from `#generated/controllers`. Guard by wrapping in a `router.group(() => {...}).use([middleware.auth()])` block (see [[routes]]). Custom verbs go as separate `router.post(...)` calls on their own single-action controller, not extra controller methods.
+- **Controller (thin)** — one method per resource action, and a one-line class docblock saying what it serves. Body order: `policy → validator → action call → render/redirect`. No business logic, no queries longer than one line, no ORM calls beyond `Model.findOrFail`.
 - **Validator** — VineJS `vine.create({...})` per mutation, exported from `<mod>/validators/<entity>.ts` (one file per entity — `validators/users.ts`, `validators/tokens.ts`). Use `vine.withMetaData<{...}>().create({...})` when a rule depends on route params (e.g. unique-except-self on edit). `vine.compile()` is **deprecated** — use `vine.create()`.
 - **Policy** — `BasePolicy` subclass at `<mod>/policies/<entity>_policy.ts`. One method per gated action. Return `boolean | AuthorizerResponse`. Gate before validating: `await bouncer.with(XPolicy).authorize('action', resource?)`. See [[authorization]].
 - **Action** — one class per write in `<mod>/actions/<verb_entity>.ts`. `Input` is a plain interface; the class has one `async handle(input)` method. Never takes `HttpContext`. Side effects go through domain events — see [[actions-events]].
 - **Transformer** — `BaseTransformer<Model>` with `toObject()` as the base + variants (`forList`, `forEdit`, `forSharedProps`, `forProfile`). Call `Transformer.transform(model).useVariant('forEdit')` or `Transformer.paginate(rows, meta).useVariant('forList')`. Never send raw Lucid instances to Inertia — the shape leaks and the response type drifts.
 - **Query** — read-only, `<mod>/queries/list_<entities>.ts`. Full patterns (list queries + read models for aggregate screens) live in [[queries]].
 - **Inertia pages** — under `<mod>/ui/pages/<entity>/`. Index is a full page; create/edit are modals mounted over the index. See [[inertia]].
+
+### Conventions every layer relies on
+
+- **Two controller shapes, no third.** A resource controller holds only the RESTful methods (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`). Anything else (a state transition, an export, a JSON lookup) is its own controller named `<verb>_<object>_controller.ts` with `handle()` as its only public method: `app/users/controllers/impersonate_user_controller.ts`, `app/notifications/controllers/mark_notification_read_controller.ts`. The lint rejects any other method name and a `handle()` next to another public method.
+- **Inertia mutations redirect; JSON is for async reads.** `store` / `update` / `destroy` and transitions return `response.redirect()` (by route name: `.toRoute('users.index')` or `.back()`), which is what refreshes props, flashes and inline validation. `response.json(...)` only for endpoints the page calls with `fetch` (the notification bell). A future public API gets its own routes and controllers, never `if (request.accepts(['html']))` in an Inertia controller.
+- **Transformers never query.** They shape what the controller or query already loaded (`await user.load('roles')`, `User.preComputeUrls(rows)` before the transformer); a missing relation is preloaded upstream.
+- **Enums** are `as const` objects with `SCREAMING_SNAKE_CASE` keys, a derived type and a `_KEYS` tuple for `vine.enum(...)` — see `app/auth/enums/audit_event.ts` (`AUDIT_EVENTS`, `AuditEvent`, `AUDIT_EVENT_KEYS`). Code compares against the constant (`ROLES.ADMIN`), never the raw string, and never redeclares the union inline. No TypeScript `enum`. Labels are not in the enum: they are i18n keys `<mod>.<enum>.<value>`, see [[i18n]].
 
 ## Repo refs
 
@@ -131,6 +138,7 @@ export default class EntityTransformer extends BaseTransformer<Entity> {
 ```
 
 Consumers:
+
 - Single: `EntityTransformer.transform(entity).useVariant('forEdit')`
 - Paginated: `EntityTransformer.paginate(rows, paginator.getMeta()).useVariant('forList')`
 
@@ -156,7 +164,7 @@ Nested resource (`parents.children`) — load the owner first, gate on it:
 ```ts
 public async store({ auth, bouncer, params, request, response }: HttpContext) {
   const user = auth.getUserOrFail()
-  const parent = await Parent.findOrFail(params.parent_id)
+  const parent = await Parent.findOrFail(params.parentId)
   await bouncer.with(ChildPolicy).authorize('create', parent)
   const payload = await request.validateUsing(createChildValidator)
   await new CreateChild().handle({ userId: user.id, parentId: parent.id, ...payload })
@@ -168,17 +176,18 @@ public async store({ auth, bouncer, params, request, response }: HttpContext) {
 
 ```ts
 // app/<mod>/routes.ts
-const EntitiesController = () => import('#<mod>/controllers/entities_controller')
+import { controllers } from '#generated/controllers'
+import { middleware } from '#start/kernel'
 
 router
   .group(() => {
     router
-      .resource('/entities', EntitiesController)
+      .resource('/entities', controllers.<mod>.Entities)
       .only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
       .where('id', router.matchers.number())
       .as('entities')
   })
-  .middleware(middleware.auth())
+  .use([middleware.auth()])
 ```
 
 See [[routes]] for verb vs. resource, numeric matchers, nested resources.
@@ -186,7 +195,8 @@ See [[routes]] for verb vs. resource, numeric matchers, nested resources.
 ### 9. Inertia pages
 
 - `<mod>/ui/pages/<entities>/index.tsx` — list page.
-- `<mod>/ui/pages/<entities>/create.tsx` + `edit.tsx` — modals launched by controller `create`/`edit` methods.
+- `<mod>/ui/pages/<entities>/create.tsx` + `edit.tsx` — modals launched by controller `create`/`edit` methods (`inertia.modal(...)`).
+- A full page renders `<Head title={t('...')} />`; a modal page keeps the title of the page under it.
 
 See [[inertia]] for `<Form>`, `useForm`, `usePageProps`, `urlFor`, and modal wiring.
 
@@ -202,7 +212,7 @@ Every UI string used in the pages needs an entry in every supported locale JSON 
 
 ### 12. Verify
 
-Not done until it runs green. Run `pnpm typecheck && pnpm lint`, then the module's functional spec (`pnpm ace test --files="<entities>"`). Writing the specs in step 11 is not the finish line — an unrun or red spec means the feature isn't done.
+Not done until it runs green. Run `pnpm ace codegen` (new controller, transformer or route: the registries under `.adonisjs/` are committed), then `pnpm typecheck && pnpm lint`, then the module's functional spec under a timeout (`timeout -k 5 120 pnpm ace test --files="<entities>"`, see [[testing]]). Writing the specs in step 11 is not the finish line — an unrun or red spec means the feature isn't done.
 
 ## Anti-patterns
 
@@ -211,7 +221,9 @@ Not done until it runs green. Run `pnpm typecheck && pnpm lint`, then the module
 - ❌ Sending a Lucid model to Inertia without a transformer — the shape leaks and page prop types drift.
 - ❌ A transformer with one variant returning everything — over-fetch, hurts the response payload. Trim variants per page.
 - ❌ Validator declared inline in the controller — always in `<mod>/validators/<entity>.ts`.
-- ❌ Custom verbs (`activate`, `publish`) added as extra methods on the resource controller — put them as separate `router.post(...)` calls with their own controller (or method), keeping the resource `.only([...])` list clean.
+- ❌ Custom verbs (`activate`, `publish`) added as extra methods on the resource controller — put them as separate `router.post(...)` calls on their own single-action controller, keeping the resource `.only([...])` list clean.
+- ❌ `response.json(...)` from a mutation an Inertia page submits — redirect, so props, flashes and validation errors refresh.
+- ❌ A query or `load()` inside a transformer — preload in the controller or the query.
 - ❌ Controllers calling `auth.authenticate()` — the `auth()` middleware ran first; use `auth.getUserOrFail()`.
 
 ## Related skills

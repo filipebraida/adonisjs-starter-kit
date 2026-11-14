@@ -22,13 +22,14 @@ transmit.authorize<{ order_id: string }>(
 )
 ```
 
-Broadcast from a **listener** (not from inside the job):
+Broadcast from a **workflow step** — the task emits a domain event, its listener only dispatches the workflow (see [[actions-events]]):
 
 ```ts
-transmit.broadcast(
-  urlFor('orders.status', { order_id: orderId }),
-  { status: 'shipped', at: Date.now() }
-)
+await ctx.localStep('broadcast', async () => {
+  transmit.broadcast(urlFor('orders.status', { order_id: input.orderId }), {
+    status: 'shipped',
+  })
+})
 ```
 
 Frontend subscribe — store the subscription **before** `create()` so cleanup on fast unmount / StrictMode still deletes:
@@ -45,4 +46,4 @@ The bell's `notifications/user-<id>` channel is the exception — per-user, Fact
 
 - ❌ Adding a custom channel without `transmit.authorize(pattern, callback)` — any authenticated user can subscribe.
 - ❌ `router.findOrFail('...').pattern` at the top level of `start/transmit.ts` — routes aren't committed yet during preload. Hardcode the pattern and guard it with a spec — see [[routes]].
-- ❌ Broadcasting from inside a job — emit a `resource:state` event and put the broadcast in the listener. Future consumers (mail, log, webhook) then attach without touching the job. See [[actions-events]].
+- ❌ Broadcasting from inside the task or from a listener — emit a `resource:state` event; its listener schedules a workflow and the broadcast is a step of it. Future consumers (mail, log, webhook) then attach without touching the task. See [[actions-events]].

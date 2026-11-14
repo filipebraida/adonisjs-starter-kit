@@ -13,23 +13,26 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
 
 - **Every page imports its shell explicitly** at the top of the page file. No wrapper picks the shell based on route, role, or props.
   ```tsx
-  import AppLayout from '#core/ui/components/app_layout'
-  export default function Page() { return <AppLayout>...</AppLayout> }
+  import AdminLayout from '#core/ui/components/admin_layout'
+  export default function Page() {
+    return <AdminLayout>...</AdminLayout>
+  }
   ```
+- **The shell does not name the page**: each page renders its own `<Head title={t('...')} />` inside the shell — see [[inertia]].
 - **Shell decisions are hardcoded**: variant, collapsible, direction, max-width live inside the shell file. Do not accept them as props.
 - **Header widgets are shared** across shells that need them (`<NotificationBell />`, `<ToggleTheme />`, `<LanguageSwitcher />`, `<NavUser />`) — same visual identity, imported directly by each shell that mounts them.
-- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getFooterNav(t)`, `getNavUser(t)`, `getMobileFab(t)`). Nav items support a `can: CAPABILITIES_<MOD>.x` field for RBAC gating (filtered by `useAllows()`) — see [[authorization]]. Nav items are never hardcoded inside the shell file.
+- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getAdminNav(t)`, `getNavUser(t)`). Nav items support a `can: CAPABILITIES_<MOD>.x` field for RBAC gating (filtered by `useAllows()`) — see [[authorization]]. Nav items are never hardcoded inside the shell file.
 - **Providers stay at the root client entry**, not inside shells. Theme, i18n, Tuyau, modal stack are mounted once so every shell renders inside them.
 - **Adding a shell** is only worth it when the shape is genuinely new (installer wizard chrome, kiosk, checkout). Otherwise reuse an existing shell — the same page can render inside two different shells if two contexts need it.
 
-## Shell inventory (typical set)
+## Shell inventory (this kit)
 
-Every app spun from this template starts with two:
+- **`AdminLayout`** (`#core/ui/components/admin_layout`) — the logged-in admin shell: collapsible sidebar fed by `getAdminNav(t)`. Wraps the administration pages (users list, activity).
+- **`AuthenticatedLayout`** (`#core/ui/components/authenticated_layout`) — the logged-in shell with a top nav fed by `getMainNav(t)`. Wraps the everyday pages (dashboard, settings).
+- **`AuthLayout`** (`#auth/ui/components/auth_layout`) — the pre-login shell (sign-in, sign-up, password flows). Simpler, no nav.
+- **`MarketingLayout`** (`#marketing/ui/components/marketing_layout`) — the public landing chrome (header + footer); the page composes its sections (`<Hero>`, `<FeatureShowcase>`, …) inside it.
 
-- **`AppLayout`** — the logged-in shell. Sidebar on desktop, bottom nav + top notification bar on mobile. Wraps every internal page (dashboard, users, settings, feature modules).
-- **`AuthLayout`** — the pre-login shell (sign-in, sign-up, password flows). Simpler, no nav.
-
-Public marketing pages typically **do not use a shell** — they compose their own sections (`<Hero>`, `<Features>`, `<Footer>`) directly, because their chrome has nothing in common with the app.
+Both logged-in shells mount the same header widgets, `useFlashToasts()` and the modal root.
 
 Any additional shell (checkout, kiosk, print-friendly) is added only when its chrome is truly distinct.
 
@@ -47,13 +50,14 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 ### Pick the shell for a new page
 
 - Login / sign-up / password reset → `AuthLayout`.
-- Any other logged-in page → `AppLayout`.
-- Public marketing page (landing, about, blog) → no shell; compose sections directly.
+- Administration page (managing users, audit) → `AdminLayout`.
+- Any other logged-in page → `AuthenticatedLayout`.
+- Public marketing page (landing, about, blog) → `MarketingLayout`, sections composed inside it.
 - Any other context (checkout, installer, kiosk) → add a new shell only if its chrome shares nothing with the existing ones.
 
 ### Add a nav item
 
-Edit the navigation config file — `getMainNav(t)` for the primary nav, `getFooterNav(t)` for footer/utility items, `getNavUser(t)` for the user dropdown (shared across logged-in shells). Set `can: CAPABILITIES_<MOD>.x` to gate visibility. Do not put the item inside the shell file.
+Edit the navigation config file — `getMainNav(t)` for the top nav, `getAdminNav(t)` for the admin sidebar, `getNavUser(t)` for the user dropdown (shared across logged-in shells). Set `can: CAPABILITIES_<MOD>.x` to gate visibility. Do not put the item inside the shell file.
 
 ### Delete an unused shell in a downstream project
 
