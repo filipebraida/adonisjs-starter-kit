@@ -196,7 +196,7 @@ Every UI string used in the pages needs an entry in every supported locale JSON 
 
 ### 11. Tests
 
-- Functional: `app/<mod>/tests/functional/<entities>_endpoint.spec.ts` — cover unauth (302 → login), forbidden (302 → home), validation (422), happy path per method.
+- Functional: `app/<mod>/tests/functional/<area>/<resource>.spec.ts` — cover unauth (302 → login), forbidden (302 → home), validation (422), happy path per method.
 - Unit: one per action.
 - See [[testing]].
 

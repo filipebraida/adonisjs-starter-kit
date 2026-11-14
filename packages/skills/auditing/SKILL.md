@@ -36,7 +36,7 @@ Each row: actor (`user_type`/`user_id`), `event`, `auditable_type`/`auditable_id
 - Security events: `app/auth/actions/sync_user_roles.ts`, `app/users/actions/{impersonate_user,create_token,delete_token,invite_user}.ts`.
 - Activity page: `app/users/controllers/activity_controller.ts`, `app/users/queries/list_audits.ts`, `app/users/transformers/audit_transformer.ts`, `app/users/ui/pages/activity.tsx` (gated by `users.audit`).
 - Skip middleware: `app/core/middleware/skip_audit_middleware.ts` (`middleware.skipAudit()`).
-- Specs: `app/auth/tests/unit/user_auditing.spec.ts`, `app/users/tests/functional/impersonate_endpoint.spec.ts`, `app/users/tests/functional/activity_endpoint.spec.ts`.
+- Specs: `app/auth/tests/unit/models/user_auditing.spec.ts`, `app/users/tests/functional/users/impersonate.spec.ts`, `app/users/tests/functional/users/activity.spec.ts`.
 
 ## Doc refs
 

@@ -35,7 +35,7 @@ const events = emitter.fake(['user:registered']) // ✅
 
 ## Rules
 
-- **Location**: `app/<mod>/tests/{unit,functional}/*.spec.ts`.
+- **Location**: a unit spec mirrors the layer of its source — `app/<mod>/tests/unit/<layer>/<name>.spec.ts` (`actions/`, `queries/`, `policies/`, `models/`, …); a functional spec lives in a resource folder — `app/<mod>/tests/functional/<area>/<resource>.spec.ts`.
 - **Group setup**: every group opens with `group.each.setup(() => testUtils.db().wrapInGlobalTransaction())` when the code under test touches DB (nearly always).
 - **RBAC helper**: assign a role per user with `withRole(user, ROLES.X)` (`tests/helpers/rbac.ts`). What the role grants comes from `roleGrants` in `config/capabilities.ts` — nothing to seed.
 - **Emitter fake**: to isolate an endpoint from its listeners, `const fake = emitter.fake(['event:name'])` in setup + `emitter.restore()` in teardown. Assert with `fake.assertEmitted('event:name')` / `fake.assertNoneEmitted()`.
@@ -50,8 +50,8 @@ const events = emitter.fake(['user:registered']) // ✅
 
 ## Repo refs
 
-- Functional spec (per-test transaction via `client`): `app/users/tests/functional/users_endpoint.spec.ts`.
-- Unit spec (sinon, action in isolation): `app/users/tests/unit/create_user.spec.ts`.
+- Functional spec (per-test transaction via `client`): `app/users/tests/functional/users/users.spec.ts`.
+- Unit spec (sinon, action in isolation): `app/users/tests/unit/actions/create_user.spec.ts`.
 - RBAC helper: `tests/helpers/rbac.ts`. Bootstrap fakes: `tests/bootstrap.ts`.
 - Test database: `commands/prepare_test_database.ts`, `.env.test`.
 

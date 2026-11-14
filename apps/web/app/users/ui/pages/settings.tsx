@@ -1,4 +1,4 @@
-import type { InertiaProps } from '#core/ui/types'
+import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'

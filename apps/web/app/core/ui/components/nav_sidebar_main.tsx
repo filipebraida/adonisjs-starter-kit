@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react'
 
-import { isSection, type NavMainItem } from '#core/ui/types/navigation'
+import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 
 import {
   SidebarGroup,

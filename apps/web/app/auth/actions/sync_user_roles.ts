@@ -5,8 +5,8 @@ import { AuthzService } from '@adonis-agora/authz'
 
 import Authorizer from '#core/authz/authorizer'
 
-import AdminLockoutException from '#auth/exceptions/admin_lockout'
-import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import AdminLockoutException from '#auth/exceptions/admin_lockout_exception'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import { CAPABILITIES_AUTH } from '#auth/enums/capability'
 import { ROLES, type Role } from '#auth/enums/role'

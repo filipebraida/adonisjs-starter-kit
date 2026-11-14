@@ -5,7 +5,7 @@ import { ModalStackProvider } from 'adonis-inertia-modal/react'
 import { client } from './client'
 
 import { I18nextProvider } from 'react-i18next'
-import { setupI18n } from '../config/i18n.config'
+import { setupI18n } from './i18n'
 
 export default function render(page: any) {
   return createInertiaApp({

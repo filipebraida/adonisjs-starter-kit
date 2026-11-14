@@ -1,4 +1,4 @@
-import type { InertiaProps } from '#core/ui/types'
+import type { InertiaProps } from '#core/ui/app/types'
 
 import AuthLayout from '#auth/ui/components/auth_layout'
 import { ResetPasswordForm } from '#auth/ui/components/reset_password_form'

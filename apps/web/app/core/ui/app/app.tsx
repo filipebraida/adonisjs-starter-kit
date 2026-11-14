@@ -11,7 +11,7 @@ import { client } from './client'
 
 import { isSSREnableForPage } from 'config/ssr'
 import { I18nextProvider } from 'react-i18next'
-import { setupI18n } from '../config/i18n.config'
+import { setupI18n } from './i18n'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS Starter Kit'
 

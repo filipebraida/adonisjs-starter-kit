@@ -2,7 +2,7 @@ import type { SimpleTFunction } from '#core/ui/hooks/use_translation'
 
 import { History, LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
-import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/types/navigation'
+import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/app/navigation_types'
 import { CAPABILITIES_USERS } from '#users/enums/capability'
 
 export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {

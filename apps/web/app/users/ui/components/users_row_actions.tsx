@@ -16,7 +16,7 @@ import {
 } from '@workspace/ui/components/dropdown-menu'
 
 import { urlFor } from '~/app/client'
-import useUser from '#auth/ui/hooks/use_user'
+import useUser from '#core/ui/hooks/use_user'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'

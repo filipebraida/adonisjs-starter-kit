@@ -4,7 +4,7 @@ import { CircleCheck, RotateCcw } from 'lucide-react'
 import { useTheme } from '@workspace/ui/components/theme-provider'
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
-import { IconThemeDark, IconThemeLight, IconThemeSystem } from '#core/ui/icons/index'
+import { IconThemeDark, IconThemeLight, IconThemeSystem } from '#core/ui/components/icons/index'
 
 export function AppearanceForm() {
   return (

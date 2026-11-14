@@ -10,13 +10,13 @@ import { NavUser } from '#core/ui/components/nav_user'
 import { LanguageSwitcher } from '#core/ui/components/language_switcher'
 import { NotificationBell } from '#core/ui/components/notification_bell'
 import { ToggleTheme } from '#core/ui/components/toggle_theme'
-import { getCookie } from '#core/ui/utils/cookie_helper'
+import { getCookie } from '#core/ui/hooks/cookie'
 
-import useUser from '#auth/ui/hooks/use_user'
+import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getAdminNav, getNavUser } from '#core/ui/config/navigation.config'
+import { getAdminNav, getNavUser } from '#core/ui/app/navigation'
 
 interface BreadcrumbItemProps {
   label: string

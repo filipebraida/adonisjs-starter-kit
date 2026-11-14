@@ -36,7 +36,7 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 ## Repo refs
 
 - The four shells: `app/core/ui/components/admin_layout.tsx`, `app/core/ui/components/authenticated_layout.tsx`, `app/auth/ui/components/auth_layout.tsx`, `app/marketing/ui/components/marketing_layout.tsx`.
-- Nav config (single file): `app/core/ui/config/navigation.config.ts`.
+- Nav config (single file): `app/core/ui/app/navigation.ts`.
 
 ## Doc refs
 

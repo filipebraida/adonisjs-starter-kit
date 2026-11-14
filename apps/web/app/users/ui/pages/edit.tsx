@@ -11,7 +11,7 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
 import { mainRole, ROLES } from '#auth/enums/role'
 
-import type { InertiaProps } from '#core/ui/types'
+import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
 type PageProps = InertiaProps<{

@@ -10,7 +10,7 @@ import {
 } from '@workspace/ui/components/sheet'
 
 import { AppLogo } from '#core/ui/components/app_logo'
-import { isSection, type NavMainItem } from '#core/ui/types/navigation'
+import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 import useAllows from '#core/ui/hooks/use_allows'
 import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
 

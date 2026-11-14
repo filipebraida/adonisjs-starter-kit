@@ -2,7 +2,7 @@ import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
 import UpdateUser from '#users/actions/update_user'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'

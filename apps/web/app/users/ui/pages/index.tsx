@@ -1,4 +1,4 @@
-import type { InertiaProps } from '#core/ui/types'
+import type { InertiaProps } from '#core/ui/app/types'
 
 import AdminLayout from '#core/ui/components/admin_layout'
 import Heading from '#core/ui/components/heading'

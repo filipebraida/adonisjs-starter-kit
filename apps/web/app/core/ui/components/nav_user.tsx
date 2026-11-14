@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react'
 
 import { UserAvatar } from '#core/ui/components/user_avatar'
 import useAllows from '#core/ui/hooks/use_allows'
-import type { NavUserProps } from '#core/ui/types/navigation'
+import type { NavUserProps } from '#core/ui/app/navigation_types'
 
 import {
   DropdownMenu,

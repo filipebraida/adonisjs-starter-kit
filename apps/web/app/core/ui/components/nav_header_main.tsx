@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react'
 
 import { cn } from '@workspace/ui/lib/utils'
 
-import { isSection, type NavMainItem } from '#core/ui/types/navigation'
+import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 import HeaderDropdown from '#core/ui/components/header_dropdown'
 import useAllows from '#core/ui/hooks/use_allows'
 import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'

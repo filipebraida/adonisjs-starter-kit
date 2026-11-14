@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import AdminLockoutException from '#auth/exceptions/admin_lockout'
-import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import AdminLockoutException from '#auth/exceptions/admin_lockout_exception'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
 import SyncUserRoles from '#auth/actions/sync_user_roles'
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import { ROLES } from '#auth/enums/role'

@@ -19,7 +19,7 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { KpiCard } from '#analytics/ui/components/kpi_card'
 
-import type { InertiaProps } from '#core/ui/types'
+import type { InertiaProps } from '#core/ui/app/types'
 import { PERIODS, type Period } from '#analytics/enums/period'
 import type { RevenueMetrics } from '#analytics/queries/get_revenue_metrics'
 import type { SubscriptionMetrics } from '#analytics/queries/get_subscription_metrics'
