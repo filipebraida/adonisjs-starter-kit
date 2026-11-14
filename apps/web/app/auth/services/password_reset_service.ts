@@ -6,6 +6,11 @@ import ResetPasswordToken from '#auth/models/reset_password_token'
 import { type Limiter } from '@adonisjs/limiter'
 import limiter from '@adonisjs/limiter/services/main'
 
+/**
+ * Issues, looks up and revokes password reset tokens. A user holds at most
+ * one token, valid for an hour; a successful reset also clears the sign in
+ * rate limit of that IP and email.
+ */
 export default class PasswordResetService {
   loginLimiter: Limiter
   constructor() {
@@ -21,13 +26,7 @@ export default class PasswordResetService {
 
     await this.deleteTokens(user)
 
-    const resetToken = await ResetPasswordToken.updateOrCreate(
-      { userId: user.id },
-      {
-        token,
-        expiresAt,
-      }
-    )
+    const resetToken = await user.related('resetPasswordTokens').create({ token, expiresAt })
     return { token: resetToken.token, expiresAt: resetToken.expiresAt }
   }
 
@@ -40,7 +39,7 @@ export default class PasswordResetService {
   }
 
   async deleteTokens(user: User) {
-    await ResetPasswordToken.query().where('userId', user.id).delete()
+    await user.related('resetPasswordTokens').query().delete()
   }
 
   async clearRateLimits(ip: string, email: string) {
