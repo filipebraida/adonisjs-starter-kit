@@ -9,7 +9,9 @@ import { Input } from '@workspace/ui/components/input'
 import { RadioFilter } from '@workspace/ui/components/radio-filter'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
+import { urlFor } from '~/app/client'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { formatDateTime } from '#core/ui/format/date'
 
 import type { AuditEvent } from '#auth/enums/audit_event'
 
@@ -35,7 +37,7 @@ interface ActivityTableProps {
 }
 
 export default function ActivityTable({ audits, events, q, actorId, event }: ActivityTableProps) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q ?? '')
   const [selectedEvent, setSelectedEvent] = React.useState<AuditEvent | ''>(event ?? '')
@@ -86,7 +88,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
       header: t('users.activity.table.columns.when'),
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-sm">
-          {new Date(row.original.createdAt).toLocaleString()}
+          {formatDateTime(row.original.createdAt, language)}
         </span>
       ),
     },

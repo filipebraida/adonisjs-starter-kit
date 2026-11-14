@@ -9,7 +9,9 @@ import {
 } from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
+import { urlFor } from '~/app/client'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { formatDate } from '#core/ui/format/date'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
@@ -49,7 +51,7 @@ export default function UsersTable({
   sort,
   order,
 }: DataTableProps) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q || '')
   const [selectedRoleSlugs, setSelectedRoleSlugs] = React.useState<string[]>(selectedRoles ?? [])
@@ -182,7 +184,7 @@ export default function UsersTable({
       enableSorting: true,
       meta: { columnClasses: 'hidden lg:table-cell' },
       cell: ({ row }) =>
-        row.original.createdAt ? new Date(row.original.createdAt).toLocaleDateString() : null,
+        row.original.createdAt ? formatDate(row.original.createdAt, language) : null,
     },
     {
       id: 'actions',

@@ -16,6 +16,7 @@ import { urlFor } from '~/app/client'
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import { Main } from '#core/ui/components/main'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { formatCurrency, formatNumber, formatPercent } from '#core/ui/format/number'
 
 import { KpiCard } from '#analytics/ui/components/kpi_card'
 
@@ -36,16 +37,12 @@ type Format = 'currency' | 'number' | 'percent'
 
 function formatValue(value: number, format: Format, locale: string): string {
   if (format === 'currency') {
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(value)
+    return formatCurrency(value, locale, 'USD', { maximumFractionDigits: 0 })
   }
   if (format === 'percent') {
-    return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)}%`
+    return formatPercent(value, locale)
   }
-  return new Intl.NumberFormat(locale).format(value)
+  return formatNumber(value, locale)
 }
 
 const chartConfig = {
@@ -68,14 +65,8 @@ export default function Page({ period, revenue, users, subscriptions }: PageProp
     )
   }
 
-  const currency = (v: number) =>
-    new Intl.NumberFormat(language, {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(v)
-
-  const number = (v: number) => new Intl.NumberFormat(language).format(v)
+  const currency = (v: number) => formatValue(v, 'currency', language)
+  const number = (v: number) => formatValue(v, 'number', language)
 
   const revenueSeries = revenue.chart.map((y, i) => ({ i, value: y }))
   const signupsSeries = users.signupsChart.map((y, i) => ({ i, value: y }))

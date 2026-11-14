@@ -1,6 +1,5 @@
 import { router, usePage } from '@inertiajs/react'
 import { Bell, CheckCheck, Loader2 } from 'lucide-react'
-import { DateTime } from 'luxon'
 import { useCallback, useState } from 'react'
 
 import { Badge } from '@workspace/ui/components/badge'
@@ -9,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@workspace/ui/component
 
 import { useNotificationsChannel } from '#core/ui/hooks/use_notifications_channel'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { formatRelativeTime } from '#core/ui/format/date'
 import { urlFor } from '#core/ui/app/client'
 
 interface NotificationContent {
@@ -36,10 +36,6 @@ interface ListResponse {
 
 function postHeaders(csrf: string | undefined) {
   return { 'X-CSRF-TOKEN': csrf ?? '', 'Accept': 'application/json' }
-}
-
-function formatRelative(iso: string, locale: string): string {
-  return DateTime.fromISO(iso).setLocale(locale).toRelative() ?? ''
 }
 
 export function NotificationBell() {
@@ -202,7 +198,7 @@ export function NotificationBell() {
                           </p>
                         )}
                         <p className="mt-1 text-[11px] text-muted-foreground/70">
-                          {formatRelative(item.createdAt, locale ?? 'en')}
+                          {formatRelativeTime(item.createdAt, locale ?? 'en')}
                         </p>
                       </div>
                     </button>
