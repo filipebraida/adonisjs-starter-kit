@@ -10,13 +10,10 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint PUT /settings/profile', (group) => {
   const diskName = env.get('DRIVE_DISK') || 'fs'
 
-  group.each.setup(() => {
-    drive.fake(diskName)
-    return () => drive.restore(diskName)
-  })
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('atualiza fullName e persiste avatar (png valido)', async ({ client, assert }) => {
+    using disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Antes' }).create()
     const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
 
@@ -35,11 +32,11 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     assert.equal(refreshed.fullName, 'Depois')
     assert.isNotNull(refreshed.avatar)
 
-    const disk = drive.use(diskName)
     assert.isTrue(await disk.exists(refreshed.avatar.path!))
   })
 
   test('sem auth redireciona para login e nao muda ninguem', async ({ client, assert }) => {
+    using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Original' }).create()
     const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
 
@@ -58,6 +55,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
   })
 
   test('rejeita extensao invalida (422) e mantem fullName', async ({ client, assert }) => {
+    using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Nome Original' }).create()
 
     const response = await client
@@ -79,6 +77,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
   })
 
   test('rejeita arquivo maior que 1MB (422)', async ({ client, assert }) => {
+    using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Nome Original' }).create()
     const png = await fileGenerator.generatePng(2 * 1024 * 1024, 'big.png')
 
