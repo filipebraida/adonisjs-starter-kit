@@ -23,7 +23,9 @@ const COMPOSITION_FILES = [
 ]
 
 // A use case does not orchestrate another: what two share goes down to the
-// model, and an effect in another module goes through an event.
+// model, and an effect in another module goes through an event. Named
+// exception: auth's sync_user_roles, whose escalation guards and role sync the
+// user-management actions (create, invite, update) must run.
 const ACTION_DOES_NOT_CALL_ACTION = {
   regex: '^#[a-z_]+/actions/(?!sync_user_roles$)',
   message: 'An action does not call an action: move the rule to the model or emit an event.',

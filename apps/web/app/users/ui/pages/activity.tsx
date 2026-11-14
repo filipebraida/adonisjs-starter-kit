@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react'
+import { urlFor } from '~/app/client'
 import type { InertiaProps } from '#core/ui/app/types'
 
 import AdminLayout from '#core/ui/components/admin_layout'
@@ -36,7 +37,7 @@ export default function ActivityPage({ audits, events, q, actorId, event }: Page
   return (
     <AdminLayout
       breadcrumbs={[
-        { label: t('users.activity.page.breadcrumbs.users'), href: '/users' },
+        { label: t('users.activity.page.breadcrumbs.users'), href: urlFor('users.index') },
         { label: t('users.activity.page.breadcrumbs.activity') },
       ]}
     >
