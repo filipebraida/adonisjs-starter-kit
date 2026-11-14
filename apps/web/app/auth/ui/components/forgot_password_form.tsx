@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 
 import { Field, FieldError, Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
@@ -11,6 +12,8 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 
 export function ForgotPasswordForm({ className }: { className?: string }) {
   const { t } = useTranslation()
+  // A reset link that is unknown or expired sends the visitor back here with an error.
+  const { error: errorMessage } = usePage().flash
 
   return (
     <Form
@@ -47,6 +50,8 @@ export function ForgotPasswordForm({ className }: { className?: string }) {
                 />
                 <FieldError />
               </Field>
+
+              <FieldError errors={errorMessage ? [{ message: errorMessage }] : []} />
 
               <Field orientation="responsive">
                 <Button type="submit" className="w-full" disabled={processing}>

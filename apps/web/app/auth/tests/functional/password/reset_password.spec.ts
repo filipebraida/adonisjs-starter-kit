@@ -44,6 +44,10 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/forgot-password')
+    response.assertFlashMessage(
+      'error',
+      'This reset link is invalid or has expired. Request a new one.'
+    )
 
     await user.refresh()
     assert.equal(user.password, senhaOriginal)

@@ -12,18 +12,18 @@ import PasswordResetService from '#auth/services/password_reset_service'
 export default class ResetPasswordController {
   static readonly public = true
 
-  async show({ params, inertia, response, session }: HttpContext) {
+  async show({ params, inertia, response, session, i18n }: HttpContext) {
     const record = await new PasswordResetService().getToken(params.token)
 
     if (!record) {
-      session.flash('error', 'auth.reset_password.error.invalid_or_expired')
+      session.flash('error', i18n.t('auth.reset_password.error.invalid_or_expired'))
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
     return inertia.render('auth/reset_password', { token: record.token })
   }
 
-  async store({ request, params, response, session }: HttpContext) {
+  async store({ request, params, response, session, i18n }: HttpContext) {
     const payload = await request.validateUsing(resetPasswordValidator)
 
     const user = await new ResetPassword().handle({
@@ -33,7 +33,7 @@ export default class ResetPasswordController {
     })
 
     if (!user) {
-      session.flash('error', 'auth.reset_password.error.invalid_or_expired')
+      session.flash('error', i18n.t('auth.reset_password.error.invalid_or_expired'))
       return response.redirect().toRoute('auth.forgot_password.show')
     }
 
