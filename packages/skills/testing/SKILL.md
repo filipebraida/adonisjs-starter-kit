@@ -9,6 +9,12 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 Two suites: **unit** for action/service internals with dependencies stubbed; **functional** for HTTP endpoints hit against a real Postgres wrapped in a per-test transaction. Every spec matches the shape of the nearest existing spec — same imports, same setup/teardown order, same helpers. Anything that reaches out (mail, drive, emitter, transmit, third-party HTTP) must be faked; a global mail fake in `tests/bootstrap.ts` is a safety net so a forgotten setup doesn't send a real email.
 
+## Test database
+
+The suite runs on its own database, never the dev one. `.env.test` sets `DB_DATABASE=app_test`, and `.env.test` wins over `.env` under `NODE_ENV=test`. `pnpm test` (and `pnpm coverage`) first runs `pnpm test:prepare` = `NODE_ENV=test node ace db:prepare-test`, which creates the database if the Postgres server lacks it, then `db:wipe` + `migration:run`.
+
+`db:prepare-test` refuses outside `NODE_ENV=test` or for a name not ending in `_test` (`#core/utils/test_database`): it wipes what it migrates, so a misconfigured env must never point it at dev data. Running `node ace test` directly skips the prepare step — fine while the schema hasn't changed, re-run `pnpm test:prepare` after editing a migration.
+
 ## Mandatory fakes by dependency
 
 Every side-effect dependency needs an explicit fake so no test reaches real infra:
@@ -47,6 +53,7 @@ const events = emitter.fake(['user:registered']) // ✅
 - Functional spec (per-test transaction via `client`): `app/users/tests/functional/users_endpoint.spec.ts`.
 - Unit spec (sinon, action in isolation): `app/users/tests/unit/create_user.spec.ts`.
 - RBAC helper: `tests/helpers/rbac.ts`. Bootstrap fakes: `tests/bootstrap.ts`.
+- Test database: `commands/prepare_test_database.ts`, `.env.test`.
 
 ## Doc refs
 

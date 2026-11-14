@@ -16,9 +16,9 @@ AdonisJS 7 (session auth + Bouncer + Lucid), Inertia + React 19, Tailwind 4 + sh
 ## Commands
 
 - `pnpm dev` — dev server
-- `pnpm test` — full suite
+- `pnpm test` — full suite, on its own `app_test` database (`db:prepare-test` creates, wipes and migrates it first)
 - `pnpm typecheck && pnpm lint` — before saying "done"
-- `pnpm infra:up` — Postgres + Mailpit via compose
+- `pnpm infra:up` — Postgres + Mailpit via compose (host ports follow `DB_PORT` / `SMTP_PORT` / `MAILPIT_UI_PORT` / `PGADMIN_PORT`)
 - `pnpm ace <cmd>` — Adonis CLI from the repo root (shortcut for `pnpm --filter web exec node ace <cmd>`)
 - `pnpm ace make:module <name> [--db] [--i18n] [--events]` — scaffold a module and wire every touchpoint (alias, preload, migration path, tsconfig include, i18n loader)
 

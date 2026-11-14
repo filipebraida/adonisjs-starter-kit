@@ -8,9 +8,10 @@
     "start": "node bin/server.js",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
-    "test": "node ace test",
-    "coverage": "c8 --reporter=text --reporter=lcov --extension=ts node ace test",
-    "coverage:html": "c8 --reporter=text --reporter=html --reporter=lcov --extension=ts node ace test",
+    "test": "pnpm test:prepare && node ace test",
+    "test:prepare": "NODE_ENV=test node ace db:prepare-test",
+    "coverage": "pnpm test:prepare && c8 --reporter=text --reporter=lcov --extension=ts node ace test",
+    "coverage:html": "pnpm test:prepare && c8 --reporter=text --reporter=html --reporter=lcov --extension=ts node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit && tsc --noEmit --project app/core/ui/tsconfig.json"
