@@ -3,7 +3,7 @@ import env from '#start/env'
 import { signedUrlFor } from '@adonisjs/core/services/url_builder'
 
 import { mailContext } from '#core/services/mail_context'
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 import { type MailBasicTranslation } from '#core/models/mail_basic_translation'
 
 export default class WelcomeNotification extends BaseMail {

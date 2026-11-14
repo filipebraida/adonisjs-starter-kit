@@ -4,8 +4,8 @@ import fileGenerator from '@poppinss/file-generator'
 import { test } from '@japa/runner'
 
 import env from '#start/env'
-import User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint PUT /settings/profile', (group) => {
   const diskName = env.get('DRIVE_DISK') || 'fs'

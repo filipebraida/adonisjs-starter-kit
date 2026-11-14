@@ -3,7 +3,7 @@ import { test } from '@japa/runner'
 
 import CreateToken from '#users/actions/create_token'
 import ListUserTokens from '#users/queries/list_user_tokens'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('ListUserTokens', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

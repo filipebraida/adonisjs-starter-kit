@@ -3,8 +3,8 @@ import { AllyManager } from '@adonisjs/ally'
 import { test } from '@japa/runner'
 import sinon from 'sinon'
 
-import User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 interface SocialUser {
   email: string

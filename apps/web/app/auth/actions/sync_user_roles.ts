@@ -5,15 +5,15 @@ import { AuthzService } from '@adonis-agora/authz'
 
 import Authorizer from '#core/authz/authorizer'
 
-import AdminLockoutException from '#users/exceptions/admin_lockout'
-import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
-import { CAPABILITIES_USERS } from '#users/enums/capability'
-import { ROLES, type Role } from '#users/enums/role'
-import type User from '#users/models/user'
+import AdminLockoutException from '#auth/exceptions/admin_lockout'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import { CAPABILITIES_AUTH } from '#auth/enums/capability'
+import { ROLES, type Role } from '#auth/enums/role'
+import type User from '#auth/models/user'
 
 export async function requireManageRoles(executor: User) {
   const authorizer = await app.container.make(Authorizer)
-  const allowed = await authorizer.can(executor, CAPABILITIES_USERS.usersManageRoles)
+  const allowed = await authorizer.can(executor, CAPABILITIES_AUTH.usersManageRoles)
   if (!allowed) throw new ManageRolesUnauthorizedException()
 }
 

@@ -2,7 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import DeleteUser from '#users/actions/delete_user'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('DeleteUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

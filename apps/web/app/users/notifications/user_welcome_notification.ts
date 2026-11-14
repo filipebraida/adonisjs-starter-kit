@@ -2,7 +2,7 @@ import { DatabaseMessage } from '@facteurjs/adonisjs/channels/database'
 import { TransmitMessage } from '@facteurjs/adonisjs/channels/transmit'
 import { Notification } from '@facteurjs/adonisjs/types'
 
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 
 export interface UserWelcomeParams {
   title: string

@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import { UserFactory } from '#users/database/factories/user'
-import User from '#users/models/user'
+import { UserFactory } from '#auth/database/factories/user'
+import User from '#auth/models/user'
 
 const payload = {
   fullName: 'Novo Usuario',

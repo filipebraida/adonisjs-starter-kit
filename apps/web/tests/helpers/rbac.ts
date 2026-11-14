@@ -1,6 +1,6 @@
-import { UserFactory } from '#users/database/factories/user'
-import type { Role } from '#users/enums/role'
-import User from '#users/models/user'
+import { UserFactory } from '#auth/database/factories/user'
+import type { Role } from '#auth/enums/role'
+import User from '#auth/models/user'
 
 /**
  * Assigns a role in authz. What the role grants comes from `roleGrants` in

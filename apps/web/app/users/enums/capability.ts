@@ -5,7 +5,6 @@ export const CAPABILITIES_USERS = {
   usersDelete: 'users.delete',
   usersInvite: 'users.invite',
   usersImpersonate: 'users.impersonate',
-  usersManageRoles: 'users.manage_roles',
   tokensViewList: 'tokens.view_list',
   tokensCreate: 'tokens.create',
   tokensDelete: 'tokens.delete',

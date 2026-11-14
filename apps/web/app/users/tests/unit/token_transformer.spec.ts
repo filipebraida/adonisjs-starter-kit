@@ -3,8 +3,8 @@ import { test } from '@japa/runner'
 
 import CreateToken from '#users/actions/create_token'
 import TokenTransformer from '#users/transformers/token_transformer'
-import User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('TokenTransformer', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

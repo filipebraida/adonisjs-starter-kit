@@ -1,9 +1,9 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import { ROLES } from '#users/enums/role'
+import { ROLES } from '#auth/enums/role'
 import UserTransformer from '#users/transformers/user_transformer'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('UserTransformer', (group) => {

@@ -4,9 +4,9 @@ import { DateTime } from 'luxon'
 import { test } from '@japa/runner'
 
 import ResetPassword from '#auth/actions/reset_password'
-import PasswordResetService from '#users/services/password_reset_service'
-import ResetPasswordToken from '#users/models/reset_password_token'
-import { UserFactory } from '#users/database/factories/user'
+import PasswordResetService from '#auth/services/password_reset_service'
+import ResetPasswordToken from '#auth/models/reset_password_token'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('ResetPassword', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

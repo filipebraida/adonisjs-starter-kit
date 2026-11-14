@@ -9,7 +9,7 @@ import { urlFor } from '~/app/client'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
-import { ROLES } from '#users/enums/role'
+import { ROLES } from '#auth/enums/role'
 
 export default function CreateUserPage() {
   const { t } = useTranslation()

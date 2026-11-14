@@ -1,8 +1,8 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
-import User from '#users/models/user'
+import User from '#auth/models/user'
 
-import { ROLES } from '#users/enums/role'
+import { ROLES } from '#auth/enums/role'
 
 export default class UserSeeder extends BaseSeeder {
   async run() {

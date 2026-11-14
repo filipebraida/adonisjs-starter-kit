@@ -3,8 +3,8 @@ import { test } from '@japa/runner'
 
 import CreateToken from '#users/actions/create_token'
 import DeleteToken from '#users/actions/delete_token'
-import User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('DeleteToken', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

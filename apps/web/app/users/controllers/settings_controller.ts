@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-import User from '#users/models/user'
+import User from '#auth/models/user'
 import TokenPolicy from '#users/policies/token_policy'
 import ListUserTokens from '#users/queries/list_user_tokens'
 import TokenTransformer from '#users/transformers/token_transformer'

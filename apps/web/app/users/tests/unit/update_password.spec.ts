@@ -3,7 +3,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import UpdatePassword from '#users/actions/update_password'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('UpdatePassword', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

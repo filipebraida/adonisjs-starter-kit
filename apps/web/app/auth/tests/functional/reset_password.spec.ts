@@ -3,9 +3,9 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { DateTime } from 'luxon'
 import { test } from '@japa/runner'
 
-import PasswordResetService from '#users/services/password_reset_service'
-import ResetPasswordToken from '#users/models/reset_password_token'
-import { UserFactory } from '#users/database/factories/user'
+import PasswordResetService from '#auth/services/password_reset_service'
+import ResetPasswordToken from '#auth/models/reset_password_token'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint /reset-password/:token', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

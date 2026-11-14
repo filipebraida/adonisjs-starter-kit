@@ -13,7 +13,7 @@ import {
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
-import type { Role as RoleSlug } from '#users/enums/role'
+import type { Role as RoleSlug } from '#auth/enums/role'
 
 export type UserFormData = {
   fullName: string

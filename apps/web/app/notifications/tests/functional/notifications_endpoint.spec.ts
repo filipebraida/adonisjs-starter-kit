@@ -3,7 +3,7 @@ import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
 
 import Notification from '#notifications/models/notification'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint /notifications', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

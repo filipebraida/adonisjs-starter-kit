@@ -3,7 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { afterAuthRedirectRoute } from '#config/auth'
 
 import ImpersonateUser from '#users/actions/impersonate_user'
-import User from '#users/models/user'
+import User from '#auth/models/user'
 import ImpersonatePolicy from '#users/policies/impersonate_policy'
 
 export default class ImpersonatesController {

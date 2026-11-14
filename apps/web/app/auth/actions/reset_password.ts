@@ -1,5 +1,5 @@
-import User from '#users/models/user'
-import PasswordResetService from '#users/services/password_reset_service'
+import User from '#auth/models/user'
+import PasswordResetService from '#auth/services/password_reset_service'
 
 export interface ResetPasswordInput {
   token: string

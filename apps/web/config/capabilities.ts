@@ -1,4 +1,4 @@
-import { ROLES, type Role } from '#users/enums/role'
+import { ROLES, type Role } from '#auth/enums/role'
 
 /**
  * Every role's capabilities, in one place. Each module declares its own

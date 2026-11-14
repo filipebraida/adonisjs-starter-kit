@@ -2,8 +2,8 @@ import emitter from '@adonisjs/core/services/emitter'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import ResetPasswordToken from '#users/models/reset_password_token'
-import { UserFactory } from '#users/database/factories/user'
+import ResetPasswordToken from '#auth/models/reset_password_token'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint /forgot-password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

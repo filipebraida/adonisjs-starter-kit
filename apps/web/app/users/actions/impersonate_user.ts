@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 
 export interface ImpersonateUserInput {
   impersonated: User

@@ -2,7 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import UpdateProfile from '#users/actions/update_profile'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('UpdateProfile', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

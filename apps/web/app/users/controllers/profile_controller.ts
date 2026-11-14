@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import UpdateProfile from '#users/actions/update_profile'
-import User from '#users/models/user'
+import User from '#auth/models/user'
 import { updateProfileValidator } from '#users/validators/users'
 
 export default class ProfileController {

@@ -5,7 +5,7 @@ import { inject } from '@adonisjs/core'
 import Authorizer from '#core/authz/authorizer'
 
 import { CAPABILITIES_USERS } from '#users/enums/capability'
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 
 @inject()
 export default class TokenPolicy extends BasePolicy {

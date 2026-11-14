@@ -1,10 +1,10 @@
 import emitter from '@adonisjs/core/services/emitter'
 import type { I18n } from '@adonisjs/i18n'
 
-import { requireManageRolesIfEscalating } from '#users/actions/sync_user_roles'
-import type { Role as RoleSlug } from '#users/enums/role'
-import User from '#users/models/user'
-import PasswordResetService from '#users/services/password_reset_service'
+import { requireManageRolesIfEscalating } from '#auth/actions/sync_user_roles'
+import type { Role as RoleSlug } from '#auth/enums/role'
+import User from '#auth/models/user'
+import PasswordResetService from '#auth/services/password_reset_service'
 
 export interface InviteUserInput {
   email: string

@@ -3,7 +3,7 @@ import hash from '@adonisjs/core/services/hash'
 import { test } from '@japa/runner'
 
 import SignUp from '#auth/actions/sign_up'
-import User from '#users/models/user'
+import User from '#auth/models/user'
 
 test.group('SignUp', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

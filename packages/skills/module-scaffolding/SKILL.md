@@ -75,7 +75,7 @@ Prefer `node ace make:module <mod> [--db] [--i18n] [--events]` (see Quick start)
    ```ts
    migrations: {
      paths: [
-       'app/users/database/migrations',
+       'app/auth/database/migrations',
        'app/notifications/database/migrations',
        'app/<mod>/database/migrations',
      ],

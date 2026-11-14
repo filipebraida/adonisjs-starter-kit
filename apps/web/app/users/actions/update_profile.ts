@@ -1,7 +1,7 @@
 import type { MultipartFile } from '@adonisjs/core/types/bodyparser'
 import { attachmentManager } from '@jrmc/adonis-attachment'
 
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 
 export interface UpdateProfileInput {
   target: User

@@ -1,4 +1,4 @@
-import type User from '#users/models/user'
+import type User from '#auth/models/user'
 
 export interface UpdatePasswordInput {
   target: User

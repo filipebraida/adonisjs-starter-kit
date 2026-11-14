@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import ResetPassword from '#auth/actions/reset_password'
 import { resetPasswordValidator } from '#auth/validators/auth'
-import PasswordResetService from '#users/services/password_reset_service'
+import PasswordResetService from '#auth/services/password_reset_service'
 
 export default class ResetPasswordController {
   async show({ params, inertia, response, session }: HttpContext) {

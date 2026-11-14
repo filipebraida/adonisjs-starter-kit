@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
+import { ROLES } from '#auth/enums/role'
+import { UserFactory } from '#auth/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
 import { withRole } from '#tests/helpers/rbac'
 

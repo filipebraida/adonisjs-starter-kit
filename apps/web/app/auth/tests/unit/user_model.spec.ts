@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('User model — email normalization', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

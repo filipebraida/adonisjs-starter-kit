@@ -2,7 +2,7 @@ import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint PUT /settings/password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

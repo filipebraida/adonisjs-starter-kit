@@ -2,7 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import AuthenticateWithSocial from '#auth/actions/authenticate_with_social'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('AuthenticateWithSocial', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

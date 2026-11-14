@@ -1,4 +1,4 @@
-import User from '#users/models/user'
+import User from '#auth/models/user'
 
 export interface SignInInput {
   email: string

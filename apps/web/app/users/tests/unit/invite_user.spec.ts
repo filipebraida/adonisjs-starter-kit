@@ -4,10 +4,10 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import InviteUser from '#users/actions/invite_user'
-import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
-import ResetPasswordToken from '#users/models/reset_password_token'
-import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import ResetPasswordToken from '#auth/models/reset_password_token'
+import { ROLES } from '#auth/enums/role'
+import { UserFactory } from '#auth/database/factories/user'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('InviteUser', (group) => {

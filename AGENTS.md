@@ -57,7 +57,7 @@ app/<module>/
 
 ### Dependency direction
 
-Feature modules (`auth`, `users`, `marketing`, `analytics`, `notifications`) depend only on `core` and themselves. The one sanctioned exception is `auth → users` — auth is behavior over the identity aggregate that `users` owns. `core` may import `User`: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
+`core` and `auth` are technical modules: `auth` owns identity — `User`, credentials, role assignment (`SyncUserRoles`, `ROLES`) — and depends only on `core`. Feature modules (`users`, `marketing`, `analytics`, `notifications`) depend only on `core`, `auth` and themselves. `core` may import `User` and the composition registries (policies, shared props) may import feature modules: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
 
 ### Naming is wiring
 

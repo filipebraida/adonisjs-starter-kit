@@ -12,8 +12,8 @@ import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
 
 import BaseModel from '#core/models/base_model'
 
-import AuthzRole from '#users/models/authz_role'
-import ResetPasswordToken from '#users/models/reset_password_token'
+import AuthzRole from '#auth/models/authz_role'
+import ResetPasswordToken from '#auth/models/reset_password_token'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],

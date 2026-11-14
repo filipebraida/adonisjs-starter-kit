@@ -43,7 +43,7 @@ File uploads are managed by [`@jrmc/adonis-attachment`](https://github.com/batos
 
 ## Repo refs
 
-- `@attachment` field + `preComputeUrls` on read: `app/users/models/user.ts` (avatar).
+- `@attachment` field + `preComputeUrls` on read: `app/auth/models/user.ts` (avatar).
 - Converters (resize / webp): `config/attachment.ts`.
 
 ## Doc refs

@@ -4,8 +4,8 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import { test } from '@japa/runner'
 
 import RequestPasswordReset from '#auth/actions/request_password_reset'
-import ResetPasswordToken from '#users/models/reset_password_token'
-import { UserFactory } from '#users/database/factories/user'
+import ResetPasswordToken from '#auth/models/reset_password_token'
+import { UserFactory } from '#auth/database/factories/user'
 
 test.group('RequestPasswordReset', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())

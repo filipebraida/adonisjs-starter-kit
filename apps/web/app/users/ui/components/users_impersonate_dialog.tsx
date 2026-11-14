@@ -10,7 +10,7 @@ import { ConfirmDialog } from '#core/ui/components/confirm_dialog'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
-import { ROLES, mainRole } from '#users/enums/role'
+import { ROLES, mainRole } from '#auth/enums/role'
 
 import type { Data } from '@generated/data'
 

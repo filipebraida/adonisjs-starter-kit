@@ -2,8 +2,8 @@ import vine from '@vinejs/vine'
 
 import { baseSearchValidator } from '#core/validators/search'
 
-import User from '#users/models/user'
-import { ROLES } from '#users/enums/role'
+import User from '#auth/models/user'
+import { ROLES } from '#auth/enums/role'
 import { SORT_DIRECTIONS, USERS_SORT_BY } from '#users/enums/sort'
 
 const roleValues = Object.values(ROLES)

@@ -33,7 +33,7 @@ The edit-in-place + `migration:fresh` convention holds **only while there is no 
 ## Repo refs
 
 - Migration paths registration: `apps/web/config/database.ts` (`connections.postgres.migrations.paths`).
-- Canonical create migration (folded pattern — `locale` column was merged into the original users create): `apps/web/app/users/database/migrations/1737139066942_create_users_table.ts`.
+- Canonical create migration (folded pattern — `locale` column was merged into the original users create): `apps/web/app/auth/database/migrations/1737139066942_create_users_table.ts`.
 - Notifications migration (fresh module scaffold): `apps/web/app/notifications/database/migrations/1783197502000_create_notifications_table.ts`.
 - Second migration for related table: `apps/web/app/notifications/database/migrations/1783197502001_create_notification_preferences_table.ts`.
 - Committed schema output: `apps/web/app/core/database/schema.ts` (auto-generated on `migration:*`; commit alongside the migration).

@@ -8,7 +8,7 @@ import authz from '@adonis-agora/authz/services/main'
 import { buildAuthzShare } from '@adonis-agora/authz-react/server'
 
 import Notification from '#notifications/models/notification'
-import User from '#users/models/user'
+import User from '#auth/models/user'
 import UserTransformer from '#users/transformers/user_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {

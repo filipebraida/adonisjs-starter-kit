@@ -23,7 +23,7 @@ import { urlFor } from '~/app/client'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
-import { ROLES, type Role as RoleSlug } from '#users/enums/role'
+import { ROLES, type Role as RoleSlug } from '#auth/enums/role'
 
 export default function InviteUserPage() {
   const { t } = useTranslation()

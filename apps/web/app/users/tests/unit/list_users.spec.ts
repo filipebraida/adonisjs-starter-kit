@@ -2,8 +2,8 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import ListUsers from '#users/queries/list_users'
-import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
+import { ROLES } from '#auth/enums/role'
+import { UserFactory } from '#auth/database/factories/user'
 import { withRole } from '#tests/helpers/rbac'
 import { marker } from '#tests/helpers/marker'
 

@@ -14,7 +14,7 @@ import { DataTableRowActions } from '#users/ui/components/users_row_actions'
 import UsersTableFilters from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
 
-import { mainRole, ROLES, type Role as RoleSlug } from '#users/enums/role'
+import { mainRole, ROLES, type Role as RoleSlug } from '#auth/enums/role'
 import type { SortDirection, UsersSortBy } from '#users/enums/sort'
 
 import type { Data } from '@generated/data'

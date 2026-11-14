@@ -2,7 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import { returnToKey } from '#auth/middleware/auth_middleware'
-import { UserFactory } from '#users/database/factories/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 const email = 'alice@example.test'
 const password = 'senha-secreta-123'

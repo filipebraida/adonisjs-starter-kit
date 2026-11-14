@@ -3,8 +3,8 @@ import { test } from '@japa/runner'
 import sinon from 'sinon'
 
 import ImpersonateUser from '#users/actions/impersonate_user'
-import type User from '#users/models/user'
-import { UserFactory } from '#users/database/factories/user'
+import type User from '#auth/models/user'
+import { UserFactory } from '#auth/database/factories/user'
 
 type Handle = ImpersonateUser['handle']
 type Input = Parameters<Handle>[0]

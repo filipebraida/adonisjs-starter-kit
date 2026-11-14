@@ -1,8 +1,8 @@
 import emitter from '@adonisjs/core/services/emitter'
 import type { I18n } from '@adonisjs/i18n'
 
-import User from '#users/models/user'
-import PasswordResetService from '#users/services/password_reset_service'
+import User from '#auth/models/user'
+import PasswordResetService from '#auth/services/password_reset_service'
 
 export interface RequestPasswordResetInput {
   email: string

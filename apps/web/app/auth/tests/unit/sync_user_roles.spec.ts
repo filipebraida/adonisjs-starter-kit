@@ -1,11 +1,11 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import AdminLockoutException from '#users/exceptions/admin_lockout'
-import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
-import SyncUserRoles from '#users/actions/sync_user_roles'
-import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
+import AdminLockoutException from '#auth/exceptions/admin_lockout'
+import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import SyncUserRoles from '#auth/actions/sync_user_roles'
+import { ROLES } from '#auth/enums/role'
+import { UserFactory } from '#auth/database/factories/user'
 import { withRole } from '#tests/helpers/rbac'
 
 test.group('SyncUserRoles', (group) => {
