@@ -78,8 +78,8 @@ importers:
         specifier: ^6.0.4
         version: 6.0.4(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/shield@9.0.0(ca3da1dcf1850bc1117e5ae002e35240))(edge.js@6.5.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0))
       '@facteurjs/adonisjs':
-        specifier: 2.0.0-beta.8
-        version: 2.0.0-beta.8(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(luxon@3.7.2)(pg@8.23.1))(@adonisjs/mail@10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.19)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3)))(@adonisjs/transmit@3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)))(knex@3.2.9(pg@8.23.1))
+        specifier: 2.1.0
+        version: 2.1.0(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(luxon@3.7.2)(pg@8.23.1))(@adonisjs/mail@10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.19)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3)))(@adonisjs/transmit@3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)))(@boringnode/transmit@0.4.2)(knex@3.2.9(pg@8.23.1))
       '@inertiajs/core':
         specifier: ^3.11.0
         version: 3.11.0(axios@1.21.1)
@@ -1057,15 +1057,6 @@ packages:
       mqtt:
         optional: true
 
-  '@boringnode/bus@0.9.2':
-    resolution: {integrity: sha512-HOnaLlXLvpB0jKGMjvqYQAdfxX1jjD4dDidr6jeZX+SBFGQXAgVgbD+hu+rynbAuKqPbow0z/DLdxXfqQM0yyw==}
-    engines: {node: '>=20.6'}
-    peerDependencies:
-      ioredis: ^5.0.0
-    peerDependenciesMeta:
-      ioredis:
-        optional: true
-
   '@boringnode/encryption@1.0.1':
     resolution: {integrity: sha512-+UL9erFUngnxNEDdXSKCnGQA8D62C/x2vxLF5vc9zaX7T2JolV/bGjpZAvFLzlY2gIffHyw+KsqsEWod5+zV0w==}
     engines: {node: '>=20.6'}
@@ -1305,15 +1296,15 @@ packages:
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@facteurjs/adonisjs@2.0.0-beta.8':
-    resolution: {integrity: sha512-h5XPkyhmYdqOH84BF+M3PAFiKZV/Aj2FD+CmIuJ39ZifkrXtGNSwnv0tMc4Co7mDpG0pigztgySnDJ2sbEPDrQ==}
+  '@facteurjs/adonisjs@2.1.0':
+    resolution: {integrity: sha512-HSjA6OdlDFOWf6UTo783J2eQF/lIIghJd7S687vS0tq6O05RyFwxnWnTwSZYeisiTE+3QLqcULoIRbBKs8a6Mg==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       '@adonisjs/core': ^7.0.0-next.23
       '@adonisjs/lucid': ^22.0.0-next.5
       '@adonisjs/mail': ^10.0.0-next.1
-      '@adonisjs/redis': ^10.0.0-next.2
-      '@adonisjs/transmit': ^2.0.0-1
+      '@adonisjs/redis': ^10.0.0-next.2 || ^11.0.0
+      '@adonisjs/transmit': ^2.0.0-1 || ^3.0.0
     peerDependenciesMeta:
       '@adonisjs/lucid':
         optional: true
@@ -1324,17 +1315,17 @@ packages:
       '@adonisjs/transmit':
         optional: true
 
-  '@facteurjs/core@2.0.0-beta.2':
-    resolution: {integrity: sha512-yImxv+1BevIY8asy02D44Ymd0lBsQp0N6Onh90TlsPNpB6LsGzwMW2/AxTXl4NUAlnSM+6jQF3mRXHcSfZrB/Q==}
+  '@facteurjs/core@2.2.0':
+    resolution: {integrity: sha512-33698jgxGjzWfeWZiugXtuuCaJCK/XLhkrRGJkmEoIQ72KULDJqaQ0o6xfR7YMwGMj4+U9O4BLj4Y7rCgpl3rQ==}
     peerDependencies:
       '@aws-sdk/client-sns': ^3.856.0
-      '@boringnode/transmit': ^0.3.0
-      expo-server-sdk: ^3.15.0
-      firebase-admin: ^13.4.0
+      '@boringnode/transmit': ^0.3.0 || ^0.4.0
+      expo-server-sdk: ^3.15.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+      firebase-admin: ^13.4.0 || ^14.0.0
       knex: ^3.1.0
-      kysely: ^0.28.3
+      kysely: ^0.28.3 || ^0.29.0
       socket.io: ^4.8.1
-      twilio: ^5.8.0
+      twilio: ^5.8.0 || ^6.0.0
       web-push: ^3.6.7
     peerDependenciesMeta:
       '@aws-sdk/client-sns':
@@ -1819,14 +1810,9 @@ packages:
       sharp:
         optional: true
 
-  '@julr/tenace@1.0.0-next.0':
-    resolution: {integrity: sha512-euTVBybJ46d1C9j/L8rsEX+D3RHMJVsUP6DkSTuSOC2WgsgiCeSWzzC8Qu2Hgn+rcPDdX2FWpSo/Se+MtqWNGg==}
-    engines: {node: '>=24'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-    peerDependenciesMeta:
-      '@opentelemetry/api':
-        optional: true
+  '@julr/tenace@2.0.1':
+    resolution: {integrity: sha512-mlKL5Fc2VTKSnKi0lj6GPjr/LMWere6yn+L9T8/KA3Fe/tVo1znlnA3GdJ+zygqmj3x9eT7ZZPwcZwFkPZon4Q==}
+    engines: {node: '>=22.18.0'}
 
   '@julr/utils@1.9.0':
     resolution: {integrity: sha512-hKKa29qRusABvUDt5QnJydG9aigplMJMaOrGwu11DAbZyxjqiytfOku6KbrdA1z0yUSvnFU8fSeJMXroYt+bwA==}
@@ -3726,26 +3712,6 @@ packages:
     resolution: {integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==}
     engines: {node: '>= 0.8'}
 
-  bentocache@1.6.1:
-    resolution: {integrity: sha512-UuWL3k9A62ygI1/ws6x4r6lFkM/jTu24zTTuhtYa4jpd26BF5O4Y64KxWXJbcmpXo1swLQdBlA+sWGDuuIbKaw==}
-    peerDependencies:
-      '@aws-sdk/client-dynamodb': ^3.438.0
-      ioredis: ^5.3.2
-      knex: ^3.0.1
-      kysely: ^0.27.3
-      orchid-orm: ^1.24.0
-    peerDependenciesMeta:
-      '@aws-sdk/client-dynamodb':
-        optional: true
-      ioredis:
-        optional: true
-      knex:
-        optional: true
-      kysely:
-        optional: true
-      orchid-orm:
-        optional: true
-
   bignumber.js@9.3.1:
     resolution: {integrity: sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==}
 
@@ -3913,10 +3879,6 @@ packages:
     resolution: {integrity: sha512-+i4L0zUGgRcEnhsxueVrP7iBGxBx5iD0WOTYg1MwFEu2ZyCmH5Ov2V1cul2Ht5UchRQQgftCf4be/RxspuW6QQ==}
     engines: {node: '>=20'}
     hasBin: true
-
-  cockatiel@3.2.1:
-    resolution: {integrity: sha512-gfrHV6ZPkquExvMh9IOkKsBzNDk6sDuZ6DdBGUBkvFnTCqCxzpuq48RySgP0AnaqQkw2zynOFj9yly6T1Q2G5Q==}
-    engines: {node: '>=16'}
 
   code-block-writer@13.0.3:
     resolution: {integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==}
@@ -5750,17 +5712,9 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
-  p-timeout@7.0.1:
-    resolution: {integrity: sha512-AxTM2wDGORHGEkPCt8yqxOTMgpfbEHqF51f/5fJCmwFC3C/zNcGT63SymH2ttOAaiIws2zVg4+izQCjrakcwHg==}
-    engines: {node: '>=20'}
-
   p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
-
-  p-wait-for@6.0.0:
-    resolution: {integrity: sha512-2kKzMtjS8TVcpCOU/gr3vZ4K/WIyS1AsEFXFWapM/0lERCdyTbB6ZeuCIp+cL1aeLZfQoMdZFCBTHiK4I9UtOw==}
-    engines: {node: '>=20'}
 
   package-manager-detector@1.9.0:
     resolution: {integrity: sha512-zAMfbta9nPA8AKkA4WdmNAT8R8s6Dk0/xwPsqNnRidMFcLo1YkLuPDTgs2f64XdzS8vbLNnoJ+uUIkgbz7oRHA==}
@@ -7745,12 +7699,6 @@ snapshots:
       '@poppinss/utils': 7.1.2
       object-hash: 3.0.0
 
-  '@boringnode/bus@0.9.2':
-    dependencies:
-      '@paralleldrive/cuid2': 3.3.0
-      '@poppinss/utils': 7.1.2
-      object-hash: 3.0.0
-
   '@boringnode/encryption@1.0.1':
     dependencies:
       '@poppinss/utils': 7.1.2
@@ -7938,10 +7886,10 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@facteurjs/adonisjs@2.0.0-beta.8(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(luxon@3.7.2)(pg@8.23.1))(@adonisjs/mail@10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.19)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3)))(@adonisjs/transmit@3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)))(knex@3.2.9(pg@8.23.1))':
+  '@facteurjs/adonisjs@2.1.0(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(luxon@3.7.2)(pg@8.23.1))(@adonisjs/mail@10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.19)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3)))(@adonisjs/transmit@3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)))(@boringnode/transmit@0.4.2)(knex@3.2.9(pg@8.23.1))':
     dependencies:
       '@adonisjs/core': 7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)
-      '@facteurjs/core': 2.0.0-beta.2(knex@3.2.9(pg@8.23.1))
+      '@facteurjs/core': 2.2.0(@boringnode/transmit@0.4.2)(knex@3.2.9(pg@8.23.1))
       '@julr/utils': 1.9.0
       '@poppinss/exception': 1.2.3
     optionalDependencies:
@@ -7949,33 +7897,26 @@ snapshots:
       '@adonisjs/mail': 10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.19)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3))
       '@adonisjs/transmit': 3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))
     transitivePeerDependencies:
-      - '@aws-sdk/client-dynamodb'
       - '@aws-sdk/client-sns'
       - '@boringnode/transmit'
-      - '@opentelemetry/api'
       - expo-server-sdk
       - firebase-admin
-      - ioredis
       - knex
       - kysely
-      - orchid-orm
       - socket.io
       - twilio
       - web-push
 
-  '@facteurjs/core@2.0.0-beta.2(knex@3.2.9(pg@8.23.1))':
+  '@facteurjs/core@2.2.0(@boringnode/transmit@0.4.2)(knex@3.2.9(pg@8.23.1))':
     dependencies:
-      '@julr/tenace': 1.0.0-next.0(knex@3.2.9(pg@8.23.1))
+      '@julr/tenace': 2.0.1
       '@julr/utils': 1.9.0
       '@poppinss/exception': 1.2.3
+      '@poppinss/utils': 7.1.2
       ky: 1.14.3
     optionalDependencies:
+      '@boringnode/transmit': 0.4.2
       knex: 3.2.9(pg@8.23.1)
-    transitivePeerDependencies:
-      - '@aws-sdk/client-dynamodb'
-      - '@opentelemetry/api'
-      - ioredis
-      - orchid-orm
 
   '@faker-js/faker@10.6.0': {}
 
@@ -8391,19 +8332,7 @@ snapshots:
       - ioredis
       - supports-color
 
-  '@julr/tenace@1.0.0-next.0(knex@3.2.9(pg@8.23.1))':
-    dependencies:
-      '@julr/utils': 1.9.0
-      bentocache: 1.6.1(knex@3.2.9(pg@8.23.1))
-      cockatiel: 3.2.1
-      p-wait-for: 6.0.0
-      rate-limiter-flexible: 9.1.1
-    transitivePeerDependencies:
-      - '@aws-sdk/client-dynamodb'
-      - ioredis
-      - knex
-      - kysely
-      - orchid-orm
+  '@julr/tenace@2.0.1': {}
 
   '@julr/utils@1.9.0':
     dependencies:
@@ -10300,17 +10229,6 @@ snapshots:
     dependencies:
       safe-buffer: 5.1.2
 
-  bentocache@1.6.1(knex@3.2.9(pg@8.23.1)):
-    dependencies:
-      '@boringnode/bus': 0.9.2
-      '@julr/utils': 1.9.0
-      '@poppinss/exception': 1.2.3
-      async-mutex: 0.5.0
-      lru-cache: 11.2.6
-      p-timeout: 7.0.1
-    optionalDependencies:
-      knex: 3.2.9(pg@8.23.1)
-
   bignumber.js@9.3.1: {}
 
   blurhash@2.0.5: {}
@@ -10500,8 +10418,6 @@ snapshots:
       - '@types/react-dom'
 
   cn@0.2.6: {}
-
-  cockatiel@3.2.1: {}
 
   code-block-writer@13.0.3: {}
 
@@ -12510,11 +12426,7 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
-  p-timeout@7.0.1: {}
-
   p-try@2.2.0: {}
-
-  p-wait-for@6.0.0: {}
 
   package-manager-detector@1.9.0: {}
 
