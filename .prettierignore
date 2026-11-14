@@ -1,2 +1,4 @@
 node_modules
 pnpm-lock.yaml
+apps/web/.adonisjs
+apps/web/app/core/database/schema.ts
