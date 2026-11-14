@@ -57,7 +57,7 @@ app/<module>/
 
 ### Dependency direction
 
-`core` and `auth` are technical modules: `auth` owns identity — `User`, credentials, role assignment (`SyncUserRoles`, `ROLES`) — and depends only on `core`. Feature modules (`users`, `marketing`, `analytics`, `notifications`) depend only on `core`, `auth` and themselves. `core` may import `User` and the composition registries (policies, shared props) may import feature modules: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
+`core` knows no module. `auth` owns identity — `User`, credentials, role assignment (`SyncUserRoles`, `ROLES`) — and depends only on `core`. Feature modules depend on `core`, `auth` and what `DEPENDENCIES` in `apps/web/eslint.config.js` lists for them; that table is the source of truth and the lint fails on any other import between modules. The composition root (`core/middleware/inertia_middleware.ts`, `core/policies/main.ts`, `core/ui/app/**`) may import every module. An action never imports another action. A new dependency between modules is a decision: add it to the table first.
 
 ### Naming is wiring
 
@@ -97,6 +97,15 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 **Git**
 
 - `git-commit` — commit types, scopes, examples, safety protocol.
+
+## Lint
+
+`apps/web` runs [`@filipebraida/eslint-config-adonis`](https://github.com/filipebraida/eslint-config-adonis) in the modules layout: it turns these conventions into errors (where each file lives, what an action, query, controller or page may do, how specs share the database) and each message says where the code goes. Read the message's note before changing code.
+
+- **Never `eslint-disable`.** A justified exception is a named block in `apps/web/eslint.config.js` with a comment saying why; remove it when the reason goes away.
+- Specs live by layer: `app/<mod>/tests/unit/<layer>/<name>.spec.ts`, `app/<mod>/tests/functional/<area>/<resource>.spec.ts`.
+- Dates and numbers go through `#core/ui/format/*`; every page renders `<Head>`; internal URLs come from `urlFor`.
+- `lefthook` runs Prettier and ESLint on staged files before a commit and the typecheck before a push.
 
 ## Code style
 
