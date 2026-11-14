@@ -21,6 +21,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<unknown>
     }
   }
+  'health.live': {
+    methods: ["GET","HEAD"]
+    pattern: '/health/live'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/core/controllers/liveness_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/core/controllers/liveness_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/core/controllers/liveness_controller').default['handle']>>>
+    }
+  }
+  'health.ready': {
+    methods: ["GET","HEAD"]
+    pattern: '/health/ready'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/core/controllers/readiness_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/core/controllers/readiness_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/core/controllers/readiness_controller').default['handle']>>>
+    }
+  }
   'marketing.show': {
     methods: ["GET","HEAD"]
     pattern: '/'

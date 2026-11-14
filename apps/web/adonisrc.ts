@@ -88,6 +88,9 @@ export default defineConfig({
   preloads: [
     () => import('#start/kernel'),
 
+    //core
+    () => import('#core/routes'),
+
     //marketing
     () => import('#marketing/routes'),
 

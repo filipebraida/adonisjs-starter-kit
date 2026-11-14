@@ -14,6 +14,18 @@ const routes = {
     tokens: [[0,"uploads"],[2,"*"]],
     types: placeholder as Registry['drive.fs.serve']['types'],
   },
+  'health.live': {
+    methods: ["GET","HEAD"],
+    pattern: '/health/live',
+    tokens: [[0,"health"],[0,"live"]],
+    types: placeholder as Registry['health.live']['types'],
+  },
+  'health.ready': {
+    methods: ["GET","HEAD"],
+    pattern: '/health/ready',
+    tokens: [[0,"health"],[0,"ready"]],
+    types: placeholder as Registry['health.ready']['types'],
+  },
   'marketing.show': {
     methods: ["GET","HEAD"],
     pattern: '/',

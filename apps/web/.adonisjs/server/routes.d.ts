@@ -5,6 +5,8 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'health.live': { paramsTuple?: []; params?: {} }
+    'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }
@@ -41,6 +43,8 @@ export type ScannedRoutes = {
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'health.live': { paramsTuple?: []; params?: {} }
+    'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_up.show': { paramsTuple?: []; params?: {} }
@@ -59,6 +63,8 @@ export type ScannedRoutes = {
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'health.live': { paramsTuple?: []; params?: {} }
+    'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_up.show': { paramsTuple?: []; params?: {} }

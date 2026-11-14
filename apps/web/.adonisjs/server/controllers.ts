@@ -16,6 +16,10 @@ export const controllers = {
     SignOut: () => import('#app/auth/controllers/sign_out_controller'),
     SignUp: () => import('#app/auth/controllers/sign_up_controller'),
   },
+  core: {
+    Liveness: () => import('#app/core/controllers/liveness_controller'),
+    Readiness: () => import('#app/core/controllers/readiness_controller'),
+  },
   marketing: {
     Marketing: () => import('#app/marketing/controllers/marketing_controller'),
   },

@@ -7,6 +7,10 @@ export interface ApiDefinition {
       serve: typeof routes['drive.fs.serve']
     }
   }
+  health: {
+    live: typeof routes['health.live']
+    ready: typeof routes['health.ready']
+  }
   marketing: {
     show: typeof routes['marketing.show']
   }
