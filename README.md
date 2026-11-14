@@ -131,6 +131,17 @@ pnpm lint        # eslint + prettier
 
 Tests run against a real Postgres wrapped in a per-test transaction, so factories create real rows and rollbacks are automatic. Fakes for `drive`, `mail`, and `emitter` are mandatory whenever the code under test would otherwise reach out. Coverage via `c8` posts to the PR summary in GitHub Actions.
 
+## Deploy
+
+Production is one server: the app runs under PM2 from the AdonisJS build, Postgres runs in Docker (`compose.prod.yaml`, bound to `127.0.0.1`). [Catapult](https://github.com/catapultjs/deploy) ships it, configured in `deploy.ts`:
+
+```bash
+DEPLOY_SSH=deploy@your-host DEPLOY_PATH=/home/deploy/app pnpm deploy:setup   # once, on a new server
+DEPLOY_SSH=deploy@your-host DEPLOY_PATH=/home/deploy/app pnpm deploy:ship    # build locally + deploy
+```
+
+A deploy rsyncs `apps/web/build` into a new release, installs production dependencies, links the shared `.env`, `storage`, `logs` and `tmp`, runs `migration:run`, switches `current`, reloads PM2 (`ecosystem.config.cjs`) and checks `/health/live`. Three releases are kept; `pnpm deploy:rollback` moves `current` back (it does not undo migrations). Other commands: `deploy:status`, `deploy:list`, `deploy:reload`, `deploy:logs`.
+
 ## Authorization
 
 Role-based access control runs on `@adonis-agora/authz`. Each module declares its capabilities in `app/<mod>/enums/capability.ts` (e.g. `users.create`, `tokens.view_list`); `ROLES` are role slugs with weights; `config/capabilities.ts` grants capabilities to roles in code, so only the user → role assignment is stored. Controllers gate through resource policies that check capabilities with `#core/authz/authorizer`; the frontend uses `useCan()` from `@adonis-agora/authz-react`. Escalation is protected in depth — `SyncUserRoles` refuses to remove the executor's own admin role and `requireManageRolesIfEscalating` guards create/invite paths.

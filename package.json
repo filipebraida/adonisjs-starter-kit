@@ -13,9 +13,17 @@
     "ace": "pnpm --filter web exec node ace",
     "infra:up": "docker compose --env-file apps/web/.env up -d",
     "infra:down": "docker compose --env-file apps/web/.env down",
-    "docker:prod": "docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d"
+    "deploy:ship": "pnpm build && cata deploy",
+    "deploy:run": "cata deploy",
+    "deploy:setup": "cata deploy:setup",
+    "deploy:rollback": "cata rollback",
+    "deploy:status": "cata status",
+    "deploy:list": "cata list:releases",
+    "deploy:reload": "cata task pm2:reload",
+    "deploy:logs": "cata task pm2:logs"
   },
   "devDependencies": {
+    "@catapultjs/deploy": "^0.17.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "prettier": "^3.10.1",
