@@ -10,7 +10,7 @@ services:
       - pgsql:/var/lib/postgresql
       - ./../../.github/postgres/dev-init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
     ports:
-      - '5432:5432'
+      - '${DB_PORT:-5432}:5432'
     restart: unless-stopped
     networks:
       - sail
@@ -29,7 +29,7 @@ services:
       PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
       PGADMIN_REPLACE_SERVERS_ON_STARTUP: 'True'
     ports:
-      - '5050:80'
+      - '${PGADMIN_PORT:-5050}:80'
     restart: unless-stopped
     volumes:
       - pgadmin:/root/.pgadmin
@@ -44,8 +44,8 @@ services:
     volumes:
       - ./tmp/mailpit:/data
     ports:
-      - 8025:8025
-      - 1025:1025
+      - '${MAILPIT_UI_PORT:-8025}:8025'
+      - '${SMTP_PORT:-1025}:1025'
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATABASE: /data/mailpit.db
