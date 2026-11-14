@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 
-import { setUserLocaleCookie } from '#core/services/user_locale'
+import { setUserLocaleCookie } from '#core/utils/user_locale'
 
 export default class SwitchLocaleMiddleware {
   async handle(ctx: HttpContext, _next: NextFn) {

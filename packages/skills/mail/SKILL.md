@@ -24,7 +24,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 
 - Mail class + `prepare()`: `app/auth/mails/reset_password_notification.ts`, `app/users/mails/welcome_notification.ts`.
 - Shared MJML layout: `resources/views/components/email/layout.edge`. Template: `app/users/ui/emails/welcome.edge`.
-- `mailContext()`: `app/core/services/mail_context.ts`.
+- `mailContext()`: `app/core/utils/mail_context.ts`.
 
 ## Doc refs
 
@@ -40,7 +40,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
    ```ts
    import { BaseMail } from '@adonisjs/mail'
    import env from '#start/env'
-   import { mailContext } from '#core/services/mail_context'
+   import { mailContext } from '#core/utils/mail_context'
 
    export default class OrderConfirmedNotification extends BaseMail {
      from = env.get('EMAIL_FROM')

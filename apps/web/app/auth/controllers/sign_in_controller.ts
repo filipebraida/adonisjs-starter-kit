@@ -8,7 +8,7 @@ import SignIn from '#auth/actions/sign_in'
 import { returnToKey } from '#auth/middleware/auth_middleware'
 import { signInValidator } from '#auth/validators/auth'
 
-import { setUserLocaleCookie } from '#core/services/user_locale'
+import { setUserLocaleCookie } from '#core/utils/user_locale'
 
 export function isSafeInternalPath(path?: string | null): path is string {
   if (!path) return false

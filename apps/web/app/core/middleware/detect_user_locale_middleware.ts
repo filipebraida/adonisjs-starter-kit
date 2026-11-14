@@ -3,7 +3,7 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { type HttpContext, RequestValidator } from '@adonisjs/core/http'
 
-import { USER_LOCALE_COOKIE, setUserLocaleCookie } from '#core/services/user_locale'
+import { USER_LOCALE_COOKIE, setUserLocaleCookie } from '#core/utils/user_locale'
 
 /**
  * The "DetectUserLocaleMiddleware" middleware uses i18n service to share
