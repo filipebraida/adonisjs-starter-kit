@@ -28,7 +28,7 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **Data + infra** — PostgreSQL 16 with Mailpit and pgAdmin, brought up with `pnpm infra:up`.
 
-**DevX** — Turbo monorepo caching, `pnpm ace` shortcut for the Adonis CLI from anywhere, hot reload via `hot-hook`, Vite HMR for the frontend, Prettier + ESLint scoped per package.
+**DevX** — pnpm workspace scripts (`pnpm -r`), `pnpm ace` shortcut for the Adonis CLI from anywhere, hot reload via `hot-hook`, Vite HMR for the frontend, Prettier + ESLint scoped per package.
 
 **Testing + CI** — 166 spec-based tests (Japa) running against a real Postgres wrapped in a per-test transaction, factories, mandatory fakes (`drive.fake`, `mail.fake`, `emitter.fake`) and Sinon stubs. Coverage runs via `c8` and shows up in the PR summary automatically. GitHub Actions CI on every push and pull request.
 
@@ -85,17 +85,14 @@ root/
 │   └── web/                 # Full-stack AdonisJS + Inertia app
 ├── packages/
 │   ├── ui/                  # Shared shadcn/ui-based components
-│   ├── skills/              # Skills for coding agents (Vercel format)
-│   ├── eslint-config/
-│   └── typescript-config/
-├── pnpm-workspace.yaml
-└── turbo.json
+│   └── skills/              # Skills for coding agents (Vercel format)
+├── deploy.ts                # Catapult deploy recipe
+└── pnpm-workspace.yaml
 ```
 
 - **apps/** — runnable applications. `web/` is the full-stack AdonisJS app (backend + Inertia frontend).
 - **packages/** — shared libraries and tooling.
-- **pnpm-workspace.yaml** defines workspace boundaries.
-- **turbo.json** configures TurboRepo pipelines (build, lint, test, dev).
+- **pnpm-workspace.yaml** defines workspace boundaries; the root scripts run each package's own `lint`, `typecheck` and `format` with `pnpm -r`.
 
 ## Feature-based organization
 

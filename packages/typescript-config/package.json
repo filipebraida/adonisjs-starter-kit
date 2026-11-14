@@ -1,8 +1,0 @@
-{
-  "name": "@workspace/typescript-config",
-  "version": "0.0.0",
-  "private": true,
-  "dependencies": {
-    "@adonisjs/tsconfig": "^2.0.0"
-  }
-}

@@ -45,7 +45,7 @@ Create semantic git commits that match the existing history in this repo. Analyz
 Only use a scope when the change clearly centers on **one** area. Common shapes:
 
 - Domain module: name of the module the diff sits in (`auth`, `users`, `<feature>`).
-- Monorepo package: name of the package (`ui`, `eslint-config`, `typescript-config`, `skills`).
+- Monorepo package: name of the package (`ui`, `skills`).
 - Cross-cutting infrastructure (docker, CI, tooling at the repo root): usually no scope.
 
 If the diff spans several modules or packages without a clear center, omit the scope entirely.
