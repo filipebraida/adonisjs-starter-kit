@@ -18,17 +18,17 @@ export default class AuthenticateWithSocialController {
     const social = ally.use(params.provider)
 
     if (social.accessDenied()) {
-      session.flash('error', 'auth.social.error.access_denied')
+      session.flash('error', i18n.t('auth.social.error.access_denied'))
       return response.redirect().toRoute('auth.sign_up.show')
     }
 
     if (social.stateMisMatch()) {
-      session.flash('error', 'auth.social.error.state_mismatch')
+      session.flash('error', i18n.t('auth.social.error.state_mismatch'))
       return response.redirect().toRoute('auth.sign_up.show')
     }
 
     if (social.hasError()) {
-      session.flash('error', 'auth.social.error.uknown')
+      session.flash('error', i18n.t('auth.social.error.unknown'))
       return response.redirect().toRoute('auth.sign_up.show')
     }
 

@@ -46,7 +46,7 @@ test.group('Endpoint /:provider (social)', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/sign-up')
-    response.assertFlashMessage('error', 'auth.social.error.access_denied')
+    response.assertFlashMessage('error', 'Sign-in with the provider was cancelled.')
   })
 
   test('callback com stateMisMatch redireciona para /sign-up com flash', async ({
@@ -59,7 +59,7 @@ test.group('Endpoint /:provider (social)', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/sign-up')
-    response.assertFlashMessage('error', 'auth.social.error.state_mismatch')
+    response.assertFlashMessage('error', 'The sign-in request expired. Try again.')
   })
 
   test('callback com hasError redireciona para /sign-up com flash', async ({ client, assert }) => {
@@ -69,7 +69,7 @@ test.group('Endpoint /:provider (social)', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/sign-up')
-    response.assertFlashMessage('error', 'auth.social.error.uknown')
+    response.assertFlashMessage('error', 'The provider could not sign you in. Try again.')
   })
 
   test('callback sucesso cria novo user, autentica e vai pro /dashboard', async ({
