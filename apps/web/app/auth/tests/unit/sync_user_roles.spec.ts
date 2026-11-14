@@ -4,6 +4,7 @@ import { test } from '@japa/runner'
 import AdminLockoutException from '#auth/exceptions/admin_lockout'
 import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
 import SyncUserRoles from '#auth/actions/sync_user_roles'
+import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import { ROLES } from '#auth/enums/role'
 import { UserFactory } from '#auth/database/factories/user'
 import { withRole } from '#tests/helpers/rbac'
@@ -93,5 +94,31 @@ test.group('SyncUserRoles', (group) => {
 
     const roles = await admin.getRoles()
     assert.deepEqual(roles, [ROLES.ADMIN])
+  })
+
+  test('records the role change with before and after', async ({ assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const alvo = await UserFactory.create()
+    await withRole(alvo, ROLES.USER)
+
+    await new SyncUserRoles().handle({ target: alvo, desiredRoles: [ROLES.ADMIN], executor: admin })
+
+    const audit = await alvo.audits().where('event', AUDIT_EVENTS.ROLES_SYNCED).firstOrFail()
+    assert.deepEqual(audit.oldValues, { roles: [ROLES.USER] })
+    assert.deepEqual(audit.newValues, { roles: [ROLES.ADMIN] })
+    assert.equal(audit.metadata?.executorId, admin.id)
+  })
+
+  test('records nothing when the roles do not change', async ({ assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const alvo = await UserFactory.create()
+    await withRole(alvo, ROLES.USER)
+
+    await new SyncUserRoles().handle({ target: alvo, desiredRoles: [ROLES.USER], executor: admin })
+
+    const audits = await alvo.audits().where('event', AUDIT_EVENTS.ROLES_SYNCED)
+    assert.lengthOf(audits, 0)
   })
 })

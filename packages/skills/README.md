@@ -16,6 +16,7 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.
 - `mail` — `BaseMail` classes, MJML templates via `@email.layout`, `mailContext()` for appName/appUrl.
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count, emission via events.
+- `auditing` — security audit trail: `Auditable` models, `auditCustom` events, actor/IP/impersonation resolvers, Activity page.
 - `attachment` — `@jrmc/adonis-attachment` with converters, model decoration, `preComputeUrls`, Transformer helpers.
 - `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
 

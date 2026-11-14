@@ -40,7 +40,8 @@
         "edit": "Editar",
         "delete": "Excluir",
         "open_menu": "Abrir menu",
-        "clear": "Limpar"
+        "clear": "Limpar",
+        "activity": "Ver atividade"
       },
       "not_provided": "Não informado"
     },
@@ -213,6 +214,45 @@
     "admin": {
       "name": "Administrador",
       "description": "Superusuário"
+    }
+  },
+  "activity": {
+    "page": {
+      "title": "Atividade",
+      "description": "O que cada usuário fez, quando e de onde",
+      "breadcrumbs": {
+        "users": "Usuários",
+        "activity": "Atividade"
+      }
+    },
+    "table": {
+      "columns": {
+        "when": "Quando",
+        "actor": "Quem",
+        "event": "O quê",
+        "target": "Em",
+        "origin": "De onde"
+      },
+      "filters": {
+        "search_placeholder": "Buscar por nome ou e-mail...",
+        "event": "Evento",
+        "all_events": "Todos os eventos",
+        "clear_filters": "Limpar filtros"
+      },
+      "system": "Sistema",
+      "impersonated_by": "como #{id}",
+      "no_changes": "Sem alteração de campos",
+      "no_results": "Nenhuma atividade encontrada."
+    },
+    "events": {
+      "created": "criou",
+      "updated": "atualizou",
+      "deleted": "removeu",
+      "roles_synced": "alterou papéis",
+      "impersonation_started": "entrou como o usuário",
+      "token_created": "criou um token de acesso",
+      "token_revoked": "revogou um token de acesso",
+      "user_invited": "convidou"
     }
   }
 }

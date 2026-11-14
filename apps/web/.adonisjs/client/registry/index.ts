@@ -110,6 +110,12 @@ const routes = {
     tokens: [[0,"users"],[0,"impersonate"],[1,"id"]],
     types: placeholder as Registry['users.impersonate.handle']['types'],
   },
+  'users.activity': {
+    methods: ["GET","HEAD"],
+    pattern: '/users/activity',
+    tokens: [[0,"users"],[0,"activity"]],
+    types: placeholder as Registry['users.activity']['types'],
+  },
   'users.index': {
     methods: ["GET","HEAD"],
     pattern: '/users',

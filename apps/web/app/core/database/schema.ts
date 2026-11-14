@@ -7,6 +7,41 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AuditSchema extends BaseModel {
+  static $columns = ['auditComment', 'auditableId', 'auditableType', 'createdAt', 'event', 'id', 'metadata', 'newValues', 'oldValues', 'requestId', 'tags', 'tenantId', 'updatedAt', 'userId', 'userType'] as const
+  $columns = AuditSchema.$columns
+  @column()
+  declare auditComment: string | null
+  @column()
+  declare auditableId: bigint | number
+  @column()
+  declare auditableType: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare event: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare metadata: any | null
+  @column()
+  declare newValues: any | null
+  @column()
+  declare oldValues: any | null
+  @column()
+  declare requestId: string | null
+  @column()
+  declare tags: any | null
+  @column()
+  declare tenantId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare userId: string | null
+  @column()
+  declare userType: string | null
+}
+
 export class AuthAccessTokenSchema extends BaseModel {
   static $columns = ['abilities', 'createdAt', 'expiresAt', 'hash', 'id', 'lastUsedAt', 'name', 'tokenableId', 'type', 'updatedAt'] as const
   $columns = AuthAccessTokenSchema.$columns

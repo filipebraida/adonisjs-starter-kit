@@ -3,7 +3,8 @@
     "navMain": {
       "dashboard": "Dashboard",
       "administration": "Administração",
-      "users": "Usuários"
+      "users": "Usuários",
+      "activity": "Atividade"
     },
     "navUser": {
       "settings": "Configurações",

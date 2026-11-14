@@ -22,6 +22,7 @@ export const controllers = {
     Notifications: () => import('#app/notifications/controllers/notifications_controller'),
   },
   users: {
+    Activity: () => import('#app/users/controllers/activity_controller'),
     Impersonates: () => import('#app/users/controllers/impersonates_controller'),
     Invite: () => import('#app/users/controllers/invite_controller'),
     Password: () => import('#app/users/controllers/password_controller'),

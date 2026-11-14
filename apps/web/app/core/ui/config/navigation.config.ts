@@ -1,6 +1,6 @@
 import type { SimpleTFunction } from '#core/ui/hooks/use_translation'
 
-import { LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
+import { History, LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/types/navigation'
 import { CAPABILITIES_USERS } from '#users/enums/capability'
@@ -55,6 +55,12 @@ export function getAdminNav(t: SimpleTFunction): NavMainItem[] {
           url: '/users',
           icon: Users,
           can: CAPABILITIES_USERS.usersViewList,
+        },
+        {
+          title: t('core.layout.navMain.activity'),
+          url: '/users/activity',
+          icon: History,
+          can: CAPABILITIES_USERS.usersAudit,
         },
       ],
     },

@@ -13,7 +13,9 @@ test.group('ImpersonateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.teardown(() => sinon.restore())
 
-  test('guarda originalUserId na sessao e faz login como o impersonado', async ({ assert }) => {
+  test('guarda a marca de impersonacao na sessao e faz login como o impersonado', async ({
+    assert,
+  }) => {
     const original = await UserFactory.create()
     const alvo = await UserFactory.create()
 
@@ -30,7 +32,10 @@ test.group('ImpersonateUser', (group) => {
       auth,
     })
 
-    sinon.assert.calledOnceWithExactly(put, 'originalUserId', original.id)
+    sinon.assert.calledOnceWithExactly(put, 'impersonation', {
+      originalUserId: original.id,
+      targetUserId: alvo.id,
+    })
     sinon.assert.calledOnce(login)
     assert.equal(login.firstCall.args[0].id, alvo.id)
   })

@@ -11,7 +11,8 @@ import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
 
-const { Users, Settings, Profile, Password, Invite, Impersonates, Tokens } = controllers.users
+const { Users, Settings, Profile, Password, Invite, Impersonates, Tokens, Activity } =
+  controllers.users
 
 router.get('/users/invite', [Invite, 'show']).middleware(middleware.auth()).as('users.invite.show')
 router
@@ -23,6 +24,11 @@ router
   .post('/users/impersonate/:id', [Impersonates, 'store'])
   .middleware(middleware.auth())
   .as('users.impersonate.handle')
+
+router
+  .get('/users/activity', [Activity, 'handle'])
+  .middleware(middleware.auth())
+  .as('users.activity')
 
 router
   .resource('/users', Users)

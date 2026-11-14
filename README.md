@@ -22,6 +22,8 @@ Personal starter kit I use to prototype projects with coding agents, and that my
 
 **i18n** — English and Portuguese out of the box. Locale is a user preference persisted on the `User` model and synced to a cookie on login, so it follows the user across devices.
 
+**Audit trail** — [`@filipebraida/adonis-auditing`](https://github.com/filipebraida/adonis-auditing) records who did what, when and from where: user changes as diffs (password masked), role changes, impersonation (with the admin behind it), access tokens and invites. Admins read it on the Activity page.
+
 **RBAC** — [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz) under Bouncer: each module declares typed capabilities, roles grant them in code (`config/capabilities.ts`), and per-resource policies enforce them. The frontend gates with `useCan()` from `@adonis-agora/authz-react`. User impersonation is available to admins.
 
 **Data + infra** — PostgreSQL 16 with Mailpit and pgAdmin, brought up with `pnpm infra:up`.

@@ -90,6 +90,7 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 - `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.
 - `mail` — `BaseMail` classes + MJML via `@email.layout` + `mailContext()`.
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count.
+- `auditing` — `@filipebraida/adonis-auditing`: `Auditable` models + `auditCustom` security events + resolvers (actor, IP, impersonated_by) + the Activity page.
 - `attachment` — `@jrmc/adonis-attachment` converters + model decoration + `preComputeUrls`.
 - `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
 

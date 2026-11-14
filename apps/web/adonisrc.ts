@@ -33,6 +33,7 @@ export default defineConfig({
     () => import('@jrmc/adonis-attachment/commands'),
     () => import('@tuyau/core/commands'),
     () => import('@adonis-agora/authz/commands'),
+    () => import('@filipebraida/adonis-auditing/commands'),
   ],
 
   /*
@@ -73,6 +74,7 @@ export default defineConfig({
     () => import('@facteurjs/adonisjs/facteur_provider'),
     () => import('@adonis-agora/authz/authz_provider'),
     () => import('#providers/authz_cache_provider'),
+    () => import('@filipebraida/adonis-auditing/auditing_provider'),
   ],
 
   /*
@@ -177,5 +179,8 @@ export default defineConfig({
       generateRegistry(),
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
+  },
+  directories: {
+    audit_resolvers: 'app/core/audit_resolvers',
   },
 })

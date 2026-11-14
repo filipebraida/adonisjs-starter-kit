@@ -229,6 +229,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/impersonates_controller').default['store']>>>
     }
   }
+  'users.activity': {
+    methods: ["GET","HEAD"]
+    pattern: '/users/activity'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#users/validators/audits').listAuditsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/activity_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/activity_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/activity_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'users.index': {
     methods: ["GET","HEAD"]
     pattern: '/users'

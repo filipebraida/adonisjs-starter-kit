@@ -2,6 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import CreateToken from '#users/actions/create_token'
+import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import User from '#auth/models/user'
 import { UserFactory } from '#auth/database/factories/user'
 
@@ -37,5 +38,15 @@ test.group('CreateToken', (group) => {
 
     const tokens = await User.accessTokens.all(owner)
     assert.isTrue(tokens[0].hash !== created.token)
+  })
+
+  test('records the token creation on the owner, without the secret', async ({ assert }) => {
+    const owner = await UserFactory.create()
+
+    const created = await new CreateToken().handle({ owner, name: 'CI Bot' })
+
+    const audit = await owner.audits().where('event', AUDIT_EVENTS.TOKEN_CREATED).firstOrFail()
+    assert.equal(audit.newValues?.name, 'CI Bot')
+    assert.notInclude(JSON.stringify(audit.newValues), created.token)
   })
 })

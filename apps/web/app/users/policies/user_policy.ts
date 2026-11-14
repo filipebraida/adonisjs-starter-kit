@@ -36,6 +36,10 @@ export default class UserPolicy extends BasePolicy {
     return this.authz.can(currentUser, CAPABILITIES_USERS.usersDelete)
   }
 
+  async viewActivity(currentUser: User): Promise<AuthorizerResponse> {
+    return this.authz.can(currentUser, CAPABILITIES_USERS.usersAudit)
+  }
+
   async invite(currentUser: User): Promise<AuthorizerResponse> {
     return this.authz.can(currentUser, CAPABILITIES_USERS.usersInvite)
   }

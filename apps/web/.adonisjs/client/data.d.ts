@@ -7,6 +7,7 @@
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
 import type NotificationsNotificationTransformer from '#app/notifications/transformers/notification_transformer'
+import type UsersAuditTransformer from '#app/users/transformers/audit_transformer'
 import type UsersTokenTransformer from '#app/users/transformers/token_transformer'
 import type UsersUserTransformer from '#app/users/transformers/user_transformer'
 import type InertiaMiddleware from '#core/middleware/inertia_middleware'
@@ -19,6 +20,10 @@ export namespace Data {
     }
   }
   export namespace Users {
+    export type Audit = InferData<UsersAuditTransformer>
+    export namespace Audit {
+      export type Variants = InferVariants<UsersAuditTransformer>
+    }
     export type Token = InferData<UsersTokenTransformer>
     export namespace Token {
       export type Variants = InferVariants<UsersTokenTransformer>

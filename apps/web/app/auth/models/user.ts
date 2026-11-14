@@ -6,12 +6,14 @@ import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
 import { authzRolesRelation } from '@adonis-agora/authz'
+import { Auditable } from '@filipebraida/adonis-auditing'
 import { hasPermissions } from '@adonis-agora/authz/mixins'
 import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
 import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
 
 import BaseModel from '#core/models/base_model'
 
+import { AUDITABLE_TYPES } from '#auth/enums/auditable_type'
 import AuthzRole from '#auth/models/authz_role'
 import ResetPasswordToken from '#auth/models/reset_password_token'
 
@@ -20,7 +22,12 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   passwordColumnName: 'password',
 })
 
-export default class User extends compose(BaseModel, AuthFinder, hasPermissions()) {
+export default class User extends compose(BaseModel, AuthFinder, hasPermissions(), Auditable) {
+  static auditableName = AUDITABLE_TYPES.USER
+  static auditMask = ['password']
+  // The avatar JSON and its derived URL change with every upload; the upload itself is not a security event.
+  static auditExclude = ['avatar', 'avatarUrl']
+
   @column({ isPrimary: true })
   declare id: number
 

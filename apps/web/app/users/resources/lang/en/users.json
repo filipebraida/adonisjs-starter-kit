@@ -40,7 +40,8 @@
         "edit": "Edit",
         "delete": "Delete",
         "open_menu": "Open menu",
-        "clear": "Clear"
+        "clear": "Clear",
+        "activity": "View activity"
       },
       "not_provided": "Not provided"
     },
@@ -213,6 +214,45 @@
     "admin": {
       "name": "Administrator",
       "description": "Super User"
+    }
+  },
+  "activity": {
+    "page": {
+      "title": "Activity",
+      "description": "What each user did, when and from where",
+      "breadcrumbs": {
+        "users": "Users",
+        "activity": "Activity"
+      }
+    },
+    "table": {
+      "columns": {
+        "when": "When",
+        "actor": "Who",
+        "event": "What",
+        "target": "On",
+        "origin": "From"
+      },
+      "filters": {
+        "search_placeholder": "Search by name or e-mail...",
+        "event": "Event",
+        "all_events": "All events",
+        "clear_filters": "Clear filters"
+      },
+      "system": "System",
+      "impersonated_by": "as #{id}",
+      "no_changes": "No field changes",
+      "no_results": "No activity found."
+    },
+    "events": {
+      "created": "created",
+      "updated": "updated",
+      "deleted": "deleted",
+      "roles_synced": "changed roles",
+      "impersonation_started": "started impersonating",
+      "token_created": "created an access token",
+      "token_revoked": "revoked an access token",
+      "user_invited": "invited"
     }
   }
 }

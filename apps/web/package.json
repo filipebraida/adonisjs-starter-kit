@@ -82,6 +82,7 @@
     "@adonisjs/transmit-client": "^1.1.0",
     "@adonisjs/vite": "^6.0.4",
     "@facteurjs/adonisjs": "2.1.0",
+    "@filipebraida/adonis-auditing": "^2.0.0",
     "@inertiajs/core": "^3.11.0",
     "@inertiajs/react": "^3.11.0",
     "@jrmc/adonis-attachment": "^5.2.1",

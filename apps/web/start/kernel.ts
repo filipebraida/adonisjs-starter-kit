@@ -51,4 +51,5 @@ export const middleware = router.named({
   guest: () => import('#auth/middleware/guest_middleware'),
   auth: () => import('#auth/middleware/auth_middleware'),
   switchLocale: () => import('#core/middleware/switch_locale_middleware'),
+  skipAudit: () => import('#core/middleware/skip_audit_middleware'),
 })

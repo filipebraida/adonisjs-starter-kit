@@ -46,6 +46,7 @@ export interface ApiDefinition {
     impersonate: {
       handle: typeof routes['users.impersonate.handle']
     }
+    activity: typeof routes['users.activity']
     index: typeof routes['users.index']
     create: typeof routes['users.create']
     store: typeof routes['users.store']

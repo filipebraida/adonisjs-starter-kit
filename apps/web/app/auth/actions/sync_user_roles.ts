@@ -7,6 +7,7 @@ import Authorizer from '#core/authz/authorizer'
 
 import AdminLockoutException from '#auth/exceptions/admin_lockout'
 import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized'
+import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import { CAPABILITIES_AUTH } from '#auth/enums/capability'
 import { ROLES, type Role } from '#auth/enums/role'
 import type User from '#auth/models/user'
@@ -42,6 +43,11 @@ export default class SyncUserRoles {
       !desiredRoles.includes(ROLES.ADMIN)
     if (removingOwnAdmin) throw new AdminLockoutException()
 
+    const changed =
+      current.length !== desiredRoles.length ||
+      current.some((role) => !desiredRoles.includes(role as Role))
+    if (!changed) return
+
     const service = await app.container.make(AuthzService)
     const ref = service.refOf(target)!
 
@@ -54,6 +60,13 @@ export default class SyncUserRoles {
       for (const role of desiredRoles) {
         if (!current.includes(role)) await store.assignRole(ref, role)
       }
+
+      // The assignments live in authz tables, outside any auditable model: record them here.
+      await target.useTransaction(trx).auditCustom(AUDIT_EVENTS.ROLES_SYNCED, {
+        old: { roles: [...current].sort() },
+        new: { roles: [...desiredRoles].sort() },
+        metadata: { executorId: executor.id },
+      })
     })
   }
 }

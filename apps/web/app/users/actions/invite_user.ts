@@ -2,6 +2,7 @@ import emitter from '@adonisjs/core/services/emitter'
 import type { I18n } from '@adonisjs/i18n'
 
 import { requireManageRolesIfEscalating } from '#auth/actions/sync_user_roles'
+import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import type { Role as RoleSlug } from '#auth/enums/role'
 import User from '#auth/models/user'
 import PasswordResetService from '#auth/services/password_reset_service'
@@ -22,6 +23,7 @@ export default class InviteUser {
     await user.save()
 
     await user.assignRole(input.role)
+    await user.auditCustom(AUDIT_EVENTS.USER_INVITED, { new: { role: input.role } })
 
     const { token } = await new PasswordResetService().generateToken(user)
 

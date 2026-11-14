@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { EditIcon, EllipsisIcon, TrashIcon, UserRoundSearch } from 'lucide-react'
+import { EditIcon, EllipsisIcon, History, TrashIcon, UserRoundSearch } from 'lucide-react'
+import { Link } from '@inertiajs/react'
+import { useCan } from '@adonis-agora/authz-react'
 import { ModalLink } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -19,6 +21,7 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'
+import { CAPABILITIES_USERS } from '#users/enums/capability'
 
 import type { Data } from '@generated/data'
 
@@ -28,6 +31,7 @@ export function DataTableRowActions({
   const user = useUser()
   const { t } = useTranslation()
 
+  const canAudit = useCan(CAPABILITIES_USERS.usersAudit)
   const [openDelete, setOpenDelete] = useState(false)
   const [openImpersonate, setOpenImpersonate] = useState(false)
 
@@ -47,6 +51,19 @@ export function DataTableRowActions({
               <DropdownMenuShortcut>
                 <UserRoundSearch size={16} />
               </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          )}
+          {canAudit && (
+            <DropdownMenuItem asChild>
+              <Link
+                href={urlFor('users.activity', {}, { qs: { actorId: row.original.id } })}
+                className="flex w-full items-center justify-between"
+              >
+                {t('users.index.table.row_actions.activity')}
+                <DropdownMenuShortcut>
+                  <History size={16} />
+                </DropdownMenuShortcut>
+              </Link>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild>
