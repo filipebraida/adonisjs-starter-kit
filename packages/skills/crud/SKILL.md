@@ -45,6 +45,7 @@ The users module is the canonical end-to-end CRUD:
 - Validator → `app/users/validators/users.ts`. Policy → `app/users/policies/user_policy.ts`.
 - Action → `app/users/actions/create_user.ts`. Transformer variants → `app/users/transformers/user_transformer.ts`.
 - List query → `app/users/queries/list_users.ts`. Pages → `app/users/ui/pages/`.
+- List page → `app/users/ui/components/users_table.tsx` + `users_table_filters.tsx`; the pattern and its rules → `apps/storybook/stories/content/list_page.stories.tsx`.
 
 ## Doc refs
 
@@ -155,6 +156,8 @@ public async index({ bouncer, inertia, request }: HttpContext) {
   const rows = await new ListEntities().handle({ /* filters */ }, payload)     // 3
   return inertia.render('entities/index', {                                    // 4
     entities: EntityTransformer.paginate(rows.all(), rows.getMeta()).useVariant('forList'),
+    q: payload.q ?? null,                  // the filters it applied, null when empty
+    selectedStatuses: payload.statuses ?? [],
   })
 }
 ```
@@ -194,7 +197,10 @@ See [[routes]] for verb vs. resource, numeric matchers, nested resources.
 
 ### 9. Inertia pages
 
-- `<mod>/ui/pages/<entities>/index.tsx` — list page.
+- `<mod>/ui/pages/<entities>/index.tsx` — list page: `Heading` with the primary action, then a `FilterBar` (`SearchInput` first, then `CheckboxFilter`/`RadioFilter`), then the `DataTable` with `remoteTableOptions` from `useDataTable` and an `empty` state.
+  - **The URL is the only source of the filters.** The page reads `q` and the filters from its props, never a local copy; a change is a `router.get(urlFor('<entities>.index'), {...}, { preserveState: true, preserveScroll: true, replace: true, only: ['<entities>', 'q', '<filters>'] })`. Without the filters in `only`, a partial reload leaves the old ones.
+  - **Search through `useSearchBox(q, onSearch)`** (`#core/ui/hooks/use_search_box`): 300 ms after the last key, at once when cleared, and it takes a term that changed elsewhere (back/forward). Do not write a debounce in the page.
+  - **Empty:** pass `empty` to the `DataTable`. Filtered: say nothing matches and offer "Clear filters" (`core.table.filters.clear`). Never had rows: offer the action that fills the list, as `outline` (the header holds the primary).
 - `<mod>/ui/pages/<entities>/create.tsx` + `edit.tsx` — modals launched by controller `create`/`edit` methods (`inertia.modal(...)`).
 - A full page renders `<Head title={t('...')} />`; a modal page keeps the title of the page under it.
 
@@ -224,6 +230,8 @@ Not done until it runs green. Run `pnpm ace codegen` (new controller, transforme
 - ❌ Custom verbs (`activate`, `publish`) added as extra methods on the resource controller — put them as separate `router.post(...)` calls on their own single-action controller, keeping the resource `.only([...])` list clean.
 - ❌ `response.json(...)` from a mutation an Inertia page submits — redirect, so props, flashes and validation errors refresh.
 - ❌ A query or `load()` inside a transformer — preload in the controller or the query.
+- ❌ A list page keeping the search or filters in `useState` copied from props — back/forward and "Clear filters" leave stale values; read them from the props.
+- ❌ The controller sending a missing filter as `undefined` — a partial reload keeps the old value; send `null` (or `[]`).
 - ❌ Controllers calling `auth.authenticate()` — the `auth()` middleware ran first; use `auth.getUserOrFail()`.
 
 ## Related skills
