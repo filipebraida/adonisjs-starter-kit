@@ -5,7 +5,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 import HeaderDropdown from '#core/ui/components/header_dropdown'
 import useAllows from '#core/ui/hooks/use_allows'
-import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
+import useActiveNavUrl from '#core/ui/hooks/use_is_active'
 
 export interface NavHeaderMainProps {
   items: NavMainItem[]
@@ -21,7 +21,7 @@ const subLinkActive = 'bg-accent text-accent-foreground font-medium'
 
 export function NavHeaderMain({ items }: NavHeaderMainProps) {
   const allows = useAllows()
-  const currentUrl = useCurrentUrl()
+  const activeUrl = useActiveNavUrl(items)
 
   return (
     <nav className="flex items-center space-x-4">
@@ -33,9 +33,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
             return null
           }
 
-          const sectionHasActive = visibleItems.some((subItem) =>
-            isNavItemActive(subItem.url, currentUrl)
-          )
+          const sectionHasActive = visibleItems.some((subItem) => subItem.url === activeUrl)
 
           return (
             <HeaderDropdown
@@ -54,7 +52,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
               content={
                 <div className="grid gap-1 p-2">
                   {visibleItems.map((subItem) => {
-                    const active = isNavItemActive(subItem.url, currentUrl)
+                    const active = subItem.url === activeUrl
                     if (subItem.external) {
                       return (
                         <a
@@ -88,7 +86,7 @@ export function NavHeaderMain({ items }: NavHeaderMainProps) {
 
         if (!allows(item.can)) return null
 
-        const active = isNavItemActive(item.url, currentUrl)
+        const active = item.url === activeUrl
 
         if (item.external) {
           return (

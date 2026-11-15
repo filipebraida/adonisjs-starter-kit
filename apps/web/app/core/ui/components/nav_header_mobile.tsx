@@ -12,7 +12,7 @@ import {
 import { AppLogo } from '#core/ui/components/app_logo'
 import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 import useAllows from '#core/ui/hooks/use_allows'
-import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
+import useActiveNavUrl from '#core/ui/hooks/use_is_active'
 
 const sidebarMenuButtonVariants =
   'text-sidebar-foreground flex w-full items-center gap-2 overflow-hidden ' +
@@ -31,7 +31,7 @@ export interface NavHeaderMobileProps {
 
 export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
   const allows = useAllows()
-  const currentUrl = useCurrentUrl()
+  const activeUrl = useActiveNavUrl(items)
 
   return (
     <div className="lg:hidden">
@@ -68,7 +68,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
 
                         <div className="flex flex-col space-y-1">
                           {visibleItems.map((subItem) => {
-                            const active = isNavItemActive(subItem.url, currentUrl)
+                            const active = subItem.url === activeUrl
                             if (subItem.external) {
                               return (
                                 <a
@@ -100,7 +100,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
                     )
                   } else {
                     if (allows(item.can)) {
-                      const active = isNavItemActive(item.url, currentUrl)
+                      const active = item.url === activeUrl
                       if (item.external) {
                         return (
                           <a

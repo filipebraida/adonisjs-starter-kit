@@ -1,14 +1,31 @@
 import { usePage } from '@inertiajs/react'
 
-// Root ('/') only matches exact; others match exact or `${url}/...`
-// (so `/users/123/edit` still highlights the `/users` item).
-export function isNavItemActive(itemUrl: string | undefined, currentUrl: string): boolean {
-  if (!itemUrl) return false
-  if (itemUrl === '/') return currentUrl === '/'
-  return currentUrl === itemUrl || currentUrl.startsWith(itemUrl + '/')
+import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
+
+function matches(itemUrl: string, path: string): boolean {
+  if (itemUrl === '/') return path === '/'
+  return path === itemUrl || path.startsWith(itemUrl + '/')
 }
 
-export default function useCurrentUrl(): string {
+/**
+ * The URL of the one nav item to highlight: the most specific item whose URL
+ * is the current path or a prefix of it. `/users/123/edit` still highlights
+ * `/users`, while `/users/activity` highlights its own item and not `/users`.
+ */
+export function activeNavUrl(items: NavMainItem[], currentUrl: string): string | null {
+  const path = currentUrl.split(/[?#]/)[0]
+  const urls = items.flatMap((item) => (isSection(item) ? item.items : [item])).map((i) => i.url)
+
+  let best: string | null = null
+  for (const url of urls) {
+    if (url && !url.startsWith('http') && matches(url, path)) {
+      if (!best || url.length > best.length) best = url
+    }
+  }
+  return best
+}
+
+export default function useActiveNavUrl(items: NavMainItem[]): string | null {
   const { url } = usePage()
-  return url
+  return activeNavUrl(items, url)
 }

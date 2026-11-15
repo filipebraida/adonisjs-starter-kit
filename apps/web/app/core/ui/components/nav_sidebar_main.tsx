@@ -12,7 +12,7 @@ import {
 } from '@workspace/ui/components/sidebar'
 
 import useAllows from '#core/ui/hooks/use_allows'
-import useCurrentUrl, { isNavItemActive } from '#core/ui/hooks/use_is_active'
+import useActiveNavUrl from '#core/ui/hooks/use_is_active'
 
 export interface NavSidebarMainProps {
   items: NavMainItem[]
@@ -20,7 +20,7 @@ export interface NavSidebarMainProps {
 
 export function NavSidebarMain({ items }: NavSidebarMainProps) {
   const allows = useAllows()
-  const currentUrl = useCurrentUrl()
+  const activeUrl = useActiveNavUrl(items)
 
   return (
     <>
@@ -36,7 +36,7 @@ export function NavSidebarMain({ items }: NavSidebarMainProps) {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {visibleItems.map((subItem) => {
-                    const active = isNavItemActive(subItem.url, currentUrl)
+                    const active = subItem.url === activeUrl
                     return (
                       <SidebarMenuItem key={subItem.title}>
                         <SidebarMenuButton asChild isActive={active} tooltip={subItem.title}>
@@ -68,7 +68,7 @@ export function NavSidebarMain({ items }: NavSidebarMainProps) {
           )
         } else {
           if (allows(item.can)) {
-            const active = isNavItemActive(item.url, currentUrl)
+            const active = item.url === activeUrl
             return (
               <SidebarGroup key={item.title}>
                 <SidebarGroupContent>
