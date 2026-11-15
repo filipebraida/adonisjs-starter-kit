@@ -88,7 +88,7 @@ export function HelpPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent size="narrow" closeLabel={t('help.close')}>
+      <SheetContent size="wide" closeLabel={t('help.close')}>
         <SheetHeader>
           {/* Clear of the close button, which sits in the header's corner. */}
           <div className="pr-8">

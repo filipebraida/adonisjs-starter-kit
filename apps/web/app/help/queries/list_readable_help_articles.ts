@@ -16,7 +16,8 @@ export default class ListReadableHelpArticles {
   ) {}
 
   async handle(user: User): Promise<string[]> {
-    const [spaces, access] = await Promise.all([this.catalog.spaces(), this.access.handle(user)])
+    const spaces = await this.catalog.spaces()
+    const access = await this.access.handle(user, spaces)
     return spaces.flatMap((space) =>
       space.articles
         .filter((article) => HelpCatalog.canRead(article, access))

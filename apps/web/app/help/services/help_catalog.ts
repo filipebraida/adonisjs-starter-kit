@@ -18,7 +18,8 @@ const indexSchema = vine.object({
   categories: vine.array(vine.object({ slug: slugField(), title: text(), order: vine.number() })),
   articles: vine.array(
     vine.object({
-      slug: slugField(),
+      // `images` is the path of the space's pictures (`help.image`).
+      slug: slugField().notIn(['images']),
       title: text(),
       summary: text(),
       category: slugField(),
@@ -61,6 +62,11 @@ export default class HelpCatalog {
     return new HelpCatalog(root)
   }
 
+  /**
+   * The spaces' folders and collections. Production finds them once; outside
+   * it they are found on every read, so a space added while the dev server
+   * runs shows up without a restart (`metaFiles` does not restart it).
+   */
   #indexes() {
     let indexes = HelpCatalog.#loaded.get(this.root)
     if (!indexes) {
@@ -68,7 +74,7 @@ export default class HelpCatalog {
         dir,
         collection: createCollection(dir),
       }))
-      HelpCatalog.#loaded.set(this.root, indexes)
+      if (app.inProduction) HelpCatalog.#loaded.set(this.root, indexes)
     }
     return indexes
   }
@@ -111,7 +117,11 @@ export default class HelpCatalog {
 
   /** The capabilities the indexes cite, each once: the only ones worth asking about. */
   async capabilities(): Promise<string[]> {
-    const spaces = await this.spaces()
+    return HelpCatalog.capabilitiesOf(await this.spaces())
+  }
+
+  /** The distinct capabilities the articles of `spaces` cite. */
+  static capabilitiesOf(spaces: HelpSpace[]): string[] {
     return [
       ...new Set(spaces.flatMap((space) => space.articles.flatMap((a) => a.capability ?? []))),
     ]

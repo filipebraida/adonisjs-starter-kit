@@ -26,7 +26,6 @@ export function mermaidTheme(read: (token: string) => string): MermaidConfig['th
 
 type Drawing = { state: 'pending' } | { state: 'drawn'; svg: string } | { state: 'failed' }
 
-/** Whether the page is in its dark theme (the `dark` class of `<html>`); `null` on the server. */
 /**
  * A token's color as `rgb()`: mermaid's color parser rejects modern CSS colors
  * such as the starter's `oklch()` tokens, and fails the whole drawing. The
@@ -41,6 +40,7 @@ function rgbOf(color: string): string {
   return `rgb(${r}, ${g}, ${b})`
 }
 
+/** Whether the page is in its dark theme (the `dark` class of `<html>`); `null` on the server. */
 function readDark(): boolean {
   return document.documentElement.classList.contains('dark')
 }

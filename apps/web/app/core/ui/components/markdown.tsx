@@ -22,14 +22,14 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 const CODE = 'bg-muted rounded px-1 py-0.5 font-mono text-xs'
 
 /**
- * Markdown an agent wrote, rendered as the app's text: paragraphs, lists,
+ * Markdown, rendered as the app's text: paragraphs, lists,
  * emphasis, inline code and fenced blocks, links, quotes and tables (GFM).
  * Raw HTML is not rendered; a link inside the app (`/…`) is an Inertia
  * visit, any other opens in a new tab.
  */
 type AlertKind = 'note' | 'tip' | 'important' | 'warning' | 'caution'
 
-/** Each Gitapp alert kind: its icon and the role colors of the app. */
+/** Each GitHub alert kind: its icon and the role colors of the app. */
 const ALERTS: Record<AlertKind, { icon: LucideIcon; className: string }> = {
   note: { icon: Info, className: 'border-primary/30 bg-primary/5 [&>svg]:text-primary' },
   tip: { icon: Lightbulb, className: 'border-success/40 bg-success/10 [&>svg]:text-success' },
@@ -51,7 +51,7 @@ const ALERT_CLASS = /\bmarkdown-alert-(note|tip|important|warning|caution)\b/
 const ALERT_TITLE = 'markdown-alert-title'
 
 /**
- * A Gitapp alert (`> [!WARNING]`), as `remark-github-blockquote-alert` marks it: a box of its
+ * A GitHub alert (`> [!WARNING]`), as `remark-github-blockquote-alert` marks it: a box of its
  * kind with the app's icon and the kind's name translated (the plugin's own title is not drawn).
  */
 function Alert({ className, children }: { className?: string; children?: ReactNode }) {
@@ -246,8 +246,8 @@ const REMARK_PLUGINS = [remarkGfm, ALERTS_PLUGIN]
 /**
  * A Markdown text. `text` (the default) keeps its headings small; `document`
  * is a page of its own (a help article): real headings, and its relative
- * images from `imageBase`. Headings carry Gitapp's ids in both, so a
- * `#section` link works here as on Gitapp (`markdownSections` gives the same
+ * images from `imageBase`. Headings carry GitHub's ids in both, so a
+ * `#section` link works here as on GitHub (`markdownSections` gives the same
  * ids on the server).
  */
 export function Markdown({

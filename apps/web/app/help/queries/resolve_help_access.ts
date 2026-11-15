@@ -4,7 +4,7 @@ import type User from '#auth/models/user'
 import Authorizer from '#core/authz/authorizer'
 import type { Capability } from '#core/authz/capability'
 import HelpCatalog from '#help/services/help_catalog'
-import type { HelpAccess } from '#help/types/help'
+import type { HelpAccess, HelpSpace } from '#help/types/help'
 
 /**
  * The capabilities the help's indexes cite that the reader holds, each asked
@@ -18,8 +18,9 @@ export default class ResolveHelpAccess {
     private catalog: HelpCatalog
   ) {}
 
-  async handle(user: User): Promise<HelpAccess> {
-    const cited = await this.catalog.capabilities()
+  /** `spaces`, when the caller already loaded them, spares reading the catalog again. */
+  async handle(user: User, spaces?: HelpSpace[]): Promise<HelpAccess> {
+    const cited = spaces ? HelpCatalog.capabilitiesOf(spaces) : await this.catalog.capabilities()
     const held = await Promise.all(
       cited.map(async (capability) =>
         (await this.authorizer.can(user, capability as Capability)) ? capability : null
