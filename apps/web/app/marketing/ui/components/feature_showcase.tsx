@@ -39,7 +39,7 @@ export default function FeatureShowcase() {
               </li>
             </ul>
             <div className="pt-4">
-              <Button variant="outline" asChild className="rounded-full gap-2">
+              <Button variant="outline" shape="pill" asChild>
                 <Link route="auth.sign_in.show">
                   Explore Dashboard <ArrowRight className="size-4" />
                 </Link>

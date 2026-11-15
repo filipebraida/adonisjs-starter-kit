@@ -18,7 +18,6 @@ import {
 } from '@workspace/ui/components/select'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { toast } from '@workspace/ui/hooks/use-toast'
-import { cn } from '@workspace/ui/lib/utils'
 
 import { urlFor } from '~/app/client'
 
@@ -72,7 +71,7 @@ export default function InviteUserPage() {
                 placeholder={t('users.invite.form.email.placeholder')}
                 value={data.email}
                 onChange={(e) => setData('email', e.target.value)}
-                className={errors?.email ? 'border-destructive' : ''}
+                aria-invalid={!!errors?.email}
               />
               <FieldErrorBag errors={errors} field="email" />
             </Field>
@@ -83,7 +82,7 @@ export default function InviteUserPage() {
                 value={data.role}
                 onValueChange={(value) => setData('role', value as RoleSlug)}
               >
-                <SelectTrigger className={errors?.role ? 'border-destructive' : ''}>
+                <SelectTrigger aria-invalid={!!errors?.role}>
                   <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -111,7 +110,8 @@ export default function InviteUserPage() {
                 placeholder={t('users.invite.form.description.placeholder')}
                 value={data.description ?? ''}
                 onChange={(e) => setData('description', e.target.value)}
-                className={cn('resize-none', errors?.description ? 'border-destructive' : '')}
+                className="resize-none"
+                aria-invalid={!!errors?.description}
               />
               <FieldErrorBag errors={errors} field="description" />
             </Field>

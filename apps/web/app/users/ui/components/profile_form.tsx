@@ -96,7 +96,7 @@ export function ProfileForm({ user }: Props) {
               placeholder={t('users.action.form.full_name.placeholder')}
               value={data.fullName}
               onChange={(e) => setData('fullName', e.target.value)}
-              className={errors?.fullName ? 'border-destructive' : ''}
+              aria-invalid={!!errors?.fullName}
             />
             <FieldErrorBag errors={errors} field="fullName" />
           </Field>
@@ -108,7 +108,7 @@ export function ProfileForm({ user }: Props) {
 
           {progress && (
             <Field>
-              <Progress value={progress.percentage} max={100} className="w-full h-2 rounded mt-2" />
+              <Progress value={progress.percentage} max={100} className="mt-2 h-2" />
             </Field>
           )}
 

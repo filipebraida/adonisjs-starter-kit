@@ -46,7 +46,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
                   name="name"
                   placeholder={t('users.action.form.token.placeholder')}
                   disabled={processing}
-                  className={errors.name ? 'border-destructive' : undefined}
+                  aria-invalid={!!errors.name}
                 />
                 <FieldError />
               </Field>

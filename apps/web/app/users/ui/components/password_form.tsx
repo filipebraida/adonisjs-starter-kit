@@ -52,7 +52,7 @@ export function PasswordForm() {
               placeholder={t('users.action.form.password.placeholder')}
               value={data.password}
               onChange={(element) => setData('password', element.target.value)}
-              className={`${errors?.password ? 'border-destructive' : ''}`}
+              aria-invalid={!!errors?.password}
             />
             <FieldErrorBag errors={errors} field="password" />
           </Field>
@@ -67,7 +67,7 @@ export function PasswordForm() {
               placeholder={t('users.action.form.password_confirmation.placeholder')}
               value={data.passwordConfirmation}
               onChange={(element) => setData('passwordConfirmation', element.target.value)}
-              className={`${errors?.passwordConfirmation ? 'border-destructive' : ''}`}
+              aria-invalid={!!errors?.passwordConfirmation}
             />
             <FieldErrorBag errors={errors} field="passwordConfirmation" />
           </Field>

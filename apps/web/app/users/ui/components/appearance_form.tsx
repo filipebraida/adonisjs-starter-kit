@@ -34,7 +34,7 @@ function SectionTitle({
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
       {showReset && onReset && (
-        <Button size="icon" variant="ghost" className="rounded-full" onClick={onReset}>
+        <Button size="icon" shape="pill" variant="ghost" onClick={onReset}>
           <RotateCcw className="size-4" />
         </Button>
       )}

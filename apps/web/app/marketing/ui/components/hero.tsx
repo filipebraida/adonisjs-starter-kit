@@ -31,15 +31,10 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Button size="lg" className="h-12 px-8 text-base rounded-full" asChild>
+              <Button size="xl" shape="pill" asChild>
                 <Link route="auth.sign_in.show">Get Started</Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 px-8 text-base rounded-full gap-2"
-                asChild
-              >
+              <Button size="xl" shape="pill" variant="outline" asChild>
                 <a
                   href="https://github.com/filipebraida/adonisjs-starter-kit"
                   target="_blank"

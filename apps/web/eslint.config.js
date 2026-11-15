@@ -121,34 +121,6 @@ export default configApp(
     rules: { 'shadcn/no-raw-colors': 'off' },
   },
   {
-    // An invalid field shows a red border. `aria-invalid` would replace the
-    // class but also adds the input's 3px destructive ring, a visible change
-    // still to be decided.
-    name: 'Invalid fields keep their red border',
-    files: [
-      'app/users/ui/components/password_form.tsx',
-      'app/users/ui/components/profile_form.tsx',
-      'app/users/ui/components/tokens_action_dialog.tsx',
-      'app/users/ui/components/user_form_fields.tsx',
-      'app/users/ui/pages/invite.tsx',
-    ],
-    rules: { 'shadcn/no-restyle': 'off' },
-  },
-  {
-    // Shapes packages/ui has no variant for yet: the pill buttons of the
-    // landing page, the round reset button, the small unread-count badge and
-    // the error pages' 7rem headline. Each goes once the variant exists.
-    name: 'Shapes without a packages/ui variant yet',
-    files: [
-      'app/marketing/ui/components/hero.tsx',
-      'app/marketing/ui/components/feature_showcase.tsx',
-      'app/users/ui/components/appearance_form.tsx',
-      'app/core/ui/components/notification_bell.tsx',
-      'app/core/ui/pages/errors/*.tsx',
-    ],
-    rules: { 'shadcn/no-restyle': 'off', 'shadcn/no-arbitrary-values': 'off' },
-  },
-  {
     // After sign-in the user goes back to the URL the auth middleware saved at
     // runtime (`isSafeInternalPath` keeps it internal): there is no route name
     // to redirect by.

@@ -141,10 +141,7 @@ export function NotificationBell() {
         >
           <Bell className="size-5" />
           {unseen > 0 && (
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] tabular-nums"
-            >
+            <Badge variant="destructive" size="count" className="absolute -top-1 -right-1">
               {unseen > 9 ? '9+' : unseen}
             </Badge>
           )}
@@ -199,7 +196,7 @@ export function NotificationBell() {
                               {item.content.body}
                             </p>
                           )}
-                          <p className="mt-1 text-[11px] text-muted-foreground/70">
+                          <p className="mt-1 text-xs text-muted-foreground/70">
                             {formatRelativeTime(item.createdAt, locale ?? 'en')}
                           </p>
                         </div>

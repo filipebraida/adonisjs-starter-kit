@@ -43,7 +43,7 @@ export default function UserFormFields({ data, errors, setData }: Props) {
           placeholder={t('users.action.form.full_name.placeholder')}
           value={data.fullName}
           onChange={(e) => setData('fullName', e.target.value)}
-          className={errors?.fullName ? 'border-destructive' : ''}
+          aria-invalid={!!errors?.fullName}
         />
         <FieldErrorBag errors={errors} field="fullName" />
       </Field>
@@ -55,7 +55,7 @@ export default function UserFormFields({ data, errors, setData }: Props) {
           placeholder={t('users.action.form.email.placeholder')}
           value={data.email}
           onChange={(e) => setData('email', e.target.value)}
-          className={errors?.email ? 'border-destructive' : ''}
+          aria-invalid={!!errors?.email}
         />
         <FieldErrorBag errors={errors} field="email" />
       </Field>
@@ -63,7 +63,7 @@ export default function UserFormFields({ data, errors, setData }: Props) {
       <Field>
         <FieldLabel htmlFor="role">{t('users.action.form.role.label')}</FieldLabel>
         <Select value={data.role} onValueChange={(value) => setData('role', value)}>
-          <SelectTrigger className={errors?.role ? 'border-destructive' : ''}>
+          <SelectTrigger aria-invalid={!!errors?.role}>
             <SelectValue placeholder={t('users.action.form.role.placeholder')} />
           </SelectTrigger>
           <SelectContent>
@@ -89,7 +89,7 @@ export default function UserFormFields({ data, errors, setData }: Props) {
           placeholder={t('users.action.form.password.placeholder')}
           value={data.password}
           onChange={(e) => setData('password', e.target.value)}
-          className={errors?.password ? 'border-destructive' : ''}
+          aria-invalid={!!errors?.password}
         />
         <FieldErrorBag errors={errors} field="password" />
       </Field>
@@ -104,7 +104,7 @@ export default function UserFormFields({ data, errors, setData }: Props) {
           placeholder={t('users.action.form.password_confirmation.placeholder')}
           value={data.passwordConfirmation}
           onChange={(e) => setData('passwordConfirmation', e.target.value)}
-          className={errors?.passwordConfirmation ? 'border-destructive' : ''}
+          aria-invalid={!!errors?.passwordConfirmation}
         />
         <FieldErrorBag errors={errors} field="passwordConfirmation" />
       </Field>
