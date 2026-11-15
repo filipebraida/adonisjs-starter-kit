@@ -45,6 +45,7 @@ export function useDataTable({
 
   return {
     pageCount,
+    total: data.metadata.total,
     state: {
       pagination: { pageIndex, pageSize },
       sorting: sorting?.state,

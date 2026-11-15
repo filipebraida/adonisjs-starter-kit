@@ -21,7 +21,13 @@
       "go_previous_page": "Go to previous page",
       "go_next_page": "Go to next page",
       "go_last_page": "Go to last page",
-      "page_of": "Page {current} of {total}"
+      "page_of": "Page {current} of {total}",
+      "range": "{from}–{to} of {total}",
+      "label": "Pagination",
+      "go_to_page": "Go to page {page}"
+    },
+    "filters": {
+      "clear": "Clear filters"
     }
   },
   "notifications": {
@@ -41,5 +47,8 @@
   "impersonation": {
     "acting_as": "You are signed in as {name}",
     "return_as": "Return as {name}"
+  },
+  "search": {
+    "clear": "Clear search"
   }
 }

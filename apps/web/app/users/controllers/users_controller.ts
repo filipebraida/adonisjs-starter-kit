@@ -49,7 +49,8 @@ export default class UsersController {
         viewActivity: await policy.allows('viewActivity'),
       },
       rowCan,
-      q: payload.q,
+      // null, not undefined: a partial reload keeps a missing prop's old value.
+      q: payload.q ?? null,
       selectedRoles: payload.roles ?? [],
       institutionalRoles: await institutionalRoles(),
       sort: payload.sort ?? null,

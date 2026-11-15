@@ -3,13 +3,23 @@ import React from 'react'
 
 import { ColumnDef, type OnChangeFn, type SortingState } from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
+import { Button } from '@workspace/ui/components/button'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@workspace/ui/components/empty'
+import { SearchX } from 'lucide-react'
 
 import { urlFor } from '~/app/client'
 import { DataTable } from '#core/ui/components/data_table'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { formatDate } from '#core/ui/format/date'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
-import UsersTableFilters from '#users/ui/components/users_table_filters'
+import UsersTableFilters, { type UsersFilters } from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
 
 import { displayRole, ROLES } from '#auth/enums/role'
@@ -33,7 +43,7 @@ interface DataTableProps {
     }
   }
   roles: Role[]
-  q: string | undefined
+  q: string | null
   selectedRoles: string[]
   sort: string | null
   order: string | null
@@ -48,9 +58,6 @@ export default function UsersTable({
   order,
 }: DataTableProps) {
   const { t, language } = useTranslation()
-
-  const [querySearch, setQuerySearch] = React.useState(q || '')
-  const [selectedRoleSlugs, setSelectedRoleSlugs] = React.useState<string[]>(selectedRoles ?? [])
 
   const sorting = React.useMemo<SortingState>(
     () => (sort && order ? [{ id: sort, desc: order === 'desc' }] : []),
@@ -67,8 +74,8 @@ export default function UsersTable({
       router.get(
         urlFor('users.index'),
         {
-          q: querySearch.length > 0 ? querySearch : undefined,
-          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
+          q: q || undefined,
+          roles: selectedRoles.length > 0 ? selectedRoles : undefined,
           perPage: users.metadata.perPage,
           sort: nextSort,
           order: nextOrder,
@@ -81,7 +88,7 @@ export default function UsersTable({
         }
       )
     },
-    [sorting, querySearch, selectedRoleSlugs, users.metadata.perPage]
+    [sorting, q, selectedRoles, users.metadata.perPage]
   )
 
   const remoteTableOptions = useDataTable({
@@ -92,8 +99,8 @@ export default function UsersTable({
         {
           page,
           perPage,
-          q: querySearch.length > 0 ? querySearch : undefined,
-          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
+          q: q || undefined,
+          roles: selectedRoles.length > 0 ? selectedRoles : undefined,
           sort: sort ?? undefined,
           order: order ?? undefined,
         },
@@ -190,17 +197,58 @@ export default function UsersTable({
     },
   ]
 
+  // A new search or filter starts again on the first page, keeping the sort.
+  const filter = (next: UsersFilters) =>
+    router.get(
+      urlFor('users.index'),
+      {
+        q: next.q || undefined,
+        roles: next.roles.length > 0 ? next.roles : undefined,
+        perPage: users.metadata.perPage,
+        sort: sort ?? undefined,
+        order: order ?? undefined,
+      },
+      {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true,
+        only: ['users', 'rowCan', 'q', 'selectedRoles'],
+      }
+    )
+
+  const filtered = !!q || selectedRoles.length > 0
+
   return (
     <div className="space-y-4">
       <UsersTableFilters
+        q={q}
+        selectedRoles={selectedRoles}
         roles={roleOptions}
-        querySearch={querySearch}
-        setQuerySearch={setQuerySearch}
-        selectedRoles={selectedRoleSlugs}
-        setSelectedRoles={setSelectedRoleSlugs}
-        perPage={users.metadata.perPage}
+        onChange={filter}
       />
-      <DataTable columns={columns} data={users.data} remoteTableOptions={remoteTableOptions} />
+      <DataTable
+        columns={columns}
+        data={users.data}
+        remoteTableOptions={remoteTableOptions}
+        empty={
+          filtered ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <SearchX />
+                </EmptyMedia>
+                <EmptyTitle>{t('users.index.empty.title')}</EmptyTitle>
+                <EmptyDescription>{t('users.index.empty.description')}</EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button variant="outline" onClick={() => filter({ q: '', roles: [] })}>
+                  {t('core.table.filters.clear')}
+                </Button>
+              </EmptyContent>
+            </Empty>
+          ) : undefined
+        }
+      />
     </div>
   )
 }

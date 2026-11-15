@@ -87,6 +87,8 @@ interface DataTableProps<TData extends RowData> {
   Toolbar?: React.ComponentType<{ table: Table<TData> }>;
   labels?: Partial<DataTableLabels>;
   remoteTableOptions?: RemoteTableOptions;
+  /** Shown instead of the rows when there are none: say why, and offer the next action. */
+  empty?: React.ReactNode;
 }
 
 /** The table's own texts. English by default; an app passes its translations. */
@@ -94,6 +96,9 @@ export interface DataTableLabels {
   noResults: string;
   rowsPerPage: string;
   pageOf: (current: number, total: number) => string;
+  range: (from: number, to: number, total: number) => string;
+  pagination: string;
+  goToPage: (page: number) => string;
   goFirstPage: string;
   goPreviousPage: string;
   goNextPage: string;
@@ -104,6 +109,9 @@ export const defaultDataTableLabels: DataTableLabels = {
   noResults: "No results found.",
   rowsPerPage: "Rows per page",
   pageOf: (current, total) => `Page ${current} of ${total}`,
+  range: (from, to, total) => `${from}–${to} of ${total}`,
+  pagination: "Pagination",
+  goToPage: (page) => `Go to page ${page}`,
   goFirstPage: "Go to first page",
   goPreviousPage: "Go to previous page",
   goNextPage: "Go to next page",
@@ -112,6 +120,8 @@ export const defaultDataTableLabels: DataTableLabels = {
 
 export interface RemoteTableOptions {
   pageCount: number;
+  /** Rows across every page. */
+  total?: number;
   state: {
     pagination: { pageIndex: number; pageSize: number };
     sorting?: SortingState;
@@ -130,6 +140,7 @@ export function DataTable<TData extends RowData>({
   Toolbar,
   labels: customLabels,
   remoteTableOptions,
+  empty,
   className = "table-fixed md:table-auto",
 }: DataTableProps<TData>) {
   const labels = { ...defaultDataTableLabels, ...customLabels };
@@ -244,16 +255,20 @@ export function DataTable<TData extends RowData>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className={empty ? "p-0" : "h-24 text-center"}
                 >
-                  {labels.noResults}
+                  {empty ?? labels.noResults}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination labels={labels} table={table} />
+      <DataTablePagination
+        labels={labels}
+        table={table}
+        total={isRemote ? remoteTableOptions!.total : data.length}
+      />
     </div>
   );
 }

@@ -54,6 +54,10 @@
     "toolbar": {
       "invite": "Invite",
       "add": "Add"
+    },
+    "empty": {
+      "title": "No users match",
+      "description": "Try another name or email, or clear the filters."
     }
   },
   "password": {

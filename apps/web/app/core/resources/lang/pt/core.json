@@ -21,7 +21,13 @@
       "go_previous_page": "Ir para a página anterior",
       "go_next_page": "Ir para a próxima página",
       "go_last_page": "Ir para a última página",
-      "page_of": "Página {current} de {total}"
+      "page_of": "Página {current} de {total}",
+      "range": "{from}–{to} de {total}",
+      "label": "Paginação",
+      "go_to_page": "Ir para a página {page}"
+    },
+    "filters": {
+      "clear": "Limpar filtros"
     }
   },
   "notifications": {
@@ -41,5 +47,8 @@
   "impersonation": {
     "acting_as": "Você está como {name}",
     "return_as": "Voltar como {name}"
+  },
+  "search": {
+    "clear": "Limpar busca"
   }
 }

@@ -28,7 +28,7 @@ type PageProps = InertiaProps<{
       previousPageUrl?: string | null
     }
   }
-  q?: string
+  q: string | null
   selectedRoles: string[]
   institutionalRoles: string[]
   can: UsersPagePermissions['can']
