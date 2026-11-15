@@ -35,7 +35,7 @@ test.group('Help catalog', () => {
   }) => {
     const space = await guide()
     const none = new Set<string>()
-    const runs = new Set(['runs.view'])
+    const runs = new Set(['users.view_list'])
 
     assert.deepEqual(
       HelpCatalog.navigation(space, none).flatMap((category) =>
@@ -54,7 +54,7 @@ test.group('Help catalog', () => {
     const locked = space.articles.find((article) => article.slug === 'locked')!
 
     assert.isFalse(HelpCatalog.canRead(locked, new Set()))
-    assert.isTrue(HelpCatalog.canRead(locked, new Set(['runs.view'])))
+    assert.isTrue(HelpCatalog.canRead(locked, new Set(['users.view_list'])))
   })
 
   test('an image name outside the folder is refused', async ({ assert }) => {
@@ -74,6 +74,6 @@ test.group('Help catalog', () => {
   })
 
   test('capabilities lists each cited capability once', async ({ assert }) => {
-    assert.deepEqual(await HelpCatalog.at(FIXTURES).capabilities(), ['runs.view'])
+    assert.deepEqual(await HelpCatalog.at(FIXTURES).capabilities(), ['users.view_list'])
   })
 })

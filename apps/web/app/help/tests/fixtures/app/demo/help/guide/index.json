@@ -23,7 +23,7 @@
       "category": "basics",
       "order": 2,
       "file": "locked.md",
-      "capability": "runs.view",
+      "capability": "users.view_list",
       "updatedAt": "2026-11-10"
     }
   ]

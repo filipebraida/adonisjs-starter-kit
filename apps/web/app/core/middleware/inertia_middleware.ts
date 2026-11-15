@@ -10,6 +10,7 @@ import Notification from '#notifications/models/notification'
 import User from '#auth/models/user'
 import UserTransformer from '#users/transformers/user_transformer'
 import { currentImpersonation } from '#auth/enums/impersonation'
+import ListReadableHelpArticles from '#help/queries/list_readable_help_articles'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -52,6 +53,12 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       authz: ctx.inertia.always({ ...authzShare }),
       unseenNotifications: ctx.inertia.always(unseenNotifications),
       impersonation: ctx.inertia.always(await this.impersonation(ctx)),
+      // What a screen's "?" may open; resolved only on the visits that ask for it.
+      helpArticles: async (): Promise<string[]> => {
+        if (!auth?.user) return []
+        const articles = await ctx.containerResolver.make(ListReadableHelpArticles)
+        return articles.handle(auth.user as User)
+      },
     }
   }
 

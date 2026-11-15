@@ -14,7 +14,7 @@
       "category": "kept",
       "order": 1,
       "file": "secret.md",
-      "capability": "runs.view",
+      "capability": "users.view_list",
       "updatedAt": "2026-11-10"
     }
   ]

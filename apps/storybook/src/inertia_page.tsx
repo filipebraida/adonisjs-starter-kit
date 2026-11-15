@@ -14,6 +14,7 @@ export const SIGNED_IN: Record<
   {
     user: NonNullable<Data.SharedProps["user"]>;
     authz: Data.SharedProps["authz"];
+    helpArticles: Data.SharedProps["helpArticles"];
   }
 > = {
   admin: {
@@ -30,6 +31,15 @@ export const SIGNED_IN: Record<
         ...Object.values(CAPABILITIES_AUTH),
       ],
     },
+    helpArticles: [
+      "account/profile",
+      "account/password",
+      "account/appearance",
+      "account/api-tokens",
+      "administration/users",
+      "administration/roles",
+      "administration/activity",
+    ],
   },
   manager: {
     user: {
@@ -46,6 +56,12 @@ export const SIGNED_IN: Record<
         CAPABILITIES_USERS.usersInvite,
       ],
     },
+    helpArticles: [
+      "account/profile",
+      "account/password",
+      "account/appearance",
+      "administration/users",
+    ],
   },
   user: {
     user: {
@@ -55,6 +71,7 @@ export const SIGNED_IN: Record<
       avatarUrl: null,
     },
     authz: { roles: [ROLES.USER], permissions: [] },
+    helpArticles: ["account/profile", "account/password", "account/appearance"],
   },
 };
 
