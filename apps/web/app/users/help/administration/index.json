@@ -1,0 +1,56 @@
+{
+  "space": {
+    "slug": "administration",
+    "title": { "pt": "Administração", "en": "Administration" },
+    "summary": {
+      "pt": "Usuários, papéis e o registro de atividade.",
+      "en": "Users, roles and the activity log."
+    },
+    "order": 2
+  },
+  "categories": [
+    { "slug": "people", "title": { "pt": "Pessoas", "en": "People" }, "order": 1 },
+    { "slug": "control", "title": { "pt": "Controle", "en": "Control" }, "order": 2 }
+  ],
+  "articles": [
+    {
+      "slug": "users",
+      "title": { "pt": "Usuários", "en": "Users" },
+      "summary": {
+        "pt": "Achar, adicionar, convidar, editar e excluir quem usa o app.",
+        "en": "Finding, adding, inviting, editing and deleting the people who use the app."
+      },
+      "category": "people",
+      "order": 1,
+      "file": "users.md",
+      "capability": "users.view_list",
+      "updatedAt": "2026-11-15"
+    },
+    {
+      "slug": "roles",
+      "title": { "pt": "Papéis", "en": "Roles" },
+      "summary": {
+        "pt": "O que cada papel deixa fazer, e como criar um papel novo.",
+        "en": "What each role lets someone do, and how to make a new one."
+      },
+      "category": "control",
+      "order": 1,
+      "file": "roles.md",
+      "capability": "users.manage_roles",
+      "updatedAt": "2026-11-15"
+    },
+    {
+      "slug": "activity",
+      "title": { "pt": "Atividade", "en": "Activity" },
+      "summary": {
+        "pt": "Quem fez o quê, quando e de onde.",
+        "en": "Who did what, when and from where."
+      },
+      "category": "control",
+      "order": 2,
+      "file": "activity.md",
+      "capability": "users.audit",
+      "updatedAt": "2026-11-15"
+    }
+  ]
+}

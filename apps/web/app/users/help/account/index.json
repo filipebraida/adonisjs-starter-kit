@@ -1,0 +1,66 @@
+{
+  "space": {
+    "slug": "account",
+    "title": { "pt": "Sua conta", "en": "Your account" },
+    "summary": {
+      "pt": "Perfil, senha, aparência e tokens de API.",
+      "en": "Profile, password, appearance and API tokens."
+    },
+    "order": 1
+  },
+  "categories": [
+    { "slug": "profile", "title": { "pt": "Perfil", "en": "Profile" }, "order": 1 },
+    { "slug": "security", "title": { "pt": "Segurança", "en": "Security" }, "order": 2 }
+  ],
+  "articles": [
+    {
+      "slug": "profile",
+      "title": { "pt": "Seu perfil", "en": "Your profile" },
+      "summary": {
+        "pt": "A foto e o nome que os outros veem.",
+        "en": "The picture and the name others see."
+      },
+      "category": "profile",
+      "order": 1,
+      "file": "profile.md",
+      "updatedAt": "2026-11-15"
+    },
+    {
+      "slug": "appearance",
+      "title": { "pt": "Aparência e idioma", "en": "Appearance and language" },
+      "summary": {
+        "pt": "O tema claro ou escuro, e o idioma da interface.",
+        "en": "The light or dark theme, and the interface language."
+      },
+      "category": "profile",
+      "order": 2,
+      "file": "appearance.md",
+      "updatedAt": "2026-11-15"
+    },
+    {
+      "slug": "password",
+      "title": { "pt": "Trocar a senha", "en": "Changing your password" },
+      "summary": {
+        "pt": "Como trocar a senha e o que vale como uma boa senha.",
+        "en": "How to change your password, and what makes a good one."
+      },
+      "category": "security",
+      "order": 1,
+      "file": "password.md",
+      "updatedAt": "2026-11-15"
+    },
+    {
+      "slug": "api-tokens",
+      "title": { "pt": "Tokens de API", "en": "API tokens" },
+      "summary": {
+        "pt": "Criar, guardar e revogar um token para acessar a API.",
+        "en": "Creating, keeping and revoking a token to reach the API."
+      },
+      "category": "security",
+      "order": 2,
+      "file": "api-tokens.md",
+      "capability": "tokens.view_list",
+      "updatedAt": "2026-11-15"
+    }
+  ]
+}
