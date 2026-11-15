@@ -1,12 +1,14 @@
 import type { Preview } from "@storybook/react-vite";
 import { mswLoader } from "msw-storybook-addon/csf3";
 import { TuyauProvider } from "@adonisjs/inertia/react";
+import { router } from "@inertiajs/react";
 import { ModalStackProvider } from "adonis-inertia-modal/react";
 import i18next from "i18next";
 import ICU from "i18next-icu";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
+import { toast } from "@workspace/ui/hooks/use-toast";
 
 import "adonis-inertia-modal/styles.css";
 import "./preview.css";
@@ -37,6 +39,16 @@ void i18n.init({
   returnNull: false,
   returnEmptyString: false,
   react: { useSuspense: false },
+});
+
+// A link to a screen no story answers (Roles from the Users story) gets the
+// Storybook server's 404, which Inertia would show in an error modal: the
+// board says the screen is not on it instead.
+router.on("httpException", (event) => {
+  event.preventDefault();
+  toast("Not on the board", {
+    description: "No story answers this screen yet.",
+  });
 });
 
 const preview: Preview = {
