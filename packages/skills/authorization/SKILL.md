@@ -96,7 +96,7 @@ Policy runs before the validator so a 403 doesn't leak field-level errors to una
 
 ### Gate a UI element
 
-A screen learns what it may do from its controller, as the Inertia docs recommend: the controller asks the policies and passes booleans, per page and per record. The policy stays the only place that maps roles to permissions, and a rule about the record (a manager may not edit an admin) reaches the button too.
+A screen learns what it may do from its controller, as the Inertia docs recommend: the controller asks the policies and passes booleans, per page and per record. The policy stays the only place that maps roles to permissions, and a rule about the record (nobody deletes their own account) reaches the button too.
 
 ```ts
 // controller

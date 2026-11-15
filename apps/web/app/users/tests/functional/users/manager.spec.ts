@@ -42,7 +42,7 @@ test.group('Manager role', (group) => {
     )
   })
 
-  test('creates and edits a regular user', async ({ client, assert }) => {
+  test('creates a regular user', async ({ client, assert }) => {
     const user = await manager()
     const email = `managed-${Date.now()}@example.test`
 
@@ -54,15 +54,6 @@ test.group('Manager role', (group) => {
       .redirects(0)
     const created = await User.findByOrFail('email', email)
     assert.deepEqual(await created.getRoles(), [ROLES.USER])
-
-    await client
-      .put(`/users/${created.id}`)
-      .json({ fullName: 'Managed Two', email, role: ROLES.USER })
-      .loginAs(user)
-      .withCsrfToken()
-      .redirects(0)
-    await created.refresh()
-    assert.equal(created.fullName, 'Managed Two')
   })
 
   test('cannot grant a role above user', async ({ client, assert }) => {
@@ -80,24 +71,24 @@ test.group('Manager role', (group) => {
     assert.isNull(await User.findBy('email', email))
   })
 
-  test('cannot edit or delete an admin', async ({ client, assert }) => {
+  test('edits or deletes no other account, not even a regular one', async ({ client, assert }) => {
     const user = await manager()
-    const admin = await UserFactory.merge({ fullName: 'The Admin' }).create()
-    await withRole(admin, ROLES.ADMIN)
+    const target = await UserFactory.merge({ fullName: 'Regular' }).create()
+    await withRole(target, ROLES.USER)
 
     assertForbiddenRedirect(
       await client
-        .put(`/users/${admin.id}`)
-        .json({ fullName: 'Taken Over', email: admin.email, role: ROLES.ADMIN })
+        .put(`/users/${target.id}`)
+        .json({ fullName: 'Taken Over', email: target.email, role: ROLES.USER })
         .loginAs(user)
         .withCsrfToken()
         .redirects(0)
     )
     assertForbiddenRedirect(
-      await client.delete(`/users/${admin.id}`).loginAs(user).withCsrfToken().redirects(0)
+      await client.delete(`/users/${target.id}`).loginAs(user).withCsrfToken().redirects(0)
     )
 
-    await admin.refresh()
-    assert.equal(admin.fullName, 'The Admin')
+    await target.refresh()
+    assert.equal(target.fullName, 'Regular')
   })
 })
