@@ -3,7 +3,7 @@
   "E_INVALID_CREDENTIALS": "E-mail ou senha inválidos",
   "E_VALIDATION_ERROR": "O formulário não pôde ser salvo. Verifique os erros acima.",
   "E_AUTHORIZATION_FAILURE": "Você não tem permissão para executar esta ação.",
-  "E_STRUCTURAL_ROLE": "Papéis definidos no código não podem ser criados, editados ou excluídos aqui.",
+  "E_STRUCTURAL_ROLE": "Papéis nativos não podem ser criados, editados ou excluídos aqui.",
   "E_ROLE_NOT_FOUND": "O papel {role} não existe.",
   "E_ROLE_HAS_MEMBERS": "{total, plural, one {# usuário ainda tem} other {# usuários ainda têm}} este papel. Remova o papel deles antes de excluí-lo.",
   "E_UNKNOWN_CAPABILITY": "Capacidade desconhecida: {capability}."
