@@ -72,7 +72,8 @@ export default function AdminLayout({
                 <NavUser user={user} options={navUser} />
               </div>
             </header>
-            <main className="flex flex-1 flex-col gap-4 py-4 px-6 overflow-y-auto">{children}</main>
+            {/* A div: SidebarInset is already the page's <main>. */}
+            <div className="flex flex-1 flex-col gap-4 py-4 px-6 overflow-y-auto">{children}</div>
           </SidebarInset>
         </SidebarProvider>
       </div>

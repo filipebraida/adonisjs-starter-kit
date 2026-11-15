@@ -4,6 +4,7 @@ import type { Data } from '@generated/data'
 
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import Heading from '#core/ui/components/heading'
+import { Main } from '#core/ui/components/main'
 import { HelpLink } from '#help/ui/components/help/help_link'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
 import { PasswordForm } from '#users/ui/components/password_form'
@@ -29,7 +30,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
       <Head title={t('users.layout.title')} />
-      <div className="mx-auto w-full max-w-[840px] px-4 pt-8 pb-24 sm:px-6 lg:px-10">
+      <Main size="column">
         <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
 
         <SettingsSection
@@ -67,7 +68,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
             <TokensSection tokens={tokens} newToken={newToken} />
           </SettingsSection>
         )}
-      </div>
+      </Main>
     </AuthenticatedLayout>
   )
 }

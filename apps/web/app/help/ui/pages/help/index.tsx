@@ -14,6 +14,7 @@ import type { Data } from '@generated/data'
 import type { InertiaProps } from '#core/ui/app/types'
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import Heading from '#core/ui/components/heading'
+import { Main } from '#core/ui/components/main'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
@@ -25,7 +26,7 @@ export default function HelpIndexPage({ spaces }: PageProps) {
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('help.title') }]}>
       <Head title={t('help.title')} />
-      <div className="mx-auto flex w-full max-w-[840px] flex-col gap-6 px-4 pt-8 pb-24 sm:px-6 lg:px-10">
+      <Main size="column" className="flex flex-col gap-6">
         <Heading title={t('help.title')} description={t('help.index.description')} />
         {spaces.length === 0 && (
           <Empty>
@@ -61,7 +62,7 @@ export default function HelpIndexPage({ spaces }: PageProps) {
             </li>
           ))}
         </ul>
-      </div>
+      </Main>
     </AuthenticatedLayout>
   )
 }

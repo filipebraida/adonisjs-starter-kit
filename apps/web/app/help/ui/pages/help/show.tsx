@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { InertiaProps } from '#core/ui/app/types'
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import Heading from '#core/ui/components/heading'
+import { Main } from '#core/ui/components/main'
 import { Markdown } from '#core/ui/components/markdown'
 import { formatDate } from '#core/ui/format/date'
 import { useScrollToHash } from '#core/ui/hooks/use_scroll_to_hash'
@@ -45,7 +46,7 @@ export default function HelpShowPage({
       ]}
     >
       <Head title={`${article.title} · ${t('help.title')}`} />
-      <div className="mx-auto grid w-full max-w-7xl items-start gap-10 px-4 pt-8 pb-24 sm:px-6 lg:px-10 xl:grid-cols-help">
+      <Main size="reading" className="grid items-start gap-10 xl:grid-cols-help">
         {/* One list for every width: after the text on a phone, at its left from `xl`. */}
         <aside
           aria-label={t('help.show.space')}
@@ -114,7 +115,7 @@ export default function HelpShowPage({
             </ul>
           </aside>
         )}
-      </div>
+      </Main>
     </AuthenticatedLayout>
   )
 }
