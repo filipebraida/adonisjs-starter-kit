@@ -1,6 +1,8 @@
 import app from '@adonisjs/core/services/app'
 import { defineConfig, stores, transports } from '@adonis-agora/durable'
 
+import { moduleDirs } from '#core/utils/module_dirs'
+
 // The runs that carry a mail's secrets (a password reset token, an invite
 // link): kept only long enough to read a failure.
 const MAIL_WORKFLOWS = ['auth.send-password-reset', 'users.send-welcome']
@@ -20,9 +22,9 @@ export default defineConfig({
   // The tables come from core's create_durable_tables migration.
   autoSchema: false,
 
-  // Workflows live in their module. List a module's folder here, and in the
-  // workflowsHook of adonisrc.ts, when it gets its first workflow.
-  workflowsPath: ['app/auth/workflows', 'app/users/workflows'],
+  // Workflows live in their module's workflows/ folder, found on their own
+  // here and in the workflowsHook of adonisrc.ts.
+  workflowsPath: moduleDirs(app.makePath(), 'workflows'),
   stepsPath: false,
 
   // The worker (timers, schedules, recovery) runs inside the web process, so

@@ -32,7 +32,7 @@ Business logic lives in **actions**; cross-cutting effects run through **events*
 
 - **Bindings** live in `app/<mod>/start/events.ts`, and only there: `emitter.on('event:name', [() => import('#<mod>/listeners/<name>')])` — a lazy import of a listener class, never an inline closure. Preload the file from `adonisrc.ts` so it wires at boot (see [[module-scaffolding]]).
 - **Listeners only schedule.** `app/<mod>/listeners/<verb_object>.ts` default-exports a class whose `handle(event)` calls `XWorkflow.dispatch({...})` with plain, serializable data (ids, tokens, already-translated strings), never a Lucid model. No `mail.send`, no `facteur`, no `transmit`, no DB read or write in the listener.
-- **Workflows do the effect.** `app/<mod>/workflows/<verb_object>_workflow.ts` extends `BaseWorkflow` with `static workflow = { name: '<mod>.<verb-object>', version: '1' }` and a `run(ctx, input)` whose every side effect sits in its own `ctx.localStep('<name>', fn, { retries, backoff })`. Each step is checkpointed, so a retry of a failed step does not repeat the steps that already succeeded. Reload models by id inside the step. The workflow folder must be listed in `workflowsPath` (`config/durable.ts`) **and** in the `workflowsHook` `source` of `adonisrc.ts`.
+- **Workflows do the effect.** `app/<mod>/workflows/<verb_object>_workflow.ts` extends `BaseWorkflow` with `static workflow = { name: '<mod>.<verb-object>', version: '1' }` and a `run(ctx, input)` whose every side effect sits in its own `ctx.localStep('<name>', fn, { retries, backoff })`. Each step is checkpointed, so a retry of a failed step does not repeat the steps that already succeeded. Reload models by id inside the step. The folder is found on its own (`moduleDirs` in `config/durable.ts` and the `workflowsHook`); run `pnpm ace codegen` after adding the module's first workflow.
 - **Guards as helper functions** at the top of the action file — e.g. `requireManageRolesIfEscalating(executor, roles)` throws if not permitted. Keeps the action body short and the guard reusable across actions.
 - **Controllers call actions**: `await new Action().handle(input)`. An action never calls another action (the lint enforces it; `sync_user_roles` is the one named exception in `apps/web/eslint.config.js`); if two actions need shared work, extract a service (behavior with side effects), a model method, or a query (read-only).
 
@@ -108,7 +108,7 @@ Payload: plain, serializable. Include the primary entity + whatever the listener
    }
    ```
    One `ctx.localStep` per effect (mail, notification, webhook), each with a stable name. Nothing with I/O outside a step: the body replays on every turn. Changing the steps of a live workflow means bumping `version` (see the `durable-determinism` skill).
-2. **First workflow of the module?** Add `'app/<mod>/workflows'` to `workflowsPath` in `config/durable.ts` and to `workflowsHook({ source: [...] })` in `adonisrc.ts`. Names are unique across folders — prefix them with the module.
+2. **First workflow of the module?** Nothing to list; run `pnpm ace codegen` so the generated barrel includes it. Names are unique across folders — prefix them with the module.
 3. **Listener** at `app/<mod>/listeners/<verb_object>.ts`:
    ```ts
    import type { EventsList } from '@adonisjs/core/types'

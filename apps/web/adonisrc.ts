@@ -1,5 +1,8 @@
+import { fileURLToPath } from 'node:url'
+
 import { indexAppUiPages } from '#core/hooks/index_pages_hook'
 import { indexTranslations } from '#core/hooks/index_translations_hook'
+import { moduleDirs } from '#core/utils/module_dirs'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
@@ -185,7 +188,9 @@ export default defineConfig({
       indexTranslations(),
       generateRegistry(),
       async () => ({
-        default: workflowsHook({ source: ['app/auth/workflows', 'app/users/workflows'] }),
+        default: workflowsHook({
+          source: moduleDirs(fileURLToPath(new URL('./', import.meta.url)), 'workflows'),
+        }),
       }),
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
