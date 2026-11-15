@@ -1,0 +1,21 @@
+{
+  "space": {
+    "slug": "vault",
+    "title": { "pt": "Cofre", "en": "Vault" },
+    "summary": { "pt": "Só com a capacidade.", "en": "Only with the capability." },
+    "order": 2
+  },
+  "categories": [{ "slug": "kept", "title": { "pt": "Guardado", "en": "Kept" }, "order": 1 }],
+  "articles": [
+    {
+      "slug": "secret",
+      "title": { "pt": "Segredo", "en": "Secret" },
+      "summary": { "pt": "Restrito.", "en": "Locked." },
+      "category": "kept",
+      "order": 1,
+      "file": "secret.md",
+      "capability": "runs.view",
+      "updatedAt": "2026-11-10"
+    }
+  ]
+}

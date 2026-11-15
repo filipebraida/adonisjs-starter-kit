@@ -1,0 +1,25 @@
+{
+  "space": {
+    "slug": "guide",
+    "title": {
+      "pt": "Guia",
+      "en": "Guide"
+    },
+    "summary": {
+      "pt": "Um espaço de teste.",
+      "en": "A test space."
+    },
+    "order": "first"
+  },
+  "categories": [
+    {
+      "slug": "basics",
+      "title": {
+        "pt": "Básico",
+        "en": "Basics"
+      },
+      "order": 1
+    }
+  ],
+  "articles": []
+}

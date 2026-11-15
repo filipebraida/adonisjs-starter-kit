@@ -8,6 +8,7 @@ declare module 'i18next' {
         auth: typeof import('../../app/auth/resources/lang/en/auth.json')
         errors: typeof import('../../app/auth/resources/lang/en/errors.json')
         core: typeof import('../../app/core/resources/lang/en/core.json')
+        help: typeof import('../../app/help/resources/lang/en/help.json')
         marketing: typeof import('../../app/marketing/resources/lang/en/marketing.json')
         users: typeof import('../../app/users/resources/lang/en/users.json')
         validator: typeof import('../../app/users/resources/lang/en/validator.json')

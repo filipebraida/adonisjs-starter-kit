@@ -81,6 +81,7 @@ export default defineConfig({
     () => import('@adonis-agora/authz/authz_provider'),
     () => import('@adonis-agora/durable/durable_provider'),
     () => import('@filipebraida/adonis-auditing/auditing_provider'),
+    () => import('@adonisjs/content/content_provider'),
   ],
 
   /*
@@ -115,6 +116,9 @@ export default defineConfig({
 
     //notifications
     () => import('#notifications/routes'),
+
+    //help
+    () => import('#help/routes'),
   ],
 
   /*
@@ -162,6 +166,11 @@ export default defineConfig({
     },
     {
       pattern: 'app/**/resources/lang/**/*.{json,yaml,yml}',
+      reloadServer: false,
+    },
+    // Each module's help: indexes, articles and their images go into the build.
+    {
+      pattern: 'app/*/help/**/*.{json,md,png,jpg,jpeg,webp}',
       reloadServer: false,
     },
   ],

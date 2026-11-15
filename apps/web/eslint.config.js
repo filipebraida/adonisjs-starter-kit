@@ -8,7 +8,8 @@ const DEPENDENCIES = {
   core: [],
   auth: ['core'],
   notifications: ['core', 'auth'],
-  users: ['core', 'auth', 'notifications'],
+  help: ['core', 'auth'],
+  users: ['core', 'auth', 'notifications', 'help'],
   analytics: ['core', 'auth'],
   marketing: ['core', 'auth'],
 }
