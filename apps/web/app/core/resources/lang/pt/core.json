@@ -50,5 +50,15 @@
   },
   "search": {
     "clear": "Limpar busca"
+  },
+  "markdown": {
+    "alert": {
+      "note": "Nota",
+      "tip": "Dica",
+      "important": "Importante",
+      "warning": "Atenção",
+      "caution": "Cuidado"
+    },
+    "mermaidFailed": "O diagrama não pôde ser desenhado."
   }
 }

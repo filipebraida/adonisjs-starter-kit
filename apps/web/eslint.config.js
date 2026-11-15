@@ -107,6 +107,14 @@ export default configApp(
     rules: { 'adonis/module-allowed-dirs': 'off', 'adonis/unit-test-mirrors-layer': 'off' },
   },
   {
+    // A component with logic worth a unit spec (the Markdown's sanitizing,
+    // its heading ids) is rendered statically with react-dom/server; the
+    // preset has no unit-test layer for `ui/components/`.
+    name: 'UI rendered statically in a unit spec',
+    files: ['app/core/tests/unit/ui/**'],
+    rules: { 'adonis/unit-test-mirrors-layer': 'off' },
+  },
+  {
     // The locale parity spec tests `<module>/resources/lang/`, a folder the
     // preset has no unit-test layer for. Pending decision: add `resources` to
     // unit-test-mirrors-layer upstream, then drop this block.
