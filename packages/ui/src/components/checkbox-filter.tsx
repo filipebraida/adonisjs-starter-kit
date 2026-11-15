@@ -51,11 +51,11 @@ export function CheckboxFilter<T extends string>({
   onChange,
   searchPlaceholder,
   className,
-  emptyMessage = "Sem resultados.",
+  emptyMessage = "No results found.",
   showSelectedBadges = true,
   maxBadgesInTrigger = 2,
   showClearButton = true,
-  clearLabel = "Limpar filtro",
+  clearLabel = "Clear filter",
 }: CheckboxFilterProps<T>) {
   const selectedCount = value.length;
 

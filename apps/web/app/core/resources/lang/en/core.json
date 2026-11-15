@@ -13,14 +13,6 @@
     }
   },
   "table": {
-    "filters": {
-      "clear_filters": "Clear filters",
-      "no_results": "No results found.",
-      "nb_selected": "selected"
-    },
-    "row_actions": {
-      "clear": "Clear"
-    },
     "no_results": "No results found.",
     "pagination": {
       "rows_per_page": "Rows per page",

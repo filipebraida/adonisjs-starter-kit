@@ -85,9 +85,30 @@ interface DataTableProps<TData extends RowData> {
   data: TData[];
   className?: string;
   Toolbar?: React.ComponentType<{ table: Table<TData> }>;
-  t: (key: string, options?: Record<string, unknown>) => string;
+  labels?: Partial<DataTableLabels>;
   remoteTableOptions?: RemoteTableOptions;
 }
+
+/** The table's own texts. English by default; an app passes its translations. */
+export interface DataTableLabels {
+  noResults: string;
+  rowsPerPage: string;
+  pageOf: (current: number, total: number) => string;
+  goFirstPage: string;
+  goPreviousPage: string;
+  goNextPage: string;
+  goLastPage: string;
+}
+
+export const defaultDataTableLabels: DataTableLabels = {
+  noResults: "No results found.",
+  rowsPerPage: "Rows per page",
+  pageOf: (current, total) => `Page ${current} of ${total}`,
+  goFirstPage: "Go to first page",
+  goPreviousPage: "Go to previous page",
+  goNextPage: "Go to next page",
+  goLastPage: "Go to last page",
+};
 
 export interface RemoteTableOptions {
   pageCount: number;
@@ -107,10 +128,11 @@ export function DataTable<TData extends RowData>({
   columns,
   data,
   Toolbar,
-  t,
+  labels: customLabels,
   remoteTableOptions,
   className = "table-fixed md:table-auto",
 }: DataTableProps<TData>) {
+  const labels = { ...defaultDataTableLabels, ...customLabels };
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [localPagination, setLocalPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -224,14 +246,14 @@ export function DataTable<TData extends RowData>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {t("core.table.no_results")}
+                  {labels.noResults}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination t={t} table={table} />
+      <DataTablePagination labels={labels} table={table} />
     </div>
   );
 }

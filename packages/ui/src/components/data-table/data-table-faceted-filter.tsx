@@ -30,14 +30,18 @@ interface DataTableFacetedFilterProps<TData extends RowData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
-  t: (key: string, options?: Record<string, unknown>) => string;
+  selectedLabel?: string;
+  emptyMessage?: string;
+  clearLabel?: string;
 }
 
 export function DataTableFacetedFilter<TData extends RowData, TValue>({
   column,
   title,
   options,
-  t,
+  selectedLabel = "selected",
+  emptyMessage = "No results found.",
+  clearLabel = "Clear filters",
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
@@ -63,7 +67,7 @@ export function DataTableFacetedFilter<TData extends RowData, TValue>({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValues.size} {t("core.table.filters.nb_selected")}
+                    {selectedValues.size} {selectedLabel}
                   </Badge>
                 ) : (
                   options
@@ -87,7 +91,7 @@ export function DataTableFacetedFilter<TData extends RowData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>{t("core.table.filters.no_results")}</CommandEmpty>
+            <CommandEmpty>{emptyMessage}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -137,7 +141,7 @@ export function DataTableFacetedFilter<TData extends RowData, TValue>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    {t("core.table.filters.clear_filters")}
+                    {clearLabel}
                   </CommandItem>
                 </CommandGroup>
               </>

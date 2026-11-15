@@ -13,14 +13,6 @@
     }
   },
   "table": {
-    "filters": {
-      "clear_filters": "Limpar os filtros",
-      "no_results": "Nenhum resultado encontrado.",
-      "nb_selected": "selecionados"
-    },
-    "row_actions": {
-      "clear": "Limpar"
-    },
     "no_results": "Nenhum resultado encontrado.",
     "pagination": {
       "rows_per_page": "Linhas por página",

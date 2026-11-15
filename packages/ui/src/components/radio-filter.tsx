@@ -48,7 +48,7 @@ export function RadioFilter<T extends string>({
   onChange,
   searchPlaceholder,
   className,
-  emptyMessage = "Nenhum resultado.",
+  emptyMessage = "No results found.",
 }: RadioFilterProps<T>) {
   const selected = options.find((o) => o.value === value);
   const selectedCount = value ? 1 : 0;

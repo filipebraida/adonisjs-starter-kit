@@ -1,5 +1,8 @@
 import type { RowData } from "@tanstack/react-table";
-import type { Table } from "@workspace/ui/components/data-table/data-table";
+import type {
+  DataTableLabels,
+  Table,
+} from "@workspace/ui/components/data-table/data-table";
 import {
   ChevronLeft,
   ChevronRight,
@@ -18,12 +21,12 @@ import {
 
 interface DataTablePaginationProps<TData extends RowData> {
   table: Table<TData>;
-  t: (key: string, options?: Record<string, unknown>) => string;
+  labels: DataTableLabels;
 }
 
 export function DataTablePagination<TData extends RowData>({
   table,
-  t,
+  labels,
 }: DataTablePaginationProps<TData>) {
   const pageIndex = table.state.pagination.pageIndex;
   const pageCount = table.getPageCount();
@@ -32,9 +35,7 @@ export function DataTablePagination<TData extends RowData>({
   return (
     <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-end sm:gap-6 lg:gap-8">
       <div className="hidden items-center gap-2 sm:flex">
-        <p className="text-sm font-medium">
-          {t("core.table.pagination.rows_per_page")}
-        </p>
+        <p className="text-sm font-medium">{labels.rowsPerPage}</p>
         <Select
           value={`${pageSize}`}
           onValueChange={(value) => table.setPageSize(Number(value))}
@@ -54,10 +55,7 @@ export function DataTablePagination<TData extends RowData>({
 
       <div className="flex items-center justify-between gap-3 sm:gap-2">
         <div className="text-sm font-medium">
-          {t("core.table.pagination.page_of", {
-            current: pageIndex + 1,
-            total: pageCount,
-          })}
+          {labels.pageOf(pageIndex + 1, pageCount)}
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           <Button
@@ -66,9 +64,7 @@ export function DataTablePagination<TData extends RowData>({
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">
-              {t("core.table.pagination.go_first_page")}
-            </span>
+            <span className="sr-only">{labels.goFirstPage}</span>
             <ChevronsLeft />
           </Button>
           <Button
@@ -77,9 +73,7 @@ export function DataTablePagination<TData extends RowData>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">
-              {t("core.table.pagination.go_previous_page")}
-            </span>
+            <span className="sr-only">{labels.goPreviousPage}</span>
             <ChevronLeft />
           </Button>
           <Button
@@ -88,9 +82,7 @@ export function DataTablePagination<TData extends RowData>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">
-              {t("core.table.pagination.go_next_page")}
-            </span>
+            <span className="sr-only">{labels.goNextPage}</span>
             <ChevronRight />
           </Button>
           <Button
@@ -99,9 +91,7 @@ export function DataTablePagination<TData extends RowData>({
             onClick={() => table.setPageIndex(pageCount - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">
-              {t("core.table.pagination.go_last_page")}
-            </span>
+            <span className="sr-only">{labels.goLastPage}</span>
             <ChevronsRight />
           </Button>
         </div>

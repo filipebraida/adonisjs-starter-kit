@@ -4,12 +4,13 @@ import { useDebounceCallback } from 'usehooks-ts'
 import { X } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
-import { ColumnDef, DataTable } from '@workspace/ui/components/data-table'
+import { ColumnDef } from '@workspace/ui/components/data-table'
 import { Input } from '@workspace/ui/components/input'
 import { RadioFilter } from '@workspace/ui/components/radio-filter'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { urlFor } from '~/app/client'
+import { DataTable } from '#core/ui/components/data_table'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { formatDateTime } from '#core/ui/format/date'
 
@@ -188,12 +189,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
         )}
       </div>
 
-      <DataTable
-        columns={columns}
-        data={audits.data}
-        t={t}
-        remoteTableOptions={remoteTableOptions}
-      />
+      <DataTable columns={columns} data={audits.data} remoteTableOptions={remoteTableOptions} />
     </div>
   )
 }

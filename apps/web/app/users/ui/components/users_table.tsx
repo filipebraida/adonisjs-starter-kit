@@ -1,15 +1,11 @@
 import { router } from '@inertiajs/react'
 import React from 'react'
 
-import {
-  ColumnDef,
-  DataTable,
-  type OnChangeFn,
-  type SortingState,
-} from '@workspace/ui/components/data-table'
+import { ColumnDef, type OnChangeFn, type SortingState } from '@workspace/ui/components/data-table'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { urlFor } from '~/app/client'
+import { DataTable } from '#core/ui/components/data_table'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { formatDate } from '#core/ui/format/date'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
@@ -204,12 +200,7 @@ export default function UsersTable({
         setSelectedRoles={setSelectedRoleSlugs}
         perPage={users.metadata.perPage}
       />
-      <DataTable
-        columns={columns}
-        data={users.data}
-        t={t}
-        remoteTableOptions={remoteTableOptions}
-      />
+      <DataTable columns={columns} data={users.data} remoteTableOptions={remoteTableOptions} />
     </div>
   )
 }

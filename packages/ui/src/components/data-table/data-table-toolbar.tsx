@@ -7,13 +7,13 @@ import { Button } from "@workspace/ui/components/button";
 interface DataTableToolbarProps<TData extends RowData> {
   table: Table<TData>;
   additionalFilters?: React.ReactNode;
-  t: (key: string, options?: Record<string, unknown>) => string;
+  clearLabel?: string;
 }
 
 export function DataTableToolbar<TData extends RowData>({
   table,
   additionalFilters,
-  t,
+  clearLabel = "Clear",
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.state.columnFilters.length > 0;
 
@@ -27,7 +27,7 @@ export function DataTableToolbar<TData extends RowData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            {t("core.table.row_actions.clear")}
+            {clearLabel}
             <X />
           </Button>
         )}
