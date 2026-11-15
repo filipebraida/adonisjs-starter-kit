@@ -96,13 +96,23 @@ Policy runs before the validator so a 403 doesn't leak field-level errors to una
 
 ### Gate a UI element
 
-```tsx
-import { useCan } from '@adonis-agora/authz-react'
+A screen learns what it may do from its controller, as the Inertia docs recommend: the controller asks the policies and passes booleans, per page and per record. The policy stays the only place that maps roles to permissions, and a rule about the record (a manager may not edit an admin) reaches the button too.
 
-const canCreate = useCan(CAPABILITIES_INVOICES.invoicesCreate)
+```ts
+// controller
+const policy = bouncer.with(InvoicePolicy)
+return inertia.render('invoices/index', {
+  invoices: ...,
+  can: { create: await policy.allows('create') },
+  rowCan: Object.fromEntries(
+    await Promise.all(rows.map(async (row) => [row.id, { update: await policy.allows('update', row) }]))
+  ),
+})
 ```
 
-For lists filtered in one render (nav items), set `can: CAPABILITIES_X.y` on the item — `useAllows()` filters them. See [[layout-shells]].
+A partial reload that refreshes the records (`only: [...]`) must also list `rowCan`, or new rows show stale actions. Canonical example: `app/users/controllers/users_controller.ts` + `app/users/ui/components/users_row_actions.tsx`.
+
+`useCan(capability)` from `@adonis-agora/authz-react` is for what is global to the app, not to one screen: the nav (set `can: CAPABILITIES_X.y` on the item and `useAllows()` filters it, see [[layout-shells]]). Never decide by role in the UI (`role === ROLES.X`); the lint rejects it.
 
 ### Escalation-safe user creation / invite
 
@@ -127,7 +137,8 @@ What the role grants comes from `roleGrants`; the assignment is rolled back with
 - ❌ Giving an institutional role the name of a structural one — `CreateRole` refuses it: the stored grants would add to the code ones.
 - ❌ Calling `user.can()` in a policy instead of `Authorizer.can` — it skips the request's shared cache.
 - ❌ Writing through `AuthzRole` or the authz tables directly — use `assignRole` / the store, so the lib's invariants hold.
-- ❌ Gating only on the frontend — `useCan` is UX, the policy is security.
+- ❌ Gating only on the frontend — a hidden button is UX, the policy is security.
+- ❌ A screen computing its own permissions with `useCan` for things a policy decides per record — pass `can`/`rowCan` from the controller.
 - ❌ Removing an escalation guard "because the validator handles it" — it's defense in depth.
 - ❌ Owner check via `.where('owner_id', user.id)` in a query instead of the policy.
 

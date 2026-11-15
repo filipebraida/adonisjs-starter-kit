@@ -17,10 +17,16 @@ import type { Data } from '@generated/data'
 type PageProps = InertiaProps<{
   user: Data.Users.User.Variants['forEdit']
   institutionalRoles: string[]
+  canManageRoles: boolean
 }>
 
-export default function EditUserPage({ user, institutionalRoles }: PageProps) {
+export default function EditUserPage({ user, institutionalRoles, canManageRoles }: PageProps) {
   const { t } = useTranslation()
+  const currentRole = displayRole(user.roles) ?? ROLES.USER
+  // Without managing roles the role can only stay as it is: keep the current one on offer.
+  const roles = userRoles(t, institutionalRoles).filter(
+    (role) => canManageRoles || role.value === ROLES.USER || role.value === currentRole
+  )
   const formRef = useRef<FormRef>(null)
 
   return (
@@ -50,10 +56,10 @@ export default function EditUserPage({ user, institutionalRoles }: PageProps) {
                   defaults={{
                     fullName: user.fullName ?? '',
                     email: user.email,
-                    role: displayRole(user.roles) ?? ROLES.USER,
+                    role: currentRole,
                   }}
                   errors={errors}
-                  roles={userRoles(t, institutionalRoles)}
+                  roles={roles}
                 />
 
                 <footer className="flex justify-end gap-2 pt-4">

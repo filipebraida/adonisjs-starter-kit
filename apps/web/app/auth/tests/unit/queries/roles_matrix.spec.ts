@@ -25,6 +25,7 @@ test.group('RolesMatrix', (group) => {
       roles.map((role) => [role.name, role.structural]),
       [
         [ROLES.ADMIN, true],
+        [ROLES.MANAGER, true],
         [ROLES.USER, true],
         ['reviewer', false],
       ]

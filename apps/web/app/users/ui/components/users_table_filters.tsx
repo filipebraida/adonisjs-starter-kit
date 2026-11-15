@@ -40,7 +40,7 @@ export default function UsersTableFilters({
         preserveScroll: true,
         preserveState: true,
         replace: true,
-        only: ['users'],
+        only: ['users', 'rowCan'],
       })
     },
     []

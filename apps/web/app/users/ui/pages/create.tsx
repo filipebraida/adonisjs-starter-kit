@@ -13,9 +13,9 @@ import { ROLES } from '#auth/enums/role'
 
 import type { InertiaProps } from '#core/ui/app/types'
 
-type PageProps = InertiaProps<{ institutionalRoles: string[] }>
+type PageProps = InertiaProps<{ institutionalRoles: string[]; canManageRoles: boolean }>
 
-export default function CreateUserPage({ institutionalRoles }: PageProps) {
+export default function CreateUserPage({ institutionalRoles, canManageRoles }: PageProps) {
   const { t } = useTranslation()
   const formRef = useRef<FormRef>(null)
 
@@ -44,7 +44,7 @@ export default function CreateUserPage({ institutionalRoles }: PageProps) {
                 <UserFormFields
                   defaults={{ fullName: '', email: '', role: ROLES.USER }}
                   errors={errors}
-                  roles={userRoles(t, institutionalRoles)}
+                  roles={userRoles(t, institutionalRoles, canManageRoles)}
                 />
 
                 <footer className="flex justify-end gap-2 pt-4">

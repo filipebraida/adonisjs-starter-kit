@@ -1,5 +1,6 @@
 export const ROLES = {
   USER: 'user',
+  MANAGER: 'manager',
   ADMIN: 'admin',
 } as const
 
@@ -7,6 +8,7 @@ export type Role = (typeof ROLES)[keyof typeof ROLES]
 
 const ROLE_WEIGHTS: Record<Role, number> = {
   admin: 20,
+  manager: 15,
   user: 10,
 }
 

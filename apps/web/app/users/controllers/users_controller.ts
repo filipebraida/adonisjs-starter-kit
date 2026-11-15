@@ -5,6 +5,7 @@ import DeleteUser from '#users/actions/delete_user'
 import UpdateUser from '#users/actions/update_user'
 import User from '#auth/models/user'
 import { institutionalRoles } from '#auth/queries/roles_query'
+import ImpersonatePolicy from '#users/policies/impersonate_policy'
 import UserPolicy from '#users/policies/user_policy'
 import ListUsers from '#users/queries/list_users'
 import UserTransformer from '#users/transformers/user_transformer'
@@ -25,8 +26,29 @@ export default class UsersController {
     const usersData = users.all()
     await User.preComputeUrls(usersData)
 
+    // What this screen lets the signed-in user do, decided by the policies: per page and per row.
+    const policy = bouncer.with(UserPolicy)
+    const rowCan = Object.fromEntries(
+      await Promise.all(
+        usersData.map(async (user) => [
+          user.id,
+          {
+            update: await policy.allows('update', user),
+            delete: await policy.allows('delete', user),
+            impersonate: await bouncer.with(ImpersonatePolicy).allows('create', user),
+          },
+        ])
+      )
+    )
+
     return inertia.render('users/index', {
       users: UserTransformer.paginate(usersData, users.getMeta()).useVariant('forList'),
+      can: {
+        create: await policy.allows('create'),
+        invite: await policy.allows('invite'),
+        viewActivity: await policy.allows('viewActivity'),
+      },
+      rowCan,
       q: payload.q,
       selectedRoles: payload.roles ?? [],
       institutionalRoles: await institutionalRoles(),
@@ -40,7 +62,10 @@ export default class UsersController {
 
     return inertia.modal(
       'users/create',
-      { institutionalRoles: await institutionalRoles() },
+      {
+        institutionalRoles: await institutionalRoles(),
+        canManageRoles: await bouncer.with(UserPolicy).allows('manageRoles'),
+      },
       { route: 'users.index' }
     )
   }
@@ -72,6 +97,7 @@ export default class UsersController {
       {
         user: UserTransformer.transform(user).useVariant('forEdit'),
         institutionalRoles: await institutionalRoles(),
+        canManageRoles: await bouncer.with(UserPolicy).allows('manageRoles'),
       },
       { route: 'users.index' }
     )

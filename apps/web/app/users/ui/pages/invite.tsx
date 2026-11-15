@@ -24,11 +24,11 @@ import { ROLES } from '#auth/enums/role'
 
 import type { InertiaProps } from '#core/ui/app/types'
 
-type PageProps = InertiaProps<{ institutionalRoles: string[] }>
+type PageProps = InertiaProps<{ institutionalRoles: string[]; canManageRoles: boolean }>
 
-export default function InviteUserPage({ institutionalRoles }: PageProps) {
+export default function InviteUserPage({ institutionalRoles, canManageRoles }: PageProps) {
   const { t } = useTranslation()
-  const roles = userRoles(t, institutionalRoles)
+  const roles = userRoles(t, institutionalRoles, canManageRoles)
   const formRef = useRef<FormRef>(null)
 
   return (

@@ -15,7 +15,10 @@ export default class InviteController {
 
     return inertia.modal(
       'users/invite',
-      { institutionalRoles: await institutionalRoles() },
+      {
+        institutionalRoles: await institutionalRoles(),
+        canManageRoles: await bouncer.with(UserPolicy).allows('manageRoles'),
+      },
       { route: 'users.index' }
     )
   }

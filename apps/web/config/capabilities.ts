@@ -9,7 +9,18 @@ import { CAPABILITIES_USERS } from '#users/enums/capability'
  * capability.
  */
 const roleGrants: Record<Role, string[]> = {
+  // Everything, including roles, impersonation and the activity trail.
   [ROLES.ADMIN]: ['users.*', 'tokens.*'],
+  // Runs the user list: create, invite, edit and delete accounts that hold no
+  // role above user. No roles page, no impersonation, no activity trail.
+  [ROLES.MANAGER]: [
+    CAPABILITIES_USERS.usersViewList,
+    CAPABILITIES_USERS.usersCreate,
+    CAPABILITIES_USERS.usersInvite,
+    CAPABILITIES_USERS.usersUpdate,
+    CAPABILITIES_USERS.usersDelete,
+  ],
+  // No admin screen.
   [ROLES.USER]: [],
 }
 

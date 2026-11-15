@@ -77,7 +77,7 @@ export default function UsersTable({
           preserveState: true,
           preserveScroll: true,
           replace: true,
-          only: ['users', 'sort', 'order'],
+          only: ['users', 'rowCan', 'sort', 'order'],
         }
       )
     },

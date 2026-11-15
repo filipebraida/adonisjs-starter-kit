@@ -7,7 +7,7 @@ import { Main } from '#core/ui/components/main'
 
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
 import UsersTable from '#users/ui/components/users_table'
-import { userRoles } from '#users/ui/components/users_types'
+import { userRoles, type UsersPagePermissions } from '#users/ui/components/users_types'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
@@ -31,6 +31,8 @@ type PageProps = InertiaProps<{
   q?: string
   selectedRoles: string[]
   institutionalRoles: string[]
+  can: UsersPagePermissions['can']
+  rowCan: UsersPagePermissions['rowCan']
   sort: string | null
   order: string | null
 }>
@@ -40,6 +42,7 @@ export default function ListUsersPage({
   q,
   selectedRoles,
   institutionalRoles,
+  can,
   sort,
   order,
 }: PageProps) {
@@ -55,7 +58,7 @@ export default function ListUsersPage({
           title={t('users.index.page.title')}
           description={t('users.index.page.description')}
         >
-          <UsersPrimaryButtons />
+          <UsersPrimaryButtons can={can} />
         </Heading>
 
         <div className="flex-1 overflow-auto px-1 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">

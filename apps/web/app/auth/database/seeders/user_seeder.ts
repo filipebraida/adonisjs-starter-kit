@@ -13,5 +13,11 @@ export default class UserSeeder extends BaseSeeder {
 
     // What `admin` grants comes from config/capabilities.ts; only the assignment is stored.
     await admin.assignRole(ROLES.ADMIN)
+
+    const manager = await User.updateOrCreate(
+      { email: 'manager@repo.com' },
+      { fullName: 'Manager', password: '123' }
+    )
+    await manager.assignRole(ROLES.MANAGER)
   }
 }

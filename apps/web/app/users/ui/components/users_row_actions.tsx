@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { EditIcon, EllipsisIcon, History, TrashIcon, UserRoundSearch } from 'lucide-react'
 import { Link } from '@inertiajs/react'
-import { useCan } from '@adonis-agora/authz-react'
 import { ModalLink } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -16,24 +15,29 @@ import {
 } from '@workspace/ui/components/dropdown-menu'
 
 import { urlFor } from '~/app/client'
-import useUser from '#core/ui/hooks/use_user'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
 import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'
-import { CAPABILITIES_USERS } from '#users/enums/capability'
+import usePageProps from '#core/ui/hooks/use_page_props'
+import type { UsersPagePermissions } from '#users/ui/components/users_types'
 
 import type { Data } from '@generated/data'
 
 export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<Data.Users.User.Variants['forList']>) {
-  const user = useUser()
   const { t } = useTranslation()
 
-  const canAudit = useCan(CAPABILITIES_USERS.usersAudit)
+  // Decided by the policies in the controller, for the page and for this row.
+  const { can, rowCan } = usePageProps<UsersPagePermissions>()
+  const rowAbilities = rowCan[row.original.id]
   const [openDelete, setOpenDelete] = useState(false)
   const [openImpersonate, setOpenImpersonate] = useState(false)
+
+  const hasActions =
+    can.viewActivity || rowAbilities?.impersonate || rowAbilities?.update || rowAbilities?.delete
+  if (!hasActions) return null
 
   return (
     <>
@@ -45,7 +49,7 @@ export function DataTableRowActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
-          {user.id !== row.original.id && (
+          {rowAbilities?.impersonate && (
             <DropdownMenuItem onClick={() => setOpenImpersonate(true)}>
               {t('users.index.table.row_actions.impersonate')}
               <DropdownMenuShortcut>
@@ -53,7 +57,7 @@ export function DataTableRowActions({
               </DropdownMenuShortcut>
             </DropdownMenuItem>
           )}
-          {canAudit && (
+          {can.viewActivity && (
             <DropdownMenuItem asChild>
               <Link
                 href={urlFor('users.activity', {}, { qs: { actorId: row.original.id } })}
@@ -66,18 +70,20 @@ export function DataTableRowActions({
               </Link>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem asChild>
-            <ModalLink
-              href={urlFor('users.edit', { id: row.original.id })}
-              className="flex w-full items-center justify-between"
-            >
-              {t('users.index.table.row_actions.edit')}
-              <DropdownMenuShortcut>
-                <EditIcon size={16} />
-              </DropdownMenuShortcut>
-            </ModalLink>
-          </DropdownMenuItem>
-          {user.id !== row.original.id && (
+          {rowAbilities?.update && (
+            <DropdownMenuItem asChild>
+              <ModalLink
+                href={urlFor('users.edit', { id: row.original.id })}
+                className="flex w-full items-center justify-between"
+              >
+                {t('users.index.table.row_actions.edit')}
+                <DropdownMenuShortcut>
+                  <EditIcon size={16} />
+                </DropdownMenuShortcut>
+              </ModalLink>
+            </DropdownMenuItem>
+          )}
+          {rowAbilities?.delete && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setOpenDelete(true)} variant="destructive">
