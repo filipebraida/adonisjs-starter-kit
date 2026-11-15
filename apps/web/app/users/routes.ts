@@ -44,12 +44,12 @@ router
   .as('settings.index')
 
 router
-  .put('/settings/profile', [controllers.users.Profile, 'handle'])
+  .put('/settings/profile', [controllers.users.UpdateProfile])
   .middleware(middleware.auth())
   .as('profile.update')
 
 router
-  .put('/settings/password', [controllers.users.Password, 'handle'])
+  .put('/settings/password', [controllers.users.UpdatePassword])
   .middleware(middleware.auth())
   .as('password.update')
 

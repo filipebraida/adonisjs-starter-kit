@@ -6,7 +6,7 @@ import UserPolicy from '#users/policies/user_policy'
 import { updateProfileValidator } from '#users/validators/users'
 
 /** Updates the signed-in user's own name and avatar from the settings page. */
-export default class ProfileController {
+export default class UpdateProfileController {
   public async handle({ auth, bouncer, request, response }: HttpContext) {
     const user = await User.findOrFail(auth.user!.id)
 

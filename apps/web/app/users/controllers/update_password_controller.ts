@@ -6,7 +6,7 @@ import UserPolicy from '#users/policies/user_policy'
 import { updatePasswordValidator } from '#users/validators/users'
 
 /** Changes the signed-in user's own password from the settings page. */
-export default class PasswordController {
+export default class UpdatePasswordController {
   public async handle({ auth, bouncer, request, response }: HttpContext) {
     const user = await User.findOrFail(auth.user!.id)
 
