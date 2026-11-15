@@ -36,7 +36,16 @@ export default class AuditTransformer extends BaseTransformer<Audit> {
               fullName: (audit.$extras.actor_full_name as string | null) ?? null,
               email: (audit.$extras.actor_email as string | null) ?? null,
             },
-      impersonatedBy: metadata.impersonated_by ? Number(metadata.impersonated_by) : null,
+      // The admin behind an impersonation; named when the account still exists.
+      impersonatedBy: metadata.impersonated_by
+        ? {
+            id: Number(metadata.impersonated_by),
+            name:
+              (audit.$extras.impersonator_full_name as string | null) ??
+              (audit.$extras.impersonator_email as string | null) ??
+              null,
+          }
+        : null,
       ipAddress: display(metadata.ip_address),
       userAgent: display(metadata.user_agent),
       url: display(metadata.url),

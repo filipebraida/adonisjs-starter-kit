@@ -122,7 +122,9 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
             <div className="truncate font-medium">{actorName(row.original)}</div>
             {impersonatedBy !== null && (
               <div className="text-xs text-muted-foreground">
-                {t('users.activity.table.impersonated_by', { id: impersonatedBy })}
+                {t('users.activity.table.impersonated_by', {
+                  name: impersonatedBy.name ?? `#${impersonatedBy.id}`,
+                })}
               </div>
             )}
           </div>

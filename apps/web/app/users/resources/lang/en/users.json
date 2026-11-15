@@ -212,6 +212,10 @@
       "name": "User",
       "description": "Authenticated User"
     },
+    "manager": {
+      "name": "Manager",
+      "description": "Manages users"
+    },
     "admin": {
       "name": "Administrator",
       "description": "Super User"
@@ -243,7 +247,7 @@
         "remove_actor": "Stop filtering by {name}"
       },
       "system": "System",
-      "impersonated_by": "as #{id}",
+      "impersonated_by": "impersonated by {name}",
       "no_changes": "No field changes",
       "no_results": "No activity found."
     },

@@ -22,7 +22,8 @@ const USER_ACTOR = 'user'
 /**
  * The audit trail, newest first, for the Activity page: who acted, when,
  * from where and on what. The actor's name and e-mail come joined
- * (`$extras.actor_full_name`, `$extras.actor_email`); a row written outside
+ * (`$extras.actor_full_name`, `$extras.actor_email`), and so do the admin's
+ * behind an impersonation (`$extras.impersonator_*`); a row written outside
  * a request (seeder, job) has no actor.
  */
 export default class ListAudits {
@@ -32,10 +33,19 @@ export default class ListAudits {
   ): Promise<ModelPaginatorContract<Audit>> {
     // `audits.user_id` is text: the library's actor is polymorphic.
     const query = Audit.query()
-      .select('audits.*', 'users.full_name as actor_full_name', 'users.email as actor_email')
+      .select(
+        'audits.*',
+        'users.full_name as actor_full_name',
+        'users.email as actor_email',
+        'impersonators.full_name as impersonator_full_name',
+        'impersonators.email as impersonator_email'
+      )
       .joinRaw('left join users on audits.user_type = ? and audits.user_id = users.id::text', [
         USER_ACTOR,
       ])
+      .joinRaw(
+        "left join users as impersonators on audits.metadata->>'impersonated_by' = impersonators.id::text"
+      )
 
     if (filters.actorId) {
       query.where('audits.user_type', USER_ACTOR).where('audits.user_id', String(filters.actorId))

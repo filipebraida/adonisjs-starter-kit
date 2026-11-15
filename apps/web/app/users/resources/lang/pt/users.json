@@ -212,6 +212,10 @@
       "name": "Usuário",
       "description": "Usuário Autenticado"
     },
+    "manager": {
+      "name": "Gerente",
+      "description": "Gerencia usuários"
+    },
     "admin": {
       "name": "Administrador",
       "description": "Superusuário"
@@ -243,7 +247,7 @@
         "remove_actor": "Parar de filtrar por {name}"
       },
       "system": "Sistema",
-      "impersonated_by": "como #{id}",
+      "impersonated_by": "personificado por {name}",
       "no_changes": "Sem alteração de campos",
       "no_results": "Nenhuma atividade encontrada."
     },
