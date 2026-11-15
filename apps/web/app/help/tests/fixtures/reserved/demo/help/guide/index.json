@@ -1,0 +1,57 @@
+{
+  "space": {
+    "slug": "guide",
+    "title": {
+      "pt": "Guia",
+      "en": "Guide"
+    },
+    "summary": {
+      "pt": "Um espaço de teste.",
+      "en": "A test space."
+    },
+    "order": 1
+  },
+  "categories": [
+    {
+      "slug": "basics",
+      "title": {
+        "pt": "Básico",
+        "en": "Basics"
+      },
+      "order": 1
+    }
+  ],
+  "articles": [
+    {
+      "slug": "images",
+      "title": {
+        "pt": "Começar",
+        "en": "Start"
+      },
+      "summary": {
+        "pt": "O primeiro passo.",
+        "en": "The first step."
+      },
+      "category": "basics",
+      "order": 1,
+      "file": "start.md",
+      "updatedAt": "2026-11-10"
+    },
+    {
+      "slug": "locked",
+      "title": {
+        "pt": "Restrito",
+        "en": "Locked"
+      },
+      "summary": {
+        "pt": "Só com a capacidade.",
+        "en": "Only with the capability."
+      },
+      "category": "basics",
+      "order": 2,
+      "file": "locked.md",
+      "capability": "users.view_list",
+      "updatedAt": "2026-11-10"
+    }
+  ]
+}

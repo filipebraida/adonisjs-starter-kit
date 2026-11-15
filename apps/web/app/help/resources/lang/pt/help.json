@@ -1,7 +1,11 @@
 {
   "title": "Ajuda",
   "index": {
-    "description": "Como o app funciona, tela por tela."
+    "description": "Como o app funciona, tela por tela.",
+    "empty": {
+      "title": "Ainda não há ajuda para você",
+      "description": "Os artigos deste app são para papéis que você não tem."
+    }
   },
   "show": {
     "space": "Neste espaço",

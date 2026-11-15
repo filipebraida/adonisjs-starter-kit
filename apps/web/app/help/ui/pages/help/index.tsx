@@ -1,5 +1,13 @@
 import { Head, Link } from '@inertiajs/react'
-import { ChevronRight } from 'lucide-react'
+import { BookOpen, ChevronRight } from 'lucide-react'
+
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@workspace/ui/components/empty'
 
 import type { Data } from '@generated/data'
 
@@ -19,6 +27,17 @@ export default function HelpIndexPage({ spaces }: PageProps) {
       <Head title={t('help.title')} />
       <div className="mx-auto flex w-full max-w-[840px] flex-col gap-6 px-4 pt-8 pb-24 sm:px-6 lg:px-10">
         <Heading title={t('help.title')} description={t('help.index.description')} />
+        {spaces.length === 0 && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <BookOpen />
+              </EmptyMedia>
+              <EmptyTitle>{t('help.index.empty.title')}</EmptyTitle>
+              <EmptyDescription>{t('help.index.empty.description')}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {spaces.map((space) => (
             <li key={space.slug} className="border-border flex flex-col rounded-lg border">

@@ -1,5 +1,6 @@
 import { assert } from '@japa/assert'
 import { apiClient } from '@japa/api-client'
+import { fileSystem } from '@japa/file-system'
 import { authApiClient } from '@adonisjs/auth/plugins/api_client'
 import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
@@ -27,6 +28,8 @@ export const plugins: Config['plugins'] = [
   shieldApiClient(),
   dbAssertions(app),
   pluginAdonisJS(app),
+  // A temporary folder per test, removed even when the test fails.
+  fileSystem(),
 ]
 
 /**

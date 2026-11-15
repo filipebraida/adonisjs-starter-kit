@@ -1,7 +1,11 @@
 {
   "title": "Help",
   "index": {
-    "description": "How the app works, screen by screen."
+    "description": "How the app works, screen by screen.",
+    "empty": {
+      "title": "No help for you yet",
+      "description": "The articles of this app are for roles you do not have."
+    }
   },
   "show": {
     "space": "In this space",

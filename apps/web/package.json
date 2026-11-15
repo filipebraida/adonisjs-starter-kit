@@ -40,6 +40,7 @@
     "@filipebraida/eslint-config-adonis": "^0.6.0",
     "@japa/api-client": "^3.2.1",
     "@japa/assert": "^4.2.0",
+    "@japa/file-system": "3.0.0",
     "@japa/plugin-adonisjs": "^5.2.0",
     "@japa/runner": "^5.4.0",
     "@poppinss/file-generator": "^2.1.6",

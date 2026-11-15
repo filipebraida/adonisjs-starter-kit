@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { test } from '@japa/runner'
@@ -7,6 +8,8 @@ import HelpCatalog from '#help/services/help_catalog'
 const FIXTURES = new URL('../../fixtures/app', import.meta.url).pathname
 // A space whose index says its order is a word.
 const BROKEN = new URL('../../fixtures/broken', import.meta.url).pathname
+
+const RESERVED = new URL('../../fixtures/reserved', import.meta.url).pathname
 
 async function guide() {
   const space = await HelpCatalog.at(FIXTURES).space('guide')
@@ -28,6 +31,12 @@ test.group('Help catalog', () => {
 
   test('an index that breaks the schema is refused', async ({ assert }) => {
     await assert.rejects(() => HelpCatalog.at(BROKEN).spaces())
+  })
+
+  test("an article cannot be named images: that path serves the space's pictures", async ({
+    assert,
+  }) => {
+    await assert.rejects(() => HelpCatalog.at(RESERVED).spaces())
   })
 
   test('navigation, the opening article and neighbours follow what the reader may read', async ({
@@ -75,5 +84,31 @@ test.group('Help catalog', () => {
 
   test('capabilities lists each cited capability once', async ({ assert }) => {
     assert.deepEqual(await HelpCatalog.at(FIXTURES).capabilities(), ['users.view_list'])
+  })
+
+  test('outside production, a space added after the first read shows up', async ({
+    assert,
+    fs,
+  }) => {
+    const copy = (space: string) =>
+      Promise.all(
+        ['index.json', 'en/start.md', 'pt/start.md', 'en/secret.md', 'pt/secret.md'].map((file) => {
+          const from = join(FIXTURES, 'demo/help', space, file)
+          return existsSync(from)
+            ? fs.create(join('demo/help', space, file), readFileSync(from, 'utf8'))
+            : null
+        })
+      )
+    await copy('guide')
+    const catalog = HelpCatalog.at(fs.basePath)
+    assert.lengthOf(await catalog.spaces(), 1)
+
+    await copy('vault')
+    const spaces = await catalog.spaces()
+
+    assert.deepEqual(
+      spaces.map((space) => space.slug),
+      ['guide', 'vault']
+    )
   })
 })

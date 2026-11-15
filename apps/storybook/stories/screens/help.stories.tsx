@@ -64,6 +64,17 @@ export const Index: Story = {
     }),
 };
 
+/** Nothing the person may read: a project whose every article needs a capability. */
+export const IndexEmpty: Story = {
+  render: () =>
+    inertiaPage(HelpIndexPage, {
+      component: "help/help/index",
+      url: "/help",
+      as: "user",
+      props: { spaces: [] },
+    }),
+};
+
 /** The invitation diagram, an alert and a picture. */
 export const ArticleWithDiagram = article("admin", "administration", "users");
 
