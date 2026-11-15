@@ -14,9 +14,9 @@ An invitation goes this way:
 
 ```mermaid
 flowchart LR
-  A[You invite by email] --> B[The app creates the account with its role]
-  B --> C[The person gets the welcome email]
-  C --> D[They set their own password from the link]
+  A[You invite] --> B[Account created]
+  B --> C[Welcome email]
+  C --> D[They set a password]
   D --> E[They sign in]
 ```
 

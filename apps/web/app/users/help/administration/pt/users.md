@@ -14,10 +14,10 @@ O convite segue este caminho:
 
 ```mermaid
 flowchart LR
-  A[Você convida pelo e-mail] --> B[O app cria a conta com o papel]
-  B --> C[A pessoa recebe o e-mail de boas-vindas]
-  C --> D[Ela cria a própria senha pelo link]
-  D --> E[Ela entra no app]
+  A[Você convida] --> B[Conta criada]
+  B --> C[E-mail de boas-vindas]
+  C --> D[Ela cria a senha]
+  D --> E[Ela entra]
 ```
 
 Dar um papel acima de **Usuário** exige poder gerenciar papéis.

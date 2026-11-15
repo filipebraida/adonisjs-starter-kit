@@ -27,6 +27,20 @@ export function mermaidTheme(read: (token: string) => string): MermaidConfig['th
 type Drawing = { state: 'pending' } | { state: 'drawn'; svg: string } | { state: 'failed' }
 
 /** Whether the page is in its dark theme (the `dark` class of `<html>`); `null` on the server. */
+/**
+ * A token's color as `rgb()`: mermaid's color parser rejects modern CSS colors
+ * such as the starter's `oklch()` tokens, and fails the whole drawing. The
+ * browser converts it by painting one pixel.
+ */
+function rgbOf(color: string): string {
+  const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
+  if (!context || !color) return color
+  context.fillStyle = color
+  context.fillRect(0, 0, 1, 1)
+  const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+  return `rgb(${r}, ${g}, ${b})`
+}
+
 function readDark(): boolean {
   return document.documentElement.classList.contains('dark')
 }
@@ -78,7 +92,7 @@ export function MermaidDiagram({ code }: { code: string }) {
         securityLevel: 'strict',
         theme: 'base',
         fontFamily: style.getPropertyValue('--font-sans'),
-        themeVariables: mermaidTheme((token) => style.getPropertyValue(token).trim()),
+        themeVariables: mermaidTheme((token) => rgbOf(style.getPropertyValue(token).trim())),
       })
       const { svg } = await mermaid.render(id, code)
       // A drawing the page cannot read shows its code, as one mermaid could not draw.
