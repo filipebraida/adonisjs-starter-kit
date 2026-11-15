@@ -44,6 +44,17 @@ void i18n.init({
 // A link to a screen no story answers (Roles from the Users story) gets the
 // Storybook server's 404, which Inertia would show in an error modal: the
 // board says the screen is not on it instead.
+// Inertia writes each page's URL (/help/account/profile) into the address
+// bar, here the story's iframe: any reload of the iframe (a refresh, a hot
+// update) would then ask the Storybook server for a page it does not have.
+// The iframe keeps the story's address; Inertia keeps its page in the state.
+let storyHref = window.location.href;
+router.on("navigate", () => {
+  if (window.location.href !== storyHref) {
+    window.history.replaceState(window.history.state, "", storyHref);
+  }
+});
+
 router.on("httpException", (event) => {
   event.preventDefault();
   toast("Not on the board", {
@@ -80,6 +91,9 @@ const preview: Preview = {
         "dark",
         context.globals.theme === "dark",
       );
+      // The story's own address, before its page mounts (see the navigate listener).
+      if (window.location.pathname.endsWith("iframe.html"))
+        storyHref = window.location.href;
       // The fake help server answers in this language (src/help_server.ts).
       document.documentElement.lang = context.globals.locale;
       if (i18n.language !== context.globals.locale)

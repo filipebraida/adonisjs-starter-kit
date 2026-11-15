@@ -9,7 +9,7 @@ import {
   helpRoutes,
   helpSpaces,
 } from "../../src/help_server";
-import { inertiaPage, inertiaRoute, SIGNED_IN } from "../../src/inertia_page";
+import { inertiaPage, SIGNED_IN } from "../../src/inertia_page";
 
 const meta = {
   title: "Screens/Help",
@@ -17,7 +17,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The global help, with the app's real articles: the spaces a person may read, and an article laid out as documentation. Its links between articles work: a fake server answers them as the controller would.",
+          "The global help, with the app's real articles: the spaces a person may read, and an article laid out as documentation. Links to other pages do not navigate on the board.",
       },
     },
   },
@@ -28,28 +28,22 @@ type Story = StoryObj<typeof meta>;
 
 type As = keyof typeof SIGNED_IN;
 
+/** The article; its drawer and pictures are answered, links to other pages are not. */
 function article(as: As, space: string, slug: string): Story {
   const readable = SIGNED_IN[as].helpArticles;
-  const props = (s: string, a: string) => ({
-    ...helpArticle(s, a, readable, "en"),
-    navigation: helpNavigation(s, readable, "en"),
-  });
   return {
     beforeEach({ msw }) {
-      msw.use(
-        ...helpRoutes(readable),
-        inertiaRoute("/help/:space/:article", HelpShowPage, (_query, url) => {
-          const [, , s, a] = url.pathname.split("/");
-          return { component: "help/help/show", as, props: props(s, a) };
-        }),
-      );
+      msw.use(...helpRoutes(readable));
     },
     render: () =>
       inertiaPage(HelpShowPage, {
         component: "help/help/show",
         url: `/help/${space}/${slug}`,
         as,
-        props: props(space, slug),
+        props: {
+          ...helpArticle(space, slug, readable, "en"),
+          navigation: helpNavigation(space, readable, "en"),
+        },
       }),
   };
 }
