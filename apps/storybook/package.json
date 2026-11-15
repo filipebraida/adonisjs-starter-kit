@@ -1,0 +1,43 @@
+{
+  "name": "storybook-app",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "storybook dev -p 6006 --no-open --host 0.0.0.0",
+    "build": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@adonisjs/inertia": "^5.0.5",
+    "@inertiajs/react": "^3.11.0",
+    "@workspace/ui": "workspace:*",
+    "adonis-inertia-modal": "1.0.0",
+    "i18next": "^26.3.4",
+    "i18next-icu": "^2.7.0",
+    "lucide-react": "^1.72.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-i18next": "^17.0.8"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.6.7",
+    "@storybook/addon-docs": "^10.6.7",
+    "@storybook/addon-mcp": "^10.6.7",
+    "@storybook/react-vite": "^10.6.7",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "msw": "^3.0.5",
+    "msw-storybook-addon": "^3.0.3",
+    "storybook": "^10.6.7",
+    "tailwindcss": "^4.3.5",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.8"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

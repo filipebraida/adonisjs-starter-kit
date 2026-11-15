@@ -1,0 +1,5 @@
+@import "../../web/app/core/ui/css/app.css";
+
+/* Tailwind scans the Vite root, which is this app: the web's pages and these stories must be named. */
+@source '../../web/app';
+@source '../stories';

@@ -66,6 +66,9 @@ Only `core` has `utils/` (the one utils of the app), `authz/` and `hooks/`.
 - `@workspace/ui/*` (`packages/ui`): headless shadcn/Radix primitives. They know nothing of the app. They never hold a translation key (texts are props with English defaults). A shape they lack becomes a variant there (`Button shape="pill"`, `Badge size="count"`), not a `className` override.
 - `#core/ui/*`: Inertia-aware wrappers. Inside pages, import from here first: `Form`/`Field`/`FieldError` (errors by field name), `DataTable` (labels from `t`), `useTranslation` (typed keys), `useFlashToasts`.
 - Dates and numbers go through `#core/ui/format/*`; internal URLs come from `urlFor` or `<Link route>`.
+- **Design board:** before building or changing a screen, read the rules in `apps/storybook/stories/` (`foundations/foundations.mdx`, `forms/rules.mdx`, `content/list_page.stories.tsx`). A screen is assembled from those patterns; a missing piece is added to the board first, then used.
+- **The rules that drift most:** one primary button per area (page, modal, section); every list has an empty state with the next action; shape and color come from variants, never `className`; every state is designed (empty, error, no permission, long text), not only the happy path.
+- **Verify a screen** with a story in `apps/storybook/stories/screens/`, one per state; a page that searches or saves answers its visits with `inertiaRoute`. `pnpm storybook` serves it on `:6006`.
 
 ## Skills
 
@@ -80,6 +83,7 @@ Load the matching skill before working. Each one has repo refs and doc links. In
 | Actions, events, listeners, workflows                | `actions-events`     |
 | Specs, fakes, factories                              | `testing`            |
 | Pages, `<Form>`, shared props, modals                | `inertia`            |
+| Screens, design rules, empty states                  | `apps/storybook`     |
 | Translations                                         | `i18n`               |
 | Which layout shell                                   | `layout-shells`      |
 | Capabilities, policies, `useCan`                     | `authorization`      |

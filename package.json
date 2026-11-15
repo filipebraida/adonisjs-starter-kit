@@ -6,6 +6,7 @@
   "scripts": {
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev",
+    "storybook": "pnpm --filter storybook-app dev",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
     "typecheck": "pnpm -r run typecheck",

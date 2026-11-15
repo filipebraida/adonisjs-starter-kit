@@ -1,0 +1,23 @@
+{
+  "extends": "../web/app/core/ui/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@web/*": ["../web/*"],
+      "@workspace/ui/*": ["../../packages/ui/src/*"],
+      "config/ssr": ["../web/config/ssr"],
+      "@generated/*": ["../web/.adonisjs/client/*"],
+      "~/*": ["../web/app/core/ui/*"]
+    }
+  },
+  "include": [
+    "./.storybook/**/*.ts",
+    "./.storybook/**/*.tsx",
+    "./src/**/*",
+    "./stories/**/*",
+    "./vite.config.ts",
+    "../web/app/*/types/**/*.ts",
+    "../web/config/auth.ts",
+    "../web/.adonisjs/client/**/*.ts",
+    "../web/.adonisjs/server/**/*.d.ts"
+  ]
+}

@@ -1,0 +1,77 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Info, Plus } from "lucide-react";
+import { Button } from "@workspace/ui/components/button";
+import { Swatches } from "./swatches";
+import { TypeScale } from "./type_scale";
+
+<Meta title="Foundations/Overview" />
+
+# Foundations
+
+The rules every screen follows. Read them before building UI; each section of
+this board shows the components in every state, with the rules beside them.
+A screen is assembled from these pieces. When a piece is missing, add it here
+first, then use it.
+
+## Principles
+
+- **One primary action per area.** A page, a modal or a settings section has
+  one `Button` default. Everything else next to it is `outline`, `ghost` or `link`.
+- **Color means state, not decoration.** `destructive` for errors and
+  irreversible actions, `warning` for something that needs attention (the
+  impersonation banner), neutrals for the rest.
+- **Shapes come from variants.** A component never gets a size, radius or color
+  through `className`; a missing shape becomes a variant in `packages/ui`
+  (`Button shape="pill"`, `Badge size="count"`).
+- **Every list has an empty state**, and the empty state names the next action.
+- **Every state is designed**: empty, loading, error, no permission, and the
+  long case (a 60-character name, 1,000 rows). A screen with only the happy
+  path is not done.
+
+## Color
+
+Defined in `packages/ui/src/styles/globals.css`; switch the theme in the toolbar.
+
+<Swatches />
+
+## Type
+
+Each size has one role. Use the role, not a size picked by eye.
+
+<TypeScale />
+
+Bigger sizes (`text-3xl` and up) belong to the marketing pages only. No arbitrary
+`text-[13px]`.
+
+## Spacing
+
+- Inside a form, fields sit in a `FieldGroup`: it sets the gap. No `space-y-*` between fields.
+- Between a title and what it introduces: `space-y-1` (title and description), `space-y-4` (header and body).
+- Between sections of a page: `py-8` with a bottom border, as `SettingsSection` does.
+
+## Icons
+
+- `lucide-react` only. Inline with text: `size-4` (the default inside a `Button`).
+- Inside a `Button`, mark the icon `data-icon="inline-start"` (or `inline-end`) so the
+  button adjusts its padding.
+- A decorative icon is `text-muted-foreground`. An icon alone in a button needs an `aria-label`.
+
+<div className="sb-unstyled flex flex-wrap items-center gap-3">
+  <Button>
+    <Plus data-icon="inline-start" />
+    Add user
+  </Button>
+  <span className="flex items-center gap-2 text-sm">
+    <Info className="size-4 text-muted-foreground" />
+    Decorative, muted
+  </span>
+</div>
+
+## Writing
+
+- **Buttons say what happens**: a verb, plus the object when the screen has more than
+  one ("Save", "Add user", "Delete account"). Never "OK" or "Submit".
+- **Labels are nouns** in sentence case, no colon: "Full name", not "Full Name:".
+- **Errors say how to fix it**: "Enter a complete email address", not "Invalid email".
+- **Toasts confirm what changed**, naming it: "Profile updated", with the user's name as the description.
+- Every text goes through an i18n key, in `en` and `pt`.

@@ -1,0 +1,89 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Forms/Rules" />
+
+# Forms
+
+How every form in the app is built. The stories in this section show each piece in
+every state: **Inputs** (each control), **Shapes** (how a whole form is laid out),
+**Field**, **Button** and **Actions** (where the buttons go, per context).
+
+## Building it
+
+- **`<Form>` from `#core/ui/components/form` by default.** It binds each
+  `<Field name>` to its server error, so `<FieldError />` needs no props.
+- **`useForm` only when the screen reads values as they change** (a confirmation that
+  unlocks once a password is typed, an upload with progress). The file then starts with
+  a comment saying why, as `password_form.tsx` does.
+- **One column, label above the control.** A form is as wide as its container allows,
+  up to the container's limit: `max-w-md` in a modal, 560px in a settings section.
+- **Group related fields** with `FieldSet` + `FieldLegend` only when a form has more than
+  one group, split by a `FieldSeparator`. A short form is one `FieldGroup`.
+- **Modal or side panel**: a modal for a short, focused task (add a user). A side panel
+  (`Sheet`) when the person needs the page behind it in view, or the form is too long for
+  a modal. In a panel the actions stack in its footer, the primary first.
+
+## Choosing the control
+
+- **Input** for one line; **PasswordInput** for secrets; **Textarea** for free text.
+- **RadioGroup** for up to four options, all visible; **Select** for more.
+- **Checkbox** when the choice takes effect on Save; **Switch** when it takes effect the
+  moment it is flipped, with no Save button (notification preferences).
+- **FileInput** for a document. A picture that represents the person (avatar) shows the
+  picture with an `outline` button beside it, never a primary.
+- **A unit or fixed part** of the value (R$, %, @) goes inside the field with
+  `InputGroup`, not in the label.
+
+## Fields
+
+- **Label**: a noun, always visible. The **placeholder** shows an example of the
+  value ("name@example.com"), never repeats or replaces the label.
+- **Description** (before typing) and **error** (after) never show at the same time;
+  the error takes the place of the description.
+- **Invalid**: `aria-invalid` on the control and `<FieldError />` under it. The red comes
+  from the component, never from a `className`.
+- **A field that depends on another** stays disabled until it makes sense (the password
+  confirmation, until a password is typed).
+- **Required fields carry no mark; optional ones say "(optional)"** after the label. Most
+  fields in a form are required, so marking the exceptions is less noise.
+- **A field that applies to one answer only** appears right under the question that opens
+  it, and is not sent while hidden.
+- **A list the person grows** (phones, attachments): each row has a remove button, "Add
+  …" (`outline`) sits under the last row, and one row is always there.
+- **A value the person cannot change** is a disabled input with a description saying
+  why ("Only an admin changes the email"), not loose text.
+
+## Submitting
+
+- **The submit button is disabled while the request is in flight** (`processing`), so a
+  double click sends nothing twice.
+- **Errors for a field** go under that field. **An error for the whole form** (wrong
+  password at sign-in, too many attempts) goes under the actions.
+- **Passwords are cleared** after the request, success or error (`resetOnError`).
+- **After success**: a form in a modal closes it; a form on a page stays. Either way a
+  toast names what changed.
+
+## Actions, by context
+
+- **Modal**: `outline` Cancel, then the primary, in the footer, right-aligned.
+- **Settings section**: the primary alone, under the fields, on the left. No Cancel: the
+  section is always editable.
+- **Auth page** (sign in, sign up): the primary, full width, under the fields. Alternatives
+  (Google) are `outline`, under a separator.
+- **Destructive confirmation**: `outline` Cancel, then `destructive`, in the dialog footer,
+  right-aligned.
+- **Irreversible actions** go through `ConfirmDialog` with `destructive`. When the loss is
+  large (an account and everything it owns), the person types the identifier to unlock
+  the button, as the user deletion does.
+
+## Where the code diverges today
+
+These are what the rules above would change. Each one is a decision for the owner,
+not a change made yet.
+
+- **Page titles** outside `Heading` remain on the auth pages (`text-2xl font-bold`), the dashboard and the
+  marketing pages; settings and the lists already use it.
+- **Spacing between fields**: `user_form_fields.tsx` stacks them with `space-y-4`
+  instead of a `FieldGroup`.
+- **Two error helpers**: `FieldError` (bound by name, inside `<Form>`) and
+  `FieldErrorBag` (with `useForm`). Both stay while both form styles exist.
