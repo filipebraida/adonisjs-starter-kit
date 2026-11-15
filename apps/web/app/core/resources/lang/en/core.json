@@ -4,7 +4,8 @@
       "dashboard": "Dashboard",
       "administration": "Administration",
       "users": "Users",
-      "activity": "Activity"
+      "activity": "Activity",
+      "roles": "Roles"
     },
     "navUser": {
       "settings": "Settings",

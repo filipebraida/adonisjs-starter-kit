@@ -15,6 +15,8 @@ declare module '@adonisjs/inertia/types' {
     'analytics/dashboard': ExtractProps<(typeof import('../../app/analytics/ui/pages/dashboard.tsx'))['default']>
     'auth/forgot_password': ExtractProps<(typeof import('../../app/auth/ui/pages/forgot_password.tsx'))['default']>
     'auth/reset_password': ExtractProps<(typeof import('../../app/auth/ui/pages/reset_password.tsx'))['default']>
+    'auth/roles/create': ExtractProps<(typeof import('../../app/auth/ui/pages/roles/create.tsx'))['default']>
+    'auth/roles/index': ExtractProps<(typeof import('../../app/auth/ui/pages/roles/index.tsx'))['default']>
     'auth/sign_in': ExtractProps<(typeof import('../../app/auth/ui/pages/sign_in.tsx'))['default']>
     'auth/sign_up': ExtractProps<(typeof import('../../app/auth/ui/pages/sign_up.tsx'))['default']>
     'core/errors/not_found': ExtractProps<(typeof import('../../app/core/ui/pages/errors/not_found.tsx'))['default']>

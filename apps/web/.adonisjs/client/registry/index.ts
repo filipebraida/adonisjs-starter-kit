@@ -104,6 +104,36 @@ const routes = {
     tokens: [[0,"switch"],[1,"locale"]],
     types: placeholder as Registry['locale.switch']['types'],
   },
+  'roles.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/roles',
+    tokens: [[0,"roles"]],
+    types: placeholder as Registry['roles.index']['types'],
+  },
+  'roles.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/roles/create',
+    tokens: [[0,"roles"],[0,"create"]],
+    types: placeholder as Registry['roles.create']['types'],
+  },
+  'roles.store': {
+    methods: ["POST"],
+    pattern: '/roles',
+    tokens: [[0,"roles"]],
+    types: placeholder as Registry['roles.store']['types'],
+  },
+  'roles.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/roles/:id',
+    tokens: [[0,"roles"],[1,"id"]],
+    types: placeholder as Registry['roles.update']['types'],
+  },
+  'roles.destroy': {
+    methods: ["DELETE"],
+    pattern: '/roles/:id',
+    tokens: [[0,"roles"],[1,"id"]],
+    types: placeholder as Registry['roles.destroy']['types'],
+  },
   'users.invite.show': {
     methods: ["GET","HEAD"],
     pattern: '/users/invite',

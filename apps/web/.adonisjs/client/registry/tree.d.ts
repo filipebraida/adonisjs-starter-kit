@@ -42,6 +42,13 @@ export interface ApiDefinition {
   locale: {
     switch: typeof routes['locale.switch']
   }
+  roles: {
+    index: typeof routes['roles.index']
+    create: typeof routes['roles.create']
+    store: typeof routes['roles.store']
+    update: typeof routes['roles.update']
+    destroy: typeof routes['roles.destroy']
+  }
   users: {
     invite: {
       show: typeof routes['users.invite.show']

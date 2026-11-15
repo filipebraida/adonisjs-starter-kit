@@ -20,6 +20,11 @@ export type ScannedRoutes = {
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
+    'roles.index': { paramsTuple?: []; params?: {} }
+    'roles.create': { paramsTuple?: []; params?: {} }
+    'roles.store': { paramsTuple?: []; params?: {} }
+    'roles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'roles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -55,6 +60,8 @@ export type ScannedRoutes = {
     'auth.reset_password.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
+    'roles.index': { paramsTuple?: []; params?: {} }
+    'roles.create': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.activity': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
@@ -76,6 +83,8 @@ export type ScannedRoutes = {
     'auth.reset_password.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'social.create': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
     'social.callback': { paramsTuple: [ParamValue]; params: {'provider': ParamValue} }
+    'roles.index': { paramsTuple?: []; params?: {} }
+    'roles.create': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.activity': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
@@ -93,6 +102,7 @@ export type ScannedRoutes = {
     'auth.forgot_password.handle': { paramsTuple?: []; params?: {} }
     'auth.reset_password.handle': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
+    'roles.store': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.store': { paramsTuple?: []; params?: {} }
@@ -104,14 +114,17 @@ export type ScannedRoutes = {
     'unsubscribe': { paramsTuple?: []; params?: {} }
   }
   PUT: {
+    'roles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'profile.update': { paramsTuple?: []; params?: {} }
     'password.update': { paramsTuple?: []; params?: {} }
   }
   PATCH: {
+    'roles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   DELETE: {
+    'roles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }

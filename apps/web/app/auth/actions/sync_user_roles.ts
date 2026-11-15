@@ -7,9 +7,11 @@ import Authorizer from '#core/authz/authorizer'
 
 import AdminLockoutException from '#auth/exceptions/admin_lockout_exception'
 import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
+import RoleNotFoundException from '#auth/exceptions/role_not_found_exception'
+import { roleExists } from '#auth/queries/roles_query'
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import { CAPABILITIES_AUTH } from '#auth/enums/capability'
-import { ROLES, type Role } from '#auth/enums/role'
+import { ROLES } from '#auth/enums/role'
 import type User from '#auth/models/user'
 
 /**
@@ -33,9 +35,18 @@ export async function requireManageRolesIfEscalating(executor: User, roles: stri
   if (escalating) await requireManageRoles(executor)
 }
 
+/**
+ * Requires the role to be assignable: defined in code or created on the roles
+ * page. `assignRole` would otherwise create a role nobody configured.
+ * @throws RoleNotFoundException if it is neither.
+ */
+export async function requireExistingRole(role: string) {
+  if (!(await roleExists(role))) throw new RoleNotFoundException(role)
+}
+
 export interface SyncUserRolesInput {
   target: User
-  desiredRoles: Role[]
+  desiredRoles: string[]
   executor: User
 }
 
@@ -45,10 +56,12 @@ export interface SyncUserRolesInput {
  * privilege, never more.
  * @throws ManageRolesUnauthorizedException if the executor may not manage roles.
  * @throws AdminLockoutException if the executor would remove their own admin role.
+ * @throws RoleNotFoundException if a desired role does not exist.
  */
 export default class SyncUserRoles {
   async handle({ target, desiredRoles, executor }: SyncUserRolesInput): Promise<void> {
     await requireManageRoles(executor)
+    for (const role of desiredRoles) await requireExistingRole(role)
 
     const current = await target.getRoles()
 
@@ -59,8 +72,7 @@ export default class SyncUserRoles {
     if (removingOwnAdmin) throw new AdminLockoutException()
 
     const changed =
-      current.length !== desiredRoles.length ||
-      current.some((role) => !desiredRoles.includes(role as Role))
+      current.length !== desiredRoles.length || current.some((role) => !desiredRoles.includes(role))
     if (!changed) return
 
     const service = await app.container.make(AuthzService)
@@ -70,7 +82,7 @@ export default class SyncUserRoles {
       const store = service.store.withClient(trx)
       // Remove before granting: a failure halfway leaves less privilege, never more.
       for (const role of current) {
-        if (!desiredRoles.includes(role as Role)) await store.removeRole(ref, role)
+        if (!desiredRoles.includes(role)) await store.removeRole(ref, role)
       }
       for (const role of desiredRoles) {
         if (!current.includes(role)) await store.assignRole(ref, role)

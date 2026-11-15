@@ -22,9 +22,13 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
 import { ROLES } from '#auth/enums/role'
 
-export default function InviteUserPage() {
+import type { InertiaProps } from '#core/ui/app/types'
+
+type PageProps = InertiaProps<{ institutionalRoles: string[] }>
+
+export default function InviteUserPage({ institutionalRoles }: PageProps) {
   const { t } = useTranslation()
-  const roles = userRoles(t)
+  const roles = userRoles(t, institutionalRoles)
   const formRef = useRef<FormRef>(null)
 
   return (

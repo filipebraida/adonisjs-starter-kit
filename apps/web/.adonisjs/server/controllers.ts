@@ -12,6 +12,7 @@ export const controllers = {
     ForgotPassword: () => import('#app/auth/controllers/forgot_password_controller'),
     RedirectToProvider: () => import('#app/auth/controllers/redirect_to_provider_controller'),
     ResetPassword: () => import('#app/auth/controllers/reset_password_controller'),
+    Roles: () => import('#app/auth/controllers/roles_controller'),
     SignIn: () => import('#app/auth/controllers/sign_in_controller'),
     SignOut: () => import('#app/auth/controllers/sign_out_controller'),
     SignUp: () => import('#app/auth/controllers/sign_up_controller'),

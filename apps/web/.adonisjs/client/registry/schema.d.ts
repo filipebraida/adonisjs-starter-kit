@@ -216,6 +216,71 @@ export interface Registry {
       rawResponse: ExtractRawResponse<unknown>
     }
   }
+  'roles.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/roles'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['index']>>>
+    }
+  }
+  'roles.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/roles/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['create']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['create']>>>
+    }
+  }
+  'roles.store': {
+    methods: ["POST"]
+    pattern: '/roles'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/roles').createRoleValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/roles').createRoleValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'roles.update': {
+    methods: ["PUT","PATCH"]
+    pattern: '/roles/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/roles').updateRoleCapabilitiesValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/roles').updateRoleCapabilitiesValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'roles.destroy': {
+    methods: ["DELETE"]
+    pattern: '/roles/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['destroy']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/auth/controllers/roles_controller').default['destroy']>>>
+    }
+  }
   'users.invite.show': {
     methods: ["GET","HEAD"]
     pattern: '/users/invite'

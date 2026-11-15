@@ -8,7 +8,7 @@ import User from '#auth/models/user'
  * catalog to seed; the assignment row is rolled back with the test's global
  * transaction.
  */
-export async function withRole(user: User, role: Role): Promise<void> {
+export async function withRole(user: User, role: string): Promise<void> {
   await user.assignRole(role)
 }
 

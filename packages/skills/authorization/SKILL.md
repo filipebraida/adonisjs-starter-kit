@@ -7,11 +7,11 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # Authorization
 
-Role-based access control with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz) (DB-backed RBAC, wildcard matching) under AdonisJS Bouncer. Five moving parts:
+Role-based access control with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz) (DB-backed RBAC, wildcard matching) under AdonisJS Bouncer. Two kinds of role, and five moving parts:
 
 1. **Capabilities** — each module declares its own in `app/<mod>/enums/capability.ts` as a `CAPABILITIES_<MOD>` const of `<domain>.<action>` slugs.
-2. **Role grants** — `config/capabilities.ts` maps every role in `ROLES` to the capabilities it grants (`users.*` wildcards allowed). Read at check time from code: no seed, no screen can strip a capability the app depends on.
-3. **Assignments** — the only RBAC state in the database: `user.assignRole(ROLES.X)` writes a row in the authz tables (`auth/database/migrations/*_create_authz_tables.ts`).
+2. **Role grants** — `config/capabilities.ts` maps every structural role in `ROLES` to the capabilities it grants (`users.*` wildcards allowed). Read at check time from code: no seed, no screen can strip a capability the app depends on. **Institutional roles** are created on the roles page (`/roles`) and their capabilities, ticked from `vocabulary` in the same file, are stored in the authz tables; the library adds them to the code grants.
+3. **Assignments** — `user.assignRole(role)` writes a row in the authz tables (`auth/database/migrations/*_create_authz_tables.ts`). The user forms offer the structural roles and the institutional ones; actions call `requireExistingRole` first, because `assignRole` would create an unknown role.
 4. **`Authorizer`** (`#core/authz/authorizer`) — `can(user, capability)` with the request's permission cache. Policies and actions inject it.
 5. **Bouncer policies** — `BasePolicy` subclasses that combine a capability with ownership/state and gate the controller.
 
@@ -34,6 +34,8 @@ On the frontend the shared `authz` prop (`{ roles, permissions }`, built by `bui
 - **Permission cache**: the library caches role and permission reads per request on its own (AsyncLocalStorage is on in `config/app.ts`), so every check in a request costs one read; outside a request each check reads the store. Don't pass a `cache` of your own. Grants changed mid-request apply from the next request.
 
 ## Repo refs
+
+- Roles page: `app/auth/controllers/roles_controller.ts`, `app/auth/queries/{roles_query,roles_matrix}.ts`, `app/auth/actions/{create_role,update_role_capabilities,delete_role}.ts` (audited as `role_*` events), `app/auth/ui/pages/roles/`. Gated by `users.manage_roles`.
 
 - Capabilities: `app/users/enums/capability.ts`, `app/auth/enums/capability.ts` (`users.manage_roles`). Roles: `app/auth/enums/role.ts`. Grants: `config/capabilities.ts`. Lib config: `config/authz.ts`.
 - `Authorizer` + `Capability`: `app/core/authz/`. Policy: `app/users/policies/user_policy.ts`.
@@ -121,7 +123,8 @@ What the role grants comes from `roleGrants`; the assignment is rolled back with
 ## Anti-patterns
 
 - ❌ Hardcoding role or capability strings — use `ROLES.X` / `CAPABILITIES_<MOD>.x` (grants in `config/capabilities.ts` may use wildcards).
-- ❌ Seeding role → permission rows — grants are code (`roleGrants`); a seeded grant is invisible to review and drifts per environment.
+- ❌ Seeding role → permission rows — structural grants are code (`roleGrants`); a seeded grant is invisible to review and drifts per environment. Stored grants are only for institutional roles, edited on the roles page.
+- ❌ Giving an institutional role the name of a structural one — `CreateRole` refuses it: the stored grants would add to the code ones.
 - ❌ Calling `user.can()` in a policy instead of `Authorizer.can` — it skips the request's shared cache.
 - ❌ Writing through `AuthzRole` or the authz tables directly — use `assignRole` / the store, so the lib's invariants hold.
 - ❌ Gating only on the frontend — `useCan` is UX, the policy is security.

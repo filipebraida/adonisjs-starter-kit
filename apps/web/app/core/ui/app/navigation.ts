@@ -1,8 +1,17 @@
 import type { TFunction } from '#core/ui/hooks/use_translation'
 
-import { History, LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
+import {
+  History,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  Shield,
+  ShieldCheck,
+  Users,
+} from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/app/navigation_types'
+import { CAPABILITIES_AUTH } from '#auth/enums/capability'
 import { CAPABILITIES_USERS } from '#users/enums/capability'
 
 export function getNavUser(t: TFunction): NavUserOptionsGroup[] {
@@ -61,6 +70,12 @@ export function getAdminNav(t: TFunction): NavMainItem[] {
           url: '/users/activity',
           icon: History,
           can: CAPABILITIES_USERS.usersAudit,
+        },
+        {
+          title: t('core.layout.navMain.roles'),
+          url: '/roles',
+          icon: ShieldCheck,
+          can: CAPABILITIES_AUTH.usersManageRoles,
         },
       ],
     },

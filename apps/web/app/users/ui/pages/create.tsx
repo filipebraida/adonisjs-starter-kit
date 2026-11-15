@@ -8,9 +8,14 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 import { Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import UserFormFields from '#users/ui/components/user_form_fields'
+import { userRoles } from '#users/ui/components/users_types'
 import { ROLES } from '#auth/enums/role'
 
-export default function CreateUserPage() {
+import type { InertiaProps } from '#core/ui/app/types'
+
+type PageProps = InertiaProps<{ institutionalRoles: string[] }>
+
+export default function CreateUserPage({ institutionalRoles }: PageProps) {
   const { t } = useTranslation()
   const formRef = useRef<FormRef>(null)
 
@@ -39,6 +44,7 @@ export default function CreateUserPage() {
                 <UserFormFields
                   defaults={{ fullName: '', email: '', role: ROLES.USER }}
                   errors={errors}
+                  roles={userRoles(t, institutionalRoles)}
                 />
 
                 <footer className="flex justify-end gap-2 pt-4">

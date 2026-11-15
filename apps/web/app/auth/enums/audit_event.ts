@@ -13,6 +13,9 @@ export const AUDIT_EVENTS = {
   TOKEN_CREATED: 'token_created',
   TOKEN_REVOKED: 'token_revoked',
   USER_INVITED: 'user_invited',
+  ROLE_CREATED: 'role_created',
+  ROLE_CAPABILITIES_CHANGED: 'role_capabilities_changed',
+  ROLE_DELETED: 'role_deleted',
 } as const
 
 export type AuditEvent = (typeof AUDIT_EVENTS)[keyof typeof AUDIT_EVENTS]

@@ -2,7 +2,10 @@ import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
+import authz from '@adonis-agora/authz/services/main'
+
 import ManageRolesUnauthorizedException from '#auth/exceptions/manage_roles_unauthorized_exception'
+import RoleNotFoundException from '#auth/exceptions/role_not_found_exception'
 import UpdateUser from '#users/actions/update_user'
 import { ROLES } from '#auth/enums/role'
 import User from '#auth/models/user'
@@ -127,5 +130,45 @@ test.group('UpdateUser', (group) => {
 
     const reloaded = await User.findOrFail(alvo.id)
     assert.equal(reloaded.fullName, 'After')
+  })
+  test('assigns an institutional role created on the roles page', async ({ assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const target = await UserFactory.create()
+    await withRole(target, ROLES.USER)
+    await authz.store.createRole('reviewer')
+
+    await new UpdateUser().handle({
+      target,
+      fullName: target.fullName ?? 'x',
+      email: target.email,
+      role: 'reviewer',
+      executor: admin,
+    })
+
+    assert.deepEqual(await target.getRoles(), ['reviewer'])
+  })
+
+  test('a role that does not exist saves nothing and is not created', async ({ assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const target = await UserFactory.merge({ fullName: 'Before' }).create()
+    await withRole(target, ROLES.USER)
+
+    await assert.rejects(
+      () =>
+        new UpdateUser().handle({
+          target,
+          fullName: 'After',
+          email: target.email,
+          role: 'ghost',
+          executor: admin,
+        }),
+      RoleNotFoundException
+    )
+
+    const reloaded = await User.findOrFail(target.id)
+    assert.equal(reloaded.fullName, 'Before')
+    assert.notInclude(await authz.store.listRoles(), 'ghost')
   })
 })

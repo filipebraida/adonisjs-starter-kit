@@ -19,7 +19,7 @@ I use this kit to prototype projects with coding agents, and my students use it 
 ## Features
 
 - **Auth**: sign-up, password reset, Google sign-in, API tokens and admin impersonation.
-- **RBAC** with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz): typed capabilities granted to roles in code, enforced by policies.
+- **RBAC** with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz): typed capabilities, roles in code plus institutional roles built on a roles page, enforced by policies.
 - **Audit trail** with [`@filipebraida/adonis-auditing`](https://github.com/filipebraida/adonis-auditing): who did what, when and from where, on an Activity page.
 - **Durable jobs** with [`@adonis-agora/durable`](https://github.com/DavideCarvalho/adonis-agora-durable): mails and notifications run as retryable workflows on Postgres, with no Redis.
 - **Realtime notifications** over SSE, with a bell and an unread badge.

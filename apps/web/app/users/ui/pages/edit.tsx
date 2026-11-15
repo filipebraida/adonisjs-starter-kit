@@ -8,16 +8,18 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 import { Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import UserFormFields from '#users/ui/components/user_form_fields'
-import { mainRole, ROLES } from '#auth/enums/role'
+import { userRoles } from '#users/ui/components/users_types'
+import { displayRole, ROLES } from '#auth/enums/role'
 
 import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
 type PageProps = InertiaProps<{
   user: Data.Users.User.Variants['forEdit']
+  institutionalRoles: string[]
 }>
 
-export default function EditUserPage({ user }: PageProps) {
+export default function EditUserPage({ user, institutionalRoles }: PageProps) {
   const { t } = useTranslation()
   const formRef = useRef<FormRef>(null)
 
@@ -48,9 +50,10 @@ export default function EditUserPage({ user }: PageProps) {
                   defaults={{
                     fullName: user.fullName ?? '',
                     email: user.email,
-                    role: mainRole(user.roles) ?? ROLES.USER,
+                    role: displayRole(user.roles) ?? ROLES.USER,
                   }}
                   errors={errors}
+                  roles={userRoles(t, institutionalRoles)}
                 />
 
                 <footer className="flex justify-end gap-2 pt-4">

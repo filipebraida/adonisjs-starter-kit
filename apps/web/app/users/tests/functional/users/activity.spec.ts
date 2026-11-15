@@ -2,7 +2,10 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
+import authz from '@adonis-agora/authz/services/main'
+
 import { ROLES } from '#auth/enums/role'
+import { CAPABILITIES_USERS } from '#users/enums/capability'
 import { UserFactory } from '#auth/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
 import { withRole } from '#tests/helpers/rbac'
@@ -24,6 +27,17 @@ test.group('Endpoint GET /users/activity', (group) => {
     const response = await client.get('/users/activity').loginAs(user).redirects(0)
 
     assertForbiddenRedirect(response)
+  })
+
+  test('a capability granted to an institutional role opens its page', async ({ client }) => {
+    await authz.store.createRole('auditor')
+    await authz.store.givePermissionToRole('auditor', CAPABILITIES_USERS.usersAudit)
+    const user = await UserFactory.create()
+    await withRole(user, 'auditor')
+
+    const response = await client.get('/users/activity').loginAs(user).withInertia()
+
+    response.assertStatus(200)
   })
 
   test('an admin sees what a user did, with who acted and from where', async ({

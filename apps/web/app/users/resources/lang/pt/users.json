@@ -253,7 +253,10 @@
       "impersonation_started": "entrou como o usuário",
       "token_created": "criou um token de acesso",
       "token_revoked": "revogou um token de acesso",
-      "user_invited": "convidou"
+      "user_invited": "convidou",
+      "role_created": "criou um papel",
+      "role_capabilities_changed": "alterou as capacidades de um papel",
+      "role_deleted": "excluiu um papel"
     }
   }
 }

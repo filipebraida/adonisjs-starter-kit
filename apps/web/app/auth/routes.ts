@@ -61,3 +61,11 @@ router
   .where('locale', /^[a-z]{2}(-[A-Z]{2})?$/)
   .use(middleware.switchLocale())
   .as('locale.switch')
+
+// `:id` is the role's name, shaped like every role name.
+router
+  .resource('/roles', controllers.auth.Roles)
+  .only(['index', 'create', 'store', 'update', 'destroy'])
+  .where('id', /^[a-z][a-z0-9_]*$/)
+  .use('*', middleware.auth())
+  .as('roles')

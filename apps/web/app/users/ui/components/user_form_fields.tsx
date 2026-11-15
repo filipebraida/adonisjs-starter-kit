@@ -14,24 +14,23 @@ import {
 
 import { Field, FieldError } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
-import { userRoles } from '#users/ui/components/users_types'
-import type { Role as RoleSlug } from '#auth/enums/role'
+import type { Role } from '#users/ui/components/users_types'
 
 export type UserFormDefaults = {
   fullName: string
   email: string
-  role: RoleSlug
+  role: string
 }
 
 interface Props {
   defaults: UserFormDefaults
   errors: Partial<Record<string, string>>
+  roles: Role[]
 }
 
 /** Shared fields of the create and edit modals, inside a `<Form>`. */
-export default function UserFormFields({ defaults, errors }: Props) {
+export default function UserFormFields({ defaults, errors, roles }: Props) {
   const { t } = useTranslation()
-  const roles = userRoles(t)
   // The confirmation stays disabled until a password is typed.
   const [hasPassword, setHasPassword] = useState(false)
 

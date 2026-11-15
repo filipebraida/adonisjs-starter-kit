@@ -4,6 +4,7 @@ import CreateUser from '#users/actions/create_user'
 import DeleteUser from '#users/actions/delete_user'
 import UpdateUser from '#users/actions/update_user'
 import User from '#auth/models/user'
+import { institutionalRoles } from '#auth/queries/roles_query'
 import UserPolicy from '#users/policies/user_policy'
 import ListUsers from '#users/queries/list_users'
 import UserTransformer from '#users/transformers/user_transformer'
@@ -28,6 +29,7 @@ export default class UsersController {
       users: UserTransformer.paginate(usersData, users.getMeta()).useVariant('forList'),
       q: payload.q,
       selectedRoles: payload.roles ?? [],
+      institutionalRoles: await institutionalRoles(),
       sort: payload.sort ?? null,
       order: payload.order ?? null,
     })
@@ -36,7 +38,11 @@ export default class UsersController {
   public async create({ bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
-    return inertia.modal('users/create', {}, { route: 'users.index' })
+    return inertia.modal(
+      'users/create',
+      { institutionalRoles: await institutionalRoles() },
+      { route: 'users.index' }
+    )
   }
 
   public async store({ auth, bouncer, request, response }: HttpContext) {
@@ -63,7 +69,10 @@ export default class UsersController {
 
     return inertia.modal(
       'users/edit',
-      { user: UserTransformer.transform(user).useVariant('forEdit') },
+      {
+        user: UserTransformer.transform(user).useVariant('forEdit'),
+        institutionalRoles: await institutionalRoles(),
+      },
       { route: 'users.index' }
     )
   }

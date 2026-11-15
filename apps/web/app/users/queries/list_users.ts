@@ -1,12 +1,11 @@
 import type { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 
-import type { Role as RoleSlug } from '#auth/enums/role'
 import { USERS_SORT_COLUMN, type SortDirection, type UsersSortBy } from '#users/enums/sort'
 import User from '#auth/models/user'
 
 export interface ListUsersFilters {
   q?: string
-  roles?: RoleSlug[]
+  roles?: string[]
   sort?: UsersSortBy
   order?: SortDirection
 }

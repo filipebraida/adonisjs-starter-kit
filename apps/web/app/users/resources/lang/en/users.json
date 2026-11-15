@@ -253,7 +253,10 @@
       "impersonation_started": "started impersonating",
       "token_created": "created an access token",
       "token_revoked": "revoked an access token",
-      "user_invited": "invited"
+      "user_invited": "invited",
+      "role_created": "created a role",
+      "role_capabilities_changed": "changed a role's capabilities",
+      "role_deleted": "deleted a role"
     }
   }
 }

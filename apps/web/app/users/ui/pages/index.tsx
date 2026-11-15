@@ -30,14 +30,22 @@ type PageProps = InertiaProps<{
   }
   q?: string
   selectedRoles: string[]
+  institutionalRoles: string[]
   sort: string | null
   order: string | null
 }>
 
-export default function ListUsersPage({ users, q, selectedRoles, sort, order }: PageProps) {
+export default function ListUsersPage({
+  users,
+  q,
+  selectedRoles,
+  institutionalRoles,
+  sort,
+  order,
+}: PageProps) {
   const { t } = useTranslation()
 
-  const roles = userRoles(t)
+  const roles = userRoles(t, institutionalRoles)
 
   return (
     <AdminLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>

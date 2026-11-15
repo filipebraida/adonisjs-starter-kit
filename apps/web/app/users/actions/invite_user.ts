@@ -1,15 +1,14 @@
 import emitter from '@adonisjs/core/services/emitter'
 import type { I18n } from '@adonisjs/i18n'
 
-import { requireManageRolesIfEscalating } from '#auth/actions/sync_user_roles'
+import { requireExistingRole, requireManageRolesIfEscalating } from '#auth/actions/sync_user_roles'
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
-import type { Role as RoleSlug } from '#auth/enums/role'
 import User from '#auth/models/user'
 import PasswordResetService from '#auth/services/password_reset_service'
 
 export interface InviteUserInput {
   email: string
-  role: RoleSlug
+  role: string
   description?: string
   executor: User
   i18n: I18n
@@ -19,10 +18,12 @@ export interface InviteUserInput {
  * Invites a user: creates the account with its role and a reset token, then
  * emits `user:registered`, whose listeners send the welcome mail and notification.
  * @throws ManageRolesUnauthorizedException if granting a role above user without the capability.
+ * @throws RoleNotFoundException if the role does not exist.
  */
 export default class InviteUser {
   async handle(input: InviteUserInput): Promise<User> {
     await requireManageRolesIfEscalating(input.executor, [input.role])
+    await requireExistingRole(input.role)
 
     const user = await User.create({ email: input.email })
     await user.save()

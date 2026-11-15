@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import InviteUser from '#users/actions/invite_user'
+import { institutionalRoles } from '#auth/queries/roles_query'
 import UserPolicy from '#users/policies/user_policy'
 import { inviteUserValidator } from '#users/validators/users'
 
@@ -12,7 +13,11 @@ export default class InviteController {
   public async show({ bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('invite')
 
-    return inertia.modal('users/invite', {}, { route: 'users.index' })
+    return inertia.modal(
+      'users/invite',
+      { institutionalRoles: await institutionalRoles() },
+      { route: 'users.index' }
+    )
   }
 
   public async store({ auth, i18n, bouncer, request, response }: HttpContext) {
