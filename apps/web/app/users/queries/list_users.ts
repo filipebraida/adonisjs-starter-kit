@@ -2,6 +2,7 @@ import type { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 
 import { USERS_SORT_COLUMN, type SortDirection, type UsersSortBy } from '#users/enums/sort'
 import User from '#auth/models/user'
+import { escapeLike } from '#core/utils/escape_like'
 
 export interface ListUsersFilters {
   q?: string
@@ -24,7 +25,7 @@ export default class ListUsers {
     const query = User.query().preload('roles')
 
     if (filters.q) {
-      const term = `%${filters.q}%`
+      const term = `%${escapeLike(filters.q)}%`
       query.where((sub) => {
         sub.where('full_name', 'ilike', term).orWhere('email', 'ilike', term)
       })

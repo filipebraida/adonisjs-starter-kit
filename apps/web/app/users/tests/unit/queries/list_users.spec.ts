@@ -23,6 +23,17 @@ test.group('ListUsers', (group) => {
     assert.notInclude(nomes, `${tag}-beta`)
   })
 
+  test('matches % and _ in the search literally, not as wildcards', async ({ assert }) => {
+    const tag = marker('like')
+    await UserFactory.merge({ fullName: `${tag}-alpha`, email: `${tag}-l@example.test` }).create()
+
+    const underscore = await new ListUsers().handle({ q: `${tag}_alpha` }, { page: 1, perPage: 50 })
+    const percent = await new ListUsers().handle({ q: `${tag}%alpha` }, { page: 1, perPage: 50 })
+
+    assert.lengthOf(underscore.all(), 0)
+    assert.lengthOf(percent.all(), 0)
+  })
+
   test('filters by email substring (ilike)', async ({ assert }) => {
     const tag = marker('email').toLowerCase()
     await UserFactory.merge({ email: `${tag}-alpha@example.test` }).create()

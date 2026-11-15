@@ -2,6 +2,7 @@ import type { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 import { Audit } from '@filipebraida/adonis-auditing'
 
 import type { AuditEvent } from '#auth/enums/audit_event'
+import { escapeLike } from '#core/utils/escape_like'
 
 export interface ListAuditsFilters {
   /** Rows a given user acted in (`audits.user_id`). */
@@ -52,7 +53,7 @@ export default class ListAudits {
     }
 
     if (filters.q) {
-      const term = `%${filters.q}%`
+      const term = `%${escapeLike(filters.q)}%`
       query.where((actor) => {
         actor.where('users.full_name', 'ilike', term).orWhere('users.email', 'ilike', term)
       })
