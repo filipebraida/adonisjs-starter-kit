@@ -1,5 +1,6 @@
 import { errors as authErrors } from '@adonisjs/auth'
 import { errors } from '@adonisjs/bouncer'
+import { errors as limiterErrors } from '@adonisjs/limiter'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
@@ -48,6 +49,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       }
       ctx.session?.flash('error', message)
       return ctx.response.redirect().toRoute('auth.sign_in.show')
+    }
+
+    // An Inertia visit cannot show a bare 429 body: flash the message and go back.
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS) {
+      if (ctx.request.accepts(['html', 'json']) === 'json') return super.handle(error, ctx)
+      ctx.session?.flash('error', error.getResponseMessage(ctx))
+      return ctx.response.redirect().back()
     }
 
     return super.handle(error, ctx)

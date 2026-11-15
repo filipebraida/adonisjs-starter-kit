@@ -1,5 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
+import limiter from '@adonisjs/limiter/services/main'
 
 import { UserFactory } from '#auth/database/factories/user'
 import User from '#auth/models/user'
@@ -13,6 +14,7 @@ const payload = {
 
 test.group('Endpoint /sign-up', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+  group.each.setup(() => limiter.clear())
 
   test('creates the user, authenticates and redirects to /dashboard', async ({
     client,
@@ -94,5 +96,26 @@ test.group('Endpoint /sign-up', (group) => {
 
     const user = await User.findByOrFail('email', payload.email)
     assert.equal(user.locale, 'pt')
+  })
+
+  test('throttles repeated sign-ups from one address and says so', async ({ client, assert }) => {
+    const over = `burst-over-${Date.now()}@example.test`
+    for (let attempt = 0; attempt < 10; attempt++) {
+      await client
+        .post('/sign-up')
+        .redirects(0)
+        .withCsrfToken()
+        .json({ ...payload, email: `burst-${attempt}@example.test` })
+    }
+
+    const response = await client
+      .post('/sign-up')
+      .redirects(0)
+      .withCsrfToken()
+      .json({ ...payload, email: over })
+
+    response.assertStatus(302)
+    response.assertFlashMessage('error', 'Too many attempts, please try again later.')
+    assert.isNull(await User.findBy('email', over))
   })
 })

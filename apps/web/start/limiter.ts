@@ -11,15 +11,10 @@
 
 import limiter from '@adonisjs/limiter/services/main'
 
+/**
+ * Public forms that create something (sign-up). Keyed by IP, so a classroom
+ * behind one NAT shares it: generous per minute, no long block.
+ */
 export const throttle = limiter.define('global', () => {
-  return limiter
-    .allowRequests(10)
-    .every('1 minute')
-    .blockFor('10 mins')
-    .limitExceeded((error) => {
-      error.t('errors.rate_limited', {
-        limit: error.response.limit,
-        remaining: error.response.remaining,
-      })
-    })
+  return limiter.allowRequests(10).every('1 minute')
 })
