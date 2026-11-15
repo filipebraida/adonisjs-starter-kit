@@ -216,6 +216,9 @@ importers:
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
+      mdast-util-to-string:
+        specifier: 4.0.0
+        version: 4.0.0
       mermaid:
         specifier: 12.2.0
         version: 12.2.0
@@ -252,9 +255,18 @@ importers:
       remark-github-blockquote-alert:
         specifier: 2.1.0
         version: 2.1.0
+      remark-parse:
+        specifier: 11.0.0
+        version: 11.0.0
       sharp:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@26.6.6)
+      unified:
+        specifier: 11.0.5
+        version: 11.0.5
+      unist-util-visit:
+        specifier: 5.2.0
+        version: 5.2.0
       usehooks-ts:
         specifier: ^3.1.1
         version: 3.1.1(react@19.3.1)
@@ -304,6 +316,9 @@ importers:
       '@types/luxon':
         specifier: ^3.7.6
         version: 3.7.6
+      '@types/mdast':
+        specifier: 4.0.4
+        version: 4.0.4
       '@types/node':
         specifier: ~26.6.6
         version: 26.6.6

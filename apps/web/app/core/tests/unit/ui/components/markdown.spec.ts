@@ -67,6 +67,24 @@ test.group('Markdown headings', () => {
   })
 })
 
+test.group('Markdown headings the server must name as the browser does', () => {
+  for (const [name, text] of [
+    ['underscores inside words', '## user_id and role_id'],
+    ['underscores inside code', '## The `users.view_list` and `users.manage_roles` capabilities'],
+    ['a heading inside a quote, before a repeated title', '> ## Quoted\n\n## Quoted'],
+    ['a setext heading', 'Underlined\n----------'],
+  ]) {
+    test(name, ({ assert }) => {
+      const html = render(text, { variant: 'document' })
+      const rendered = [...html.matchAll(/<h[1-6] id="([^"]+)"/g)].map((match) => match[1])
+      assert.deepEqual(
+        markdownHeadings(text).map((heading) => heading.id),
+        rendered
+      )
+    })
+  }
+})
+
 test.group('Markdown document', () => {
   test("the text variant keeps headings small, with GitHub's ids", ({ assert }) => {
     const html = render('## Olá mundo')
