@@ -106,6 +106,14 @@ export default configApp(
     rules: { 'adonis/module-allowed-dirs': 'off', 'adonis/unit-test-mirrors-layer': 'off' },
   },
   {
+    // The locale parity spec tests `<module>/resources/lang/`, a folder the
+    // preset has no unit-test layer for. Pending decision: add `resources` to
+    // unit-test-mirrors-layer upstream, then drop this block.
+    name: 'Translations spec mirrors the resources folder',
+    files: ['app/core/tests/unit/resources/**'],
+    rules: { 'adonis/unit-test-mirrors-layer': 'off' },
+  },
+  {
     // The theme previews draw light and dark mode whatever the current theme
     // is, and the Google mark has its brand colors: tokens would repaint them.
     name: 'Drawings and brand marks keep their own colors',

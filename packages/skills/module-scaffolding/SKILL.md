@@ -20,7 +20,7 @@ node ace make:module <mod> --db --i18n --events
 ```
 
 - `--db` — adds `database/migrations/` and registers its path in `config/database.ts`.
-- `--i18n` — adds `resources/lang/{en,pt}/<mod>.json` and registers the i18n loader.
+- `--i18n` — adds `resources/lang/{en,pt}/<mod>.json`; the server and the frontend find the folder on their own.
 - `--events` — adds `start/events.ts` + `types/events.ts`, preloads events, **and** adds the `types/**` glob to the core tsconfig (skip that and the `EventsList` merge breaks the client typecheck). The stub's commented example shows an inline closure; replace it with a lazy listener-class binding (`emitter.on('<mod>:created', [() => import('#<mod>/listeners/...')])`) — see [[actions-events]].
 
 Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**` tsconfig include. After running it, `pnpm dev` (or any `node ace`) regenerates route/page types, then `pnpm typecheck`. The rest of this skill is what the command does under the hood — use it to add a piece later or to wire a module by hand.

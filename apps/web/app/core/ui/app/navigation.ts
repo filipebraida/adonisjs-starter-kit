@@ -1,11 +1,11 @@
-import type { SimpleTFunction } from '#core/ui/hooks/use_translation'
+import type { TFunction } from '#core/ui/hooks/use_translation'
 
 import { History, LayoutDashboard, LogOut, Settings, Shield, Users } from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/app/navigation_types'
 import { CAPABILITIES_USERS } from '#users/enums/capability'
 
-export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
+export function getNavUser(t: TFunction): NavUserOptionsGroup[] {
   return [
     [
       {
@@ -31,7 +31,7 @@ export function getNavUser(t: SimpleTFunction): NavUserOptionsGroup[] {
   ]
 }
 
-export function getMainNav(t: SimpleTFunction): NavMainItem[] {
+export function getMainNav(t: TFunction): NavMainItem[] {
   return [
     {
       title: t('core.layout.navMain.dashboard'),
@@ -40,7 +40,7 @@ export function getMainNav(t: SimpleTFunction): NavMainItem[] {
   ]
 }
 
-export function getAdminNav(t: SimpleTFunction): NavMainItem[] {
+export function getAdminNav(t: TFunction): NavMainItem[] {
   return [
     {
       title: t('core.layout.navMain.dashboard'),

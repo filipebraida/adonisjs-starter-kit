@@ -11,7 +11,7 @@ import { client } from './client'
 
 import { isSSREnableForPage } from 'config/ssr'
 import { I18nextProvider } from 'react-i18next'
-import { setupI18n } from './i18n'
+import { createI18n, loadResources } from './i18n'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS Starter Kit'
 
@@ -29,7 +29,7 @@ createInertiaApp({
     )
   },
 
-  setup: ({ el, App, props }) => {
+  setup: async ({ el, App, props }) => {
     const componentName = props.initialPage.component
     const isSSREnabled = isSSREnableForPage(componentName)
 
@@ -38,9 +38,12 @@ createInertiaApp({
       fallbackLocale?: string
     }
 
-    const i18nInstance = setupI18n({
-      locale: locale ?? 'en',
-      fallbackLocale: fallbackLocale ?? 'en',
+    const currentLocale = locale ?? 'en'
+    const fallback = fallbackLocale ?? 'en'
+    const i18nInstance = createI18n({
+      locale: currentLocale,
+      fallbackLocale: fallback,
+      resources: await loadResources([currentLocale, fallback]),
     })
 
     if (isSSREnabled) {

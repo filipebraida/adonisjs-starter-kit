@@ -1,6 +1,6 @@
 import { LucideIcon, Shield, User } from 'lucide-react'
 
-import { SimpleTFunction } from '#core/ui/hooks/use_translation'
+import { TFunction } from '#core/ui/hooks/use_translation'
 
 import { ROLES, type Role as RoleSlug } from '#auth/enums/role'
 
@@ -10,7 +10,7 @@ export type Role = {
   icon?: LucideIcon
 }
 
-export function userRoles(t: SimpleTFunction): Role[] {
+export function userRoles(t: TFunction): Role[] {
   return [
     {
       value: ROLES.ADMIN,

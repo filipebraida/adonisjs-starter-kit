@@ -5,7 +5,14 @@ import { ModalStackProvider } from 'adonis-inertia-modal/react'
 import { client } from './client'
 
 import { I18nextProvider } from 'react-i18next'
-import { setupI18n } from './i18n'
+import { buildResources, createI18n } from './i18n'
+
+// The server renders any locale, so it bundles them all up front.
+const localeFiles = import.meta.glob<Record<string, unknown>>('/app/*/resources/lang/*/*.json', {
+  eager: true,
+  import: 'default',
+})
+const resources = buildResources(localeFiles)
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -26,9 +33,10 @@ export default function render(page: any) {
         fallbackLocale?: string
       }
 
-      const i18nInstance = setupI18n({
+      const i18nInstance = createI18n({
         locale: locale ?? 'en',
         fallbackLocale: fallbackLocale ?? 'en',
+        resources,
       })
 
       return (

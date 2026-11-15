@@ -4,7 +4,7 @@ import { CheckCircle2, Plus, Ticket, Trash2, X } from 'lucide-react'
 import { TokensActionDialog } from '#users/ui/components/tokens_action_dialog'
 import { TokensDeleteDialog } from '#users/ui/components/tokens_delete_dialog'
 
-import { useTranslation } from '#core/ui/hooks/use_translation'
+import { type TFunction, useTranslation } from '#core/ui/hooks/use_translation'
 import { formatDate, formatRelativeTime } from '#core/ui/format/date'
 
 import { Button } from '@workspace/ui/components/button'
@@ -134,11 +134,7 @@ export function TokensSection({ tokens, newToken }: Props) {
   )
 }
 
-function formatTokenMeta(
-  token: Data.Users.Token,
-  t: (key: string, opts?: Record<string, unknown>) => string,
-  locale: string
-) {
+function formatTokenMeta(token: Data.Users.Token, t: TFunction, locale: string) {
   const created = formatDate(token.createdAt, locale, { dateStyle: 'medium' })
   const parts = [t('users.tokens.created_word', { date: created })]
 

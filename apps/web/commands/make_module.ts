@@ -7,7 +7,7 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
 /**
  * Scaffold a new bounded-context module AND wire every manual registration
  * step, so the touchpoints that otherwise fail silently at runtime (preloads,
- * migration paths, i18n loaders, tsconfig include) are never forgotten.
+ * migration paths, tsconfig include) are never forgotten.
  *
  * @example
  *   node ace make:module billing
@@ -26,7 +26,7 @@ export default class MakeModule extends BaseCommand {
 
   @flags.boolean({
     flagName: 'i18n',
-    description: 'Add resources/lang (en/pt) and register the i18n loader',
+    description: 'Add resources/lang (en/pt)',
   })
   declare i18n: boolean
 
@@ -141,15 +141,10 @@ export default class MakeModule extends BaseCommand {
 
     // ---- optional: i18n -----------------------------------------------------
     if (this.i18n) {
+      // config/i18n.ts and the frontend find the folder on their own.
       for (const locale of ['en', 'pt']) {
         this.make(`resources/lang/${locale}/${name}.json`, '{}\n')
       }
-      this.wire(
-        'config/i18n.ts',
-        `app/${name}/resources/lang`,
-        `  ],\n})`,
-        `    loaders.fs({\n      location: app.makePath('app/${name}/resources/lang'),\n    }),\n`
-      )
     }
 
     // ---- optional: events ---------------------------------------------------

@@ -1,9 +1,13 @@
+import type { TFunction as I18nextTFunction } from 'i18next'
 import { useTranslation as useReactI18nextTranslation } from 'react-i18next'
 
-export type SimpleTFunction = (key: string | string[], options?: Record<string, unknown>) => string
+import { ensureLocale } from '#core/ui/app/i18n'
+
+/** `t` with its keys typed from the English JSON files (`.adonisjs/client/i18n.d.ts`). */
+export type TFunction = I18nextTFunction
 
 interface I18nService {
-  t: SimpleTFunction
+  t: TFunction
   changeLanguage: (lang: string) => Promise<void>
   language: string
 }
@@ -12,9 +16,10 @@ export function useTranslation(): I18nService {
   const { t, i18n } = useReactI18nextTranslation()
 
   return {
-    t: (key, options) => t(key, options),
+    t,
     changeLanguage: async (lang: string) => {
       if (i18n.language !== lang) {
+        await ensureLocale(i18n, lang)
         await i18n.changeLanguage(lang)
       }
     },

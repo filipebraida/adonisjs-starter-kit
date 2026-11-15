@@ -1,4 +1,5 @@
 import { indexAppUiPages } from '#core/hooks/index_pages_hook'
+import { indexTranslations } from '#core/hooks/index_translations_hook'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
@@ -181,6 +182,7 @@ export default defineConfig({
         },
       }),
       indexAppUiPages(),
+      indexTranslations(),
       generateRegistry(),
       async () => ({
         default: workflowsHook({ source: ['app/auth/workflows', 'app/users/workflows'] }),
