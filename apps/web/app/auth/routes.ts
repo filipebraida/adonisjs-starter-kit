@@ -10,7 +10,6 @@ import router from '@adonisjs/core/services/router'
 
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
-import { throttle } from '#start/limiter'
 
 // A reset token is url-safe text; anything else 404s before the lookup.
 const RESET_TOKEN = /^[\w-]+$/
@@ -29,7 +28,7 @@ router
 
 router
   .post('/sign-up', [controllers.auth.SignUp, 'store'])
-  .use([middleware.guest(), throttle])
+  .use(middleware.guest())
   .as('auth.sign_up.handle')
 router
   .get('/forgot-password', [controllers.auth.ForgotPassword, 'show'])
