@@ -72,6 +72,11 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      # The typecheck holds each story to its page's props; the build also
+      # compiles the MDX rule pages, which no typecheck reads.
+      - name: Storybook builds
+        run: pnpm --filter storybook-app build
+
       # A stray async handle (an upload's variant, an open socket) can keep the
       # runner alive after the last spec; the timeout turns a hang into a failure.
       - name: Test + coverage

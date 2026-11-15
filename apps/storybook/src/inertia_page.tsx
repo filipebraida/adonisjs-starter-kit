@@ -1,15 +1,21 @@
 import { App } from "@inertiajs/react";
 import { http, HttpResponse } from "msw";
-import type { ComponentType } from "react";
+import type { ComponentProps, ComponentType } from "react";
+
+import type { Data } from "@generated/data";
 
 import { CAPABILITIES_AUTH } from "@web/app/auth/enums/capability";
 import { ROLES } from "@web/app/auth/enums/role";
 import { CAPABILITIES_USERS } from "@web/app/users/enums/capability";
 
-type Props = Record<string, unknown>;
-
 /** Who is signed in, as the shared props carry it. */
-export const SIGNED_IN = {
+export const SIGNED_IN: Record<
+  "admin" | "manager" | "user",
+  {
+    user: NonNullable<Data.SharedProps["user"]>;
+    authz: Data.SharedProps["authz"];
+  }
+> = {
   admin: {
     user: {
       id: 1,
@@ -50,20 +56,39 @@ export const SIGNED_IN = {
     },
     authz: { roles: [ROLES.USER], permissions: [] },
   },
-} as const;
+};
 
-type PageOptions = {
+/**
+ * The props a page gets from its own controller: its props minus the shared
+ * ones. A story passing the wrong shape fails the typecheck, so the board
+ * cannot drift from the page.
+ */
+export type OwnProps<P> = Omit<P, keyof Data.SharedProps | "children">;
+
+type PageOptions<P> = {
   component: string;
   url: string;
   as?: keyof typeof SIGNED_IN;
-  props?: Props;
+  props: OwnProps<P>;
   flash?: { error?: string; success?: string };
   impersonation?: { returnTo: string } | null;
 };
 
+/** What the Inertia middleware shares, typed by it: a new shared prop fails here until the stories send it. */
+function sharedProps(options: PageOptions<unknown>): Data.SharedProps {
+  return {
+    errors: {},
+    csrf: "storybook",
+    locale: "en",
+    fallbackLocale: "en",
+    unseenNotifications: 3,
+    impersonation: options.impersonation ?? null,
+    ...SIGNED_IN[options.as ?? "admin"],
+  };
+}
+
 /** The page object the server sends: the shared props the middleware adds, plus the page's own. */
-function pageObject(options: PageOptions) {
-  const signedIn = SIGNED_IN[options.as ?? "admin"];
+function pageObject<P>(options: PageOptions<P>) {
   return {
     component: options.component,
     url: options.url,
@@ -72,13 +97,7 @@ function pageObject(options: PageOptions) {
     rescuedProps: [],
     rememberedState: {},
     props: {
-      errors: {},
-      locale: "en",
-      fallbackLocale: "en",
-      csrf: "storybook",
-      unseenNotifications: 3,
-      impersonation: options.impersonation ?? null,
-      ...signedIn,
+      ...sharedProps(options as PageOptions<unknown>),
       ...options.props,
     },
   };
@@ -89,12 +108,21 @@ function pageObject(options: PageOptions) {
  * it. Its visits (search, sort, links) reach no server unless the story
  * answers them with `inertiaRoute`.
  */
-export function inertiaPage(Page: ComponentType<any>, options: PageOptions) {
+export function inertiaPage<P>(
+  Page: ComponentType<P>,
+  options: PageOptions<P>,
+) {
   return (
     <App
       initialComponent={Page}
       resolveComponent={() => Page}
-      initialPage={pageObject(options)}
+      // Inertia types the initial page with its own error-bag shape; the props
+      // were already checked against the page and the middleware above.
+      initialPage={
+        pageObject(options) as unknown as ComponentProps<
+          typeof App
+        >["initialPage"]
+      }
     />
   );
 }
@@ -102,11 +130,13 @@ export function inertiaPage(Page: ComponentType<any>, options: PageOptions) {
 /**
  * Answers the page's Inertia visits to `path` (an MSW handler, for a story's
  * `beforeEach`): `respond` reads the query string, as the controller would,
- * and returns the page to send back.
+ * and returns the page to send back. The page is passed only to type what
+ * `respond` returns.
  */
-export function inertiaRoute(
+export function inertiaRoute<P>(
   path: string,
-  respond: (query: URLSearchParams) => Omit<PageOptions, "url">,
+  _page: ComponentType<P>,
+  respond: (query: URLSearchParams) => Omit<PageOptions<P>, "url">,
 ) {
   return http.get(path, ({ request }) => {
     const url = new URL(request.url);

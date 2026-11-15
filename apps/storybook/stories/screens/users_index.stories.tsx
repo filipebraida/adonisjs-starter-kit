@@ -136,7 +136,9 @@ function usersPage(as: As, query: URLSearchParams) {
 function story(as: As, search = ""): Story {
   return {
     beforeEach({ msw }) {
-      msw.use(inertiaRoute("/users", (query) => usersPage(as, query)));
+      msw.use(
+        inertiaRoute("/users", ListUsersPage, (query) => usersPage(as, query)),
+      );
     },
     render: () =>
       inertiaPage(ListUsersPage, {
