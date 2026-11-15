@@ -129,4 +129,39 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     const audit = await alvo.audits().where('event', AUDIT_EVENTS.UPDATED).firstOrFail()
     assert.notProperty(audit.metadata ?? {}, 'impersonated_by')
   })
+  test('switching back signs the admin in again and records it', async ({ client, assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const target = await UserFactory.create()
+
+    const response = await client
+      .delete('/users/impersonate')
+      .withSession({ impersonation: { originalUserId: admin.id, targetUserId: target.id } })
+      .loginAs(target)
+      .withCsrfToken()
+      .redirects(0)
+
+    response.assertStatus(302)
+    assert.equal(response.header('location'), '/users')
+    assert.equal(response.session().auth_web, admin.id)
+    assert.isUndefined(response.session().impersonation)
+    const audit = await target
+      .audits()
+      .where('event', AUDIT_EVENTS.IMPERSONATION_STOPPED)
+      .firstOrFail()
+    assert.equal(audit.metadata?.originalUserId, admin.id)
+  })
+
+  test('switching back without an impersonation is refused', async ({ client, assert }) => {
+    const user = await UserFactory.create()
+
+    const response = await client
+      .delete('/users/impersonate')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+
+    assertForbiddenRedirect(response)
+    assert.equal(response.session().auth_web, user.id)
+  })
 })

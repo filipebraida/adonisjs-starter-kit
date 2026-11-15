@@ -33,31 +33,42 @@ interface ActivityTableProps {
   }
   events: AuditEvent[]
   q?: string
-  actorId: number | null
+  actor: { id: number; name: string } | null
   event: AuditEvent | null
 }
 
-export default function ActivityTable({ audits, events, q, actorId, event }: ActivityTableProps) {
+export default function ActivityTable({ audits, events, q, actor, event }: ActivityTableProps) {
   const { t, language } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q ?? '')
   const [selectedEvent, setSelectedEvent] = React.useState<AuditEvent | ''>(event ?? '')
 
   const visit = React.useCallback(
-    (params: { q: string; event: AuditEvent | ''; page?: number; perPage: number }) => {
+    (params: {
+      q: string
+      event: AuditEvent | ''
+      actorId?: number
+      page?: number
+      perPage: number
+    }) => {
       router.get(
         urlFor('users.activity'),
         {
           q: params.q.length > 0 ? params.q : undefined,
           event: params.event || undefined,
-          actorId: actorId ?? undefined,
+          actorId: params.actorId,
           page: params.page,
           perPage: params.perPage,
         },
-        { preserveScroll: true, preserveState: true, replace: true, only: ['audits', 'q', 'event'] }
+        {
+          preserveScroll: true,
+          preserveState: true,
+          replace: true,
+          only: ['audits', 'q', 'event', 'actor'],
+        }
       )
     },
-    [actorId]
+    []
   )
 
   const debouncedVisit = useDebounceCallback(visit, 300)
@@ -67,7 +78,8 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
 
   const remoteTableOptions = useDataTable({
     data: audits,
-    visit: ({ page, perPage }) => visit({ q: querySearch, event: selectedEvent, page, perPage }),
+    visit: ({ page, perPage }) =>
+      visit({ q: querySearch, event: selectedEvent, actorId: actor?.id, page, perPage }),
   })
 
   const eventOptions = events.map((value) => ({
@@ -75,7 +87,7 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
     label: t(`users.activity.events.${value}`),
   }))
 
-  const isFiltered = querySearch.trim().length > 0 || selectedEvent !== '' || actorId !== null
+  const isFiltered = querySearch.trim().length > 0 || selectedEvent !== '' || actor !== null
 
   const clearAll = () => {
     setQuerySearch('')
@@ -83,10 +95,16 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
     router.get(urlFor('users.activity'), { perPage }, { preserveScroll: true, replace: true })
   }
 
+  const actorName = (row: AuditRow) =>
+    row.actor
+      ? (row.actor.fullName ?? row.actor.email ?? `#${row.actor.id}`)
+      : t('users.activity.table.system')
+
   const columns: ColumnDef<AuditRow>[] = [
     {
       id: 'createdAt',
       header: t('users.activity.table.columns.when'),
+      meta: { columnClasses: 'hidden sm:table-cell' },
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-sm">
           {formatDateTime(row.original.createdAt, language)}
@@ -96,15 +114,12 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
     {
       id: 'actor',
       header: t('users.activity.table.columns.actor'),
+      meta: { columnClasses: 'hidden sm:table-cell' },
       cell: ({ row }) => {
-        const { actor, impersonatedBy } = row.original
+        const { impersonatedBy } = row.original
         return (
           <div className="min-w-0">
-            <div className="truncate font-medium">
-              {actor
-                ? (actor.fullName ?? actor.email ?? `#${actor.id}`)
-                : t('users.activity.table.system')}
-            </div>
+            <div className="truncate font-medium">{actorName(row.original)}</div>
             {impersonatedBy !== null && (
               <div className="text-xs text-muted-foreground">
                 {t('users.activity.table.impersonated_by', { id: impersonatedBy })}
@@ -126,6 +141,10 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
               {changes.length > 0
                 ? changes.map((change) => change.field).join(', ')
                 : t('users.activity.table.no_changes')}
+            </div>
+            {/* Who and when have their own columns from sm up; below, they ride here. */}
+            <div className="mt-0.5 truncate text-xs text-muted-foreground sm:hidden">
+              {actorName(row.original)} · {formatDateTime(row.original.createdAt, language)}
             </div>
           </div>
         )
@@ -165,7 +184,12 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
             value={querySearch}
             onChange={(e) => {
               setQuerySearch(e.target.value)
-              debouncedVisit({ q: e.target.value, event: selectedEvent, perPage })
+              debouncedVisit({
+                q: e.target.value,
+                event: selectedEvent,
+                actorId: actor?.id,
+                perPage,
+              })
             }}
             className="h-8 w-37.5 lg:w-62.5"
           />
@@ -175,10 +199,21 @@ export default function ActivityTable({ audits, events, q, actorId, event }: Act
             value={selectedEvent}
             onChange={(next) => {
               setSelectedEvent(next)
-              visit({ q: querySearch, event: next, perPage })
+              visit({ q: querySearch, event: next, actorId: actor?.id, perPage })
             }}
             emptyMessage={t('users.activity.table.no_results')}
           />
+          {actor && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => visit({ q: querySearch, event: selectedEvent, perPage })}
+              aria-label={t('users.activity.table.filters.remove_actor', { name: actor.name })}
+            >
+              {t('users.activity.table.filters.actor', { name: actor.name })}
+              <X />
+            </Button>
+          )}
         </div>
 
         {isFiltered && (

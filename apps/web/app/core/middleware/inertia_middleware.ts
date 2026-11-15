@@ -9,6 +9,7 @@ import { buildAuthzShare } from '@adonis-agora/authz-react/server'
 import Notification from '#notifications/models/notification'
 import User from '#auth/models/user'
 import UserTransformer from '#users/transformers/user_transformer'
+import { currentImpersonation } from '#auth/enums/impersonation'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -50,7 +51,18 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       // Spread: `always` needs an index signature, which the interface lacks.
       authz: ctx.inertia.always({ ...authzShare }),
       unseenNotifications: ctx.inertia.always(unseenNotifications),
+      impersonation: ctx.inertia.always(await this.impersonation(ctx)),
     }
+  }
+
+  /** Whom the impersonating admin switches back to, for the banner; null when nobody is impersonating. */
+  private async impersonation(ctx: HttpContext): Promise<{ returnTo: string } | null> {
+    const { session, auth } = ctx as Partial<HttpContext>
+    const mark = session ? currentImpersonation(session, auth?.user?.id) : null
+    if (!mark) return null
+
+    const admin = await User.find(mark.originalUserId)
+    return admin ? { returnTo: admin.fullName ?? admin.email } : null
   }
 
   /**

@@ -238,7 +238,9 @@
         "search_placeholder": "Search by name or e-mail...",
         "event": "Event",
         "all_events": "All events",
-        "clear_filters": "Clear filters"
+        "clear_filters": "Clear filters",
+        "actor": "User: {name}",
+        "remove_actor": "Stop filtering by {name}"
       },
       "system": "System",
       "impersonated_by": "as #{id}",
@@ -256,7 +258,8 @@
       "user_invited": "invited",
       "role_created": "created a role",
       "role_capabilities_changed": "changed a role's capabilities",
-      "role_deleted": "deleted a role"
+      "role_deleted": "deleted a role",
+      "impersonation_stopped": "stopped impersonating"
     }
   }
 }

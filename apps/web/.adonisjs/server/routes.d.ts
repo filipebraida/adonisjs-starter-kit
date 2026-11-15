@@ -28,6 +28,7 @@ export type ScannedRoutes = {
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.impersonate.stop': { paramsTuple?: []; params?: {} }
     'users.activity': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
@@ -125,6 +126,7 @@ export type ScannedRoutes = {
   }
   DELETE: {
     'roles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.impersonate.stop': { paramsTuple?: []; params?: {} }
     'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }

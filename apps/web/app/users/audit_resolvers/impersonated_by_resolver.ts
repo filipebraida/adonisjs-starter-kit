@@ -1,7 +1,7 @@
 import { type HttpContext } from '@adonisjs/core/http'
 import type { Resolver } from '@filipebraida/adonis-auditing/types'
 
-import { currentImpersonation } from '#users/actions/impersonate_user'
+import { currentImpersonation } from '#auth/enums/impersonation'
 
 /**
  * Under impersonation the audit's `user_id` is the target; without this key

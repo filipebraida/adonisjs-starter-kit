@@ -35,6 +35,7 @@ export const controllers = {
     ImpersonateUser: () => import('#app/users/controllers/impersonate_user_controller'),
     Invite: () => import('#app/users/controllers/invite_controller'),
     Settings: () => import('#app/users/controllers/settings_controller'),
+    StopImpersonation: () => import('#app/users/controllers/stop_impersonation_controller'),
     Tokens: () => import('#app/users/controllers/tokens_controller'),
     UpdatePassword: () => import('#app/users/controllers/update_password_controller'),
     UpdateProfile: () => import('#app/users/controllers/update_profile_controller'),

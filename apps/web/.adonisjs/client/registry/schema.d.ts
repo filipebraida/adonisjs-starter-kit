@@ -320,6 +320,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/impersonate_user_controller').default['handle']>>>
     }
   }
+  'users.impersonate.stop': {
+    methods: ["DELETE"]
+    pattern: '/users/impersonate'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/users/controllers/stop_impersonation_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/users/controllers/stop_impersonation_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/users/controllers/stop_impersonation_controller').default['handle']>>>
+    }
+  }
   'users.activity': {
     methods: ["GET","HEAD"]
     pattern: '/users/activity'

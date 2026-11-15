@@ -17,6 +17,7 @@ import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { getAdminNav, getNavUser } from '#core/ui/app/navigation'
+import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
   label: string
@@ -48,26 +49,33 @@ export default function AdminLayout({
   return (
     <>
       <Toaster />
-      <SidebarProvider defaultOpen={defaultOpen} className="h-svh overflow-hidden">
-        <AppSidebar navMain={navMain} variant="inset" collapsible="icon" />
-        <SidebarInset className="overflow-hidden">
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
-            <div className="flex flex-row items-center gap-2">
-              <SidebarTrigger className="-ml-1" />
+      <div className="flex h-svh flex-col">
+        <ImpersonationBanner />
+        {/* contain-layout makes the provider the containing block of the fixed sidebar, which would otherwise cover the banner. */}
+        <SidebarProvider
+          defaultOpen={defaultOpen}
+          className="min-h-0 flex-1 overflow-hidden contain-layout"
+        >
+          <AppSidebar navMain={navMain} variant="inset" collapsible="icon" />
+          <SidebarInset className="overflow-hidden">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
+              <div className="flex flex-row items-center gap-2">
+                <SidebarTrigger className="-ml-1" />
 
-              <Breadcrumb breadcrumbs={breadcrumbs} />
-            </div>
+                <Breadcrumb breadcrumbs={breadcrumbs} />
+              </div>
 
-            <div className="flex flex-row items-center gap-2 ml-auto">
-              <NotificationBell />
-              <ToggleTheme />
-              <LanguageSwitcher />
-              <NavUser user={user} options={navUser} />
-            </div>
-          </header>
-          <main className="flex flex-1 flex-col gap-4 py-4 px-6 overflow-y-auto">{children}</main>
-        </SidebarInset>
-      </SidebarProvider>
+              <div className="flex flex-row items-center gap-2 ml-auto">
+                <NotificationBell />
+                <ToggleTheme />
+                <LanguageSwitcher />
+                <NavUser user={user} options={navUser} />
+              </div>
+            </header>
+            <main className="flex flex-1 flex-col gap-4 py-4 px-6 overflow-y-auto">{children}</main>
+          </SidebarInset>
+        </SidebarProvider>
+      </div>
       <ModalRoot />
     </>
   )

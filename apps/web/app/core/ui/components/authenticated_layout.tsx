@@ -17,6 +17,7 @@ import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { getMainNav, getNavUser } from '#core/ui/app/navigation'
+import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
   label: string
@@ -48,6 +49,7 @@ export default function AuthenticatedLayout({
     <>
       <Toaster />
       <div className="h-svh flex flex-col overflow-hidden">
+        <ImpersonationBanner />
         <div className="border-sidebar-border/80 border-b shrink-0">
           <div className="mx-auto flex h-16 items-center px-6 max-w-7xl">
             <NavHeaderMobile items={navMain} />

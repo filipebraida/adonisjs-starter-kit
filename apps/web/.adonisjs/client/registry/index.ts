@@ -152,6 +152,12 @@ const routes = {
     tokens: [[0,"users"],[0,"impersonate"],[1,"id"]],
     types: placeholder as Registry['users.impersonate.handle']['types'],
   },
+  'users.impersonate.stop': {
+    methods: ["DELETE"],
+    pattern: '/users/impersonate',
+    tokens: [[0,"users"],[0,"impersonate"]],
+    types: placeholder as Registry['users.impersonate.stop']['types'],
+  },
   'users.activity': {
     methods: ["GET","HEAD"],
     pattern: '/users/activity',

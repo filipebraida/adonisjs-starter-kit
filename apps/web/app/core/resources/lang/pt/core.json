@@ -37,5 +37,9 @@
     "server_error": {
       "title": "Erro no servidor"
     }
+  },
+  "impersonation": {
+    "acting_as": "Você está como {name}",
+    "return_as": "Voltar como {name}"
   }
 }

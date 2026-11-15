@@ -27,6 +27,11 @@ router
   .as('users.impersonate.handle')
 
 router
+  .delete('/users/impersonate', [controllers.users.StopImpersonation])
+  .middleware(middleware.auth())
+  .as('users.impersonate.stop')
+
+router
   .get('/users/activity', [controllers.users.Activity, 'handle'])
   .middleware(middleware.auth())
   .as('users.activity')

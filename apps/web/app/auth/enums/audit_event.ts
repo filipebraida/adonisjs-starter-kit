@@ -10,6 +10,7 @@ export const AUDIT_EVENTS = {
   DELETED: 'deleted',
   ROLES_SYNCED: 'roles_synced',
   IMPERSONATION_STARTED: 'impersonation_started',
+  IMPERSONATION_STOPPED: 'impersonation_stopped',
   TOKEN_CREATED: 'token_created',
   TOKEN_REVOKED: 'token_revoked',
   USER_INVITED: 'user_invited',

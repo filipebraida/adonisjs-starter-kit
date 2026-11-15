@@ -27,11 +27,11 @@ type PageProps = InertiaProps<{
   }
   events: AuditEvent[]
   q?: string
-  actorId: number | null
+  actor: { id: number; name: string } | null
   event: AuditEvent | null
 }>
 
-export default function ActivityPage({ audits, events, q, actorId, event }: PageProps) {
+export default function ActivityPage({ audits, events, q, actor, event }: PageProps) {
   const { t } = useTranslation()
 
   return (
@@ -49,7 +49,7 @@ export default function ActivityPage({ audits, events, q, actorId, event }: Page
         />
 
         <div className="flex-1 overflow-auto px-1 py-1">
-          <ActivityTable audits={audits} events={events} q={q} actorId={actorId} event={event} />
+          <ActivityTable audits={audits} events={events} q={q} actor={actor} event={event} />
         </div>
       </Main>
     </AdminLayout>

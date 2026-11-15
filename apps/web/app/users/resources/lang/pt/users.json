@@ -238,7 +238,9 @@
         "search_placeholder": "Buscar por nome ou e-mail...",
         "event": "Evento",
         "all_events": "Todos os eventos",
-        "clear_filters": "Limpar filtros"
+        "clear_filters": "Limpar filtros",
+        "actor": "Usuário: {name}",
+        "remove_actor": "Parar de filtrar por {name}"
       },
       "system": "Sistema",
       "impersonated_by": "como #{id}",
@@ -256,7 +258,8 @@
       "user_invited": "convidou",
       "role_created": "criou um papel",
       "role_capabilities_changed": "alterou as capacidades de um papel",
-      "role_deleted": "excluiu um papel"
+      "role_deleted": "excluiu um papel",
+      "impersonation_stopped": "voltou para a própria conta"
     }
   }
 }
