@@ -109,12 +109,6 @@ export default class HelpCatalog {
     return spaces.find((space) => space.slug === name)
   }
 
-  /** The spaces with at least one article the reader may read. */
-  async readableSpaces(access: HelpAccess): Promise<HelpSpace[]> {
-    const spaces = await this.spaces()
-    return spaces.filter((space) => HelpCatalog.opening(space, access))
-  }
-
   /** The capabilities the indexes cite, each once: the only ones worth asking about. */
   async capabilities(): Promise<string[]> {
     return HelpCatalog.capabilitiesOf(await this.spaces())

@@ -18,11 +18,12 @@ export default class HelpArticlesController {
 
   async show({ auth, bouncer, i18n, inertia, params }: HttpContext) {
     await bouncer.with(HelpPolicy).authorize('view')
-    const space = await this.catalog.space(params.space)
+    const spaces = await this.catalog.spaces()
+    const space = spaces.find((candidate) => candidate.slug === params.space)
     if (!space) throw new HelpArticleNotFoundException()
 
     const locale = helpLocaleOf(i18n.locale)
-    const access = await this.access.handle(auth.getUserOrFail())
+    const access = await this.access.handle(auth.getUserOrFail(), spaces)
     const read = await new ReadHelpArticle().handle({
       space,
       slug: params.article,

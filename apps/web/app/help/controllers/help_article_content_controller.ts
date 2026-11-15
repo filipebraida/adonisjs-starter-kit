@@ -18,10 +18,11 @@ export default class HelpArticleContentController {
 
   async handle({ auth, bouncer, i18n, params, response }: HttpContext) {
     await bouncer.with(HelpPolicy).authorize('view')
-    const space = await this.catalog.space(params.space)
+    const spaces = await this.catalog.spaces()
+    const space = spaces.find((candidate) => candidate.slug === params.space)
     if (!space) throw new HelpArticleNotFoundException()
 
-    const access = await this.access.handle(auth.getUserOrFail())
+    const access = await this.access.handle(auth.getUserOrFail(), spaces)
     const read = await new ReadHelpArticle().handle({
       space,
       slug: params.article,

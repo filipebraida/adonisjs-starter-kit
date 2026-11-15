@@ -20,13 +20,14 @@ export default class HelpImagesController {
 
   async handle({ auth, bouncer, params, response }: HttpContext) {
     await bouncer.with(HelpPolicy).authorize('view')
-    const space = await this.catalog.space(params.space)
-    const access = await this.access.handle(auth.getUserOrFail())
+    const spaces = await this.catalog.spaces()
+    const space = spaces.find((candidate) => candidate.slug === params.space)
     const file = space ? HelpCatalog.imageOf(space, params.file) : null
-    // A picture an `<img>` asked for: a bare 404, never an error flashed for the next page.
-    if (!space || !HelpCatalog.opening(space, access) || !file || !existsSync(file)) {
-      return response.notFound('')
-    }
+    // A picture an `<img>` asked for: a bare 404, never an error flashed for the
+    // next page. The refusals that need no permission check come first.
+    if (!space || !file || !existsSync(file)) return response.notFound('')
+    const access = await this.access.handle(auth.getUserOrFail(), spaces)
+    if (!HelpCatalog.opening(space, access)) return response.notFound('')
 
     response.header('x-content-type-options', 'nosniff')
     response.header('cache-control', 'private, max-age=3600')
