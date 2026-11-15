@@ -60,6 +60,8 @@
       "warning": "Warning",
       "caution": "Caution"
     },
-    "mermaidFailed": "The diagram could not be drawn."
+    "mermaidFailed": "The diagram could not be drawn.",
+    "openImage": "Open the picture",
+    "closeImage": "Close the picture"
   }
 }

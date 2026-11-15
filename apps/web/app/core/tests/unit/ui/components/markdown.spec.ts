@@ -10,12 +10,13 @@ const render = (text: string, props: Omit<Parameters<typeof Markdown>[0], 'child
   renderToStaticMarkup(h(Markdown, props, text))
 
 test.group('Markdown images', () => {
-  test("an image of the app's own loads, and opens whole in a new tab", ({ assert }) => {
+  test("an image of the app's own loads, and opens in a preview, not a new tab", ({ assert }) => {
     const html = render('![tela](/help/account/images/x.png)')
     assert.include(html, '<img')
     assert.include(html, 'src="/help/account/images/x.png"')
     assert.include(html, 'alt="tela"')
-    assert.include(html, 'href="/help/account/images/x.png" target="_blank"')
+    assert.include(html, '<button type="button"')
+    assert.notInclude(html, 'href="/help/account/images/x.png"')
   })
 
   test('an image from elsewhere is a link, never loaded', ({ assert }) => {

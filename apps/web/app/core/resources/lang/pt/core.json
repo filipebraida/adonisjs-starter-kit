@@ -60,6 +60,8 @@
       "warning": "Atenção",
       "caution": "Cuidado"
     },
-    "mermaidFailed": "O diagrama não pôde ser desenhado."
+    "mermaidFailed": "O diagrama não pôde ser desenhado.",
+    "openImage": "Abrir a imagem",
+    "closeImage": "Fechar a imagem"
   }
 }

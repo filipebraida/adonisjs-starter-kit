@@ -7,13 +7,14 @@ import {
   TriangleAlert,
   type LucideIcon,
 } from 'lucide-react'
-import { useMemo, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import type { Components } from 'react-markdown'
 import ReactMarkdown from 'react-markdown'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import remarkAlert from 'remark-github-blockquote-alert'
 
+import { Dialog, DialogContent, DialogTitle } from '@workspace/ui/components/dialog'
 import { cn } from '@workspace/ui/lib/utils'
 
 import { MermaidDiagram } from '#core/ui/components/mermaid_diagram'
@@ -180,23 +181,44 @@ function isFileHref(href: string): boolean {
 
 /**
  * Only the app's own images load (their routes authorize who sees them), each
- * opening whole in a tab; any other is a link, so reading a text never calls a
- * server its writer chose.
+ * opening large in a preview over the page; any other is a link, so reading a
+ * text never calls a server its writer chose.
  */
 function TextImage({ src, alt }: { src?: string; alt?: string }) {
   return typeof src === 'string' && src.startsWith('/') && !src.startsWith('//') ? (
-    <a href={src} target="_blank" rel="noreferrer">
-      <img
-        src={src}
-        alt={alt ?? ''}
-        loading="lazy"
-        className="border-border h-auto max-w-full rounded-md border"
-      />
-    </a>
+    <ImagePreview src={src} alt={alt ?? ''} />
   ) : (
     <a href={src} target="_blank" rel="noreferrer" className="text-primary underline">
       {alt || src}
     </a>
+  )
+}
+
+function ImagePreview({ src, alt }: { src: string; alt: string }) {
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={t('core.markdown.openImage')}
+        className="cursor-zoom-in self-start rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="border-border h-auto max-w-full rounded-md border"
+        />
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent size="image" closeLabel={t('core.markdown.closeImage')}>
+          <DialogTitle className="sr-only">{alt || t('core.markdown.openImage')}</DialogTitle>
+          <img src={src} alt={alt} className="max-h-[80vh] w-full object-contain" />
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
