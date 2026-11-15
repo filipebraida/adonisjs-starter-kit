@@ -12,7 +12,13 @@
       "settings": "Configurações"
     },
     "title": "Aparência",
-    "description": "Personalize a aparência da aplicação. Alterne automaticamente entre os temas claro e escuro."
+    "description": "Vale na hora, neste dispositivo.",
+    "theme": {
+      "label": "Tema",
+      "system": "Sistema",
+      "light": "Claro",
+      "dark": "Escuro"
+    }
   },
   "index": {
     "page": {
@@ -54,15 +60,16 @@
     "breadcrumbs": {
       "settings": "Configurações"
     },
-    "title": "Atualizar senha",
-    "description": "Garanta que sua conta esteja usando uma senha longa e aleatória para manter-se segura"
+    "title": "Senha",
+    "description": "Use uma senha longa e aleatória, que você não use em nenhum outro lugar."
   },
   "profile": {
     "breadcrumbs": {
       "settings": "Configurações"
     },
-    "title": "Informações do perfil",
-    "description": "Atualize seu nome e endereço de e-mail"
+    "title": "Perfil",
+    "description": "Como os outros veem você no app.",
+    "email_locked": "Só um administrador altera o e-mail."
   },
   "tokens": {
     "breadcrumbs": {
@@ -97,7 +104,7 @@
     },
     "form": {
       "full_name": {
-        "label": "Nome Completo",
+        "label": "Nome completo",
         "placeholder": "Digite o nome completo do usuário"
       },
       "email": {
@@ -113,7 +120,7 @@
         "placeholder": "ex.: S3gur@nc@123"
       },
       "password_confirmation": {
-        "label": "Confirmar Senha",
+        "label": "Confirmar senha",
         "placeholder": "ex.: S3gur@nc@123"
       },
       "token": {
@@ -126,7 +133,7 @@
       "add": "Adicionar",
       "save": "Salvar",
       "close": "Fechar",
-      "change_avatar": "Alterar avatar",
+      "change_avatar": "Trocar foto",
       "avatar_hint": "JPG, GIF ou PNG. Máximo de 1MB."
     },
     "toast": {

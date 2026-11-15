@@ -3,6 +3,7 @@ import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import Heading from '#core/ui/components/heading'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
 import { PasswordForm } from '#users/ui/components/password_form'
 import { ProfileForm } from '#users/ui/components/profile_form'
@@ -28,10 +29,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
     <AuthenticatedLayout breadcrumbs={[{ label: t('users.layout.title') }]}>
       <Head title={t('users.layout.title')} />
       <div className="mx-auto w-full max-w-[840px] px-4 pt-8 pb-24 sm:px-6 lg:px-10">
-        <header>
-          <h1 className="text-2xl font-semibold tracking-tight">{t('users.layout.title')}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{t('users.layout.description')}</p>
-        </header>
+        <Heading title={t('users.layout.title')} description={t('users.layout.description')} />
 
         <SettingsSection
           title={t('users.profile.title')}

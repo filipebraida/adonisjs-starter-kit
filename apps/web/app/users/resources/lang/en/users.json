@@ -12,7 +12,13 @@
       "settings": "Settings"
     },
     "title": "Appearance",
-    "description": "Customize the look and feel of the application. Automatically switch between day and night themes."
+    "description": "Applies right away, on this device.",
+    "theme": {
+      "label": "Theme",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    }
   },
   "index": {
     "page": {
@@ -54,15 +60,16 @@
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Update Password",
-    "description": "Make sure your account is using a long, random password to stay secure"
+    "title": "Password",
+    "description": "Use a long, random password that you use nowhere else."
   },
   "profile": {
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Profile Information",
-    "description": "Update your name and email address"
+    "title": "Profile",
+    "description": "How others see you in the app.",
+    "email_locked": "Only an administrator changes the email."
   },
   "tokens": {
     "breadcrumbs": {
@@ -97,7 +104,7 @@
     },
     "form": {
       "full_name": {
-        "label": "Full Name",
+        "label": "Full name",
         "placeholder": "Enter user's full name"
       },
       "email": {
@@ -113,7 +120,7 @@
         "placeholder": "e.g., S3cur3P@ssw0rd"
       },
       "password_confirmation": {
-        "label": "Confirm Password",
+        "label": "Confirm password",
         "placeholder": "e.g., S3cur3P@ssw0rd"
       },
       "token": {
@@ -126,7 +133,7 @@
       "add": "Add",
       "save": "Save",
       "close": "Close",
-      "change_avatar": "Change avatar",
+      "change_avatar": "Change picture",
       "avatar_hint": "JPG, GIF or PNG. 1MB max."
     },
     "toast": {

@@ -8,7 +8,13 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'
-import { Field, FieldGroup, FieldLabel, FieldSet } from '@workspace/ui/components/field'
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 import { Input } from '@workspace/ui/components/input'
 import { Progress } from '@workspace/ui/components/progress'
@@ -24,7 +30,7 @@ export function ProfileForm({ user }: Props) {
   const { t } = useTranslation()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  const { data, setData, errors, put, progress } = useForm({
+  const { data, setData, errors, put, progress, processing } = useForm({
     fullName: user.fullName ?? '',
     avatar: null as File | null,
   })
@@ -63,18 +69,24 @@ export function ProfileForm({ user }: Props) {
       <FieldSet>
         <FieldGroup>
           <Field>
-            <div className="col-span-full flex items-center gap-x-8">
+            <div className="flex items-center gap-4">
               <UserAvatar
                 user={{ ...user, avatarUrl: previewUrl ?? user.avatarUrl }}
-                shape="square"
-                className="size-24 flex-none"
+                className="size-16"
               />
 
-              <div>
-                <Button type="button" onClick={() => avatarInputRef.current?.click()}>
+              <div className="grid gap-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => avatarInputRef.current?.click()}
+                >
                   {t('users.action.actions.change_avatar')}
                 </Button>
-                <p className="mt-2 text-xs/5">{t('users.action.actions.avatar_hint')}</p>
+                <span className="text-xs text-muted-foreground">
+                  {t('users.action.actions.avatar_hint')}
+                </span>
               </div>
             </div>
 
@@ -101,9 +113,10 @@ export function ProfileForm({ user }: Props) {
             <FieldErrorBag errors={errors} field="fullName" />
           </Field>
 
-          <Field>
+          <Field data-disabled>
             <FieldLabel htmlFor="email">{t('users.action.form.email.label')}</FieldLabel>
-            <p id="email">{user.email}</p>
+            <Input id="email" value={user.email} disabled />
+            <FieldDescription>{t('users.profile.email_locked')}</FieldDescription>
           </Field>
 
           {progress && (
@@ -113,7 +126,9 @@ export function ProfileForm({ user }: Props) {
           )}
 
           <Field orientation="responsive">
-            <Button type="submit">{t('users.action.actions.save')}</Button>
+            <Button type="submit" disabled={processing}>
+              {t('users.action.actions.save')}
+            </Button>
           </Field>
         </FieldGroup>
       </FieldSet>

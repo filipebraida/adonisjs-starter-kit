@@ -16,7 +16,7 @@ import { toast } from '@workspace/ui/hooks/use-toast'
 export function PasswordForm() {
   const { t } = useTranslation()
 
-  const { data, setData, errors, put, reset } = useForm({
+  const { data, setData, errors, put, reset, processing } = useForm({
     password: '',
     passwordConfirmation: '',
   })
@@ -73,7 +73,9 @@ export function PasswordForm() {
           </Field>
 
           <Field orientation="responsive">
-            <Button type="submit">{t('users.action.actions.save')}</Button>
+            <Button type="submit" disabled={processing}>
+              {t('users.action.actions.save')}
+            </Button>
           </Field>
         </FieldGroup>
       </FieldSet>
