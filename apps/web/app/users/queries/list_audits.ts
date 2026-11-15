@@ -28,7 +28,7 @@ const USER_ACTOR = 'user'
 export default class ListAudits {
   async handle(
     filters: ListAuditsFilters = {},
-    pag: ListAuditsPagination = { page: 1, perPage: 20 }
+    pag: ListAuditsPagination = { page: 1, perPage: 10 }
   ): Promise<ModelPaginatorContract<Audit>> {
     // `audits.user_id` is text: the library's actor is polymorphic.
     const query = Audit.query()

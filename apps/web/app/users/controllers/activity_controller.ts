@@ -15,7 +15,7 @@ export default class ActivityController {
 
     const audits = await new ListAudits().handle(
       { actorId: payload.actorId, q: payload.q, event: payload.event },
-      { page: payload.page ?? 1, perPage: payload.perPage ?? 20 }
+      { page: payload.page ?? 1, perPage: payload.perPage ?? 10 }
     )
 
     return inertia.render('users/activity', {
