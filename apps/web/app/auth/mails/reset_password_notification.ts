@@ -4,7 +4,7 @@ import { signedUrlFor } from '@adonisjs/core/services/url_builder'
 
 import { mailContext } from '#core/utils/mail_context'
 import type User from '#auth/models/user'
-import { type MailBasicTranslation } from '#core/models/mail_basic_translation'
+import { type MailBasicTranslation } from '#core/types/mail'
 
 /** The reset password email, with a signed link valid for 30 minutes. */
 export default class ResetPasswordNotification extends BaseMail {

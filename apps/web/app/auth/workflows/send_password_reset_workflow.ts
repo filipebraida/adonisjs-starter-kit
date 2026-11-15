@@ -3,7 +3,7 @@ import mail from '@adonisjs/mail/services/main'
 
 import ResetPasswordNotification from '#auth/mails/reset_password_notification'
 import User from '#auth/models/user'
-import type { MailBasicTranslation } from '#core/models/mail_basic_translation'
+import type { MailBasicTranslation } from '#core/types/mail'
 
 /** What a reset mail needs, kept in the run: plain data, never the model. */
 export interface SendPasswordResetInput {

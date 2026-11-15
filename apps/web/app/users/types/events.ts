@@ -1,5 +1,5 @@
 import type User from '#auth/models/user'
-import { type MailBasicTranslation } from '#core/models/mail_basic_translation'
+import { type MailBasicTranslation } from '#core/types/mail'
 
 declare module '@adonisjs/core/types' {
   interface EventsList {

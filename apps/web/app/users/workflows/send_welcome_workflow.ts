@@ -3,7 +3,7 @@ import mail from '@adonisjs/mail/services/main'
 import facteur from '@facteurjs/adonisjs/services/main'
 
 import User from '#auth/models/user'
-import type { MailBasicTranslation } from '#core/models/mail_basic_translation'
+import type { MailBasicTranslation } from '#core/types/mail'
 import WelcomeNotification from '#users/mails/welcome_notification'
 import UserWelcomeNotification from '#users/notifications/user_welcome_notification'
 

@@ -18,7 +18,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 - **Shared MJML layout** is the single source of truth for typography, colors, header, footer. Change once, all emails update.
 - **`mailContext()`** returns `{ appName, appUrl }` from env with a fallback name. Every mail class spreads it into `htmlView` props so the layout can render brand chrome.
 - **Env**: `EMAIL_FROM` required; `APP_NAME` optional (has a fallback); `APP_URL` required. SMTP vars for local dev (typically Mailpit) and the prod driver's API key (e.g. `RESEND_API_KEY`).
-- **i18n is resolved before the mail is built.** The action translates with the request's `i18n` into a `MailBasicTranslation` (`#core/models/mail_basic_translation`: `subject`, `title`, `subtitle`, `actionBtn`, `defaultMessage`) — plain strings that travel in the event and the workflow input. The mail class never looks up keys, so the run replays with the same text. Keys live per module under `<mod>.emails.<name>.{subject,title,subtitle,action_btn,default_message}` in every locale JSON — see [[i18n]].
+- **i18n is resolved before the mail is built.** The action translates with the request's `i18n` into a `MailBasicTranslation` (`#core/types/mail`: `subject`, `title`, `subtitle`, `actionBtn`, `defaultMessage`) — plain strings that travel in the event and the workflow input. The mail class never looks up keys, so the run replays with the same text. Keys live per module under `<mod>.emails.<name>.{subject,title,subtitle,action_btn,default_message}` in every locale JSON — see [[i18n]].
 - **Sent from a workflow step**: `await mail.send(new XNotification(...))` inside `ctx.localStep('mail', ..., { retries: 5, backoff: 'exp', backoffMs: 1000 })`, after reloading the recipient by id. Workflows whose input carries a secret (reset token, invite link) are listed in `MAIL_WORKFLOWS` in `config/durable.ts` so retention purges their runs quickly.
 
 ## Repo refs
@@ -45,7 +45,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
    import { urlFor } from '@adonisjs/core/services/url_builder'
    import env from '#start/env'
    import { mailContext } from '#core/utils/mail_context'
-   import type { MailBasicTranslation } from '#core/models/mail_basic_translation'
+   import type { MailBasicTranslation } from '#core/types/mail'
 
    export default class OrderConfirmedNotification extends BaseMail {
      from = env.get('EMAIL_FROM')
