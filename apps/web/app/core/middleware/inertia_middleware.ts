@@ -53,11 +53,18 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       authz: ctx.inertia.always({ ...authzShare }),
       unseenNotifications: ctx.inertia.always(unseenNotifications),
       impersonation: ctx.inertia.always(await this.impersonation(ctx)),
-      // What a screen's "?" may open; resolved only on the visits that ask for it.
+      // What a screen's "?" may open. Resolved on every full page visit, skipped
+      // by partial reloads. A broken help index (a typo in an index.json) is
+      // logged and hides every "?", rather than failing every screen of the app.
       helpArticles: async (): Promise<string[]> => {
         if (!auth?.user) return []
-        const articles = await ctx.containerResolver.make(ListReadableHelpArticles)
-        return articles.handle(auth.user as User)
+        try {
+          const articles = await ctx.containerResolver.make(ListReadableHelpArticles)
+          return await articles.handle(auth.user as User)
+        } catch (error) {
+          ctx.logger.error({ err: error }, 'the help could not be read')
+          return []
+        }
       },
     }
   }
