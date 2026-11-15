@@ -4,6 +4,7 @@ import type { Data } from '@generated/data'
 
 import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
 import Heading from '#core/ui/components/heading'
+import { HelpLink } from '#help/ui/components/help/help_link'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
 import { PasswordForm } from '#users/ui/components/password_form'
 import { ProfileForm } from '#users/ui/components/profile_form'
@@ -33,6 +34,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
 
         <SettingsSection
           title={t('users.profile.title')}
+          help={<HelpLink anchor="users.settings_profile" />}
           description={t('users.profile.description')}
         >
           <ProfileForm user={profile} />
@@ -40,6 +42,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
 
         <SettingsSection
           title={t('users.password.title')}
+          help={<HelpLink anchor="users.settings_password" />}
           description={t('users.password.description')}
         >
           <PasswordForm />
@@ -47,6 +50,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
 
         <SettingsSection
           title={t('users.appearance.title')}
+          help={<HelpLink anchor="users.settings_appearance" />}
           description={t('users.appearance.description')}
           last={!canManageTokens}
         >
@@ -56,6 +60,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
         {canManageTokens && (
           <SettingsSection
             title={t('users.tokens.title')}
+            help={<HelpLink anchor="users.settings_tokens" />}
             description={t('users.tokens.description')}
             last
           >

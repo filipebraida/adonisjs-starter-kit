@@ -5,3 +5,12 @@
   /* A rising metric: emerald 500, the same in both themes. */
   --color-success: oklch(69.6% 0.17 162.48);
 }
+
+/*
+ * A help article from the `xl` breakpoint, as documentation pages lay out: its
+ * space's articles, the text in a reading column (760px at most), then "On
+ * this page". No boxes: both sides are plain text.
+ */
+@utility grid-cols-help {
+  grid-template-columns: 13.75rem minmax(0, 47.5rem) 12.5rem;
+}

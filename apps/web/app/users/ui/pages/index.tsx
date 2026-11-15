@@ -3,6 +3,7 @@ import type { InertiaProps } from '#core/ui/app/types'
 
 import AdminLayout from '#core/ui/components/admin_layout'
 import Heading from '#core/ui/components/heading'
+import { HelpLink } from '#help/ui/components/help/help_link'
 import { Main } from '#core/ui/components/main'
 
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
@@ -57,6 +58,7 @@ export default function ListUsersPage({
         <Heading
           title={t('users.index.page.title')}
           description={t('users.index.page.description')}
+          help={<HelpLink anchor="users.list" />}
         >
           <UsersPrimaryButtons can={can} />
         </Heading>

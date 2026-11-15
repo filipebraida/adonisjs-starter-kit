@@ -1,6 +1,7 @@
 import type { TFunction } from '#core/ui/hooks/use_translation'
 
 import {
+  BookOpen,
   History,
   LayoutDashboard,
   LogOut,
@@ -21,6 +22,11 @@ export function getNavUser(t: TFunction): NavUserOptionsGroup[] {
         title: t('core.layout.navUser.settings'),
         url: '/settings',
         icon: Settings,
+      },
+      {
+        title: t('core.layout.navUser.help'),
+        url: '/help',
+        icon: BookOpen,
       },
       {
         title: t('core.layout.navUser.adminPanel'),

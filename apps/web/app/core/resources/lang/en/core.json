@@ -9,6 +9,7 @@
     },
     "navUser": {
       "settings": "Settings",
+      "help": "Help",
       "adminPanel": "Admin panel",
       "logout": "Log out"
     }

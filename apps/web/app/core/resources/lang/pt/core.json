@@ -9,6 +9,7 @@
     },
     "navUser": {
       "settings": "Configurações",
+      "help": "Ajuda",
       "adminPanel": "Painel admin",
       "logout": "Sair"
     }
