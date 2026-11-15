@@ -11,6 +11,13 @@ const config: StorybookConfig = {
   // The MSW service worker, which answers the pages' Inertia visits.
   staticDirs: ["../public"],
   framework: { name: "@storybook/react-vite", options: {} },
+  // The board is the landing page: no onboarding checklist, no update
+  // notices, and no usage data sent from a student's machine.
+  features: {
+    sidebarOnboardingChecklist: false,
+    menuOnboardingChecklist: false,
+  },
+  core: { disableTelemetry: true, disableWhatsNewNotifications: true },
 };
 
 export default config;

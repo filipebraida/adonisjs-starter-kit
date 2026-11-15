@@ -85,7 +85,16 @@ const preview: Preview = {
       );
     },
   ],
-  parameters: { layout: "fullscreen", controls: { expanded: true } },
+  parameters: {
+    // The board reads top-down: the rules, the pieces, then the screens.
+    options: {
+      storySort: {
+        order: ["Foundations", "Forms", ["Rules"], "Content", "Screens"],
+      },
+    },
+    layout: "fullscreen",
+    controls: { expanded: true },
+  },
 };
 
 export default preview;
