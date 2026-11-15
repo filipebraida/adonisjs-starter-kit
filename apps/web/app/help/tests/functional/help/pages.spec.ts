@@ -9,6 +9,7 @@ import type { ArticleProps } from '#help/tests/helpers/article_props'
 import { withRole } from '#tests/helpers/rbac'
 
 const FIXTURES = new URL('../../fixtures/app', import.meta.url).pathname
+const MISSING = new URL('../../fixtures/missing', import.meta.url).pathname
 
 // The fixtures: space "guide" with "start" (open) and "locked" (users.view_list),
 // space "vault" with only "secret" (users.view_list). An admin reads all three,
@@ -142,5 +143,24 @@ test.group('Help pages', (group) => {
       const response = await client.get(url).loginAs(admin).accept('json')
       response.assertStatus(404)
     }
+  })
+
+  test('an article missing in the reader language answers as a missing one', async ({ client }) => {
+    app.container.swap(HelpCatalog, () => HelpCatalog.at(MISSING))
+    const user = await reader(ROLES.USER)
+
+    const pt = await client
+      .get('/help/guide/start')
+      .loginAs(user)
+      .header('X-User-Language', 'pt')
+      .accept('json')
+    const en = await client
+      .get('/help/guide/start')
+      .loginAs(user)
+      .header('X-User-Language', 'en')
+      .withInertia()
+
+    pt.assertStatus(404)
+    en.assertStatus(200)
   })
 })

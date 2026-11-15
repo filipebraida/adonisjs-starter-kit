@@ -36,8 +36,11 @@ export function markdownHeadings(markdown: string): MarkdownHeading[] {
   const headings: MarkdownHeading[] = []
 
   visit(tree, 'heading', (node: Heading) => {
-    const title = toString(node).trim()
-    const id = slugger.slug(title)
+    // The rendered heading's text, as rehype-slug reads it: an image's alt is
+    // no part of it, and its spaces are kept for the id (` Roles` → `-roles`).
+    const text = toString(node, { includeImageAlt: false })
+    const title = text.trim()
+    const id = slugger.slug(text)
     if (node.depth <= OUTLINE_DEPTH) headings.push({ id, title, level: node.depth })
   })
   return headings

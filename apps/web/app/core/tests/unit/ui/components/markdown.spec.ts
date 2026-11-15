@@ -73,6 +73,7 @@ test.group('Markdown headings the server must name as the browser does', () => {
     ['underscores inside code', '## The `users.view_list` and `users.manage_roles` capabilities'],
     ['a heading inside a quote, before a repeated title', '> ## Quoted\n\n## Quoted'],
     ['a setext heading', 'Underlined\n----------'],
+    ['an image in a heading', '## ![icon](/help/x/images/x.png) Roles'],
   ]) {
     test(name, ({ assert }) => {
       const html = render(text, { variant: 'document' })

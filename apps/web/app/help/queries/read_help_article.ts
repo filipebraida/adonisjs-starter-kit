@@ -45,7 +45,13 @@ export default class ReadHelpArticle {
       : HelpCatalog.opening(space, access)
     if (!article) throw new HelpArticleNotFoundException()
 
-    const markdown = await readFile(HelpCatalog.fileOf(space, article, locale), 'utf8')
+    // An article not yet written in the reader's language is, to them, no article.
+    const markdown = await readFile(HelpCatalog.fileOf(space, article, locale), 'utf8').catch(
+      (error: NodeJS.ErrnoException) => {
+        if (error.code === 'ENOENT') throw new HelpArticleNotFoundException()
+        throw error
+      }
+    )
     const { previous, next } = HelpCatalog.neighbours(space, article.slug, access)
     const link = (other: HelpArticle | null): HelpLink =>
       other ? { slug: other.slug, title: other.title[locale] } : null
