@@ -11,7 +11,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('CreateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin cria user comum com role atribuido', async ({ db, assert }) => {
+  test('admin creates a regular user with the role assigned', async ({ db, assert }) => {
     const email = taggedEmail(marker('joao-novo'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
@@ -28,7 +28,7 @@ test.group('CreateUser', (group) => {
     assert.deepEqual(await created.getRoles(), [ROLES.USER])
   })
 
-  test('admin promove ao criar (usersManageRoles necessario para admin)', async ({ assert }) => {
+  test('admin promotes on create (usersManageRoles required for admin)', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -43,7 +43,7 @@ test.group('CreateUser', (group) => {
     assert.deepEqual(await created.getRoles(), [ROLES.ADMIN])
   })
 
-  test('usa UUID como senha quando nao informada (usuario nao consegue logar direto)', async ({
+  test('uses a UUID as password when not provided (user cannot log in directly)', async ({
     assert,
   }) => {
     const admin = await UserFactory.create()
@@ -60,7 +60,7 @@ test.group('CreateUser', (group) => {
     assert.notEqual(created.password, '')
   })
 
-  test('user comum NAO pode criar admin', async ({ db, assert }) => {
+  test('regular user CANNOT create an admin', async ({ db, assert }) => {
     const email = taggedEmail(marker('escalador'))
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
@@ -79,7 +79,7 @@ test.group('CreateUser', (group) => {
     await db.assertMissing('users', { email })
   })
 
-  test('escalation guard so protege contra papel != USER (block user->user cabe a policy)', async ({
+  test('escalation guard only protects against role != USER (blocking user->user is up to the policy)', async ({
     db,
   }) => {
     const email = taggedEmail(marker('ok-user'))

@@ -10,13 +10,13 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Endpoint /users', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('GET /users sem auth redireciona para login', async ({ client, assert }) => {
+  test('GET /users without auth redirects to login', async ({ client, assert }) => {
     const response = await client.get('/users').redirects(0)
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('GET /users como user comum eh barrado (redirect)', async ({ client }) => {
+  test('GET /users as regular user is blocked (redirect)', async ({ client }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -24,7 +24,7 @@ test.group('Endpoint /users', (group) => {
     assertForbiddenRedirect(response)
   })
 
-  test('GET /users como admin renderiza pagina', async ({ client }) => {
+  test('GET /users as admin renders the page', async ({ client }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -33,13 +33,13 @@ test.group('Endpoint /users', (group) => {
     response.assertInertiaComponent('users/index')
   })
 
-  test('GET /users/create sem auth redireciona para login', async ({ client, assert }) => {
+  test('GET /users/create without auth redirects to login', async ({ client, assert }) => {
     const response = await client.get('/users/create').redirects(0)
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('GET /users/create como user comum eh barrado', async ({ client }) => {
+  test('GET /users/create as regular user is blocked', async ({ client }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -47,7 +47,7 @@ test.group('Endpoint /users', (group) => {
     assertForbiddenRedirect(response)
   })
 
-  test('GET /users/create como admin renderiza modal users/create sobre users/index', async ({
+  test('GET /users/create as admin renders the users/create modal over users/index', async ({
     client,
     assert,
   }) => {
@@ -61,7 +61,7 @@ test.group('Endpoint /users', (group) => {
     assert.equal(response.inertiaProps.modal.baseUrl, '/users')
   })
 
-  test('GET /users/:id/edit sem auth redireciona para login', async ({ client, assert }) => {
+  test('GET /users/:id/edit without auth redirects to login', async ({ client, assert }) => {
     const alvo = await UserFactory.create()
 
     const response = await client.get(`/users/${alvo.id}/edit`).redirects(0)
@@ -69,7 +69,7 @@ test.group('Endpoint /users', (group) => {
     assert.equal(response.header('location'), '/login')
   })
 
-  test('GET /users/:id/edit como user comum eh barrado', async ({ client }) => {
+  test('GET /users/:id/edit as regular user is blocked', async ({ client }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const alvo = await UserFactory.create()
@@ -78,7 +78,7 @@ test.group('Endpoint /users', (group) => {
     assertForbiddenRedirect(response)
   })
 
-  test('GET /users/:id/edit como admin renderiza modal users/edit com user do alvo', async ({
+  test('GET /users/:id/edit as admin renders the users/edit modal with the target user', async ({
     client,
     assert,
   }) => {
@@ -95,7 +95,7 @@ test.group('Endpoint /users', (group) => {
     assert.equal(response.inertiaProps.modal.props.user.fullName, 'Alvo Edicao')
   })
 
-  test('GET /users/:id/edit com id inexistente retorna 404', async ({ client }) => {
+  test('GET /users/:id/edit with a nonexistent id returns 404', async ({ client }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -103,7 +103,7 @@ test.group('Endpoint /users', (group) => {
     response.assertStatus(404)
   })
 
-  test('POST /users cria user comum quando admin', async ({ client, db, assert }) => {
+  test('POST /users creates a regular user when admin', async ({ client, db, assert }) => {
     const email = taggedEmail(marker('novo-por-admin'))
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
@@ -123,7 +123,7 @@ test.group('Endpoint /users', (group) => {
     })
   })
 
-  test('POST /users com user comum eh barrado e nao cria', async ({ client, db }) => {
+  test('POST /users as regular user is blocked and creates nothing', async ({ client, db }) => {
     const email = taggedEmail(marker('barrado'))
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
@@ -138,7 +138,7 @@ test.group('Endpoint /users', (group) => {
     await db.assertMissing('users', { email })
   })
 
-  test('POST /users com email duplicado retorna 422', async ({ client }) => {
+  test('POST /users with duplicate email returns 422', async ({ client }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const existente = await UserFactory.create()
@@ -158,7 +158,7 @@ test.group('Endpoint /users', (group) => {
     response.assertStatus(422)
   })
 
-  test('PUT /users/:id atualiza como admin', async ({ client, assert }) => {
+  test('PUT /users/:id updates as admin', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -180,7 +180,7 @@ test.group('Endpoint /users', (group) => {
     assert.equal(alvo.fullName, 'Nome Alterado')
   })
 
-  test('DELETE /users/:id como admin remove o usuario', async ({ client, db }) => {
+  test('DELETE /users/:id as admin removes the user', async ({ client, db }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -196,7 +196,7 @@ test.group('Endpoint /users', (group) => {
     await db.assertModelMissing(alvo)
   })
 
-  test('DELETE /users/:id do proprio admin eh barrado (self-delete guard)', async ({
+  test('DELETE /users/:id on the admin themselves is blocked (self-delete guard)', async ({
     client,
     db,
   }) => {

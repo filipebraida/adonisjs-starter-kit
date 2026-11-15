@@ -9,7 +9,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('TokenTransformer', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('serializa id, name, timestamps (createdAt sempre ISO)', async ({ assert }) => {
+  test('serializes id, name, timestamps (createdAt always ISO)', async ({ assert }) => {
     const owner = await UserFactory.create()
     await new CreateToken().handle({ owner, name: 'CI Bot' })
     const [token] = await User.accessTokens.all(owner)

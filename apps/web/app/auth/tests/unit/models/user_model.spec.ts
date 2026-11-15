@@ -7,7 +7,7 @@ import { marker, taggedEmail } from '#tests/helpers/marker'
 test.group('User model — email normalization', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('User.create normaliza email pra lowercase e trim', async ({ db }) => {
+  test('User.create normalizes email to lowercase and trims it', async ({ db }) => {
     const mark = marker('Fulano')
     const rawEmail = `  ${mark}@Example.TEST  `
     const user = await UserFactory.merge({ email: rawEmail }).create()
@@ -16,13 +16,15 @@ test.group('User model — email normalization', (group) => {
     await db.assertMissing('users', { id: user.id, email: rawEmail })
   })
 
-  test('UserFactory produz email lowercase mesmo sem override explicito', async ({ assert }) => {
+  test('UserFactory produces a lowercase email even without an explicit override', async ({
+    assert,
+  }) => {
     const user = await UserFactory.create()
 
     assert.equal(user.email, user.email.toLowerCase())
   })
 
-  test('update do email tambem normaliza', async ({ db }) => {
+  test('email update normalizes too', async ({ db }) => {
     const user = await UserFactory.create()
 
     user.email = 'NOVO@EXAMPLE.TEST'

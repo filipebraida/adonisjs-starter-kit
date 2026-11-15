@@ -6,7 +6,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint POST /switch/:locale', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('seta cookie user-locale para locale suportado (pt)', async ({ client, assert }) => {
+  test('sets the user-locale cookie for a supported locale (pt)', async ({ client, assert }) => {
     const response = await client
       .post('/switch/pt')
       .withCsrfToken()
@@ -18,7 +18,7 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     response.assertCookie('user-locale', 'pt')
   })
 
-  test('aceita en tambem', async ({ client }) => {
+  test('accepts en too', async ({ client }) => {
     const response = await client
       .post('/switch/en')
       .withCsrfToken()
@@ -29,7 +29,7 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     response.assertCookie('user-locale', 'en')
   })
 
-  test('rejeita locale nao suportado (nao sobrescreve com xx)', async ({ client }) => {
+  test('rejects an unsupported locale (does not overwrite with xx)', async ({ client }) => {
     const response = await client
       .post('/switch/xx')
       .withCsrfToken()
@@ -40,14 +40,14 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     response.assertCookie('user-locale', 'en')
   })
 
-  test('sem referer redireciona para /', async ({ client, assert }) => {
+  test('without referer redirects to /', async ({ client, assert }) => {
     const response = await client.post('/switch/pt').withCsrfToken().redirects(0)
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/')
   })
 
-  test('user autenticado tem locale salvo no proprio user', async ({ client, assert }) => {
+  test('authenticated user has the locale saved on the user', async ({ client, assert }) => {
     const user = await UserFactory.merge({ locale: null }).create()
 
     const response = await client
@@ -64,7 +64,7 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     assert.equal(user.locale, 'pt')
   })
 
-  test('user anonimo nao tenta persistir em user (so seta cookie)', async ({ client }) => {
+  test('anonymous user does not persist to a user (only sets the cookie)', async ({ client }) => {
     const response = await client
       .post('/switch/pt')
       .withCsrfToken()

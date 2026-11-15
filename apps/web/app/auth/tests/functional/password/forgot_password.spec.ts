@@ -8,7 +8,10 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint /forgot-password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('gera token e emite evento para email cadastrado', async ({ client, assert }) => {
+  test('generates a token and emits the event for a registered email', async ({
+    client,
+    assert,
+  }) => {
     using fake = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 
@@ -27,7 +30,7 @@ test.group('Endpoint /forgot-password', (group) => {
     assert.isNotEmpty(token.token)
   })
 
-  test('nao vaza usuario quando email nao existe (mesmo status/redirect)', async ({
+  test('does not leak the user when the email does not exist (same status/redirect)', async ({
     client,
     assert,
   }) => {
@@ -44,7 +47,7 @@ test.group('Endpoint /forgot-password', (group) => {
     fake.assertNoneEmitted()
   })
 
-  test('rejeita email malformado', async ({ client }) => {
+  test('rejects a malformed email', async ({ client }) => {
     const response = await client
       .post('/forgot-password')
       .redirects(0)

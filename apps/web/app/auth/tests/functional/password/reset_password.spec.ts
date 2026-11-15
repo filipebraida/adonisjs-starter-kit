@@ -10,7 +10,11 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint /reset-password/:token', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('POST valido troca a senha e redireciona para /login', async ({ client, db, assert }) => {
+  test('valid POST changes the password and redirects to /login', async ({
+    client,
+    db,
+    assert,
+  }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -29,7 +33,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
     await db.assertMissing('reset_password_tokens', { user_id: user.id })
   })
 
-  test('POST com token invalido nao muda senha e volta para /forgot-password', async ({
+  test('POST with invalid token keeps the password and goes back to /forgot-password', async ({
     client,
     assert,
   }) => {
@@ -53,7 +57,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
     assert.equal(user.password, senhaOriginal)
   })
 
-  test('POST com token expirado nao muda senha nem consome o token', async ({
+  test('POST with expired token neither changes the password nor consumes the token', async ({
     client,
     db,
     assert,
@@ -80,7 +84,11 @@ test.group('Endpoint /reset-password/:token', (group) => {
     await db.assertHas('reset_password_tokens', { user_id: user.id })
   })
 
-  test('rejeita senha curta, nao muda senha nem consome token', async ({ client, db, assert }) => {
+  test('rejects a short password, neither changes the password nor consumes the token', async ({
+    client,
+    db,
+    assert,
+  }) => {
     const user = await UserFactory.create()
     const senhaOriginal = user.password
     const { token } = await new PasswordResetService().generateToken(user)
@@ -99,7 +107,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
     await db.assertHas('reset_password_tokens', { user_id: user.id })
   })
 
-  test('GET com token valido renderiza pagina', async ({ client }) => {
+  test('GET with valid token renders the page', async ({ client }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -109,7 +117,7 @@ test.group('Endpoint /reset-password/:token', (group) => {
     response.assertInertiaComponent('auth/reset_password')
   })
 
-  test('GET com token invalido redireciona para /forgot-password', async ({ client, assert }) => {
+  test('GET with invalid token redirects to /forgot-password', async ({ client, assert }) => {
     const response = await client.get('/reset-password/token-invalido').redirects(0)
 
     response.assertStatus(302)

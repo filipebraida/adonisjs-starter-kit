@@ -11,7 +11,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('ResetPassword', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('troca a senha e invalida o token', async ({ db, assert }) => {
+  test('changes the password and invalidates the token', async ({ db, assert }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -31,7 +31,7 @@ test.group('ResetPassword', (group) => {
     await db.assertMissing('reset_password_tokens', { user_id: user.id })
   })
 
-  test('retorna null quando o token nao existe', async ({ assert }) => {
+  test('returns null when the token does not exist', async ({ assert }) => {
     const result = await new ResetPassword().handle({
       token: 'token-inexistente',
       password: 'irrelevante',
@@ -41,7 +41,7 @@ test.group('ResetPassword', (group) => {
     assert.isNull(result)
   })
 
-  test('retorna null quando o token esta expirado', async ({ assert }) => {
+  test('returns null when the token is expired', async ({ assert }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 
@@ -63,7 +63,7 @@ test.group('ResetPassword', (group) => {
     assert.equal(user.password, senhaOriginal)
   })
 
-  test('token so pode ser usado uma vez', async ({ assert }) => {
+  test('token can only be used once', async ({ assert }) => {
     const user = await UserFactory.create()
     const { token } = await new PasswordResetService().generateToken(user)
 

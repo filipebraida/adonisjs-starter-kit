@@ -8,13 +8,16 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Endpoint /settings', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('sem auth redireciona para login', async ({ client, assert }) => {
+  test('without auth redirects to login', async ({ client, assert }) => {
     const response = await client.get('/settings').redirects(0)
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('user comum acessa e nao ve tokens (sem permission)', async ({ client, assert }) => {
+  test('regular user gets in and does not see tokens (no permission)', async ({
+    client,
+    assert,
+  }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -25,7 +28,7 @@ test.group('Endpoint /settings', (group) => {
     assert.deepEqual(response.inertiaProps.tokens, [])
   })
 
-  test('admin acessa e ve o proprio profile', async ({ client, assert }) => {
+  test('admin gets in and sees their own profile', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 

@@ -13,7 +13,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Endpoint /users/invite', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('POST sem auth redireciona para login', async ({ client, assert }) => {
+  test('POST without auth redirects to login', async ({ client, assert }) => {
     const response = await client
       .post('/users/invite')
       .withCsrfToken()
@@ -23,7 +23,7 @@ test.group('Endpoint /users/invite', (group) => {
     assert.equal(response.header('location'), '/login')
   })
 
-  test('POST como user comum eh barrado e nao emite evento', async ({ client, db }) => {
+  test('POST as regular user is blocked and emits no event', async ({ client, db }) => {
     using fake = emitter.fake(['user:registered'])
     const email = taggedEmail(marker('barrado-convite'))
     const user = await UserFactory.create()
@@ -41,7 +41,11 @@ test.group('Endpoint /users/invite', (group) => {
     await db.assertMissing('users', { email })
   })
 
-  test('POST como admin cria user + gera token + emite evento', async ({ client, db, assert }) => {
+  test('POST as admin creates user + generates token + emits event', async ({
+    client,
+    db,
+    assert,
+  }) => {
     using fake = emitter.fake(['user:registered'])
     const email = taggedEmail(marker('convite'))
     const admin = await UserFactory.create()
@@ -75,7 +79,7 @@ test.group('Endpoint /users/invite', (group) => {
     fake.assertEmitted('user:registered')
   })
 
-  test('POST como admin com email duplicado retorna 422', async ({ client }) => {
+  test('POST as admin with duplicate email returns 422', async ({ client }) => {
     using fake = emitter.fake(['user:registered'])
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)

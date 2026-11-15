@@ -8,7 +8,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('UpdatePassword', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('troca a senha e persiste hash novo', async ({ assert }) => {
+  test('changes the password and persists the new hash', async ({ assert }) => {
     const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
     const hashAntigo = user.password
 

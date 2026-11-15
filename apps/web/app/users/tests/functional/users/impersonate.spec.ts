@@ -11,7 +11,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Endpoint /users/impersonate/:id', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('sem auth redireciona para login', async ({ client, assert }) => {
+  test('without auth redirects to login', async ({ client, assert }) => {
     const alvo = await UserFactory.create()
 
     const response = await client.post(`/users/impersonate/${alvo.id}`).withCsrfToken().redirects(0)
@@ -20,7 +20,7 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     assert.equal(response.header('location'), '/login')
   })
 
-  test('user comum eh barrado (nao altera sessao)', async ({ client, assert }) => {
+  test('regular user is blocked (session unchanged)', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const alvo = await UserFactory.create()
@@ -36,7 +36,7 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     assert.isUndefined(response.session().impersonation)
   })
 
-  test('admin nao pode impersonar a si mesmo (nao altera sessao)', async ({ client, assert }) => {
+  test('admin cannot impersonate themselves (session unchanged)', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -51,7 +51,7 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     assert.isUndefined(response.session().impersonation)
   })
 
-  test('admin impersona outro: troca auth_web + guarda a marca de impersonacao', async ({
+  test('admin impersonates another user: swaps auth_web and stores the impersonation mark', async ({
     client,
     assert,
   }) => {

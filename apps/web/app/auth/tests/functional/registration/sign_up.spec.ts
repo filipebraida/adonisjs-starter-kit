@@ -14,7 +14,11 @@ const payload = {
 test.group('Endpoint /sign-up', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('cria usuario, autentica e redireciona para /dashboard', async ({ client, db, assert }) => {
+  test('creates the user, authenticates and redirects to /dashboard', async ({
+    client,
+    db,
+    assert,
+  }) => {
     const response = await client.post('/sign-up').redirects(0).withCsrfToken().json(payload)
 
     response.assertStatus(302)
@@ -28,7 +32,7 @@ test.group('Endpoint /sign-up', (group) => {
     assert.equal(response.session().auth_web, user.id)
   })
 
-  test('rejeita email ja cadastrado e mantem apenas o user original', async ({
+  test('rejects an already registered email and keeps only the original user', async ({
     client,
     db,
     assert,
@@ -47,7 +51,7 @@ test.group('Endpoint /sign-up', (group) => {
     assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejeita senha curta e nao persiste usuario', async ({ client, db, assert }) => {
+  test('rejects a short password and does not persist the user', async ({ client, db, assert }) => {
     const response = await client
       .post('/sign-up')
       .redirects(0)
@@ -60,7 +64,7 @@ test.group('Endpoint /sign-up', (group) => {
     assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejeita quando password_confirmation nao bate e nao persiste', async ({
+  test('rejects when password_confirmation does not match and does not persist', async ({
     client,
     db,
     assert,
@@ -77,7 +81,7 @@ test.group('Endpoint /sign-up', (group) => {
     assert.isUndefined(response.session().auth_web)
   })
 
-  test('captura o locale corrente e persiste em user.locale', async ({ client, assert }) => {
+  test('captures the current locale and persists it in user.locale', async ({ client, assert }) => {
     const response = await client
       .post('/sign-up')
       .redirects(0)

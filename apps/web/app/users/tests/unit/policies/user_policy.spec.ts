@@ -14,7 +14,7 @@ async function policy() {
 test.group('UserPolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin pode listar, ver, criar, atualizar, deletar e convidar', async ({ assert }) => {
+  test('admin can list, view, create, update, delete and invite', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -28,7 +28,7 @@ test.group('UserPolicy', (group) => {
     assert.isTrue(await p.invite(admin))
   })
 
-  test('user comum nao lista/cria/deleta/convida outros', async ({ assert }) => {
+  test('regular user cannot list/create/delete/invite others', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const alvo = await UserFactory.create()
@@ -41,7 +41,7 @@ test.group('UserPolicy', (group) => {
     assert.isFalse(await p.invite(user))
   })
 
-  test('qualquer usuario pode ver e atualizar a si mesmo', async ({ assert }) => {
+  test('any user can view and update themselves', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const p = await policy()
@@ -50,7 +50,7 @@ test.group('UserPolicy', (group) => {
     assert.isTrue(await p.update(user, user))
   })
 
-  test('ninguem pode deletar a si mesmo — nem admin', async ({ assert }) => {
+  test('no one can delete themselves — not even admin', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const p = await policy()
@@ -58,7 +58,7 @@ test.group('UserPolicy', (group) => {
     assert.isFalse(await p.delete(admin, admin))
   })
 
-  test('user sem papel nao tem nenhuma permissao', async ({ assert }) => {
+  test('user without a role has no permission', async ({ assert }) => {
     const semRole = await UserFactory.create()
     const alvo = await UserFactory.create()
     const p = await policy()

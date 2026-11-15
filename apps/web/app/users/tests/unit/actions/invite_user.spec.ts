@@ -16,7 +16,7 @@ test.group('InviteUser', (group) => {
 
   const i18n = () => i18nManager.locale(i18nManager.defaultLocale)
 
-  test('admin convida user comum: cria user, atribui papel, gera token, emite evento', async ({
+  test('admin invites a regular user: creates user, assigns role, generates token, emits event', async ({
     db,
     assert,
   }) => {
@@ -45,7 +45,7 @@ test.group('InviteUser', (group) => {
     fake.assertEmitted('user:registered')
   })
 
-  test('user comum NAO pode convidar admin', async ({ db, assert }) => {
+  test('regular user CANNOT invite an admin', async ({ db, assert }) => {
     using fake = emitter.fake(['user:registered'])
     const email = taggedEmail(marker('escalador'))
     const executor = await UserFactory.create()

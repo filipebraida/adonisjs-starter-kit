@@ -7,7 +7,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('UpdateProfile', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('atualiza fullName sem avatar', async ({ assert }) => {
+  test('updates fullName without avatar', async ({ assert }) => {
     const user = await UserFactory.merge({ fullName: 'Antigo' }).create()
 
     await new UpdateProfile().handle({ target: user, fullName: 'Novo' })
@@ -16,7 +16,7 @@ test.group('UpdateProfile', (group) => {
     assert.equal(user.fullName, 'Novo')
   })
 
-  test('avatar null nao substitui avatar existente', async ({ assert }) => {
+  test('null avatar does not replace the existing avatar', async ({ assert }) => {
     const user = await UserFactory.merge({ fullName: 'Antigo' }).create()
     const avatarAntes = user.avatar
 

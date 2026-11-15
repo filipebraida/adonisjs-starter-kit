@@ -12,7 +12,7 @@ test.group('RequestPasswordReset', (group) => {
 
   const i18n = () => i18nManager.locale(i18nManager.defaultLocale)
 
-  test('emite auth:forgot_password com token novo para email conhecido', async ({ assert }) => {
+  test('emits auth:forgot_password with a new token for a known email', async ({ assert }) => {
     using fake = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 
@@ -25,7 +25,7 @@ test.group('RequestPasswordReset', (group) => {
     assert.isTrue(token.expiresAt.diffNow('minutes').minutes > 30)
   })
 
-  test('no-op silencioso quando o email nao existe (nao vaza usuario)', async () => {
+  test('silent no-op when the email does not exist (does not leak the user)', async () => {
     using fake = emitter.fake(['auth:forgot_password'])
     await new RequestPasswordReset().handle({
       email: 'nao-existe@example.test',
@@ -35,10 +35,7 @@ test.group('RequestPasswordReset', (group) => {
     fake.assertNoneEmitted()
   })
 
-  test('gerar dois tokens em sequencia mantem apenas o mais recente valido', async ({
-    db,
-    assert,
-  }) => {
+  test('generating two tokens in a row keeps only the latest one valid', async ({ db, assert }) => {
     // The real listener's mail.prepare() calls signedUrlFor and needs a live router.
     using _events = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()

@@ -8,7 +8,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Exception handler', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('E_AUTHORIZATION_FAILURE em JSON retorna 403 com message', async ({ client, assert }) => {
+  test('E_AUTHORIZATION_FAILURE in JSON returns 403 with message', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -19,10 +19,7 @@ test.group('Exception handler', (group) => {
     assert.isString(response.body().message)
   })
 
-  test('E_AUTHORIZATION_FAILURE em HTML redireciona (fluxo classico)', async ({
-    client,
-    assert,
-  }) => {
+  test('E_AUTHORIZATION_FAILURE in HTML redirects (classic flow)', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -32,7 +29,7 @@ test.group('Exception handler', (group) => {
     assert.equal(response.header('location'), '/')
   })
 
-  test('E_INVALID_CREDENTIALS em JSON retorna 401 com message', async ({ client, assert }) => {
+  test('E_INVALID_CREDENTIALS in JSON returns 401 with message', async ({ client, assert }) => {
     const user = await UserFactory.merge({ password: 'certa-123' }).create()
 
     const response = await client
@@ -47,7 +44,7 @@ test.group('Exception handler', (group) => {
     assert.isString(response.body().message)
   })
 
-  test('E_INVALID_CREDENTIALS em HTML redireciona pra /login', async ({ client, assert }) => {
+  test('E_INVALID_CREDENTIALS in HTML redirects to /login', async ({ client, assert }) => {
     const user = await UserFactory.merge({ password: 'certa-123' }).create()
 
     const response = await client

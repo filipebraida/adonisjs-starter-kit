@@ -6,14 +6,14 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint GET /dashboard', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('sem auth redireciona para /login', async ({ client, assert }) => {
+  test('without auth redirects to /login', async ({ client, assert }) => {
     const response = await client.get('/dashboard').redirects(0)
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('autenticado renderiza analytics/dashboard', async ({ client }) => {
+  test('authenticated renders analytics/dashboard', async ({ client }) => {
     const user = await UserFactory.create()
 
     const response = await client.get('/dashboard').loginAs(user).withInertia()

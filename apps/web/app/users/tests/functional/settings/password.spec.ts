@@ -7,10 +7,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint PUT /settings/password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('sem auth redireciona para login e nao altera senha de ninguem', async ({
-    client,
-    assert,
-  }) => {
+  test('without auth redirects to login and changes no password', async ({ client, assert }) => {
     const alvo = await UserFactory.merge({ password: 'antiga-1234' }).create()
     const hashOriginal = alvo.password
 
@@ -27,7 +24,7 @@ test.group('Endpoint PUT /settings/password', (group) => {
     assert.equal(alvo.password, hashOriginal)
   })
 
-  test('user autenticado troca a propria senha', async ({ client, assert }) => {
+  test('authenticated user changes their own password', async ({ client, assert }) => {
     const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
 
     const response = await client
@@ -44,7 +41,7 @@ test.group('Endpoint PUT /settings/password', (group) => {
     assert.isTrue(await hash.verify(user.password!, 'nova-1234'))
   })
 
-  test('rejeita senha curta com 422 e mantem hash', async ({ client, assert }) => {
+  test('rejects a short password with 422 and keeps the hash', async ({ client, assert }) => {
     const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
     const hashOriginal = user.password
 
@@ -61,7 +58,10 @@ test.group('Endpoint PUT /settings/password', (group) => {
     assert.equal(user.password, hashOriginal)
   })
 
-  test('rejeita quando confirmacao nao bate e mantem hash', async ({ client, assert }) => {
+  test('rejects when the confirmation does not match and keeps the hash', async ({
+    client,
+    assert,
+  }) => {
     const user = await UserFactory.merge({ password: 'antiga-1234' }).create()
     const hashOriginal = user.password
 

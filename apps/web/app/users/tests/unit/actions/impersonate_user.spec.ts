@@ -10,7 +10,7 @@ test.group('ImpersonateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.teardown(() => sinon.restore())
 
-  test('guarda a marca de impersonacao na sessao e faz login como o impersonado', async ({
+  test('stores the impersonation mark in the session and signs in as the target', async ({
     assert,
   }) => {
     type Input = Parameters<ImpersonateUser['handle']>[0]

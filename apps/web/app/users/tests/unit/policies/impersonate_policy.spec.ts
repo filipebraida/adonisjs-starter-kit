@@ -14,7 +14,7 @@ async function policy() {
 test.group('ImpersonatePolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin pode impersonar outro usuario', async ({ assert }) => {
+  test('admin can impersonate another user', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -23,7 +23,7 @@ test.group('ImpersonatePolicy', (group) => {
     assert.isTrue(await p.create(admin, alvo))
   })
 
-  test('admin NAO pode impersonar a si mesmo', async ({ assert }) => {
+  test('admin CANNOT impersonate themselves', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const p = await policy()
@@ -31,7 +31,7 @@ test.group('ImpersonatePolicy', (group) => {
     assert.isFalse(await p.create(admin, admin))
   })
 
-  test('user comum nao pode impersonar', async ({ assert }) => {
+  test('regular user cannot impersonate', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const alvo = await UserFactory.create()

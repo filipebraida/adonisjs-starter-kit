@@ -8,7 +8,7 @@ import { marker, taggedEmail } from '#tests/helpers/marker'
 test.group('AuthenticateWithSocial', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('reusa user existente pelo email', async ({ db, assert }) => {
+  test('reuses the existing user by email', async ({ db, assert }) => {
     const existente = await UserFactory.create()
 
     const result = await new AuthenticateWithSocial().handle({
@@ -24,7 +24,10 @@ test.group('AuthenticateWithSocial', (group) => {
     await db.assertHas('users', { email: existente.email }, 1)
   })
 
-  test('cria novo user quando email nao existe (password null)', async ({ db, assert }) => {
+  test('creates a new user when the email does not exist (password null)', async ({
+    db,
+    assert,
+  }) => {
     const email = taggedEmail(marker('novo-social'))
     const result = await new AuthenticateWithSocial().handle({
       socialUser: {

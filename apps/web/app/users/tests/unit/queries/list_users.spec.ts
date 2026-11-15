@@ -10,7 +10,7 @@ import { marker } from '#tests/helpers/marker'
 test.group('ListUsers', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('filtra pela substring do nome (ilike)', async ({ assert }) => {
+  test('filters by name substring (ilike)', async ({ assert }) => {
     const tag = marker('nome')
     await UserFactory.merge({ fullName: `${tag}-alpha`, email: `${tag}-a@example.test` }).create()
     await UserFactory.merge({ fullName: `${tag}-beta`, email: `${tag}-b@example.test` }).create()
@@ -23,7 +23,7 @@ test.group('ListUsers', (group) => {
     assert.notInclude(nomes, `${tag}-beta`)
   })
 
-  test('filtra pela substring do email (ilike)', async ({ assert }) => {
+  test('filters by email substring (ilike)', async ({ assert }) => {
     const tag = marker('email').toLowerCase()
     await UserFactory.merge({ email: `${tag}-alpha@example.test` }).create()
     await UserFactory.merge({ email: `${tag}-beta@example.test` }).create()
@@ -35,7 +35,7 @@ test.group('ListUsers', (group) => {
     assert.notInclude(emails, `${tag}-beta@example.test`)
   })
 
-  test('filtra por role (whereHas)', async ({ assert }) => {
+  test('filters by role (whereHas)', async ({ assert }) => {
     const tag = marker('role')
     const admin1 = await UserFactory.merge({ fullName: `${tag}-admin` }).create()
     await withRole(admin1, ROLES.ADMIN)
@@ -52,7 +52,7 @@ test.group('ListUsers', (group) => {
     assert.notInclude(nomes, `${tag}-user`)
   })
 
-  test('ordenacao por fullName asc + tiebreaker id asc', async ({ assert }) => {
+  test('sorts by fullName asc + id asc tiebreaker', async ({ assert }) => {
     const tag = marker('sort')
     await UserFactory.merge({ fullName: `${tag}-charlie` }).create()
     await UserFactory.merge({ fullName: `${tag}-alpha` }).create()
@@ -69,7 +69,7 @@ test.group('ListUsers', (group) => {
     assert.isTrue(idx('bravo') < idx('charlie'))
   })
 
-  test('pagina resultados respeitando page/perPage', async ({ assert }) => {
+  test('paginates results honoring page/perPage', async ({ assert }) => {
     const tag = marker('page')
     for (let i = 0; i < 5; i++) {
       await UserFactory.merge({ fullName: `${tag}-${i}` }).create()
@@ -93,7 +93,7 @@ test.group('ListUsers', (group) => {
     assert.notDeepEqual(ids1, ids2)
   })
 
-  test('preload de roles vem populado', async ({ assert }) => {
+  test('roles preload comes populated', async ({ assert }) => {
     const tag = marker('preload')
     const user = await UserFactory.merge({ fullName: `${tag}-x` }).create()
     await withRole(user, ROLES.ADMIN)

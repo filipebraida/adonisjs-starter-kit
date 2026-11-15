@@ -9,7 +9,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('DeleteToken', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('remove token do owner', async ({ assert }) => {
+  test('removes the token of the owner', async ({ assert }) => {
     const owner = await UserFactory.create()
     await new CreateToken().handle({ owner, name: 'para-deletar' })
     await new CreateToken().handle({ owner, name: 'sobrevivente' })
@@ -23,7 +23,7 @@ test.group('DeleteToken', (group) => {
     assert.equal(remanescentes[0].identifier, mantido.identifier)
   })
 
-  test('nao remove token de outro usuario mesmo com id valido', async ({ assert }) => {
+  test('does not remove a token of another user even with a valid id', async ({ assert }) => {
     const owner = await UserFactory.create()
     const outro = await UserFactory.create()
     await new CreateToken().handle({ owner })

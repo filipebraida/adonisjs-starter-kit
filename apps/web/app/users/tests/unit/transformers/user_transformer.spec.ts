@@ -10,7 +10,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('UserTransformer', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('toObject expõe id, fullName, email', async ({ assert }) => {
+  test('toObject exposes id, fullName, email', async ({ assert }) => {
     const email = taggedEmail(marker('fulano'))
     const user = await UserFactory.merge({ fullName: 'Fulano', email }).create()
 
@@ -23,7 +23,7 @@ test.group('UserTransformer', (group) => {
     })
   })
 
-  test('forSharedProps adiciona avatarUrl aos campos base', async ({ assert }) => {
+  test('forSharedProps adds avatarUrl to the base fields', async ({ assert }) => {
     const user = await UserFactory.create()
 
     const out = new UserTransformer(user).forSharedProps()
@@ -31,7 +31,7 @@ test.group('UserTransformer', (group) => {
     assert.deepEqual(Object.keys(out).sort(), ['avatarUrl', 'email', 'fullName', 'id'])
   })
 
-  test('forProfile tem mesmo shape de forSharedProps', async ({ assert }) => {
+  test('forProfile has the same shape as forSharedProps', async ({ assert }) => {
     const user = await UserFactory.create()
 
     const out = new UserTransformer(user).forProfile()
@@ -39,7 +39,7 @@ test.group('UserTransformer', (group) => {
     assert.deepEqual(Object.keys(out).sort(), ['avatarUrl', 'email', 'fullName', 'id'])
   })
 
-  test('forList inclui roles preloadados + createdAt ISO', async ({ assert }) => {
+  test('forList includes preloaded roles + ISO createdAt', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.ADMIN)
     await user.load('roles')
@@ -51,7 +51,7 @@ test.group('UserTransformer', (group) => {
     assert.match(out.createdAt, /^\d{4}-\d{2}-\d{2}T/)
   })
 
-  test('forEdit inclui roles preloadados (sem createdAt)', async ({ assert }) => {
+  test('forEdit includes preloaded roles (no createdAt)', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     await user.load('roles')

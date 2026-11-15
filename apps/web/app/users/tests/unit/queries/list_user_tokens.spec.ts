@@ -8,7 +8,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('ListUserTokens', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('lista apenas tokens do owner', async ({ assert }) => {
+  test('lists only the tokens of the owner', async ({ assert }) => {
     const owner = await UserFactory.create()
     const outro = await UserFactory.create()
 
@@ -24,7 +24,7 @@ test.group('ListUserTokens', (group) => {
     assert.notInclude(nomes, 'do-outro')
   })
 
-  test('retorna vazio quando owner nao tem tokens', async ({ assert }) => {
+  test('returns empty when the owner has no tokens', async ({ assert }) => {
     const owner = await UserFactory.create()
 
     const tokens = await new ListUserTokens().handle({ owner })

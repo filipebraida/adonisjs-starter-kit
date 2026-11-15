@@ -9,7 +9,7 @@ import { marker, taggedEmail } from '#tests/helpers/marker'
 test.group('SignUp', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('cria o usuario com senha hasheada', async ({ db, assert }) => {
+  test('creates the user with a hashed password', async ({ db, assert }) => {
     const email = taggedEmail(marker('novo'))
     const user = await new SignUp().handle({
       fullName: 'Filipe Teste',

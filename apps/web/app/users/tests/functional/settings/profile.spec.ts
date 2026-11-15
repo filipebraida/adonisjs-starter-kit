@@ -12,7 +12,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
 
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('atualiza fullName e persiste avatar (png valido)', async ({ client, assert }) => {
+  test('updates fullName and persists the avatar (valid png)', async ({ client, assert }) => {
     using disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Antes' }).create()
     const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
@@ -35,7 +35,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     assert.isTrue(await disk.exists(refreshed.avatar.path!))
   })
 
-  test('sem auth redireciona para login e nao muda ninguem', async ({ client, assert }) => {
+  test('without auth redirects to login and changes no one', async ({ client, assert }) => {
     using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Original' }).create()
     const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
@@ -54,7 +54,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     assert.equal(user.fullName, 'Original')
   })
 
-  test('rejeita extensao invalida (422) e mantem fullName', async ({ client, assert }) => {
+  test('rejects an invalid extension (422) and keeps fullName', async ({ client, assert }) => {
     using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Nome Original' }).create()
 
@@ -76,7 +76,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     assert.equal(user.fullName, 'Nome Original')
   })
 
-  test('rejeita arquivo maior que 1MB (422)', async ({ client, assert }) => {
+  test('rejects a file larger than 1MB (422)', async ({ client, assert }) => {
     using _disk = drive.fake(diskName)
     const user = await UserFactory.merge({ fullName: 'Nome Original' }).create()
     const png = await fileGenerator.generatePng(2 * 1024 * 1024, 'big.png')
@@ -96,7 +96,7 @@ test.group('Endpoint PUT /settings/profile', (group) => {
     assert.equal(user.fullName, 'Nome Original')
   })
 
-  test('rejeita fullName curto (422) e mantem estado', async ({ client, assert }) => {
+  test('rejects a short fullName (422) and keeps the state', async ({ client, assert }) => {
     const user = await UserFactory.merge({ fullName: 'Nome Original' }).create()
     const png = await fileGenerator.generatePng(50 * 1024, 'avatar.png')
 

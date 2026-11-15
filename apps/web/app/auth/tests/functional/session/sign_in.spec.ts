@@ -10,7 +10,10 @@ const password = 'senha-secreta-123'
 test.group('Endpoint /login', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('estabelece sessao autenticada com credenciais validas', async ({ client, assert }) => {
+  test('establishes an authenticated session with valid credentials', async ({
+    client,
+    assert,
+  }) => {
     const user = await UserFactory.merge({ email, password }).create()
 
     const response = await client
@@ -26,7 +29,7 @@ test.group('Endpoint /login', (group) => {
     assert.equal(response.session().auth_web, user.id)
   })
 
-  test('respeita returnTo interno seguro salvo na sessao', async ({ client, assert }) => {
+  test('honors a safe internal returnTo stored in the session', async ({ client, assert }) => {
     await UserFactory.merge({ email, password }).create()
 
     const response = await client
@@ -40,7 +43,10 @@ test.group('Endpoint /login', (group) => {
     assert.equal(response.header('location'), '/settings')
   })
 
-  test('descarta returnTo com URL externa e cai no dashboard', async ({ client, assert }) => {
+  test('discards returnTo with an external URL and falls back to the dashboard', async ({
+    client,
+    assert,
+  }) => {
     await UserFactory.merge({ email, password }).create()
 
     const response = await client
@@ -54,7 +60,7 @@ test.group('Endpoint /login', (group) => {
     assert.equal(response.header('location'), '/dashboard')
   })
 
-  test('credenciais invalidas: nao estabelece sessao', async ({ client, assert }) => {
+  test('invalid credentials: does not establish a session', async ({ client, assert }) => {
     await UserFactory.merge({ email, password }).create()
 
     const response = await client
@@ -68,7 +74,7 @@ test.group('Endpoint /login', (group) => {
     assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejeita payload sem email/senha', async ({ client }) => {
+  test('rejects a payload without email/password', async ({ client }) => {
     const response = await client
       .post('/login')
       .redirects(0)
@@ -79,7 +85,7 @@ test.group('Endpoint /login', (group) => {
     response.assertStatus(422)
   })
 
-  test('sincroniza cookie user-locale a partir de user.locale ao logar', async ({ client }) => {
+  test('syncs the user-locale cookie from user.locale on login', async ({ client }) => {
     await UserFactory.merge({ email, password, locale: 'pt' }).create()
 
     const response = await client

@@ -11,13 +11,13 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('Endpoint /settings/tokens', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('POST sem auth redireciona para login', async ({ client, assert }) => {
+  test('POST without auth redirects to login', async ({ client, assert }) => {
     const response = await client.post('/settings/tokens').withCsrfToken().redirects(0).json({})
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('POST como user comum eh barrado e nao cria token', async ({ client, assert }) => {
+  test('POST as regular user is blocked and creates no token', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
 
@@ -32,7 +32,7 @@ test.group('Endpoint /settings/tokens', (group) => {
     assert.lengthOf(await User.accessTokens.all(user), 0)
   })
 
-  test('POST como admin cria token e redireciona pra /settings', async ({ client, assert }) => {
+  test('POST as admin creates a token and redirects to /settings', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -51,7 +51,7 @@ test.group('Endpoint /settings/tokens', (group) => {
     assert.equal(tokens[0].name, 'meu-token')
   })
 
-  test('POST rejeita nome curto (422)', async ({ client }) => {
+  test('POST rejects a short name (422)', async ({ client }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -66,7 +66,7 @@ test.group('Endpoint /settings/tokens', (group) => {
     response.assertStatus(422)
   })
 
-  test('DELETE remove token proprio como admin', async ({ client, assert }) => {
+  test('DELETE removes own token as admin', async ({ client, assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     await new CreateToken().handle({ owner: admin })
@@ -83,7 +83,7 @@ test.group('Endpoint /settings/tokens', (group) => {
     assert.lengthOf(restantes, 0)
   })
 
-  test('DELETE como user comum eh barrado e nao remove o token real', async ({
+  test('DELETE as regular user is blocked and does not remove the real token', async ({
     client,
     assert,
   }) => {

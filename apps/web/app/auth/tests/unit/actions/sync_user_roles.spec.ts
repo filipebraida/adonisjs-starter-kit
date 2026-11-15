@@ -12,7 +12,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('SyncUserRoles', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin promove um user comum para admin', async ({ assert }) => {
+  test('admin promotes a regular user to admin', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -28,7 +28,7 @@ test.group('SyncUserRoles', (group) => {
     assert.deepEqual(roles, [ROLES.ADMIN])
   })
 
-  test('admin rebaixa outro admin para user', async ({ assert }) => {
+  test('admin demotes another admin to user', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const outroAdmin = await UserFactory.create()
@@ -44,7 +44,7 @@ test.group('SyncUserRoles', (group) => {
     assert.deepEqual(roles, [ROLES.USER])
   })
 
-  test('user comum nao consegue trocar papeis (falta manage_roles)', async ({ assert }) => {
+  test('regular user cannot change roles (missing manage_roles)', async ({ assert }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
     const alvo = await UserFactory.create()
@@ -64,7 +64,7 @@ test.group('SyncUserRoles', (group) => {
     assert.deepEqual(roles, [ROLES.USER])
   })
 
-  test('admin NAO consegue remover o proprio admin (lockout guard)', async ({ assert }) => {
+  test('admin CANNOT remove their own admin role (lockout guard)', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 
@@ -82,7 +82,7 @@ test.group('SyncUserRoles', (group) => {
     assert.deepEqual(roles, [ROLES.ADMIN])
   })
 
-  test('admin pode manter seu proprio admin (sync idempotente)', async ({ assert }) => {
+  test('admin can keep their own admin role (idempotent sync)', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
 

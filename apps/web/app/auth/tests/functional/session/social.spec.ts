@@ -27,7 +27,7 @@ test.group('Endpoint /:provider (social)', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.teardown(() => sinon.restore())
 
-  test('GET /google/redirect delega para ally.use(google).redirect()', async ({ client }) => {
+  test('GET /google/redirect delegates to ally.use(google).redirect()', async ({ client }) => {
     const redirect = sinon.spy()
     sinon.stub(AllyManager.prototype, 'use').returns(makeDriver({ redirect }))
 
@@ -36,7 +36,7 @@ test.group('Endpoint /:provider (social)', (group) => {
     sinon.assert.calledOnce(redirect)
   })
 
-  test('callback com accessDenied redireciona para /sign-up com flash', async ({
+  test('callback with accessDenied redirects to /sign-up with flash', async ({
     client,
     assert,
   }) => {
@@ -49,7 +49,7 @@ test.group('Endpoint /:provider (social)', (group) => {
     response.assertFlashMessage('error', 'Sign-in with the provider was cancelled.')
   })
 
-  test('callback com stateMisMatch redireciona para /sign-up com flash', async ({
+  test('callback with stateMisMatch redirects to /sign-up with flash', async ({
     client,
     assert,
   }) => {
@@ -62,7 +62,7 @@ test.group('Endpoint /:provider (social)', (group) => {
     response.assertFlashMessage('error', 'The sign-in request expired. Try again.')
   })
 
-  test('callback com hasError redireciona para /sign-up com flash', async ({ client, assert }) => {
+  test('callback with hasError redirects to /sign-up with flash', async ({ client, assert }) => {
     sinon.stub(AllyManager.prototype, 'use').returns(makeDriver({ hasError: true }))
 
     const response = await client.get('/google/callback').redirects(0)
@@ -72,7 +72,7 @@ test.group('Endpoint /:provider (social)', (group) => {
     response.assertFlashMessage('error', 'The provider could not sign you in. Try again.')
   })
 
-  test('callback sucesso cria novo user, autentica e vai pro /dashboard', async ({
+  test('successful callback creates a new user, authenticates and goes to /dashboard', async ({
     client,
     db,
     assert,
@@ -102,7 +102,7 @@ test.group('Endpoint /:provider (social)', (group) => {
     assert.equal(response.session().auth_web, user.id)
   })
 
-  test('callback sucesso reusa user existente pelo email', async ({ client, db, assert }) => {
+  test('successful callback reuses the existing user by email', async ({ client, db, assert }) => {
     const existente = await UserFactory.create()
     sinon.stub(AllyManager.prototype, 'use').returns(
       makeDriver({

@@ -8,13 +8,13 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('Endpoint /notifications', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('GET sem auth redireciona para login', async ({ client, assert }) => {
+  test('GET without auth redirects to login', async ({ client, assert }) => {
     const response = await client.get('/notifications').redirects(0)
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
 
-  test('GET lista as ultimas notificacoes + count de nao-vistas', async ({ client, assert }) => {
+  test('GET lists the latest notifications + unseen count', async ({ client, assert }) => {
     const user = await UserFactory.create()
     const notifiableId = String(user.id)
 
@@ -29,7 +29,7 @@ test.group('Endpoint /notifications', (group) => {
     assert.equal(response.body().items.length, 3)
   })
 
-  test('GET so retorna notificacoes do proprio usuario', async ({ client, assert }) => {
+  test('GET only returns notifications of the current user', async ({ client, assert }) => {
     const user = await UserFactory.create()
     const other = await UserFactory.create()
 
@@ -42,7 +42,7 @@ test.group('Endpoint /notifications', (group) => {
     assert.equal(response.body().unseen, 0)
   })
 
-  test('POST /:id/read marca uma como lida (e seen se ainda nao vista)', async ({
+  test('POST /:id/read marks one as read (and seen if not seen yet)', async ({
     client,
     assert,
   }) => {
@@ -63,7 +63,7 @@ test.group('Endpoint /notifications', (group) => {
     assert.isNotNull(notif.seenAt)
   })
 
-  test('POST /:id/read com id de outro usuario retorna 404', async ({ client }) => {
+  test('POST /:id/read with an id of another user returns 404', async ({ client }) => {
     const user = await UserFactory.create()
     const other = await UserFactory.create()
 
@@ -78,7 +78,7 @@ test.group('Endpoint /notifications', (group) => {
     response.assertStatus(404)
   })
 
-  test('POST /seen marca todas como vistas mas nao lidas', async ({ client, assert }) => {
+  test('POST /seen marks all as seen but not read', async ({ client, assert }) => {
     const user = await UserFactory.create()
     await NotificationFactory.merge({ notifiableId: String(user.id) }).createMany(2)
 
@@ -96,7 +96,7 @@ test.group('Endpoint /notifications', (group) => {
     assert.isTrue(rows.every((n) => n.readAt === null))
   })
 
-  test('POST /read marca todas como lidas', async ({ client, assert }) => {
+  test('POST /read marks all as read', async ({ client, assert }) => {
     const user = await UserFactory.create()
     const notifiableId = String(user.id)
     await NotificationFactory.merge({ notifiableId }).create()

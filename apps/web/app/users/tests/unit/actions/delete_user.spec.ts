@@ -7,7 +7,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('DeleteUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('remove o usuario do banco', async ({ db }) => {
+  test('removes the user from the database', async ({ db }) => {
     const alvo = await UserFactory.create()
 
     await new DeleteUser().handle({ target: alvo })

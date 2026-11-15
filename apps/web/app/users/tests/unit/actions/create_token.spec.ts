@@ -9,7 +9,7 @@ import { UserFactory } from '#auth/database/factories/user'
 test.group('CreateToken', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('gera token vinculado ao owner com nome custom', async ({ assert }) => {
+  test('generates a token bound to the owner with a custom name', async ({ assert }) => {
     const owner = await UserFactory.create()
 
     const created = await new CreateToken().handle({ owner, name: 'CI Bot' })
@@ -22,7 +22,7 @@ test.group('CreateToken', (group) => {
     assert.equal(tokens[0].name, 'CI Bot')
   })
 
-  test('usa "Secret Token" como nome default', async ({ assert }) => {
+  test('uses "Secret Token" as the default name', async ({ assert }) => {
     const owner = await UserFactory.create()
 
     await new CreateToken().handle({ owner })
@@ -31,7 +31,7 @@ test.group('CreateToken', (group) => {
     assert.equal(tokens[0].name, 'Secret Token')
   })
 
-  test('valor do token e liberado uma unica vez (release consome)', async ({ assert }) => {
+  test('token value is released only once (release consumes it)', async ({ assert }) => {
     const owner = await UserFactory.create()
 
     const created = await new CreateToken().handle({ owner })

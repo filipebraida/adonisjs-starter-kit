@@ -14,7 +14,7 @@ async function policy() {
 test.group('TokenPolicy', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin pode criar/listar/deletar', async ({ assert }) => {
+  test('admin can create/list/delete', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const p = await policy()
@@ -24,7 +24,7 @@ test.group('TokenPolicy', (group) => {
     assert.isTrue(await p.delete(admin))
   })
 
-  test('user comum nao pode criar/listar/deletar', async ({ assert }) => {
+  test('regular user cannot create/list/delete', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
     const p = await policy()

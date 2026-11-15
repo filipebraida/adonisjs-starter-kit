@@ -12,7 +12,7 @@ import { withRole } from '#tests/helpers/rbac'
 test.group('UpdateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('admin atualiza fullName, email e role do alvo', async ({ assert }) => {
+  test('admin updates fullName, email and role of the target', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.create()
@@ -32,7 +32,7 @@ test.group('UpdateUser', (group) => {
     assert.deepEqual(await alvo.getRoles(), [ROLES.ADMIN])
   })
 
-  test('senha opcional: mantem hash quando nao informada', async ({ assert }) => {
+  test('optional password: keeps the hash when not provided', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.merge({ password: 'antiga-1234' }).create()
@@ -51,7 +51,7 @@ test.group('UpdateUser', (group) => {
     assert.equal(alvo.password, hashAntigo)
   })
 
-  test('senha informada substitui e hasheia', async ({ assert }) => {
+  test('provided password replaces and hashes', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
     const alvo = await UserFactory.merge({ password: 'antiga-1234' }).create()
@@ -70,7 +70,7 @@ test.group('UpdateUser', (group) => {
     assert.isTrue(await hash.verify(alvo.password!, 'nova-senha-1234'))
   })
 
-  test('user comum NAO pode promover para admin', async ({ assert }) => {
+  test('regular user CANNOT promote to admin', async ({ assert }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)
     const alvo = await UserFactory.create()
