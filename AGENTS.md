@@ -1,131 +1,100 @@
 # Agent instructions
 
-## Meta-rule
+AdonisJS 7 + Inertia/React 19 starter kit, pnpm monorepo. The app is `apps/web`; shared UI primitives are `packages/ui`; agent skills are `packages/skills`.
 
-**ALWAYS look for the existing pattern before writing anything new.** This repo is highly consistent; new code should mirror the closest existing example, not invent shape. Search first, code second.
+## Hard rules
 
-## Scope
-
-- **Minimal diff.** Prefer the smallest change that satisfies the request — don't refactor unrelated code, rename identifiers "on the way", or restructure imports beyond the diff.
-- If the task drifts, ask before expanding scope.
-
-## Stack
-
-AdonisJS 7 (session auth + Bouncer + Lucid), Inertia + React 19, Tailwind 4 + shadcn/Radix, Postgres 16, pnpm monorepo (`pnpm -r` scripts).
+- **Copy the closest existing example.** The repo is consistent: search for the pattern first, then mirror it. Do not invent a new shape.
+- **Minimal diff.** No unrelated refactors, renames or import reshuffles. If the task grows, ask before expanding it.
+- **Never `eslint-disable`.** A justified exception is a named block in `apps/web/eslint.config.js` with a comment saying why.
+- **English** for identifiers, files, routes, comments and spec titles. User-facing text only through i18n keys, in every locale (`en`, `pt`).
+- **Comments only for a non-obvious why** (a hidden constraint, an invariant, a workaround). Never narrate what the code does.
+- **Prefer editing an existing file** to creating one. No README or doc files unless asked.
+- **Git:** never commit or push unless asked; never `--no-verify`, `git push --force`, `git reset --hard`, or amend a pushed commit. Full workflow: `packages/skills/git-commit/SKILL.md`.
+- **Done means verified:** `pnpm typecheck && pnpm lint`, then the narrowest relevant spec, then `pnpm test`. If a command cannot run (no database, no network), stop and report its output; do not claim completion.
 
 ## Commands
 
-- `pnpm dev` — dev server
-- `pnpm test` — full suite, on its own `app_test` database (`db:prepare-test` creates, wipes and migrates it first)
-- `pnpm typecheck && pnpm lint` — before saying "done"
-- `pnpm infra:up` — Postgres + Mailpit via compose (host ports follow `DB_PORT` / `SMTP_PORT` / `MAILPIT_UI_PORT` / `PGADMIN_PORT`)
-- `pnpm ace <cmd>` — Adonis CLI from the repo root (shortcut for `pnpm --filter web exec node ace <cmd>`)
-- `pnpm ace make:module <name> [--db] [--i18n] [--events]` — scaffold a module and wire every touchpoint (alias, preload, migration path, tsconfig include)
+Run from the repo root.
 
-## Done criteria
+| Command                                                  | What it does                                                                                                              |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                                               | Dev server on `:3333` (hot reload + Vite HMR)                                                                             |
+| `pnpm test`                                              | Full Japa suite on its own `app_test` database, recreated and migrated first                                              |
+| `pnpm typecheck` / `pnpm lint`                           | Required before saying done                                                                                               |
+| `pnpm ace <cmd>`                                         | Adonis CLI (`pnpm --filter web exec node ace <cmd>`)                                                                      |
+| `pnpm ace codegen`                                       | Regenerates the committed `.adonisjs/`; CI fails when it is stale                                                         |
+| `pnpm ace make:module <name> [--db] [--i18n] [--events]` | Scaffolds `app/<name>/` and wires the alias, preloads, client tsconfig include and (with `--db`) the migration path       |
+| `pnpm infra:up` / `infra:down`                           | Postgres 18, Mailpit and pgAdmin via compose; host ports follow `DB_PORT`, `SMTP_PORT`, `MAILPIT_UI_PORT`, `PGADMIN_PORT` |
 
-Before reporting completion:
+## Where code goes
 
-- Run `pnpm typecheck && pnpm lint`.
-- Run the narrowest relevant test first (module functional spec) before falling back to `pnpm test`.
-- If a required command failed to run (missing infra, no network, etc.), stop and report the failure with the relevant output — do not claim completion.
+Every bounded context is a module at `apps/web/app/<mod>/`, aliased `#<mod>/*`. Modules: `core`, `auth`, `users`, `notifications`, `analytics`, `marketing`.
 
-## Architecture — module per bounded context
+| Thing                            | Place                                                                                                                                                                                  | Shape                                                                                                |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Use case                         | `actions/<verb>_<object>.ts`                                                                                                                                                           | class with one public `handle(input)`; never imports another action                                  |
+| HTTP entry                       | `controllers/<name>_controller.ts`                                                                                                                                                     | resource methods only, or one `handle()` named `<verb>_<object>` (a page may be a noun: `dashboard`) |
+| Read side                        | `queries/`                                                                                                                                                                             | read-only Lucid query classes                                                                        |
+| Authorization                    | `policies/<entity>_policy.ts`                                                                                                                                                          | extends `BasePolicy`, checks capabilities via `#core/authz/authorizer`                               |
+| Validation                       | `validators/<entity>.ts`                                                                                                                                                               | VineJS, one file per entity                                                                          |
+| Side effect (mail, notification) | `workflows/<verb_object>_workflow.ts`                                                                                                                                                  | durable workflow, one `ctx.localStep` per effect                                                     |
+| Reaction to an event             | `listeners/`                                                                                                                                                                           | only schedules a workflow                                                                            |
+| Events                           | `types/events.ts` + `start/events.ts`                                                                                                                                                  | `EventsList` merge + emitter wiring                                                                  |
+| Page                             | `ui/pages/**.tsx`                                                                                                                                                                      | renders `<Head>`, picks its layout shell by import                                                   |
+| Component / hook                 | `ui/components/`, `ui/hooks/`                                                                                                                                                          |                                                                                                      |
+| Translations                     | `resources/lang/<locale>/<file>.json`                                                                                                                                                  | the file name is the key prefix: `errors.json` → `errors.*`                                          |
+| Spec                             | `tests/unit/<layer>/`, `tests/functional/<area>/`                                                                                                                                      | `<name>.spec.ts`                                                                                     |
+| Also                             | `models/`, `mixins/`, `services/`, `exceptions/`, `enums/`, `transformers/`, `middleware/`, `mails/`, `notifications/`, `audit_resolvers/`, `database/{factories,migrations,seeders}/` |                                                                                                      |
 
-Every bounded context lives at `app/<mod>/` as a self-contained module. A module owns the ubiquitous language of one context and may hold multiple aggregates inside — modules are **not** 1:1 with aggregates. Existing modules: `auth`, `users`, `marketing`, `analytics`, `core`, `notifications`. Each module dir is aliased as `#<mod>/*` in `apps/web/package.json` → `"imports"` — see the `module-scaffolding` skill to add one.
+Only `core` has `utils/` (the one utils of the app), `authz/` and `hooks/`.
 
-```
-app/<module>/
-  actions/            # single-purpose class with .handle(input)
-  controllers/        # thin: validate → action → redirect/render
-  queries/            # read-only Lucid query classes
-  policies/           # extend BasePolicy, one per resource
-  models/, mixins/, services/, exceptions/, enums/
-  middleware/         # singular — HTTP middleware (registered in start/kernel.ts)
-  transformers/
-  validators/         # one file per entity — validators/users.ts, validators/tokens.ts
-  database/{factories,migrations,seeders}/
-  resources/lang/     # i18n JSON, per module per locale
-  ui/                 # Inertia pages + React components
-  mails/              # BaseMail classes — *_notification.ts (see the mail skill)
-  notifications/      # Notification classes (if the module emits)
-  types/events.ts     # EventsList declaration merge (if the module emits)
-  start/{events,view}.ts
-  routes.ts
-  tests/{unit,functional}/
-```
+## Invariants the tools rely on
 
-### Dependency direction
+- **Dependencies between modules:** `core` imports no module; `auth` (identity: `User`, credentials, roles) imports only `core`. Any other import between modules must be listed in `DEPENDENCIES` in `apps/web/eslint.config.js`, otherwise the lint fails. The composition root (`core/middleware/inertia_middleware.ts`, `core/policies/main.ts`, `core/ui/app/**`) may import every module.
+- **Names and places feed generated files.** Nothing errors when they are wrong; the entry is just missing. After adding one, run `pnpm ace codegen`:
+  - `*_controller.ts` and `*_transformer.ts` are indexed into `#generated/controllers` and the shared props.
+  - Pages under `ui/pages/` are typed as `<mod>/<path>`.
+  - Workflows under `<mod>/workflows/` are registered with the engine.
+  - The English translation files type the keys of `t()`.
+- **Transformer variants** are `for<Screen>` (`forList`, `forEdit`, `forSharedProps`) over `toObject()`, used as `Transformer.transform(x).useVariant('forEdit')`.
+- **Side effects never run in an action:** the action emits an event, a listener schedules a workflow, the workflow does the effect.
+- **Every mutation route is gated by a policy**, before validation.
 
-`core` knows no module. `auth` owns identity — `User`, credentials, role assignment (`SyncUserRoles`, `ROLES`) — and depends only on `core`. Feature modules depend on `core`, `auth` and what `DEPENDENCIES` in `apps/web/eslint.config.js` lists for them; that table is the source of truth and the lint fails on any other import between modules. The composition root (`core/middleware/inertia_middleware.ts`, `core/policies/main.ts`, `core/ui/app/**`) may import every module. An action never imports another action. A new dependency between modules is a decision: add it to the table first.
+## UI layers
 
-### Naming is wiring
+- `@workspace/ui/*` (`packages/ui`): headless shadcn/Radix primitives. They know nothing of the app. They never hold a translation key (texts are props with English defaults). A shape they lack becomes a variant there (`Button shape="pill"`, `Badge size="count"`), not a `className` override.
+- `#core/ui/*`: Inertia-aware wrappers. Inside pages, import from here first: `Form`/`Field`/`FieldError` (errors by field name), `DataTable` (labels from `t`), `useTranslation` (typed keys), `useFlashToasts`.
+- Dates and numbers go through `#core/ui/format/*`; internal URLs come from `urlFor` or `<Link route>`.
 
-Two conventions the tooling enforces silently — get the name wrong and there's no error, just a missing entry:
+## Skills
 
-- **Filename globs feed the typed registries.** `*_controller.ts` and `*_transformer.ts` are indexed by `indexEntities` into `#generated/controllers` and the shared-props types. A different suffix is silently absent from the registry.
-- **Transformer variants are named `for<Screen>`** — `forList`, `forEdit`, `forProfile`, `forSharedProps` — over a `toObject()` base, consumed as `Transformer.transform(x).useVariant('forEdit')`. See `app/users/transformers/user_transformer.ts`.
+Load the matching skill before working. Each one has repo refs and doc links. Install them with `npx skills add ./packages/skills --agent claude-code`.
 
-## Skills — where the detailed workflows live
+| Task                                                 | Skill                |
+| ---------------------------------------------------- | -------------------- |
+| New module                                           | `module-scaffolding` |
+| Full CRUD screen                                     | `crud`               |
+| Routes, matchers, naming                             | `routes`             |
+| Lists, filters, dashboards                           | `queries`            |
+| Actions, events, listeners, workflows                | `actions-events`     |
+| Specs, fakes, factories                              | `testing`            |
+| Pages, `<Form>`, shared props, modals                | `inertia`            |
+| Translations                                         | `i18n`               |
+| Which layout shell                                   | `layout-shells`      |
+| Capabilities, policies, `useCan`                     | `authorization`      |
+| Audit trail, Activity page                           | `auditing`           |
+| Emails                                               | `mail`               |
+| In-app notifications, SSE                            | `notifications`      |
+| File uploads                                         | `attachment`         |
+| Schema changes (edit `create_*` + `migration:fresh`) | `migrations`         |
+| Commits                                              | `git-commit`         |
 
-Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel Skills](https://github.com/vercel-labs/skills) format. Install with `npx skills add ./packages/skills --agent claude-code` (or `--all`). **Prefer loading the relevant skill over guessing** — every skill has repo refs to canonical examples and external doc links. Only the invariants below need to hold when a skill isn't loaded.
+## Gotchas
 
-**Backbone**
-
-- `module-scaffolding` — bootstrap a new `app/<mod>/` via `node ace make:module` (wires alias + preload + migration paths + tsconfig include).
-- `crud` — full stack (route → controller → validator → policy → action → transformer → Inertia page).
-- `routes` — resource vs. verb routes, numeric matchers, naming.
-- `queries` — read side: list queries + per-concept read models composed in the controller.
-- `actions-events` — action shape (`.handle(input)`) and event-driven side effects.
-- `testing` — Japa functional + unit patterns (transactions, fakes, sinon, factories).
-
-**Frontend**
-
-- `inertia` — page resolver, shared props, `useForm`, `urlFor`, modals, provider tree.
-- `i18n` — two locales (`en`, `pt`), `useTranslation()`, `ctx.i18n.t()`, `User.locale` persistence.
-- `layout-shells` — four coexisting shells; pages import explicitly, no runtime toggle.
-
-**Feature**
-
-- `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.
-- `mail` — `BaseMail` classes + MJML via `@email.layout` + `mailContext()`.
-- `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count.
-- `auditing` — `@filipebraida/adonis-auditing`: `Auditable` models + `auditCustom` security events + resolvers (actor, IP, impersonated_by) + the Activity page.
-- `attachment` — `@jrmc/adonis-attachment` converters + model decoration + `preComputeUrls`.
-- `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
-
-**Git**
-
-- `git-commit` — commit types, scopes, examples, safety protocol.
-
-## Lint
-
-`apps/web` runs [`@filipebraida/eslint-config-adonis`](https://github.com/filipebraida/eslint-config-adonis) in the modules layout: it turns these conventions into errors (where each file lives, what an action, query, controller or page may do, how specs share the database) and each message says where the code goes. Read the message's note before changing code.
-
-- **Never `eslint-disable`.** A justified exception is a named block in `apps/web/eslint.config.js` with a comment saying why; remove it when the reason goes away.
-- Specs live by layer: `app/<mod>/tests/unit/<layer>/<name>.spec.ts`, `app/<mod>/tests/functional/<area>/<resource>.spec.ts`.
-- Dates and numbers go through `#core/ui/format/*`; every page renders `<Head>`; internal URLs come from `urlFor`.
-- `lefthook` runs Prettier and ESLint on staged files before a commit and the typecheck before a push.
-
-## Code style
-
-- Comments only for non-obvious WHY — a hidden constraint, subtle invariant, workaround. Don't narrate what the code does.
-- Identifiers, files, routes and code comments in English; user-facing text only through i18n keys (`en`, `pt`).
-- Don't create README / doc files unless the user asks for them.
-- Prefer editing existing files over creating new ones.
-
-## UI layers — which to import
-
-Two tiers, by design (not duplication):
-
-- `@workspace/ui/*` (`packages/ui`) — **headless primitives** (shadcn/Radix): `Field`, `FieldError`, `toast`, buttons, tables. No app or Inertia knowledge.
-- `#core/ui/*` — **Inertia-aware composition** that wraps the primitives: `Form`/`Field`/`FieldError` bind form errors via `FormErrorsContext` + `FieldNameContext`; `useFlashToasts` pipes Inertia flash into the primitive `toast`.
-
-Rule: inside Inertia pages/forms import from `#core/ui`; reach for `@workspace/ui` directly only for a primitive that has no app wrapper. Add new primitives to `packages/ui`, new app-composition to `#core/ui`.
-
-## Git — non-negotiables
-
-Full workflow: `packages/skills/git-commit/SKILL.md`. Rules every agent must respect even without the skill loaded:
-
-- **Never** `--no-verify`, `git push --force`, `git reset --hard`, or amend a pushed commit.
-- **Never** commit or push without being asked.
+- `pnpm dev` may already be running on `:3333`, on the developer's database. For a throwaway server, use another `PORT` and your own `DB_*`.
+- `app/core/database/schema.ts` and `.adonisjs/` are generated but committed: regenerate them, never edit them by hand.
+- `Model.query().update()` / `.delete()` skip the audit trail; write through the model when the change must be audited.
+- `lefthook` runs Prettier + ESLint on staged files at commit and the typecheck at push.
+- Adding a shadcn component: `pnpm dlx shadcn@latest add <name> --cwd packages/ui`. Then point its `import { cn } from "cn"` back to `@workspace/ui/lib/utils`. `select` is maintained by hand because it portals into the open modal, so don't overwrite it.
+- Deploy is `deploy.ts` (Catapult + PM2, `compose.prod.yaml`). A release migrates the database, then checks `/health/live`. `deploy:rollback` does not undo migrations.
