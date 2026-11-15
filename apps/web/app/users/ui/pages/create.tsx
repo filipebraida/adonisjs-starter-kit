@@ -1,27 +1,18 @@
-// useForm and not <Form>: create and edit share the controlled UserFormFields, whose
-// confirmation stays disabled until a password is typed.
-import { useForm } from '@inertiajs/react'
+import { useRef } from 'react'
+import { type FormRef } from '@adonisjs/inertia/react'
 import { Modal } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-import { urlFor } from '~/app/client'
-
+import { Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
-import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
+import UserFormFields from '#users/ui/components/user_form_fields'
 import { ROLES } from '#auth/enums/role'
 
 export default function CreateUserPage() {
   const { t } = useTranslation()
-
-  const { data, setData, errors, post, processing, reset } = useForm<UserFormData>({
-    fullName: '',
-    email: '',
-    role: ROLES.USER,
-    password: '',
-    passwordConfirmation: '',
-  })
+  const formRef = useRef<FormRef>(null)
 
   return (
     <Modal maxWidth="md">
@@ -32,37 +23,35 @@ export default function CreateUserPage() {
             <p className="text-sm text-muted-foreground">{t('users.action.create.description')}</p>
           </header>
 
-          <form
-            id="create-user-form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              post(urlFor('users.store'), {
-                preserveScroll: true,
-                onSuccess: () => {
-                  close()
-                  toast(t('users.action.toast.title'), {
-                    description: data.fullName || data.email,
-                  })
-                },
-                onFinish: () => reset('password', 'passwordConfirmation'),
-              })
+          <Form
+            ref={formRef}
+            route="users.store"
+            options={{ preserveScroll: true }}
+            resetOnError={['password', 'passwordConfirmation']}
+            onSuccess={() => {
+              const { fullName, email } = formRef.current?.getData() ?? {}
+              close()
+              toast(t('users.action.toast.title'), { description: fullName || email })
             }}
           >
-            <UserFormFields
-              data={data}
-              errors={errors}
-              setData={(key, value) => setData(key, value as never)}
-            />
-          </form>
+            {({ errors, processing }) => (
+              <>
+                <UserFormFields
+                  defaults={{ fullName: '', email: '', role: ROLES.USER }}
+                  errors={errors}
+                />
 
-          <footer className="flex justify-end gap-2">
-            <Button variant="outline" onClick={close}>
-              {t('users.action.actions.cancel')}
-            </Button>
-            <Button type="submit" form="create-user-form" disabled={processing}>
-              {t('users.action.actions.add')}
-            </Button>
-          </footer>
+                <footer className="flex justify-end gap-2 pt-4">
+                  <Button type="button" variant="outline" onClick={close}>
+                    {t('users.action.actions.cancel')}
+                  </Button>
+                  <Button type="submit" disabled={processing}>
+                    {t('users.action.actions.add')}
+                  </Button>
+                </footer>
+              </>
+            )}
+          </Form>
         </div>
       )}
     </Modal>

@@ -1,15 +1,13 @@
-// useForm and not <Form>: create and edit share the controlled UserFormFields, whose
-// confirmation stays disabled until a password is typed.
-import { useForm } from '@inertiajs/react'
+import { useRef } from 'react'
+import { type FormRef } from '@adonisjs/inertia/react'
 import { Modal } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-import { urlFor } from '~/app/client'
-
+import { Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
-import UserFormFields, { type UserFormData } from '#users/ui/components/user_form_fields'
+import UserFormFields from '#users/ui/components/user_form_fields'
 import { mainRole, ROLES } from '#auth/enums/role'
 
 import type { InertiaProps } from '#core/ui/app/types'
@@ -21,14 +19,7 @@ type PageProps = InertiaProps<{
 
 export default function EditUserPage({ user }: PageProps) {
   const { t } = useTranslation()
-
-  const { data, setData, errors, put, processing, reset } = useForm<UserFormData>({
-    fullName: user.fullName ?? '',
-    email: user.email,
-    role: mainRole(user.roles) ?? ROLES.USER,
-    password: '',
-    passwordConfirmation: '',
-  })
+  const formRef = useRef<FormRef>(null)
 
   return (
     <Modal maxWidth="md">
@@ -39,37 +30,40 @@ export default function EditUserPage({ user }: PageProps) {
             <p className="text-sm text-muted-foreground">{t('users.action.edit.description')}</p>
           </header>
 
-          <form
-            id="edit-user-form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              put(urlFor('users.update', { id: user.id }), {
-                preserveScroll: true,
-                onSuccess: () => {
-                  close()
-                  toast(t('users.action.toast.title'), {
-                    description: data.email,
-                  })
-                },
-                onFinish: () => reset('password', 'passwordConfirmation'),
-              })
+          <Form
+            ref={formRef}
+            route="users.update"
+            routeParams={{ id: user.id }}
+            options={{ preserveScroll: true }}
+            resetOnError={['password', 'passwordConfirmation']}
+            onSuccess={() => {
+              const { email } = formRef.current?.getData() ?? {}
+              close()
+              toast(t('users.action.toast.title'), { description: email })
             }}
           >
-            <UserFormFields
-              data={data}
-              errors={errors}
-              setData={(key, value) => setData(key, value as never)}
-            />
-          </form>
+            {({ errors, processing }) => (
+              <>
+                <UserFormFields
+                  defaults={{
+                    fullName: user.fullName ?? '',
+                    email: user.email,
+                    role: mainRole(user.roles) ?? ROLES.USER,
+                  }}
+                  errors={errors}
+                />
 
-          <footer className="flex justify-end gap-2">
-            <Button variant="outline" onClick={close}>
-              {t('users.action.actions.cancel')}
-            </Button>
-            <Button type="submit" form="edit-user-form" disabled={processing}>
-              {t('users.action.actions.save')}
-            </Button>
-          </footer>
+                <footer className="flex justify-end gap-2 pt-4">
+                  <Button type="button" variant="outline" onClick={close}>
+                    {t('users.action.actions.cancel')}
+                  </Button>
+                  <Button type="submit" disabled={processing}>
+                    {t('users.action.actions.save')}
+                  </Button>
+                </footer>
+              </>
+            )}
+          </Form>
         </div>
       )}
     </Modal>

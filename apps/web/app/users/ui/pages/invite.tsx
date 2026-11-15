@@ -1,12 +1,10 @@
-// useForm and not <Form>: the role is a Radix Select driven by the form state, and the
-// success toast names the invited email.
-import { useForm } from '@inertiajs/react'
+import { useRef } from 'react'
+import { type FormRef } from '@adonisjs/inertia/react'
 import { Modal } from 'adonis-inertia-modal/react'
 import { MailPlus, Send } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
-import { Field, FieldLabel } from '@workspace/ui/components/field'
-import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
+import { FieldLabel } from '@workspace/ui/components/field'
 import { Input } from '@workspace/ui/components/input'
 import {
   Select,
@@ -19,25 +17,15 @@ import {
 import { Textarea } from '@workspace/ui/components/textarea'
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-import { urlFor } from '~/app/client'
-
+import { Field, FieldError, Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
-import { ROLES, type Role as RoleSlug } from '#auth/enums/role'
+import { ROLES } from '#auth/enums/role'
 
 export default function InviteUserPage() {
   const { t } = useTranslation()
   const roles = userRoles(t)
-
-  const { data, setData, errors, post, processing } = useForm<{
-    email: string
-    role: RoleSlug
-    description: string | null
-  }>({
-    email: '',
-    role: ROLES.USER,
-    description: '',
-  })
+  const formRef = useRef<FormRef>(null)
 
   return (
     <Modal maxWidth="md">
@@ -50,81 +38,79 @@ export default function InviteUserPage() {
             <p className="text-sm text-muted-foreground">{t('users.invite.description')}</p>
           </header>
 
-          <form
-            id="invite-user-form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              post(urlFor('users.invite.handle'), {
-                preserveScroll: true,
-                onSuccess: () => {
-                  close()
-                  toast(t('users.invite.toast.title'), { description: data.email })
-                },
-              })
+          <Form
+            ref={formRef}
+            route="users.invite.handle"
+            options={{ preserveScroll: true }}
+            onSuccess={() => {
+              const { email } = formRef.current?.getData() ?? {}
+              close()
+              toast(t('users.invite.toast.title'), { description: email })
             }}
             className="space-y-4"
           >
-            <Field>
-              <FieldLabel htmlFor="email">{t('users.invite.form.email.label')}</FieldLabel>
-              <Input
-                id="email"
-                placeholder={t('users.invite.form.email.placeholder')}
-                value={data.email}
-                onChange={(e) => setData('email', e.target.value)}
-                aria-invalid={!!errors?.email}
-              />
-              <FieldErrorBag errors={errors} field="email" />
-            </Field>
+            {({ errors, processing }) => (
+              <>
+                <Field name="email">
+                  <FieldLabel htmlFor="email">{t('users.invite.form.email.label')}</FieldLabel>
+                  <Input
+                    id="email"
+                    name="email"
+                    placeholder={t('users.invite.form.email.placeholder')}
+                    aria-invalid={!!errors.email}
+                  />
+                  <FieldError />
+                </Field>
 
-            <Field>
-              <FieldLabel htmlFor="role">{t('users.invite.form.role.label')}</FieldLabel>
-              <Select
-                value={data.role}
-                onValueChange={(value) => setData('role', value as RoleSlug)}
-              >
-                <SelectTrigger aria-invalid={!!errors?.role}>
-                  <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {roles.map((role) => (
-                      <SelectItem key={role.value} value={role.value}>
-                        <span className="flex gap-x-2 items-center">
-                          {role.icon && <role.icon size={16} className="text-muted-foreground" />}
-                          <span className="capitalize text-sm">{role.label}</span>
-                        </span>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FieldErrorBag errors={errors} field="role" />
-            </Field>
+                <Field name="role">
+                  <FieldLabel htmlFor="role">{t('users.invite.form.role.label')}</FieldLabel>
+                  <Select name="role" defaultValue={ROLES.USER}>
+                    <SelectTrigger id="role" aria-invalid={!!errors.role}>
+                      <SelectValue placeholder={t('users.invite.form.role.placeholder')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {roles.map((role) => (
+                          <SelectItem key={role.value} value={role.value}>
+                            <span className="flex gap-x-2 items-center">
+                              {role.icon && (
+                                <role.icon size={16} className="text-muted-foreground" />
+                              )}
+                              <span className="capitalize text-sm">{role.label}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FieldError />
+                </Field>
 
-            <Field>
-              <FieldLabel htmlFor="description">
-                {t('users.invite.form.description.label')}
-              </FieldLabel>
-              <Textarea
-                id="description"
-                placeholder={t('users.invite.form.description.placeholder')}
-                value={data.description ?? ''}
-                onChange={(e) => setData('description', e.target.value)}
-                className="resize-none"
-                aria-invalid={!!errors?.description}
-              />
-              <FieldErrorBag errors={errors} field="description" />
-            </Field>
-          </form>
+                <Field name="description">
+                  <FieldLabel htmlFor="description">
+                    {t('users.invite.form.description.label')}
+                  </FieldLabel>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    placeholder={t('users.invite.form.description.placeholder')}
+                    className="resize-none"
+                    aria-invalid={!!errors.description}
+                  />
+                  <FieldError />
+                </Field>
 
-          <footer className="flex justify-end gap-2">
-            <Button variant="outline" onClick={close}>
-              {t('users.invite.actions.cancel')}
-            </Button>
-            <Button type="submit" form="invite-user-form" disabled={processing}>
-              {t('users.invite.actions.submit')} <Send />
-            </Button>
-          </footer>
+                <footer className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={close}>
+                    {t('users.invite.actions.cancel')}
+                  </Button>
+                  <Button type="submit" disabled={processing}>
+                    {t('users.invite.actions.submit')} <Send />
+                  </Button>
+                </footer>
+              </>
+            )}
+          </Form>
         </div>
       )}
     </Modal>

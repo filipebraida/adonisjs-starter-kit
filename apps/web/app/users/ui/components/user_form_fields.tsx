@@ -1,5 +1,6 @@
-import { Field, FieldLabel } from '@workspace/ui/components/field'
-import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
+import { useState } from 'react'
+
+import { FieldLabel } from '@workspace/ui/components/field'
 import { Input } from '@workspace/ui/components/input'
 import { PasswordInput } from '@workspace/ui/components/password-input'
 import {
@@ -11,59 +12,59 @@ import {
   SelectValue,
 } from '@workspace/ui/components/select'
 
+import { Field, FieldError } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { userRoles } from '#users/ui/components/users_types'
 import type { Role as RoleSlug } from '#auth/enums/role'
 
-export type UserFormData = {
+export type UserFormDefaults = {
   fullName: string
   email: string
   role: RoleSlug
-  password: string
-  passwordConfirmation: string
 }
 
 interface Props {
-  data: UserFormData
-  errors: Partial<Record<keyof UserFormData, string>>
-  setData: (key: keyof UserFormData, value: string) => void
+  defaults: UserFormDefaults
+  errors: Partial<Record<string, string>>
 }
 
-/** Shared form fields for create and edit modals. */
-export default function UserFormFields({ data, errors, setData }: Props) {
+/** Shared fields of the create and edit modals, inside a `<Form>`. */
+export default function UserFormFields({ defaults, errors }: Props) {
   const { t } = useTranslation()
   const roles = userRoles(t)
+  // The confirmation stays disabled until a password is typed.
+  const [hasPassword, setHasPassword] = useState(false)
 
   return (
     <div className="space-y-4">
-      <Field>
+      <Field name="fullName">
         <FieldLabel htmlFor="fullName">{t('users.action.form.full_name.label')}</FieldLabel>
         <Input
           id="fullName"
+          name="fullName"
+          defaultValue={defaults.fullName}
           placeholder={t('users.action.form.full_name.placeholder')}
-          value={data.fullName}
-          onChange={(e) => setData('fullName', e.target.value)}
-          aria-invalid={!!errors?.fullName}
+          aria-invalid={!!errors.fullName}
         />
-        <FieldErrorBag errors={errors} field="fullName" />
+        <FieldError />
       </Field>
 
-      <Field>
+      <Field name="email">
         <FieldLabel htmlFor="email">{t('users.action.form.email.label')}</FieldLabel>
         <Input
           id="email"
+          name="email"
+          defaultValue={defaults.email}
           placeholder={t('users.action.form.email.placeholder')}
-          value={data.email}
-          onChange={(e) => setData('email', e.target.value)}
-          aria-invalid={!!errors?.email}
+          aria-invalid={!!errors.email}
         />
-        <FieldErrorBag errors={errors} field="email" />
+        <FieldError />
       </Field>
 
-      <Field>
+      <Field name="role">
         <FieldLabel htmlFor="role">{t('users.action.form.role.label')}</FieldLabel>
-        <Select value={data.role} onValueChange={(value) => setData('role', value)}>
-          <SelectTrigger aria-invalid={!!errors?.role}>
+        <Select name="role" defaultValue={defaults.role}>
+          <SelectTrigger id="role" aria-invalid={!!errors.role}>
             <SelectValue placeholder={t('users.action.form.role.placeholder')} />
           </SelectTrigger>
           <SelectContent>
@@ -79,34 +80,33 @@ export default function UserFormFields({ data, errors, setData }: Props) {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <FieldErrorBag errors={errors} field="role" />
+        <FieldError />
       </Field>
 
-      <Field>
+      <Field name="password">
         <FieldLabel htmlFor="password">{t('users.action.form.password.label')}</FieldLabel>
         <PasswordInput
           id="password"
+          name="password"
           placeholder={t('users.action.form.password.placeholder')}
-          value={data.password}
-          onChange={(e) => setData('password', e.target.value)}
-          aria-invalid={!!errors?.password}
+          onChange={(e) => setHasPassword(e.target.value !== '')}
+          aria-invalid={!!errors.password}
         />
-        <FieldErrorBag errors={errors} field="password" />
+        <FieldError />
       </Field>
 
-      <Field>
+      <Field name="passwordConfirmation">
         <FieldLabel htmlFor="passwordConfirmation">
           {t('users.action.form.password_confirmation.label')}
         </FieldLabel>
         <PasswordInput
           id="passwordConfirmation"
-          disabled={data.password === ''}
+          name="passwordConfirmation"
+          disabled={!hasPassword}
           placeholder={t('users.action.form.password_confirmation.placeholder')}
-          value={data.passwordConfirmation}
-          onChange={(e) => setData('passwordConfirmation', e.target.value)}
-          aria-invalid={!!errors?.passwordConfirmation}
+          aria-invalid={!!errors.passwordConfirmation}
         />
-        <FieldErrorBag errors={errors} field="passwordConfirmation" />
+        <FieldError />
       </Field>
     </div>
   )
