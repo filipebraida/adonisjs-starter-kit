@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import ListUsersPage from "@web/app/users/ui/pages/index";
 
-import { inertiaPage, inertiaRoute } from "../../src/inertia_page";
+import { helpRoutes } from "../../src/help_server";
+import { inertiaPage, inertiaRoute, SIGNED_IN } from "../../src/inertia_page";
 
 type Row = {
   id: number;
@@ -149,6 +150,10 @@ function story(as: As, search = ""): Story {
 }
 
 const meta = {
+  // A screen's "?" opens its article in a drawer, answered from the real help.
+  beforeEach({ msw }) {
+    msw.use(...helpRoutes(SIGNED_IN.admin.helpArticles));
+  },
   title: "Screens/Users",
   parameters: {
     docs: {

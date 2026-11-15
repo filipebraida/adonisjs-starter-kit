@@ -146,19 +146,19 @@ export function inertiaPage<P>(
 
 /**
  * Answers the page's Inertia visits to `path` (an MSW handler, for a story's
- * `beforeEach`): `respond` reads the query string, as the controller would,
+ * `beforeEach`): `respond` reads the query string and the path, as the controller would,
  * and returns the page to send back. The page is passed only to type what
  * `respond` returns.
  */
 export function inertiaRoute<P>(
   path: string,
   _page: ComponentType<P>,
-  respond: (query: URLSearchParams) => Omit<PageOptions<P>, "url">,
+  respond: (query: URLSearchParams, url: URL) => Omit<PageOptions<P>, "url">,
 ) {
   return http.get(path, ({ request }) => {
     const url = new URL(request.url);
     const page = pageObject({
-      ...respond(url.searchParams),
+      ...respond(url.searchParams, url),
       url: url.pathname + url.search,
     });
     return HttpResponse.json(page, {

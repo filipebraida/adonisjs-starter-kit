@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import SettingsPage from "@web/app/users/ui/pages/settings";
 
+import { helpRoutes } from "../../src/help_server";
 import { inertiaPage, SIGNED_IN } from "../../src/inertia_page";
 
 const TOKENS = [
@@ -22,6 +23,10 @@ const TOKENS = [
 ];
 
 const meta = {
+  // A screen's "?" opens its article in a drawer, answered from the real help.
+  beforeEach({ msw }) {
+    msw.use(...helpRoutes(SIGNED_IN.admin.helpArticles));
+  },
   title: "Screens/Settings",
   parameters: {
     docs: {

@@ -16,6 +16,7 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `layout-shells` — four coexisting shells (admin, authenticated, auth, marketing) — pages import explicitly, no runtime toggle.
 - `authorization` — `@adonis-agora/authz`: per-module capabilities + `roleGrants` in code + `Authorizer` in Bouncer policies + `useCan()` from `authz-react` + escalation guards.
 - `mail` — `BaseMail` classes, MJML templates via `@email.layout`, `mailContext()` for appName/appUrl.
+- `help` — in-app help: Markdown articles per module, global Help center and a screen's "?" drawer, filtered by capability.
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count, emission via events.
 - `auditing` — security audit trail: `Auditable` models, `auditCustom` events, actor/IP/impersonation resolvers, Activity page.
 - `attachment` — `@jrmc/adonis-attachment` with converters, model decoration, `preComputeUrls`, Transformer helpers.

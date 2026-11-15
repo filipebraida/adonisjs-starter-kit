@@ -68,6 +68,8 @@ const preview: Preview = {
         "dark",
         context.globals.theme === "dark",
       );
+      // The fake help server answers in this language (src/help_server.ts).
+      document.documentElement.lang = context.globals.locale;
       if (i18n.language !== context.globals.locale)
         void i18n.changeLanguage(context.globals.locale);
       return (
