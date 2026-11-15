@@ -93,6 +93,7 @@ Load the matching skill before working. Each one has repo refs and doc links. In
 ## Gotchas
 
 - `pnpm dev` may already be running on `:3333`, on the developer's database. For a throwaway server, use another `PORT` and your own `DB_*`.
+- `.claude/settings.json` denies reading `.env` and asks before `git push`. A headless run (`claude -p`) cannot answer an ask, so an unattended pipeline that pushes must override that rule.
 - `app/core/database/schema.ts` and `.adonisjs/` are generated but committed: regenerate them, never edit them by hand.
 - `Model.query().update()` / `.delete()` skip the audit trail; write through the model when the change must be audited.
 - `lefthook` runs Prettier + ESLint on staged files at commit and the typecheck at push.

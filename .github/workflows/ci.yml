@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+# The job only reads the repository; nothing it runs may write back.
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
