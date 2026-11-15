@@ -21,6 +21,12 @@ export const controllers = {
     Liveness: () => import('#app/core/controllers/liveness_controller'),
     Readiness: () => import('#app/core/controllers/readiness_controller'),
   },
+  help: {
+    HelpArticleContent: () => import('#app/help/controllers/help_article_content_controller'),
+    HelpArticles: () => import('#app/help/controllers/help_articles_controller'),
+    Help: () => import('#app/help/controllers/help_controller'),
+    HelpImages: () => import('#app/help/controllers/help_images_controller'),
+  },
   marketing: {
     Marketing: () => import('#app/marketing/controllers/marketing_controller'),
   },

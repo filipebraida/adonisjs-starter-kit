@@ -236,6 +236,36 @@ const routes = {
     tokens: [[0,"dashboard"]],
     types: placeholder as Registry['dashboard.show']['types'],
   },
+  'help.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/help',
+    tokens: [[0,"help"]],
+    types: placeholder as Registry['help.index']['types'],
+  },
+  'help.space': {
+    methods: ["GET","HEAD"],
+    pattern: '/help/:space',
+    tokens: [[0,"help"],[1,"space"]],
+    types: placeholder as Registry['help.space']['types'],
+  },
+  'help.image': {
+    methods: ["GET","HEAD"],
+    pattern: '/help/:space/images/:file',
+    tokens: [[0,"help"],[1,"space"],[0,"images"],[1,"file"]],
+    types: placeholder as Registry['help.image']['types'],
+  },
+  'help.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/help/:space/:article',
+    tokens: [[0,"help"],[1,"space"],[1,"article"]],
+    types: placeholder as Registry['help.show']['types'],
+  },
+  'help.content': {
+    methods: ["GET","HEAD"],
+    pattern: '/help/:space/:article/content',
+    tokens: [[0,"help"],[1,"space"],[1,"article"],[0,"content"]],
+    types: placeholder as Registry['help.content']['types'],
+  },
   'notifications.index': {
     methods: ["GET","HEAD"],
     pattern: '/notifications',

@@ -1,1 +1,20 @@
-{}
+{
+  "title": "Ajuda",
+  "index": {
+    "description": "Como o app funciona, tela por tela."
+  },
+  "show": {
+    "space": "Neste espaço",
+    "onThisPage": "Nesta página",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "updatedAt": "Atualizado em {date}"
+  },
+  "open": "Ajuda desta tela",
+  "openPage": "Abrir a página",
+  "loadFailed": "Não foi possível carregar o artigo.",
+  "close": "Fechar",
+  "errors": {
+    "not_found": "Este artigo da ajuda não existe."
+  }
+}

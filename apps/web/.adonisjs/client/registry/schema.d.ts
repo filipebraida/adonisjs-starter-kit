@@ -502,6 +502,71 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/analytics/controllers/dashboard_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'help.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/help'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/help/controllers/help_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/help/controllers/help_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/help/controllers/help_controller').default['index']>>>
+    }
+  }
+  'help.space': {
+    methods: ["GET","HEAD"]
+    pattern: '/help/:space'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { space: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+    }
+  }
+  'help.image': {
+    methods: ["GET","HEAD"]
+    pattern: '/help/:space/images/:file'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { space: ParamValue; file: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/help/controllers/help_images_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/help/controllers/help_images_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/help/controllers/help_images_controller').default['handle']>>>
+    }
+  }
+  'help.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/help/:space/:article'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { space: ParamValue; article: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/help/controllers/help_articles_controller').default['show']>>>
+    }
+  }
+  'help.content': {
+    methods: ["GET","HEAD"]
+    pattern: '/help/:space/:article/content'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { space: ParamValue; article: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/help/controllers/help_article_content_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/help/controllers/help_article_content_controller').default['handle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/help/controllers/help_article_content_controller').default['handle']>>>
+    }
+  }
   'notifications.index': {
     methods: ["GET","HEAD"]
     pattern: '/notifications'

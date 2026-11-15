@@ -1,1 +1,20 @@
-{}
+{
+  "title": "Help",
+  "index": {
+    "description": "How the app works, screen by screen."
+  },
+  "show": {
+    "space": "In this space",
+    "onThisPage": "On this page",
+    "previous": "Previous",
+    "next": "Next",
+    "updatedAt": "Updated {date}"
+  },
+  "open": "Help for this screen",
+  "openPage": "Open the page",
+  "loadFailed": "The article could not be loaded.",
+  "close": "Close",
+  "errors": {
+    "not_found": "This help article does not exist."
+  }
+}
