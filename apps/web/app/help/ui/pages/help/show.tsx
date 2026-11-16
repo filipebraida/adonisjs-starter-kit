@@ -12,6 +12,7 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 import { urlFor } from '~/app/client'
 import type { HelpArticleRead } from '#help/queries/read_help_article'
 import { HelpNav, type HelpNavCategory } from '#help/ui/components/help/help_nav'
+import { useHelpImageUrl } from '#help/ui/hooks/use_help_image_url'
 
 type PageProps = InertiaProps<HelpArticleRead & { navigation: HelpNavCategory[] }>
 
@@ -30,10 +31,11 @@ export default function HelpShowPage({
   sections,
   previous,
   next,
-  imagesUrl,
   navigation,
 }: PageProps) {
   const { t, language } = useTranslation()
+
+  const imageUrl = useHelpImageUrl(space.slug)
 
   useScrollToHash(article.slug)
 
@@ -69,7 +71,7 @@ export default function HelpShowPage({
               })}
             </p>
           </div>
-          <Markdown variant="document" imageBase={imagesUrl} className="text-base">
+          <Markdown variant="document" imageUrl={imageUrl} className="text-base">
             {markdown}
           </Markdown>
           <nav className="border-border flex justify-between gap-4 border-t pt-4">

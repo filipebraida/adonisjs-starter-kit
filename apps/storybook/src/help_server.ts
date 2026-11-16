@@ -115,7 +115,6 @@ export function helpArticle(
     sections: markdownSections(markdown),
     previous: link(order[index - 1]),
     next: link(order[index + 1]),
-    imagesUrl: `/help/${slug}/images`,
   };
 }
 

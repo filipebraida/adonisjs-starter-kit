@@ -117,9 +117,10 @@ test.group('Markdown document', () => {
     assert.include(html, '<h3 id="detalhe"')
   })
 
-  test('a relative image of an article loads from its space', ({ assert }) => {
+  test('a relative image of an article loads from the address its page gives', ({ assert }) => {
     const text = '![tela](images/x.png)'
-    const html = render(text, { variant: 'document', imageBase: '/help/account/images' })
+    const imageUrl = (file: string) => `/help/account/images/${file}`
+    const html = render(text, { variant: 'document', imageUrl })
     assert.include(html, 'src="/help/account/images/x.png"')
     assert.notInclude(render(text, { variant: 'document' }), '<img')
   })

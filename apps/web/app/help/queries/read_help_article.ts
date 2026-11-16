@@ -1,7 +1,5 @@
 import { readFile } from 'node:fs/promises'
 
-import { urlFor } from '@adonisjs/core/services/url_builder'
-
 import { markdownSections, type MarkdownSection } from '#core/utils/markdown_sections'
 import HelpArticleNotFoundException from '#help/exceptions/help_article_not_found_exception'
 import HelpCatalog from '#help/services/help_catalog'
@@ -19,8 +17,6 @@ export type HelpArticleRead = {
   sections: MarkdownSection[]
   previous: HelpLink
   next: HelpLink
-  /** Where its `images/<file>` load from. */
-  imagesUrl: string
 }
 
 export interface ReadHelpArticleInput {
@@ -55,12 +51,6 @@ export default class ReadHelpArticle {
     const { previous, next } = HelpCatalog.neighbours(space, article.slug, access)
     const link = (other: HelpArticle | null): HelpLink =>
       other ? { slug: other.slug, title: other.title[locale] } : null
-    // The route of one picture, less its name: the Markdown's `images/<file>` completes it.
-    const imagesUrl = urlFor('help.image', { space: space.slug, file: 'x.png' }).replace(
-      /\/x\.png$/,
-      ''
-    )
-
     return {
       space: { slug: space.slug, title: space.title[locale] },
       article: {
@@ -73,7 +63,6 @@ export default class ReadHelpArticle {
       sections: markdownSections(markdown),
       previous: link(previous),
       next: link(next),
-      imagesUrl,
     }
   }
 }

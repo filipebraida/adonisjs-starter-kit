@@ -16,6 +16,7 @@ import { Markdown } from '#core/ui/components/markdown'
 import { urlFor } from '~/app/client'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import type { HelpArticleRead } from '#help/queries/read_help_article'
+import { useHelpImageUrl } from '#help/ui/hooks/use_help_image_url'
 
 // An article does not change while the page is open; the language is part of the key because
 // switching it does not reload the page.
@@ -60,6 +61,7 @@ export function HelpPanel({
   const { t, language } = useTranslation()
   const [loaded, setLoaded] = useState<Loaded | null>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const imageUrl = useHelpImageUrl(space)
   const key = `${language}:${space}/${article}`
 
   useEffect(() => {
@@ -98,7 +100,7 @@ export function HelpPanel({
         </SheetHeader>
         <div ref={bodyRef} className="min-h-0 flex-1 overflow-y-auto px-4">
           {shown?.read && (
-            <Markdown variant="document" imageBase={shown.read.imagesUrl}>
+            <Markdown variant="document" imageUrl={imageUrl}>
               {shown.read.markdown}
             </Markdown>
           )}

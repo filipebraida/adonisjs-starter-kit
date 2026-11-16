@@ -226,13 +226,11 @@ const ARTICLE_IMAGE = /^images\/[^/]+$/
 
 /**
  * A document's headings are the page's own (`h2`, `h3`), anchored by their ids; an image
- * `images/<file>` of a help article loads from its space (`imageBase`).
+ * `images/<file>` of a help article loads from the address its page gives (`imageUrl`).
  */
-function documentComponents(imageBase?: string): Components {
+function documentComponents(imageUrl?: (file: string) => string): Components {
   const image = (src?: string) =>
-    imageBase && src && ARTICLE_IMAGE.test(src)
-      ? `${imageBase}/${src.slice('images/'.length)}`
-      : src
+    imageUrl && src && ARTICLE_IMAGE.test(src) ? imageUrl(src.slice('images/'.length)) : src
   return {
     ...COMPONENTS,
     h1: ({ children, id }) => (
@@ -268,7 +266,7 @@ const REMARK_PLUGINS = [remarkGfm, ALERTS_PLUGIN]
 /**
  * A Markdown text. `text` (the default) keeps its headings small; `document`
  * is a page of its own (a help article): real headings, and its relative
- * images from `imageBase`. Headings carry GitHub's ids in both, so a
+ * images from `imageUrl` (keep it stable: a new one redraws the document). Headings carry GitHub's ids in both, so a
  * `#section` link works here as on GitHub (`markdownSections` gives the same
  * ids on the server).
  */
@@ -276,16 +274,16 @@ export function Markdown({
   children,
   className,
   variant = 'text',
-  imageBase,
+  imageUrl,
 }: {
   children: string
   className?: string
   variant?: 'text' | 'document'
-  imageBase?: string
+  imageUrl?: (file: string) => string
 }) {
   const components = useMemo(
-    () => (variant === 'document' ? documentComponents(imageBase) : COMPONENTS),
-    [variant, imageBase]
+    () => (variant === 'document' ? documentComponents(imageUrl) : COMPONENTS),
+    [variant, imageUrl]
   )
   return (
     <div className={cn('flex min-w-0 flex-col gap-2 text-sm break-words', className)}>

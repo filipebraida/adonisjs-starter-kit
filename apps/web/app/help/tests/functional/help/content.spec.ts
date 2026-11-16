@@ -22,10 +22,7 @@ test.group('Help article content', (group) => {
     return () => app.container.restore(HelpCatalog)
   })
 
-  test("the drawer gets the article as JSON, with its images' address", async ({
-    client,
-    assert,
-  }) => {
+  test('the drawer gets the article as JSON', async ({ client, assert }) => {
     const response = await client
       .get('/help/guide/locked/content')
       .loginAs(await reader(ROLES.ADMIN))
@@ -35,7 +32,6 @@ test.group('Help article content', (group) => {
     const body = response.body()
     assert.equal(body.article.slug, 'locked')
     assert.isNotEmpty(body.markdown)
-    assert.equal(body.imagesUrl, '/help/guide/images')
     assert.properties(body, ['space', 'sections', 'previous', 'next'])
   })
 
