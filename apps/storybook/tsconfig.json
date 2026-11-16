@@ -15,6 +15,7 @@
     "./src/**/*",
     "./stories/**/*",
     "./vite.config.ts",
+    "./vitest.config.ts",
     "../web/app/*/types/**/*.ts",
     "../web/config/auth.ts",
     "../web/.adonisjs/client/**/*.ts",

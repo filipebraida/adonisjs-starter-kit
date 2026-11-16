@@ -77,6 +77,15 @@ jobs:
       - name: Storybook builds
         run: pnpm --filter storybook-app build
 
+      # Each story renders in Chromium and runs its play: a screen that throws
+      # or an interaction that breaks (search, a link) fails here.
+      - name: Storybook stories pass
+        run: |
+          pnpm --filter storybook-app exec playwright install --with-deps chromium
+          pnpm --filter storybook-app test
+        env:
+          VITE_CONFIG_NATIVE_IGNORE_WARNING: "true"
+
       # A stray async handle (an upload's variant, an open socket) can keep the
       # runner alive after the last spec; the timeout turns a hang into a failure.
       - name: Test + coverage

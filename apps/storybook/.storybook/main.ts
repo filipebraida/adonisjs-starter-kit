@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     "@storybook/addon-a11y",
     "@storybook/addon-mcp",
     "msw-storybook-addon",
+    "@storybook/addon-vitest",
   ],
   // The MSW service worker, which answers the pages' Inertia visits.
   staticDirs: ["../public"],

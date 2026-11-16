@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
+import { http, HttpResponse } from "msw";
 import { mswLoader } from "msw-storybook-addon/csf3";
 import { TuyauProvider } from "@adonisjs/inertia/react";
 import { router } from "@inertiajs/react";
@@ -105,6 +106,13 @@ const preview: Preview = {
   },
   initialGlobals: { theme: "light", locale: "en" },
   loaders: [mswLoader()],
+  // The bell listens for new notifications over SSE: the board has no server
+  // to push them, so the stream ends at once instead of retrying.
+  beforeEach({ msw }) {
+    msw.use(
+      http.get("/__transmit/*", () => new HttpResponse(null, { status: 204 })),
+    );
+  },
   decorators: [
     (Story, context) => {
       document.documentElement.classList.toggle(

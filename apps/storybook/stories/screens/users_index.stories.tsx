@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, screen, waitFor } from "storybook/test";
 
 import ListUsersPage from "@web/app/users/ui/pages/index";
 
@@ -168,7 +169,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Admin = story("admin");
+/**
+ * Searching asks the fake server and redraws the rows; a link to a screen no
+ * story answers shows the notice and leaves the board where it was.
+ */
+export const Admin: Story = {
+  ...story("admin"),
+  async play({ canvas, userEvent }) {
+    await userEvent.type(canvas.getByPlaceholderText("Search..."), "grace");
+    await waitFor(() =>
+      expect(
+        canvas.queryByText("Ada Lovelace", { selector: "td *, td" }),
+      ).toBeNull(),
+    );
+    await expect(canvas.getByText("Grace Hopper")).toBeVisible();
+
+    await userEvent.click(canvas.getByRole("link", { name: "Roles" }));
+    await waitFor(() =>
+      expect(screen.getByText("Not on the board")).toBeVisible(),
+    );
+    await expect(canvas.getByRole("heading", { name: "Users" })).toBeVisible();
+  },
+};
 
 export const Manager = story("manager");
 

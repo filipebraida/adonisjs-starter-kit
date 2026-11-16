@@ -7,6 +7,7 @@
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev",
     "storybook": "pnpm --filter storybook-app dev",
+    "test:stories": "pnpm --filter storybook-app test",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
     "typecheck": "pnpm -r run typecheck",

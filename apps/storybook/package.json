@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006 --no-open --host 0.0.0.0",
     "build": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@adonisjs/inertia": "^5.0.5",
@@ -24,16 +25,20 @@
     "@storybook/addon-a11y": "^10.6.7",
     "@storybook/addon-docs": "^10.6.7",
     "@storybook/addon-mcp": "^10.6.7",
+    "@storybook/addon-vitest": "^10.6.7",
     "@storybook/react-vite": "^10.6.7",
     "@tailwindcss/vite": "^4.3.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@vitest/browser-playwright": "^4.1.12",
     "msw": "^3.0.5",
     "msw-storybook-addon": "^3.0.3",
+    "playwright": "~1.64.0",
     "storybook": "^10.6.7",
     "tailwindcss": "^4.3.5",
     "typescript": "~6.0.3",
-    "vite": "^8.3.8"
+    "vite": "^8.3.8",
+    "vitest": "^4.1.12"
   },
   "msw": {
     "workerDirectory": [

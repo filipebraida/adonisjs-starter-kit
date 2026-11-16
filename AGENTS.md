@@ -22,6 +22,7 @@ Run from the repo root.
 | `pnpm dev`                                               | Dev server on `:3333` (hot reload + Vite HMR)                                                                             |
 | `pnpm test`                                              | Full Japa suite on its own `app_test` database, recreated and migrated first                                              |
 | `pnpm typecheck` / `pnpm lint`                           | Required before saying done                                                                                               |
+| `pnpm test:stories`                                      | Every Storybook story rendered in Chromium, with its `play`                                                               |
 | `pnpm ace <cmd>`                                         | Adonis CLI (`pnpm --filter web exec node ace <cmd>`)                                                                      |
 | `pnpm ace codegen`                                       | Regenerates the committed `.adonisjs/`; CI fails when it is stale                                                         |
 | `pnpm ace make:module <name> [--db] [--i18n] [--events]` | Scaffolds `app/<name>/` and wires the alias, preloads, client tsconfig include and (with `--db`) the migration path       |
@@ -68,7 +69,7 @@ Only `core` has `utils/` (the one utils of the app), `authz/` and `hooks/`.
 - Dates and numbers go through `#core/ui/format/*`; internal URLs come from `urlFor` or `<Link route>`.
 - **Design board:** before building or changing a screen, read the rules in `apps/storybook/stories/` (`foundations/foundations.mdx`, `forms/rules.mdx`, `content/list_page.stories.tsx`). A screen is assembled from those patterns; a missing piece is added to the board first, then used.
 - **The rules that drift most:** one primary button per area (page, modal, section); every list has an empty state with the next action; shape and color come from variants, never `className`; every state is designed (empty, error, no permission, long text), not only the happy path.
-- **Verify a screen** with a story in `apps/storybook/stories/screens/`, one per state; a page that searches or saves answers its visits with `inertiaRoute`. `pnpm storybook` serves it on `:6006`.
+- **Verify a screen** with a story in `apps/storybook/stories/screens/`, one per state; a page that searches or saves answers its visits with `inertiaRoute`. `pnpm storybook` serves it on `:6006`; `pnpm test:stories` runs every story in Chromium (CI does too), and an interaction worth keeping becomes the story's `play`.
 
 ## Skills
 
