@@ -5,19 +5,22 @@
     "profile": "Profile",
     "password": "Password",
     "tokens": "Tokens",
-    "appearance": "Appearance"
+    "appearance": "Appearance and language"
   },
   "appearance": {
     "breadcrumbs": {
       "settings": "Settings"
     },
-    "title": "Appearance",
-    "description": "Applies right away, on this device.",
+    "title": "Appearance and language",
+    "description": "Applies right away. The theme stays on this device; the language goes with your account.",
     "theme": {
       "label": "Theme",
       "system": "System",
       "light": "Light",
       "dark": "Dark"
+    },
+    "language": {
+      "label": "Language"
     }
   },
   "index": {

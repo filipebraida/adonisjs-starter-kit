@@ -89,6 +89,7 @@ type PageOptions<P> = {
   props: OwnProps<P>;
   flash?: { error?: string; success?: string };
   impersonation?: { returnTo: string } | null;
+  locale?: "en" | "pt";
 };
 
 /** What the Inertia middleware shares, typed by it: a new shared prop fails here until the stories send it. */
@@ -96,7 +97,7 @@ function sharedProps(options: PageOptions<unknown>): Data.SharedProps {
   return {
     errors: {},
     csrf: "storybook",
-    locale: "en",
+    locale: options.locale ?? "en",
     fallbackLocale: "en",
     unseenNotifications: 3,
     impersonation: options.impersonation ?? null,
@@ -175,18 +176,23 @@ export function inertiaPage<P>(
  * Answers the page's Inertia visits to `path` (an MSW handler, for a story's
  * `beforeEach`): `respond` reads the query string and the path, as the controller would,
  * and returns the page to send back. The page is passed only to type what
- * `respond` returns.
+ * `respond` returns. A `post` answers as the redirect the server sends after
+ * it would: `respond` names the page's `url` then.
  */
 export function inertiaRoute<P>(
   path: string,
   _page: ComponentType<P>,
-  respond: (query: URLSearchParams, url: URL) => Omit<PageOptions<P>, "url">,
+  respond: (
+    query: URLSearchParams,
+    url: URL,
+  ) => Omit<PageOptions<P>, "url"> & { url?: string },
+  method: "get" | "post" = "get",
 ) {
-  return http.get(path, ({ request }) => {
+  return http[method](path, ({ request }) => {
     const url = new URL(request.url);
     const page = pageObject({
-      ...respond(url.searchParams, url),
       url: url.pathname + url.search,
+      ...respond(url.searchParams, url),
     });
     return HttpResponse.json(page, {
       headers: { "X-Inertia": "true", Vary: "X-Inertia" },

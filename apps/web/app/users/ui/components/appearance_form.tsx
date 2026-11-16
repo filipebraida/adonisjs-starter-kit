@@ -2,17 +2,23 @@ import { type SVGProps } from 'react'
 import { Item, Root as Radio } from '@radix-ui/react-radio-group'
 import { CircleCheck } from 'lucide-react'
 
-import { Field, FieldLabel } from '@workspace/ui/components/field'
+import { Field, FieldGroup, FieldLabel } from '@workspace/ui/components/field'
+import { Segmented } from '@workspace/ui/components/segmented'
 import { useTheme } from '@workspace/ui/components/theme-provider'
 import { cn } from '@workspace/ui/lib/utils'
 
 import { IconThemeDark, IconThemeLight, IconThemeSystem } from '#core/ui/components/icons/index'
+import { LOCALES } from '#core/ui/components/language_switcher'
+import usePageProps from '#core/ui/hooks/use_page_props'
+import { useSwitchLocale } from '#core/ui/hooks/use_switch_locale'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-/** The theme applies as it is picked, so the section has no Save. */
+/** The theme and the language apply as they are picked, so the section has no Save. */
 export function AppearanceForm() {
   const { t } = useTranslation()
   const { theme, setTheme } = useTheme()
+  const { locale } = usePageProps<{ locale: string }>()
+  const switchLocale = useSwitchLocale()
 
   const items = [
     { value: 'system', label: t('users.appearance.theme.system'), icon: IconThemeSystem },
@@ -21,19 +27,33 @@ export function AppearanceForm() {
   ]
 
   return (
-    <Field>
-      <FieldLabel id="theme-label">{t('users.appearance.theme.label')}</FieldLabel>
-      <Radio
-        value={theme}
-        onValueChange={setTheme}
-        className="grid w-full max-w-md grid-cols-3 gap-4"
-        aria-labelledby="theme-label"
-      >
-        {items.map((item) => (
-          <ThemeOption key={item.value} item={item} />
-        ))}
-      </Radio>
-    </Field>
+    <FieldGroup>
+      <Field>
+        <FieldLabel id="theme-label">{t('users.appearance.theme.label')}</FieldLabel>
+        <Radio
+          value={theme}
+          onValueChange={setTheme}
+          className="grid w-full max-w-md grid-cols-3 gap-4"
+          aria-labelledby="theme-label"
+        >
+          {items.map((item) => (
+            <ThemeOption key={item.value} item={item} />
+          ))}
+        </Radio>
+      </Field>
+      <Field>
+        <FieldLabel>{t('users.appearance.language.label')}</FieldLabel>
+        <Segmented
+          label={t('users.appearance.language.label')}
+          options={LOCALES.map(({ code, label }) => ({
+            value: code,
+            label: <span lang={code}>{label}</span>,
+          }))}
+          value={LOCALES.find(({ code }) => code === locale)?.code ?? null}
+          onValueChange={switchLocale}
+        />
+      </Field>
+    </FieldGroup>
   )
 }
 

@@ -11,7 +11,13 @@
       "settings": "Configurações",
       "help": "Ajuda",
       "adminPanel": "Painel admin",
-      "logout": "Sair"
+      "logout": "Sair",
+      "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "dark": "Escuro",
+        "system": "Sistema"
+      }
     }
   },
   "table": {

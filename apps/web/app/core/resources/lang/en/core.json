@@ -11,7 +11,13 @@
       "settings": "Settings",
       "help": "Help",
       "adminPanel": "Admin panel",
-      "logout": "Log out"
+      "logout": "Log out",
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
     }
   },
   "table": {

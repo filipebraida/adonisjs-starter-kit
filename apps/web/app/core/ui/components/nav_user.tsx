@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
+import { Monitor, Moon, Sun } from 'lucide-react'
 
 import { UserAvatar } from '#core/ui/components/user_avatar'
 import useAllows from '#core/ui/hooks/use_allows'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 import type { NavUserProps } from '#core/ui/app/navigation_types'
 
 import {
@@ -13,6 +15,14 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
+import { Segmented } from '@workspace/ui/components/segmented'
+import { useTheme } from '@workspace/ui/components/theme-provider'
+
+const THEMES = [
+  { value: 'light', icon: Sun },
+  { value: 'dark', icon: Moon },
+  { value: 'system', icon: Monitor },
+] as const
 
 export function NavUser({ user, options }: NavUserProps) {
   const allows = useAllows()
@@ -38,6 +48,8 @@ export function NavUser({ user, options }: NavUserProps) {
           </div>
         </div>
         <DropdownMenuSeparator />
+        <ThemeRow />
+        <DropdownMenuSeparator />
         {visibleGroups.map((group, groupIndex) => (
           <React.Fragment key={group.map((option) => option.title).join('|')}>
             {groupIndex > 0 && <DropdownMenuSeparator />}
@@ -62,5 +74,28 @@ export function NavUser({ user, options }: NavUserProps) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+/** The theme, switched without closing the menu: segments, not menu items. */
+function ThemeRow() {
+  const { t } = useTranslation()
+  const { theme, setTheme } = useTheme()
+  const label = t('core.layout.navUser.theme.label')
+
+  return (
+    <div className="flex items-center justify-between gap-2 px-2 py-1 text-sm">
+      <span>{label}</span>
+      <Segmented
+        label={label}
+        options={THEMES.map(({ value, icon: Icon }) => ({
+          value,
+          title: t(`core.layout.navUser.theme.${value}`),
+          label: <Icon aria-hidden />,
+        }))}
+        value={theme}
+        onValueChange={setTheme}
+      />
+    </div>
   )
 }

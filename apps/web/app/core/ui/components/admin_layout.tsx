@@ -7,9 +7,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@workspace/ui/com
 import { AppSidebar } from '#core/ui/components/app_sidebar'
 import Breadcrumb from '#core/ui/components/breadcrumbs'
 import { NavUser } from '#core/ui/components/nav_user'
-import { LanguageSwitcher } from '#core/ui/components/language_switcher'
 import { NotificationBell } from '#core/ui/components/notification_bell'
-import { ToggleTheme } from '#core/ui/components/toggle_theme'
 import { getCookie } from '#core/ui/hooks/cookie'
 
 import useUser from '#core/ui/hooks/use_user'
@@ -67,8 +65,6 @@ export default function AdminLayout({
 
               <div className="flex flex-row items-center gap-2 ml-auto">
                 <NotificationBell />
-                <ToggleTheme />
-                <LanguageSwitcher />
                 <NavUser user={user} options={navUser} />
               </div>
             </header>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import SettingsPage from "@web/app/users/ui/pages/settings";
 
 import { helpRoutes } from "../../src/help_server";
-import { inertiaPage, SIGNED_IN } from "../../src/inertia_page";
+import { inertiaPage, inertiaRoute, SIGNED_IN } from "../../src/inertia_page";
 
 const TOKENS = [
   {
@@ -24,8 +24,21 @@ const TOKENS = [
 
 const meta = {
   // A screen's "?" opens its article in a drawer, answered from the real help.
+  // Picking a language posts it and comes back to Settings in that language.
   beforeEach({ msw }) {
-    msw.use(...helpRoutes(SIGNED_IN.admin.helpArticles));
+    msw.use(
+      ...helpRoutes(SIGNED_IN.admin.helpArticles),
+      inertiaRoute(
+        "/switch/:locale",
+        SettingsPage,
+        (_query, url) => ({
+          ...options("admin", { tokens: TOKENS }),
+          url: "/settings",
+          locale: url.pathname.endsWith("/pt") ? "pt" : "en",
+        }),
+        "post",
+      ),
+    );
   },
   title: "Screens/Settings",
   parameters: {
@@ -41,23 +54,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const options = (
+  as: "admin" | "user",
+  props: Record<string, unknown>,
+  extra = {},
+) => ({
+  component: "users/settings",
+  as,
+  props: {
+    profile: SIGNED_IN[as].user,
+    tokens: [],
+    newToken: null,
+    ...props,
+  },
+  ...extra,
+});
+
 const page = (
   as: "admin" | "user",
   props: Record<string, unknown>,
   extra = {},
 ) =>
-  inertiaPage(SettingsPage, {
-    component: "users/settings",
-    url: "/settings",
-    as,
-    props: {
-      profile: SIGNED_IN[as].user,
-      tokens: [],
-      newToken: null,
-      ...props,
-    },
-    ...extra,
-  });
+  inertiaPage(SettingsPage, { url: "/settings", ...options(as, props, extra) });
 
 export const Admin: Story = { render: () => page("admin", { tokens: TOKENS }) };
 

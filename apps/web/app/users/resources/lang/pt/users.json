@@ -5,19 +5,22 @@
     "profile": "Perfil",
     "password": "Senha",
     "tokens": "Tokens",
-    "appearance": "Aparência"
+    "appearance": "Aparência e idioma"
   },
   "appearance": {
     "breadcrumbs": {
       "settings": "Configurações"
     },
-    "title": "Aparência",
-    "description": "Vale na hora, neste dispositivo.",
+    "title": "Aparência e idioma",
+    "description": "Vale na hora. O tema fica neste dispositivo; o idioma acompanha a sua conta.",
     "theme": {
       "label": "Tema",
       "system": "Sistema",
       "light": "Claro",
       "dark": "Escuro"
+    },
+    "language": {
+      "label": "Idioma"
     }
   },
   "index": {

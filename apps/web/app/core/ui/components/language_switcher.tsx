@@ -1,9 +1,7 @@
 import { Globe } from 'lucide-react'
-import { router } from '@inertiajs/react'
 
-import { urlFor } from '~/app/client'
 import usePageProps from '#core/ui/hooks/use_page_props'
-import { useTranslation } from '#core/ui/hooks/use_translation'
+import { useSwitchLocale } from '#core/ui/hooks/use_switch_locale'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -13,24 +11,14 @@ import {
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu'
 
-const LOCALES = [
+export const LOCALES = [
   { code: 'en', label: 'English' },
   { code: 'pt', label: 'Português' },
 ] as const
 
 export function LanguageSwitcher() {
   const { locale } = usePageProps<{ locale: string }>()
-  const { changeLanguage } = useTranslation()
-
-  function switchLocale(code: string) {
-    router.post(
-      urlFor('locale.switch', { locale: code }),
-      {},
-      {
-        onSuccess: () => changeLanguage(code),
-      }
-    )
-  }
+  const switchLocale = useSwitchLocale()
 
   return (
     <DropdownMenu>

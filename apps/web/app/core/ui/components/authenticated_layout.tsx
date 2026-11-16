@@ -8,9 +8,7 @@ import Breadcrumb from '#core/ui/components/breadcrumbs'
 import { NavHeaderMain } from '#core/ui/components/nav_header_main'
 import { NavHeaderMobile } from '#core/ui/components/nav_header_mobile'
 import { NavUser } from '#core/ui/components/nav_user'
-import { LanguageSwitcher } from '#core/ui/components/language_switcher'
 import { NotificationBell } from '#core/ui/components/notification_bell'
-import { ToggleTheme } from '#core/ui/components/toggle_theme'
 
 import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
@@ -63,8 +61,6 @@ export default function AuthenticatedLayout({
             <div className="ml-auto flex items-center space-x-2">
               <div className="relative flex items-center space-x-1">
                 <NotificationBell />
-                <ToggleTheme />
-                <LanguageSwitcher />
                 <NavUser user={user} options={navUser} />
               </div>
             </div>
