@@ -93,9 +93,9 @@ test.group('Help catalog', () => {
     const copy = (space: string) =>
       Promise.all(
         ['index.json', 'en/start.md', 'pt/start.md', 'en/secret.md', 'pt/secret.md'].map((file) => {
-          const from = join(FIXTURES, 'demo/help', space, file)
+          const from = join(FIXTURES, 'app/demo/help', space, file)
           return existsSync(from)
-            ? fs.create(join('demo/help', space, file), readFileSync(from, 'utf8'))
+            ? fs.create(join('app/demo/help', space, file), readFileSync(from, 'utf8'))
             : null
         })
       )

@@ -8,6 +8,7 @@ import { loaders } from '@adonisjs/content/loaders'
 import vine from '@vinejs/vine'
 
 import { markdownImages } from '#core/utils/markdown_sections'
+import { moduleDirs } from '#core/utils/module_dirs'
 import { HELP_LOCALES, type HelpLocale } from '#help/enums/help_locale'
 import type { HelpAccess, HelpArticle, HelpCategoryWithArticles, HelpSpace } from '#help/types/help'
 
@@ -48,7 +49,7 @@ const IMAGE_NAME = /^[a-z0-9][a-z0-9-]*\.(?:png|jpe?g|webp)$/
 
 /**
  * The help each module publishes, found by convention: every
- * `<root>/<module>/help/<space>/index.json` is a space, with its Markdown in `pt/` and `en/` and
+ * `<root>/app/<module>/help/<space>/index.json` is a space, with its Markdown in `pt/` and `en/` and
  * its pictures in `images/`. No module registers itself, and the help imports none. Each index is
  * validated when loaded and cached in production. The cut by reader (`HelpAccess`) is applied by
  * the static helpers: an article whose capability the reader lacks is not in its navigation, its
@@ -57,7 +58,7 @@ const IMAGE_NAME = /^[a-z0-9][a-z0-9-]*\.(?:png|jpe?g|webp)$/
 export default class HelpCatalog {
   static #loaded = new Map<string, Array<{ dir: string; collection: Index }>>()
 
-  constructor(private root: string = app.makePath('app')) {}
+  constructor(private root: string = app.makePath()) {}
 
   /** The catalog of another root: a test's fixtures. */
   static at(root: string): HelpCatalog {
@@ -82,10 +83,8 @@ export default class HelpCatalog {
   }
 
   private static discover(root: string): string[] {
-    return readdirSync(root, { withFileTypes: true })
-      .filter((module) => module.isDirectory())
-      .map((module) => join(root, module.name, 'help'))
-      .filter((dir) => existsSync(dir))
+    return moduleDirs(root, 'help')
+      .map((dir) => join(root, dir))
       .flatMap((dir) =>
         readdirSync(dir, { withFileTypes: true })
           .filter((space) => space.isDirectory())
