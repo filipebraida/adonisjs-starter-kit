@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import { Markdown } from '#core/ui/components/markdown'
 import { MermaidDiagram, mermaidTheme, xmlSafeSvg } from '#core/ui/components/mermaid_diagram'
-import { markdownHeadings, markdownSections } from '#core/utils/markdown_sections'
+import { markdownHeadings, markdownImages, markdownSections } from '#core/utils/markdown_sections'
 
 const render = (text: string, props: Omit<Parameters<typeof Markdown>[0], 'children'> = {}) =>
   renderToStaticMarkup(h(Markdown, props, text))
@@ -28,6 +28,23 @@ test.group('Markdown images', () => {
   test('a protocol-relative url is not the app', ({ assert }) => {
     const html = render('![x](//evil.example/p.png)')
     assert.notInclude(html, '<img')
+  })
+})
+
+test.group('Markdown images the server reads', () => {
+  test("the article's own images, each once, as the page shows them", ({ assert }) => {
+    const text = [
+      '![a](images/one.png)',
+      'Text ![b](images/two.webp) and ![a again](images/one.png).',
+      '```md',
+      '![in code](images/code.png)',
+      '```',
+      '`![inline code](images/inline.png)`',
+      '![elsewhere](https://example.com/x.png)',
+      '![nested](images/sub/x.png)',
+    ].join('\n\n')
+
+    assert.deepEqual(markdownImages(text), ['one.png', 'two.webp'])
   })
 })
 

@@ -3,13 +3,9 @@ import { existsSync, readFileSync } from 'node:fs'
 import app from '@adonisjs/core/services/app'
 import { test } from '@japa/runner'
 
+import { markdownImages } from '#core/utils/markdown_sections'
 import { HELP_LOCALES } from '#help/enums/help_locale'
 import HelpCatalog from '#help/services/help_catalog'
-
-/** The pictures an article's Markdown cites from its space: `images/<file>`. */
-function imagesCited(markdown: string): string[] {
-  return [...markdown.matchAll(/!\[[^\]]*\]\(images\/([^)\s]+)\)/g)].map((match) => match[1])
-}
 
 async function spaces() {
   const catalog = await app.container.make(HelpCatalog)
@@ -47,7 +43,7 @@ test.group('Help content', () => {
 
   test("every image an article cites is in its space's images folder", async ({ assert }) => {
     for (const { space, name, file } of await articleFiles()) {
-      for (const image of imagesCited(readFileSync(file, 'utf8'))) {
+      for (const image of markdownImages(readFileSync(file, 'utf8'))) {
         const path = HelpCatalog.imageOf(space, image)
         assert.isTrue(path !== null && existsSync(path), `${name} cites images/${image}`)
       }

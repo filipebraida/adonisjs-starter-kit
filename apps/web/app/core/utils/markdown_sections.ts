@@ -1,5 +1,5 @@
 import GithubSlugger from 'github-slugger'
-import type { Heading, Root } from 'mdast'
+import type { Heading, Image, Root } from 'mdast'
 import { toString } from 'mdast-util-to-string'
 import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
@@ -50,4 +50,21 @@ export function markdownSections(markdown: string): MarkdownSection[] {
   return markdownHeadings(markdown)
     .filter((heading) => heading.level === 2)
     .map(({ id, title }) => ({ id, title }))
+}
+
+/** A help article's own picture, as the page loads it from the article's space. */
+const ARTICLE_IMAGE = /^images\/([^/]+)$/
+
+/**
+ * The names of the pictures a document shows from its space (`images/<name>`), each once,
+ * read as the page reads them: an image in code is text, not a picture.
+ */
+export function markdownImages(markdown: string): string[] {
+  const tree = parser.runSync(parser.parse(markdown)) as Root
+  const names = new Set<string>()
+  visit(tree, 'image', (node: Image) => {
+    const name = ARTICLE_IMAGE.exec(node.url)?.[1]
+    if (name) names.add(name)
+  })
+  return [...names]
 }

@@ -32,6 +32,32 @@ test.group('Help images', (group) => {
     assert.equal(response.header('x-content-type-options'), 'nosniff')
   })
 
+  test('an image only an article the reader may not read shows is a 404', async ({ client }) => {
+    const user = await reader(ROLES.USER)
+
+    const locked = await client.get('/help/guide/images/locked.png').loginAs(user).accept('json')
+    locked.assertStatus(404)
+    const shown = await client.get('/help/guide/images/shot.png').loginAs(user)
+    shown.assertStatus(200)
+  })
+
+  test('an image is served to whom may read an article that shows it', async ({ client }) => {
+    const response = await client
+      .get('/help/guide/images/locked.png')
+      .loginAs(await reader(ROLES.ADMIN))
+
+    response.assertStatus(200)
+  })
+
+  test('an image no article shows is a 404, even to an admin', async ({ client }) => {
+    const response = await client
+      .get('/help/guide/images/orphan.png')
+      .loginAs(await reader(ROLES.ADMIN))
+      .accept('json')
+
+    response.assertStatus(404)
+  })
+
   test('a name outside the images, or not an image, is a 404', async ({ client }) => {
     const admin = await reader(ROLES.ADMIN)
     for (const file of ['..%2Findex.json', 'index.json', 'x.svg', 'missing.png']) {

@@ -8,7 +8,7 @@ import ResolveHelpAccess from '#help/queries/resolve_help_access'
 import HelpCatalog from '#help/services/help_catalog'
 
 /**
- * A picture of a help space, to whoever may read at least one of its articles. Only a plain
+ * A picture of a help space, to whoever may read an article that shows it. Only a plain
  * picture name of the space's `images/` folder is served (`HelpCatalog.imageOf`).
  */
 @inject()
@@ -27,7 +27,10 @@ export default class HelpImagesController {
     // next page. The refusals that need no permission check come first.
     if (!space || !file || !existsSync(file)) return response.notFound('')
     const access = await this.access.handle(auth.getUserOrFail(), spaces)
-    if (!HelpCatalog.opening(space, access)) return response.notFound('')
+    const showing = await this.catalog.articlesShowing(space, params.file)
+    if (!showing.some((article) => HelpCatalog.canRead(article, access))) {
+      return response.notFound('')
+    }
 
     response.header('x-content-type-options', 'nosniff')
     response.header('cache-control', 'private, max-age=3600')

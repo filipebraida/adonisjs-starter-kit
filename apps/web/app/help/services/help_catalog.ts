@@ -1,4 +1,5 @@
 import { existsSync, readdirSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 import app from '@adonisjs/core/services/app'
@@ -6,7 +7,8 @@ import { Collection } from '@adonisjs/content'
 import { loaders } from '@adonisjs/content/loaders'
 import vine from '@vinejs/vine'
 
-import type { HelpLocale } from '#help/enums/help_locale'
+import { markdownImages } from '#core/utils/markdown_sections'
+import { HELP_LOCALES, type HelpLocale } from '#help/enums/help_locale'
 import type { HelpAccess, HelpArticle, HelpCategoryWithArticles, HelpSpace } from '#help/types/help'
 
 const text = () =>
@@ -107,6 +109,18 @@ export default class HelpCatalog {
   async space(name: string): Promise<HelpSpace | undefined> {
     const spaces = await this.spaces()
     return spaces.find((space) => space.slug === name)
+  }
+
+  /** The space's articles that show the picture `name`, in either language. */
+  async articlesShowing(space: HelpSpace, name: string): Promise<HelpArticle[]> {
+    const showing = await Promise.all(
+      space.articles.map(async (article) => {
+        const files = HELP_LOCALES.map((locale) => HelpCatalog.fileOf(space, article, locale))
+        const markdown = await Promise.all(files.map((file) => readFile(file, 'utf8')))
+        return markdown.some((body) => markdownImages(body).includes(name)) ? [article] : []
+      })
+    )
+    return showing.flat()
   }
 
   /** The capabilities the indexes cite, each once: the only ones worth asking about. */
