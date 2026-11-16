@@ -84,7 +84,7 @@ Load the matching skill before working. Each one has repo refs and doc links. In
 | Actions, events, listeners, workflows                | `actions-events`     |
 | Specs, fakes, factories                              | `testing`            |
 | Pages, `<Form>`, shared props, modals                | `inertia`            |
-| Screens, design rules, empty states                  | `apps/storybook`     |
+| Screens, design rules, empty states                  | `design-board`       |
 | Help articles, the "?" of a screen                   | `help`               |
 | Translations                                         | `i18n`               |
 | Which layout shell                                   | `layout-shells`      |
