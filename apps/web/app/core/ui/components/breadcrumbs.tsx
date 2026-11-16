@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react'
 import React from 'react'
 
 import {
@@ -23,7 +24,9 @@ export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
               <React.Fragment key={`${item.href ?? ''}:${item.label}`}>
                 <BreadcrumbItem>
                   {item.href ? (
-                    <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                    <BreadcrumbLink asChild>
+                      <Link href={item.href}>{item.label}</Link>
+                    </BreadcrumbLink>
                   ) : (
                     <BreadcrumbPage>{item.label}</BreadcrumbPage>
                   )}
