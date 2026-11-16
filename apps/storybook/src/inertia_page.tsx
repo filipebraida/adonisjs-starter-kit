@@ -1,6 +1,6 @@
-import { App } from "@inertiajs/react";
+import { App, router } from "@inertiajs/react";
 import { http, HttpResponse } from "msw";
-import type { ComponentProps, ComponentType } from "react";
+import { useEffect, type ComponentProps, type ComponentType } from "react";
 
 import type { Data } from "@generated/data";
 
@@ -120,6 +120,37 @@ function pageObject<P>(options: PageOptions<P>) {
   };
 }
 
+// Inertia sets its router up once per load of the iframe, with the first
+// story's page; switching stories keeps the iframe. The router resolves
+// through the story on screen, and each story hands it its own page on mount:
+// otherwise a link from the second story renders the first one's page.
+type InitialPage = ComponentProps<typeof App>["initialPage"];
+type PageComponent = NonNullable<
+  ComponentProps<typeof App>["initialComponent"]
+>;
+
+let pageOnScreen: PageComponent | null = null;
+
+function BoardApp({ Page, page }: { Page: PageComponent; page: InitialPage }) {
+  useEffect(() => {
+    router.replace({
+      component: page.component,
+      url: page.url,
+      props: page.props,
+      flash: page.flash,
+      preserveState: true,
+      preserveScroll: true,
+    });
+  }, [page]);
+  return (
+    <App
+      initialComponent={Page}
+      resolveComponent={() => pageOnScreen ?? Page}
+      initialPage={page}
+    />
+  );
+}
+
 /**
  * Renders a real page through Inertia's own App, as if the server had sent
  * it. Its visits (search, sort, links) reach no server unless the story
@@ -129,17 +160,13 @@ export function inertiaPage<P>(
   Page: ComponentType<P>,
   options: PageOptions<P>,
 ) {
+  pageOnScreen = Page as PageComponent;
   return (
-    <App
-      initialComponent={Page}
-      resolveComponent={() => Page}
+    <BoardApp
+      Page={Page as PageComponent}
       // Inertia types the initial page with its own error-bag shape; the props
       // were already checked against the page and the middleware above.
-      initialPage={
-        pageObject(options) as unknown as ComponentProps<
-          typeof App
-        >["initialPage"]
-      }
+      page={pageObject(options) as unknown as InitialPage}
     />
   );
 }

@@ -49,10 +49,30 @@ void i18n.init({
 // update) would then ask the Storybook server for a page it does not have.
 // The iframe keeps the story's address; Inertia keeps its page in the state.
 let storyHref = window.location.href;
-router.on("navigate", () => {
+const keepStoryHref = () => {
   if (window.location.href !== storyHref) {
     window.history.replaceState(window.history.state, "", storyHref);
   }
+};
+router.on("navigate", keepStoryHref);
+// A story hands the router its page with a client visit (src/inertia_page.tsx).
+router.on("clientVisit", keepStoryHref);
+
+// The iframe's <base target="_parent"> sends any link click Inertia does not
+// take over to the Storybook window itself, which has no such page: a link
+// to the app that is still unhandled once the click has bubbled is visited
+// through Inertia, so it ends in the notice below.
+window.addEventListener("click", (event) => {
+  if (event.defaultPrevented || event.button !== 0) return;
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const link = (event.target as Element | null)?.closest?.("a[href]");
+  if (!(link instanceof HTMLAnchorElement)) return;
+  if (link.origin !== window.location.origin || link.target === "_blank")
+    return;
+  // An anchor on the page itself (#section) resolves to the iframe.
+  if (link.pathname.endsWith("iframe.html")) return;
+  event.preventDefault();
+  router.visit(link.pathname + link.search + link.hash);
 });
 
 router.on("httpException", (event) => {
