@@ -1,10 +1,8 @@
 import { Link } from '@inertiajs/react'
 
-import { urlFor } from '~/app/client'
+import { Button } from '@workspace/ui/components/button'
 
-/** The main menu's item look: the article shown is white with a hairline. */
-const ARTICLE_LINK =
-  'text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground text-sm flex h-8 items-center rounded-sm border border-transparent px-2.5 font-medium focus-visible:outline-2 aria-[current=page]:font-semibold'
+import { urlFor } from '~/app/client'
 
 /** A category title is a caption, not an item: the help page's caption look, with room before each one after the first. */
 const CATEGORY_CAPTION =
@@ -34,13 +32,18 @@ export function HelpNav({
           <ul className="flex flex-col gap-0.5">
             {category.articles.map((article) => (
               <li key={article.slug}>
-                <Link
-                  href={urlFor('help.show', { space, article: article.slug })}
-                  aria-current={article.slug === current ? 'page' : undefined}
-                  className={ARTICLE_LINK}
+                <Button
+                  asChild
+                  variant={article.slug === current ? 'secondary' : 'ghost'}
+                  className="w-full justify-start"
                 >
-                  {article.title}
-                </Link>
+                  <Link
+                    href={urlFor('help.show', { space, article: article.slug })}
+                    aria-current={article.slug === current ? 'page' : undefined}
+                  >
+                    {article.title}
+                  </Link>
+                </Button>
               </li>
             ))}
           </ul>

@@ -5,8 +5,8 @@ import { cn } from '@workspace/ui/lib/utils'
 /**
  * How wide a page's content is. The shell already gives the side gutter and
  * the maximum width; a page only picks one of these, never its own padding.
- * - `full`: the shell's width (lists, the dashboard).
- * - `column`: a centred column (settings, a long form, the help index).
+ * - `full`: the shell's width (lists, cards, the dashboard, the help index).
+ * - `column`: a centred column (settings, a long form).
  * - `reading`: a help article's three columns.
  */
 const SIZES = {

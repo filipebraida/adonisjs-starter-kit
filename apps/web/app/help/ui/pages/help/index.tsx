@@ -1,6 +1,14 @@
 import { Head, Link } from '@inertiajs/react'
 import { BookOpen, ChevronRight } from 'lucide-react'
 
+import { Button } from '@workspace/ui/components/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@workspace/ui/components/card'
 import {
   Empty,
   EmptyDescription,
@@ -26,7 +34,7 @@ export default function HelpIndexPage({ spaces }: PageProps) {
   return (
     <AuthenticatedLayout breadcrumbs={[{ label: t('help.title') }]}>
       <Head title={t('help.title')} />
-      <Main size="column" className="flex flex-col gap-6">
+      <Main className="flex flex-col gap-6">
         <Heading title={t('help.title')} description={t('help.index.description')} />
         {spaces.length === 0 && (
           <Empty>
@@ -39,29 +47,34 @@ export default function HelpIndexPage({ spaces }: PageProps) {
             </EmptyHeader>
           </Empty>
         )}
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {spaces.map((space) => (
-            <li key={space.slug} className="border-border flex flex-col rounded-lg border">
-              <div className="flex flex-col gap-1 px-4 py-3">
-                <h2 className="font-semibold">{space.title}</h2>
-                <p className="text-muted-foreground text-sm">{space.summary}</p>
-              </div>
-              <ul className="border-border flex flex-col border-t p-1.5">
-                {space.articles.map((article) => (
-                  <li key={article.slug}>
-                    <Link
-                      href={urlFor('help.show', { space: space.slug, article: article.slug })}
-                      className="hover:bg-muted focus-visible:bg-muted focus-visible:ring-ring flex items-center justify-between gap-2 rounded-md px-2.5 py-2 text-sm outline-none focus-visible:ring-2"
-                    >
-                      <span>{article.title}</span>
-                      <ChevronRight className="text-muted-foreground size-4 shrink-0" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
+            <Card key={space.slug}>
+              <CardHeader>
+                <CardTitle>
+                  <h2>{space.title}</h2>
+                </CardTitle>
+                <CardDescription>{space.summary}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="flex flex-col gap-0.5">
+                  {space.articles.map((article) => (
+                    <li key={article.slug}>
+                      <Button asChild variant="ghost" className="w-full justify-between">
+                        <Link
+                          href={urlFor('help.show', { space: space.slug, article: article.slug })}
+                        >
+                          {article.title}
+                          <ChevronRight data-icon="inline-end" className="text-muted-foreground" />
+                        </Link>
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           ))}
-        </ul>
+        </div>
       </Main>
     </AuthenticatedLayout>
   )
