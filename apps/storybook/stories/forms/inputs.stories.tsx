@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, type ReactNode } from "react";
 import { userEvent } from "storybook/test";
+import { Monitor, Moon, Sun } from "lucide-react";
 
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
@@ -26,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Segmented } from "@workspace/ui/components/segmented";
 import { Switch } from "@workspace/ui/components/switch";
 import { Textarea } from "@workspace/ui/components/textarea";
 
@@ -233,6 +235,60 @@ export const FewChoices: Story = {
       </Field>
     </div>
   ),
+};
+
+/** Two or three options that apply when picked, on one line: with words, or icons named by `title`. */
+export const Segment: Story = {
+  render: function Render() {
+    const [language, setLanguage] = useState<"en" | "pt">("en");
+    const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+    return (
+      <div className="grid max-w-sm gap-6">
+        <Field>
+          <FieldLabel>Language</FieldLabel>
+          <Segmented
+            label="Language"
+            options={[
+              { value: "en", label: "English" },
+              { value: "pt", label: "Português" },
+            ]}
+            value={language}
+            onValueChange={setLanguage}
+          />
+        </Field>
+        <Field>
+          <FieldLabel>Theme, in a menu</FieldLabel>
+          <Segmented
+            label="Theme"
+            options={[
+              { value: "light", title: "Light", label: <Sun aria-hidden /> },
+              { value: "dark", title: "Dark", label: <Moon aria-hidden /> },
+              {
+                value: "system",
+                title: "System",
+                label: <Monitor aria-hidden />,
+              },
+            ]}
+            value={theme}
+            onValueChange={setTheme}
+          />
+        </Field>
+        <Field>
+          <FieldLabel>Filling the width</FieldLabel>
+          <Segmented
+            label="Period"
+            fill
+            options={[
+              { value: "week", label: "Week" },
+              { value: "month", label: "Month" },
+              { value: "year", label: "Year", disabled: true },
+            ]}
+            defaultValue="month"
+          />
+        </Field>
+      </div>
+    );
+  },
 };
 
 /** Takes effect when flipped: no Save. The label says what is on; the description, what it means. */
