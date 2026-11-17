@@ -77,42 +77,13 @@ export default configApp(
   ...adonis({ layout: 'modules' }),
   ...moduleBoundaries(),
   {
-    // The 0.6.0 preset has no place for the kernel's own folders: the frontend
-    // entrypoints (app/core/ui/app/), the formatters (app/core/ui/format/), the
-    // authorization glue (app/core/authz/), the assembler hooks
-    // (app/core/hooks/) and the spec of core/utils. The fix is upstream
-    // (eslint-config-adonis 0.6.1, 7ac7236 and f2a2ce2); drop this block once a
-    // release with it is installed.
-    name: 'Kernel folders the 0.6.0 preset does not know yet',
-    files: [
-      'app/core/ui/app/**',
-      'app/core/ui/format/**',
-      'app/core/authz/**',
-      'app/core/hooks/**',
-      'app/core/tests/unit/utils/**',
-    ],
-    rules: {
-      'adonis/ui-allowed-folders': 'off',
-      'adonis/module-allowed-dirs': 'off',
-      'adonis/unit-test-mirrors-layer': 'off',
-      'adonis/no-generic-names': 'off',
-    },
-  },
-  {
-    // `<module>/workflows/` is where @adonis-agora/durable discovers a module's
-    // workflows; the 0.6.0 preset knows neither the folder nor its spec layer.
-    // Fixed upstream (eslint-config-adonis 325ffdb); drop with the block above.
-    name: 'Durable workflows folder the 0.6.0 preset does not know yet',
-    files: ['app/*/workflows/**', 'app/*/tests/unit/workflows/**'],
-    rules: { 'adonis/module-allowed-dirs': 'off', 'adonis/unit-test-mirrors-layer': 'off' },
-  },
-  {
-    // A component with logic worth a unit spec (the Markdown's sanitizing,
-    // its heading ids) is rendered statically with react-dom/server; the
-    // preset has no unit-test layer for `ui/components/`.
-    name: 'UI rendered statically in a unit spec',
-    files: ['app/core/tests/unit/ui/**'],
-    rules: { 'adonis/unit-test-mirrors-layer': 'off' },
+    // unit-test-mirrors-layer puts the spec of app/core/utils/ in
+    // app/core/tests/unit/utils/, and no-generic-names (0.6.2) only exempts
+    // app/core/utils/ itself. Pending upstream: exempt the mirrored spec
+    // folder, then drop this block.
+    name: 'The spec of core/utils mirrors its folder',
+    files: ['app/core/tests/unit/utils/**'],
+    rules: { 'adonis/no-generic-names': 'off' },
   },
   {
     // The locale parity spec tests `<module>/resources/lang/`, a folder the

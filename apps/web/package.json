@@ -37,7 +37,7 @@
     "@adonisjs/prettier-config": "^1.5.0",
     "@adonisjs/tsconfig": "^2.0.0",
     "@faker-js/faker": "^10.6.0",
-    "@filipebraida/eslint-config-adonis": "^0.6.0",
+    "@filipebraida/eslint-config-adonis": "^0.6.2",
     "@japa/api-client": "^3.2.1",
     "@japa/assert": "^4.2.0",
     "@japa/file-system": "3.0.0",

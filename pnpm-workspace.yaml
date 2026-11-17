@@ -8,3 +8,5 @@ allowBuilds:
   lefthook: true
   msw: true
   sharp: true
+minimumReleaseAgeExclude:
+  - "@filipebraida/eslint-config-adonis@0.6.2"

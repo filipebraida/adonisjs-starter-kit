@@ -299,8 +299,8 @@ importers:
         specifier: ^10.6.0
         version: 10.6.0
       '@filipebraida/eslint-config-adonis':
-        specifier: ^0.6.0
-        version: 0.6.0(@typescript-eslint/parser@8.72.2(eslint@10.14.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.14.0(jiti@2.7.0))(prettier@3.10.1)(typescript@6.0.3)
+        specifier: ^0.6.2
+        version: 0.6.2(@typescript-eslint/parser@8.72.2(eslint@10.14.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.14.0(jiti@2.7.0))(prettier@3.10.1)(typescript@6.0.3)
       '@japa/api-client':
         specifier: ^3.2.1
         version: 3.2.1(@japa/assert@4.2.0(@japa/runner@5.4.0))(@japa/runner@5.4.0)
@@ -1672,8 +1672,8 @@ packages:
       '@adonisjs/assembler':
         optional: true
 
-  '@filipebraida/eslint-config-adonis@0.6.0':
-    resolution: {integrity: sha512-/5fUZFZoTG5jUpyjjsvno0XFnu1ibjP/CFOg2qTha3Q+pCUWZdJPacYBfAunkGOlu2j0hYTpLc6oAztz+D0mlQ==}
+  '@filipebraida/eslint-config-adonis@0.6.2':
+    resolution: {integrity: sha512-ZgAaEOseRnaPrHgfqr1WZyXSsLRZVgDMZXyDlCP7VWExrNO4ha/NdwNc4xBQ3m+RbAahSOydbHWFcT2yOA4Juw==}
     engines: {node: '>=24'}
     peerDependencies:
       eslint: '>=10'
@@ -10417,7 +10417,7 @@ snapshots:
     optionalDependencies:
       '@adonisjs/assembler': 8.6.0(typescript@6.0.3)
 
-  '@filipebraida/eslint-config-adonis@0.6.0(@typescript-eslint/parser@8.72.2(eslint@10.14.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.14.0(jiti@2.7.0))(prettier@3.10.1)(typescript@6.0.3)':
+  '@filipebraida/eslint-config-adonis@0.6.2(@typescript-eslint/parser@8.72.2(eslint@10.14.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.14.0(jiti@2.7.0))(prettier@3.10.1)(typescript@6.0.3)':
     dependencies:
       '@adonisjs/eslint-ast-grep': 1.0.0(eslint@10.14.0(jiti@2.7.0))
       '@adonisjs/eslint-config': 3.1.0(eslint-plugin-react-hooks@7.1.1(eslint@10.14.0(jiti@2.7.0)))(eslint-plugin-react@7.37.5(eslint@10.14.0(jiti@2.7.0)))(eslint@10.14.0(jiti@2.7.0))(prettier@3.10.1)(typescript@6.0.3)
