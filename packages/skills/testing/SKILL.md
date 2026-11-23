@@ -236,6 +236,30 @@ const auth = { use: () => ({ login }) } as unknown as Parameters<Action['handle'
   await assertRunStatus(t.store, 'run-1', 'completed')
   mails.mails.assertSent(WelcomeNotification, (sent) => sent.message.hasTo(user.email))
   ```
+- **Workflow with a dispatched step** (`ctx.step`) — `t.run` returns as soon as the run suspends on the step, before the in-memory transport delivers it, so the status is still `suspended`. Serve the step with `t.transport.handle(name, fn)` (or the real `@Step` method) and wait until the run settles before asserting. Copy this helper to `apps/web/tests/helpers/workflow.ts` with the first such spec:
+  ```ts
+  import type { TestEngine } from '@adonis-agora/durable/testing'
+
+  /** Waits until the run stops moving: it finished, or it sleeps on a timer until the next `tick`. */
+  export async function waitForWorkflow(t: TestEngine, runId: string) {
+    let previous = ''
+    let settled = 0
+    for (const _attempt of Array.from({ length: 300 })) {
+      const run = await t.store.getRun(runId)
+      const now = run ? `${run.status}:${new Date(run.updatedAt).getTime()}` : ''
+      settled = now === previous ? settled + 1 : 0
+      previous = now
+      if (run && run.status !== 'running' && settled >= 5) return
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    }
+  }
+  ```
+  ```ts
+  t.transport.handle('probe:double', async (input) => ({ value: (input as { n: number }).n * 2 }))
+  await t.run('probe', { n: 21 }, 'run-1')
+  await waitForWorkflow(t, 'run-1')
+  await assertRunStatus(t.store, 'run-1', 'completed')
+  ```
 
 ## Anti-patterns
 

@@ -22,10 +22,10 @@ export default defineConfig({
   // The tables come from core's create_durable_tables migration.
   autoSchema: false,
 
-  // Workflows live in their module's workflows/ folder, found on their own
-  // here and in the workflowsHook of adonisrc.ts.
+  // Workflows and dispatched steps live in their module's workflows/ and
+  // steps/ folders, found on their own here and in the hooks of adonisrc.ts.
   workflowsPath: moduleDirs(app.makePath(), 'workflows'),
-  stepsPath: false,
+  stepsPath: moduleDirs(app.makePath(), 'steps'),
 
   // The worker (timers, schedules, recovery) runs inside the web process, so
   // production stays one PM2 process.

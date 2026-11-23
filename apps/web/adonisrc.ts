@@ -6,6 +6,7 @@ import { moduleDirs } from '#core/utils/module_dirs'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
 import { generateRegistry } from '@tuyau/core/hooks'
+import { stepsHook } from '@adonis-agora/durable/hooks/steps'
 import { workflowsHook } from '@adonis-agora/durable/hooks/workflows'
 
 export default defineConfig({
@@ -186,6 +187,18 @@ export default defineConfig({
           source: moduleDirs(fileURLToPath(new URL('./', import.meta.url)), 'workflows'),
         }),
       }),
+      async () => {
+        const source = moduleDirs(fileURLToPath(new URL('./', import.meta.url)), 'steps')
+        // The library refuses a hook without a folder: until a module has a
+        // steps/ folder there is no barrel to write.
+        if (source.length === 0) return { default: () => {} }
+        // With one folder the barrel imports through an alias, and the default
+        // one (`#steps`) does not exist; with several it imports by relative
+        // path and refuses an alias.
+        const importAlias = source.length === 1 ? `#${source[0].split('/')[1]}/steps` : undefined
+
+        return { default: stepsHook({ source, importAlias }) }
+      },
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },

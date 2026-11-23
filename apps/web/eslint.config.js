@@ -94,6 +94,15 @@ export default configApp(
     rules: { 'adonis/unit-test-mirrors-layer': 'off' },
   },
   {
+    // Dispatched steps live in app/<module>/steps/, the folder the stepsPath of
+    // config/durable.ts and the stepsHook of adonisrc.ts look in; the rule only
+    // knows workflows/. Pending upstream: accept steps next to workflows, then
+    // drop this block.
+    name: 'Dispatched steps live in steps/',
+    files: ['app/*/steps/**'],
+    rules: { 'adonis/module-allowed-dirs': 'off' },
+  },
+  {
     // The theme previews draw light and dark mode whatever the current theme
     // is, and the Google mark has its brand colors: tokens would repaint them.
     name: 'Drawings and brand marks keep their own colors',
