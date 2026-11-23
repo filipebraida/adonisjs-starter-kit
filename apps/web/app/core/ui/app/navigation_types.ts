@@ -24,10 +24,8 @@ export type NavMainItem = NavMainSection | ItemNav
 /** Which shell a page is in: the app's own, or the administration. */
 export type ShellArea = 'app' | 'admin'
 
-/** A destination of the phone's tab bar: always with an icon. */
 export type TabItem = ItemNav & { icon: LucideIcon }
 
-/** A group of the phone's "More" page. */
 export interface MoreGroup {
   title: string
   items: (ItemNav & { method?: 'get' | 'post' })[]

@@ -1,9 +1,7 @@
 import { defineConfig, queue, storage, store, type InferConverters } from '@jrmc/adonis-attachment'
 
 const attachmentConfig = defineConfig({
-  // The Drive's default disk.
   storage: storage.drive(),
-  // Files and their variants live in the package's own tables, linked to their owner row.
   store: store.lucid(),
   // Variants are made after the file is saved, outside the request, in the
   // process's own queue: what was pending at a restart is lost, and the screen

@@ -1,7 +1,6 @@
-// The routes of every module, registered in this order. Adonis imports the
-// preloads in parallel, so one preload per module let the order (and with it
-// the precedence of overlapping routes and the order of the generated
-// `.adonisjs/` files) depend on which file finished loading first.
+// The routes of every module, imported one after the other: Adonis imports
+// preloads in parallel, and the registration order decides which of two
+// overlapping routes wins and the order of the generated `.adonisjs/` files.
 
 await import('#core/routes')
 await import('#marketing/routes')

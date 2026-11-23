@@ -10,11 +10,7 @@ import { useTranslation } from '#core/ui/hooks/use_translation'
 
 const MORE = '/more'
 
-/**
- * The phone's navigation: the everyday destinations at the foot of the screen,
- * within reach of the thumb, and "More" for the rest. It replaces the top menu
- * and the sidebar on a narrow screen.
- */
+/** The phone's navigation: the everyday destinations, and "More" for the rest. */
 export function TabBar({ items, area }: { items: TabItem[]; area: ShellArea }) {
   const { t } = useTranslation()
   const allows = useAllows()

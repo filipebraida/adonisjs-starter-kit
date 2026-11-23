@@ -42,7 +42,6 @@ export default class User extends compose(BaseModel, AuthFinder, hasPermissions(
   @column()
   declare locale: string | null
 
-  /** The uploaded picture, in the attachment tables rather than a column. */
   @attachment<User>({ folder: 'avatars', variants: ['thumbnail'], meta: false })
   declare avatar: AttachmentRelation
 

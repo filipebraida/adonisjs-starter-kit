@@ -19,8 +19,8 @@ export default class ForgotPasswordController {
 
     await new RequestPasswordReset().handle({ email: payload.email, i18n })
 
-    // The same answer whether or not the e-mail has an account, and it stays on
-    // screen: a toast would vanish and claim a mail that may not exist.
+    // The same answer whether or not the e-mail has an account, so the form
+    // cannot tell who has one.
     session.flash('success', i18n.t('auth.forgot_password.sent'))
     return response.redirect().toRoute('auth.forgot_password.show')
   }

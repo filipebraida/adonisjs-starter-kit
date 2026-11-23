@@ -26,7 +26,6 @@ export default defineConfig({
     }),
   },
 
-  // Cancellations and lifecycle events reach every instance.
   controlPlane: controlPlanes.redis({ connection: 'main', prefix }),
 
   store: 'lucid',

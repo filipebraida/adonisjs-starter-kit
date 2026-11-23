@@ -115,7 +115,7 @@ export function userRoleLabel(t: TFunction, roles: string[]): string | null {
   return role ? roleLabel(t, role) : null
 }
 
-/** The phone's tab bar: the everyday destinations, within reach of the thumb; "More" holds the rest. */
+/** The destinations of the phone's tab bar; what is left out reaches the "More" page. */
 export function getTabs(
   t: TFunction,
   area: ShellArea,
