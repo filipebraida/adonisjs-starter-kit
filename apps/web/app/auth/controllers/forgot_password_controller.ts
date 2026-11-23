@@ -14,11 +14,14 @@ export default class ForgotPasswordController {
     return inertia.render('auth/forgot_password', {})
   }
 
-  async store({ request, response, i18n }: HttpContext) {
+  async store({ request, response, session, i18n }: HttpContext) {
     const payload = await request.validateUsing(forgotPasswordValidator)
 
     await new RequestPasswordReset().handle({ email: payload.email, i18n })
 
-    return response.redirect().toRoute('auth.sign_in.show')
+    // The same answer whether or not the e-mail has an account, and it stays on
+    // screen: a toast would vanish and claim a mail that may not exist.
+    session.flash('success', i18n.t('auth.forgot_password.sent'))
+    return response.redirect().toRoute('auth.forgot_password.show')
   }
 }

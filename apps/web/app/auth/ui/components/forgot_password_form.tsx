@@ -8,23 +8,18 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { FieldSet, FieldGroup, FieldLabel } from '@workspace/ui/components/field'
-import { toast } from '@workspace/ui/hooks/use-toast'
+import { Alert, AlertDescription } from '@workspace/ui/components/alert'
 
 export function ForgotPasswordForm({ className }: { className?: string }) {
   const { t } = useTranslation()
   // A reset link that is unknown or expired sends the visitor back here with an error.
-  const { error: errorMessage } = usePage().flash
+  const { error: errorMessage, success: sentMessage } = usePage().flash
 
   return (
     <Form
       route="auth.forgot_password.handle"
       className={cn('flex flex-col gap-6', className)}
       resetOnSuccess
-      onSuccess={() => {
-        toast(t('auth.forgot_password.toast.title'), {
-          description: t('auth.forgot_password.toast.description'),
-        })
-      }}
     >
       {({ processing }) => (
         <>
@@ -34,6 +29,12 @@ export function ForgotPasswordForm({ className }: { className?: string }) {
               {t('auth.forgot_password.description')}
             </p>
           </div>
+
+          {sentMessage && (
+            <Alert role="status">
+              <AlertDescription>{sentMessage}</AlertDescription>
+            </Alert>
+          )}
 
           <FieldSet>
             <FieldGroup>

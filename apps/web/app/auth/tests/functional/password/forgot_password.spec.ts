@@ -22,7 +22,7 @@ test.group('Endpoint /forgot-password', (group) => {
       .json({ email: user.email })
 
     response.assertStatus(302)
-    assert.equal(response.header('location'), '/login')
+    assert.equal(response.header('location'), '/forgot-password')
 
     fake.assertEmitted('auth:forgot_password')
 
@@ -30,21 +30,31 @@ test.group('Endpoint /forgot-password', (group) => {
     assert.isNotEmpty(token.token)
   })
 
-  test('does not leak the user when the email does not exist (same status/redirect)', async ({
+  test('answers an unknown e-mail exactly as a registered one, and sends nothing', async ({
     client,
     assert,
   }) => {
     using fake = emitter.fake(['auth:forgot_password'])
-    const response = await client
+    const user = await UserFactory.create()
+
+    const known = await client
       .post('/forgot-password')
       .redirects(0)
       .withCsrfToken()
-      .json({ email: 'nao-existe@example.test' })
+      .json({ email: user.email })
+    fake.assertEmittedCount('auth:forgot_password', 1)
 
-    response.assertStatus(302)
-    assert.equal(response.header('location'), '/login')
+    const unknown = await client
+      .post('/forgot-password')
+      .redirects(0)
+      .withCsrfToken()
+      .json({ email: 'missing@example.test' })
 
-    fake.assertNoneEmitted()
+    fake.assertEmittedCount('auth:forgot_password', 1)
+    assert.equal(unknown.status(), known.status())
+    assert.equal(unknown.header('location'), known.header('location'))
+    assert.isString(unknown.flashMessages().success)
+    assert.equal(unknown.flashMessages().success, known.flashMessages().success)
   })
 
   test('rejects a malformed email', async ({ client }) => {
@@ -53,7 +63,7 @@ test.group('Endpoint /forgot-password', (group) => {
       .redirects(0)
       .withCsrfToken()
       .accept('json')
-      .json({ email: 'nao-eh-email' })
+      .json({ email: 'not-an-email' })
 
     response.assertStatus(422)
   })
