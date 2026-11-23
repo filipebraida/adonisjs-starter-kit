@@ -102,6 +102,7 @@ Load the matching skill before working. Each one has repo refs and doc links. In
 - `.claude/settings.json` denies reading `.env` and asks before `git push`. A headless run (`claude -p`) cannot answer an ask, so an unattended pipeline that pushes must override that rule.
 - `app/core/database/schema.ts` and `.adonisjs/` are generated but committed: regenerate them, never edit them by hand.
 - `Model.query().update()` / `.delete()` skip the audit trail; write through the model when the change must be audited.
+- The console of the durable workflows (`/workflows`, `config/durable_dashboard.ts`) belongs to the library, not an Inertia page: the admin menu opens it as an external link, and the config's `authorize` gates it by `workflows.view`, not a policy.
 - `lefthook` runs Prettier + ESLint on staged files at commit and the typecheck at push.
 - Adding a shadcn component: `pnpm dlx shadcn@latest add <name> --cwd packages/ui`. Then point its `import { cn } from "cn"` back to `@workspace/ui/lib/utils`. `select` is maintained by hand because it portals into the open modal, so don't overwrite it.
 - Deploy is `deploy.ts` (Catapult + PM2, `compose.prod.yaml`). A release migrates the database, then checks `/health/live`. `deploy:rollback` does not undo migrations.

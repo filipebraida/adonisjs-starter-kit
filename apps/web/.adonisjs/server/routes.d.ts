@@ -5,6 +5,40 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'durable_dashboard.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.assets': { paramsTuple: [ParamValue]; params: {'file': ParamValue} }
+    'durable_dashboard.runs.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.values': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.fans': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'group': ParamValue} }
+    'durable_dashboard.runs.retry': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.retry_with_input': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.redispatch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.republish_lifecycle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.cancel': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.workflows.lifecycle': { paramsTuple: [ParamValue]; params: {'name': ParamValue} }
+    'durable_dashboard.runs.continue': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.signal': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.update': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.runs.task_complete': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.runs.task_fail': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.runs.event': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'key': ParamValue} }
+    'durable_dashboard.webhooks.deliver': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'durable_dashboard.metrics': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.schedules.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.openapi': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.schedules.action': { paramsTuple: [ParamValue,ParamValue]; params: {'key': ParamValue,'action': ParamValue} }
+    'durable_dashboard.bulk': { paramsTuple: [ParamValue]; params: {'action': ParamValue} }
+    'durable_dashboard.apps': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.tenants': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.tenants.select': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.consoles': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.consoles.search': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.health': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.workers': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.topology': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.stream': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
@@ -57,6 +91,26 @@ export type ScannedRoutes = {
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'durable_dashboard.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.assets': { paramsTuple: [ParamValue]; params: {'file': ParamValue} }
+    'durable_dashboard.runs.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.values': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.fans': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'group': ParamValue} }
+    'durable_dashboard.workflows.lifecycle': { paramsTuple: [ParamValue]; params: {'name': ParamValue} }
+    'durable_dashboard.runs.event': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'key': ParamValue} }
+    'durable_dashboard.metrics': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.schedules.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.openapi': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.apps': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.tenants': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.consoles': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.consoles.search': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.health': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.workers': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.topology': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.stream': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
@@ -85,6 +139,26 @@ export type ScannedRoutes = {
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'durable_dashboard.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.assets': { paramsTuple: [ParamValue]; params: {'file': ParamValue} }
+    'durable_dashboard.runs.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.values': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.fans': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'group': ParamValue} }
+    'durable_dashboard.workflows.lifecycle': { paramsTuple: [ParamValue]; params: {'name': ParamValue} }
+    'durable_dashboard.runs.event': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'key': ParamValue} }
+    'durable_dashboard.metrics': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.schedules.index': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.openapi': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.apps': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.tenants': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.consoles': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.consoles.search': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.health': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.workers': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.topology': { paramsTuple?: []; params?: {} }
+    'durable_dashboard.runs.stream': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
@@ -112,6 +186,20 @@ export type ScannedRoutes = {
     'help.content': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
   }
   POST: {
+    'durable_dashboard.runs.retry': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.retry_with_input': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.redispatch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.republish_lifecycle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.cancel': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.continue': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.signal': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'durable_dashboard.runs.update': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.runs.task_complete': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.runs.task_fail': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'name': ParamValue} }
+    'durable_dashboard.webhooks.deliver': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'durable_dashboard.schedules.action': { paramsTuple: [ParamValue,ParamValue]; params: {'key': ParamValue,'action': ParamValue} }
+    'durable_dashboard.bulk': { paramsTuple: [ParamValue]; params: {'action': ParamValue} }
+    'durable_dashboard.tenants.select': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }
     'auth.sign_out.handle': { paramsTuple?: []; params?: {} }
     'auth.sign_up.handle': { paramsTuple?: []; params?: {} }

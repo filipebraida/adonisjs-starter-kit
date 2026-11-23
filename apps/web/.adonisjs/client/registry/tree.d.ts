@@ -7,6 +7,52 @@ export interface ApiDefinition {
       serve: typeof routes['drive.fs.serve']
     }
   }
+  durableDashboard: {
+    index: typeof routes['durable_dashboard.index']
+    assets: typeof routes['durable_dashboard.assets']
+    runs: {
+      index: typeof routes['durable_dashboard.runs.index']
+      values: typeof routes['durable_dashboard.runs.values']
+      show: typeof routes['durable_dashboard.runs.show']
+      fans: typeof routes['durable_dashboard.runs.fans']
+      retry: typeof routes['durable_dashboard.runs.retry']
+      retryWithInput: typeof routes['durable_dashboard.runs.retry_with_input']
+      redispatch: typeof routes['durable_dashboard.runs.redispatch']
+      republishLifecycle: typeof routes['durable_dashboard.runs.republish_lifecycle']
+      cancel: typeof routes['durable_dashboard.runs.cancel']
+      continue: typeof routes['durable_dashboard.runs.continue']
+      signal: typeof routes['durable_dashboard.runs.signal']
+      update: typeof routes['durable_dashboard.runs.update']
+      taskComplete: typeof routes['durable_dashboard.runs.task_complete']
+      taskFail: typeof routes['durable_dashboard.runs.task_fail']
+      event: typeof routes['durable_dashboard.runs.event']
+      stream: typeof routes['durable_dashboard.runs.stream']
+    }
+    workflows: {
+      lifecycle: typeof routes['durable_dashboard.workflows.lifecycle']
+    }
+    webhooks: {
+      deliver: typeof routes['durable_dashboard.webhooks.deliver']
+    }
+    metrics: typeof routes['durable_dashboard.metrics']
+    schedules: {
+      index: typeof routes['durable_dashboard.schedules.index']
+      action: typeof routes['durable_dashboard.schedules.action']
+    }
+    openapi: typeof routes['durable_dashboard.openapi']
+    bulk: typeof routes['durable_dashboard.bulk']
+    apps: typeof routes['durable_dashboard.apps']
+    tenants: typeof routes['durable_dashboard.tenants'] & {
+      select: typeof routes['durable_dashboard.tenants.select']
+    }
+    consoles: typeof routes['durable_dashboard.consoles'] & {
+      search: typeof routes['durable_dashboard.consoles.search']
+    }
+    health: typeof routes['durable_dashboard.health']
+    workers: typeof routes['durable_dashboard.workers']
+    topology: typeof routes['durable_dashboard.topology']
+    compat: typeof routes['durable_dashboard.compat']
+  }
   health: {
     live: typeof routes['health.live']
     ready: typeof routes['health.ready']

@@ -21,6 +21,448 @@ export interface Registry {
       rawResponse: ExtractRawResponse<unknown>
     }
   }
+  'durable_dashboard.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.assets': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/assets/:file'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { file: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.values': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs/values'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.fans': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs/:id/fans/:group'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { id: ParamValue; group: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.retry': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/retry'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.retry_with_input': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/retry-with-input'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.redispatch': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/redispatch'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.republish_lifecycle': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/republish-lifecycle'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.cancel': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/cancel'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.workflows.lifecycle': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/workflows/:name/lifecycle'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { name: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.continue': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/continue'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.signal': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/signal'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.update': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/updates/:name'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { id: ParamValue; name: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.task_complete': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/tasks/:name/complete'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { id: ParamValue; name: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.task_fail': {
+    methods: ["POST"]
+    pattern: '/workflows/api/runs/:id/tasks/:name/fail'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { id: ParamValue; name: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.event': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs/:id/events/:key'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { id: ParamValue; key: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.webhooks.deliver': {
+    methods: ["POST"]
+    pattern: '/workflows/api/webhooks/:token'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.metrics': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/metrics'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.schedules.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/schedules'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.openapi': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/openapi.json'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.schedules.action': {
+    methods: ["POST"]
+    pattern: '/workflows/api/schedules/:key/:action'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { key: ParamValue; action: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.bulk': {
+    methods: ["POST"]
+    pattern: '/workflows/api/bulk/:action'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { action: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.apps': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/apps'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.tenants': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/tenants'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.tenants.select': {
+    methods: ["POST"]
+    pattern: '/workflows/api/tenants/:id/select'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.consoles': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/consoles'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.consoles.search': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/consoles/search'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.health': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/health'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.workers': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/workers'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.topology': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/topology'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.runs.stream': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/runs/:id/stream'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
+  'durable_dashboard.compat': {
+    methods: ["GET","HEAD"]
+    pattern: '/workflows/api/compat'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
   'health.live': {
     methods: ["GET","HEAD"]
     pattern: '/health/live'

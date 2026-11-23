@@ -9,6 +9,7 @@ import {
   Shield,
   ShieldCheck,
   Users,
+  Workflow,
 } from 'lucide-react'
 
 import type { NavMainItem, NavUserOptionsGroup } from '#core/ui/app/navigation_types'
@@ -82,6 +83,14 @@ export function getAdminNav(t: TFunction): NavMainItem[] {
           url: '/roles',
           icon: ShieldCheck,
           can: CAPABILITIES_AUTH.usersManageRoles,
+        },
+        {
+          title: t('core.layout.navMain.workflows'),
+          // The console belongs to the workflows library, outside Inertia: it opens as another page.
+          url: '/workflows',
+          icon: Workflow,
+          can: CAPABILITIES_AUTH.workflowsView,
+          external: true,
         },
       ],
     },

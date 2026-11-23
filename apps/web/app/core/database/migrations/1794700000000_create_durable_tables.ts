@@ -2,8 +2,10 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 import db from '@adonisjs/lucid/services/db'
 
 import {
+  createDurableRunListIndexes,
   createDurableTables,
   createDurableTransportTables,
+  dropDurableRunListIndexes,
   dropDurableTables,
   dropDurableTransportTables,
 } from '@adonis-agora/durable'
@@ -21,11 +23,14 @@ export default class extends BaseSchema {
 
   async up() {
     await createDurableTables(db, this.db.connectionName)
+    // The indexes the run list of the workflows console sorts and filters by.
+    await createDurableRunListIndexes(db, this.db.connectionName)
     await createDurableTransportTables(db)
   }
 
   async down() {
     await dropDurableTransportTables(db)
+    await dropDurableRunListIndexes(db, this.db.connectionName)
     await dropDurableTables(db, this.db.connectionName)
   }
 }
