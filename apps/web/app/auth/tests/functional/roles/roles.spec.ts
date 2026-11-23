@@ -75,4 +75,37 @@ test.group('Endpoint /roles', (group) => {
     )
     assert.include(await authz.store.listRoles(), 'reviewer')
   })
+
+  test('without users.manage_roles nobody creates, changes or deletes a role, the manager included', async ({
+    client,
+    assert,
+  }) => {
+    const manager = await UserFactory.create()
+    await withRole(manager, ROLES.MANAGER)
+    await authz.store.createRole('reviewer')
+
+    const created = await client
+      .post('/roles')
+      .form({ name: 'intruder' })
+      .loginAs(manager)
+      .withCsrfToken()
+      .redirects(0)
+    const changed = await client
+      .put('/roles/reviewer')
+      .json({ capabilities: [CAPABILITIES_AUTH.usersManageRoles] })
+      .loginAs(manager)
+      .withCsrfToken()
+      .redirects(0)
+    const deleted = await client
+      .delete('/roles/reviewer')
+      .loginAs(manager)
+      .withCsrfToken()
+      .redirects(0)
+
+    for (const response of [created, changed, deleted]) assertForbiddenRedirect(response)
+    const roles = await authz.store.listRoles()
+    assert.notInclude(roles, 'intruder')
+    assert.include(roles, 'reviewer')
+    assert.deepEqual(await authz.store.getRolePermissions('reviewer'), [])
+  })
 })
