@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, screen, waitFor } from "storybook/test";
 
+import CreateUserPage from "@web/app/users/ui/pages/create";
 import ListUsersPage from "@web/app/users/ui/pages/index";
 
 import { helpRoutes } from "../../src/help_server";
@@ -195,3 +196,26 @@ export const Admin: Story = {
 export const Manager = story("manager");
 
 export const NoMatch = story("admin", "q=zed");
+
+/** "New user" open over the list: the page-modal the controller sends with `inertia.modal(...)`. */
+export const CreateModal: Story = {
+  render: () =>
+    inertiaPage(ListUsersPage, {
+      url: "/users",
+      ...usersPage("admin", new URLSearchParams()),
+      modal: {
+        component: "users/create",
+        Page: CreateUserPage,
+        props: { institutionalRoles: ["reviewer"], canManageRoles: true },
+      },
+    }),
+  async play({ canvas }) {
+    // The modal fades in: wait for the end of its opening transition.
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", { name: "Create User" }),
+      ).toBeVisible(),
+    );
+    await expect(canvas.getByRole("heading", { name: "Users" })).toBeVisible();
+  },
+};

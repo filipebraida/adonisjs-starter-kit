@@ -90,6 +90,15 @@ type PageOptions<P> = {
   flash?: { error?: string; success?: string };
   impersonation?: { returnTo: string } | null;
   locale?: "en" | "pt";
+  /** A page-modal open over this page, as `inertia.modal(...)` sends it. */
+  modal?: ModalOptions;
+};
+
+type ModalOptions = {
+  component: string;
+  // A page-modal's props are its own; the story checks them when it builds the object.
+  Page: ComponentType<never>;
+  props: Record<string, unknown>;
 };
 
 /** What the Inertia middleware shares, typed by it: a new shared prop fails here until the stories send it. */
@@ -117,6 +126,15 @@ function pageObject<P>(options: PageOptions<P>) {
     props: {
       ...sharedProps(options as PageOptions<unknown>),
       ...options.props,
+      ...(options.modal && {
+        modal: {
+          component: options.modal.component,
+          props: options.modal.props,
+          baseUrl: options.url,
+          redirectUrl: options.url,
+          key: options.modal.component,
+        },
+      }),
     },
   };
 }
@@ -131,6 +149,7 @@ type PageComponent = NonNullable<
 >;
 
 let pageOnScreen: PageComponent | null = null;
+let modalOnScreen: ModalOptions | null = null;
 
 function BoardApp({ Page, page }: { Page: PageComponent; page: InitialPage }) {
   useEffect(() => {
@@ -146,7 +165,11 @@ function BoardApp({ Page, page }: { Page: PageComponent; page: InitialPage }) {
   return (
     <App
       initialComponent={Page}
-      resolveComponent={() => pageOnScreen ?? Page}
+      resolveComponent={(name) =>
+        name === modalOnScreen?.component
+          ? (modalOnScreen.Page as PageComponent)
+          : (pageOnScreen ?? Page)
+      }
       initialPage={page}
     />
   );
@@ -162,6 +185,7 @@ export function inertiaPage<P>(
   options: PageOptions<P>,
 ) {
   pageOnScreen = Page as PageComponent;
+  modalOnScreen = options.modal ?? null;
   return (
     <BoardApp
       Page={Page as PageComponent}
