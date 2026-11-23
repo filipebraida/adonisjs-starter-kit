@@ -138,10 +138,13 @@ test.group('Endpoint /users', (group) => {
     await db.assertMissing('users', { email })
   })
 
-  test('POST /users with duplicate email returns 422', async ({ client }) => {
+  test('POST /users with duplicate email returns 422 on the email field', async ({
+    client,
+    assert,
+  }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    const existente = await UserFactory.create()
+    const existing = await UserFactory.create()
 
     const response = await client
       .post('/users')
@@ -150,12 +153,14 @@ test.group('Endpoint /users', (group) => {
       .accept('json')
       .redirects(0)
       .json({
-        fullName: 'Duplicado',
-        email: existente.email,
+        fullName: 'Duplicate',
+        email: existing.email,
         role: ROLES.USER,
       })
 
     response.assertStatus(422)
+    const fields = response.body().errors.map(({ field }: { field: string }) => field)
+    assert.deepEqual(fields, ['email'])
   })
 
   test('PUT /users/:id updates as admin', async ({ client, assert }) => {
