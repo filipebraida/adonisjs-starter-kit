@@ -26,7 +26,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </div>
         <div className="relative hidden bg-muted lg:block">
           <div className="absolute inset-0 flex items-center justify-center bg-background/40 p-8">
-            <img src={illustration} alt="Ilustração de login" className="max-h-full max-w-full" />
+            <img src={illustration} alt="" className="max-h-full max-w-full" />
           </div>
         </div>
       </div>

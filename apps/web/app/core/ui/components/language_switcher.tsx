@@ -2,6 +2,7 @@ import { Globe } from 'lucide-react'
 
 import usePageProps from '#core/ui/hooks/use_page_props'
 import { useSwitchLocale } from '#core/ui/hooks/use_switch_locale'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -19,13 +20,14 @@ export const LOCALES = [
 export function LanguageSwitcher() {
   const { locale } = usePageProps<{ locale: string }>()
   const switchLocale = useSwitchLocale()
+  const { t } = useTranslation()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <Globe className="size-4" />
-          <span className="sr-only">Switch language</span>
+          <span className="sr-only">{t('core.layout.switchLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

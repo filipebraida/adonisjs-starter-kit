@@ -6,5 +6,7 @@
   "E_STRUCTURAL_ROLE": "Built-in roles cannot be created, edited or deleted here.",
   "E_ROLE_NOT_FOUND": "The role {role} does not exist.",
   "E_ROLE_HAS_MEMBERS": "{total, plural, one {# user still has} other {# users still have}} this role. Remove it from them before deleting it.",
-  "E_UNKNOWN_CAPABILITY": "Unknown capability: {capability}."
+  "E_UNKNOWN_CAPABILITY": "Unknown capability: {capability}.",
+  "E_UNAUTHORIZED_ACCESS": "Sign in to continue.",
+  "E_BAD_CSRF_TOKEN": "The page was open for too long. Please try again."
 }

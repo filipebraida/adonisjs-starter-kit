@@ -1,4 +1,5 @@
 import { Field, FieldError, Form } from '#core/ui/components/form'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
@@ -6,6 +7,8 @@ import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, FieldLabel } from '@workspace/ui/components/field'
 
 export function ResetPasswordForm({ token, className }: { token: string; className?: string }) {
+  const { t } = useTranslation()
+
   return (
     <Form
       route="auth.reset_password.handle"
@@ -17,33 +20,33 @@ export function ResetPasswordForm({ token, className }: { token: string; classNa
       {({ processing }) => (
         <>
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-2xl font-bold">Reset your password</h1>
+            <h1 className="text-2xl font-bold">{t('auth.reset_password.title')}</h1>
             <p className="text-balance text-sm text-muted-foreground">
-              Choose a new password for your account.
+              {t('auth.reset_password.description')}
             </p>
           </div>
 
           <FieldSet>
             <FieldGroup>
               <Field name="password">
-                <FieldLabel htmlFor="password">New Password</FieldLabel>
+                <FieldLabel htmlFor="password">
+                  {t('auth.reset_password.form.password.label')}
+                </FieldLabel>
                 <PasswordInput id="password" name="password" required />
                 <FieldError />
               </Field>
 
               <Field name="passwordConfirmation">
-                <FieldLabel htmlFor="passwordConfirmation">Confirm Password</FieldLabel>
-                <PasswordInput
-                  id="passwordConfirmation"
-                  name="passwordConfirmation"
-                  placeholder="e.g., S3cur3P@ssw0rd"
-                />
+                <FieldLabel htmlFor="passwordConfirmation">
+                  {t('auth.reset_password.form.password_confirmation.label')}
+                </FieldLabel>
+                <PasswordInput id="passwordConfirmation" name="passwordConfirmation" required />
                 <FieldError />
               </Field>
 
               <Field orientation="responsive">
                 <Button type="submit" className="w-full" disabled={processing}>
-                  Reset Password
+                  {t('auth.reset_password.actions.submit')}
                 </Button>
               </Field>
             </FieldGroup>

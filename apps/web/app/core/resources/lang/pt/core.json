@@ -18,7 +18,11 @@
         "dark": "Escuro",
         "system": "Sistema"
       }
-    }
+    },
+    "navMobile": {
+      "title": "Menu de navegação"
+    },
+    "switchLanguage": "Trocar idioma"
   },
   "table": {
     "no_results": "Nenhum resultado encontrado.",
@@ -45,10 +49,16 @@
   },
   "errors": {
     "not_found": {
-      "title": "Página não encontrada"
+      "title": "Página não encontrada",
+      "description": "A página que você procura não existe ou foi removida."
     },
     "server_error": {
-      "title": "Erro no servidor"
+      "title": "Erro no servidor",
+      "description": "Desculpe o transtorno. Tente de novo mais tarde."
+    },
+    "actions": {
+      "back": "Voltar",
+      "home": "Ir para o início"
     }
   },
   "impersonation": {
@@ -69,5 +79,9 @@
     "mermaidFailed": "O diagrama não pôde ser desenhado.",
     "openImage": "Abrir a imagem",
     "closeImage": "Fechar a imagem"
+  },
+  "confirm": {
+    "cancel": "Cancelar",
+    "continue": "Continuar"
   }
 }

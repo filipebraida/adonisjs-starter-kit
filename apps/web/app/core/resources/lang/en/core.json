@@ -18,7 +18,11 @@
         "dark": "Dark",
         "system": "System"
       }
-    }
+    },
+    "navMobile": {
+      "title": "Navigation menu"
+    },
+    "switchLanguage": "Switch language"
   },
   "table": {
     "no_results": "No results found.",
@@ -45,10 +49,16 @@
   },
   "errors": {
     "not_found": {
-      "title": "Page not found"
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or was removed."
     },
     "server_error": {
-      "title": "Server error"
+      "title": "Server error",
+      "description": "Sorry for the inconvenience. Please try again later."
+    },
+    "actions": {
+      "back": "Go back",
+      "home": "Back to home"
     }
   },
   "impersonation": {
@@ -69,5 +79,9 @@
     "mermaidFailed": "The diagram could not be drawn.",
     "openImage": "Open the picture",
     "closeImage": "Close the picture"
+  },
+  "confirm": {
+    "cancel": "Cancel",
+    "continue": "Continue"
   }
 }

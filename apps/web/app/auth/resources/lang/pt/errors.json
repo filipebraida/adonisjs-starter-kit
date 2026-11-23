@@ -6,5 +6,7 @@
   "E_STRUCTURAL_ROLE": "Papéis nativos não podem ser criados, editados ou excluídos aqui.",
   "E_ROLE_NOT_FOUND": "O papel {role} não existe.",
   "E_ROLE_HAS_MEMBERS": "{total, plural, one {# usuário ainda tem} other {# usuários ainda têm}} este papel. Remova o papel deles antes de excluí-lo.",
-  "E_UNKNOWN_CAPABILITY": "Capacidade desconhecida: {capability}."
+  "E_UNKNOWN_CAPABILITY": "Capacidade desconhecida: {capability}.",
+  "E_UNAUTHORIZED_ACCESS": "Entre para continuar.",
+  "E_BAD_CSRF_TOKEN": "A página ficou aberta tempo demais. Tente de novo."
 }

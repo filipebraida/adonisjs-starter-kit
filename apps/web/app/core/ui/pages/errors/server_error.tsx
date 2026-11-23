@@ -12,16 +12,16 @@ export default function ServerError() {
       <Head title={t('core.errors.server_error.title')} />
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
         <h1 className="text-8xl font-bold leading-tight">500</h1>
-        <span className="font-medium">Oops! Something went wrong {`:')`}</span>
+        <span className="font-medium">{t('core.errors.server_error.title')}</span>
         <p className="text-center text-muted-foreground">
-          We apologize for the inconvenience. <br /> Please try again later.
+          {t('core.errors.server_error.description')}
         </p>
 
         <div className="mt-6 flex gap-4">
           <Button variant="outline" onClick={() => window.history.back()}>
-            Go Back
+            {t('core.errors.actions.back')}
           </Button>
-          <Button onClick={() => router.visit('/')}>Back to Home</Button>
+          <Button onClick={() => router.visit('/')}>{t('core.errors.actions.home')}</Button>
         </div>
       </div>
     </div>

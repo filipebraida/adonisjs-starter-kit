@@ -13,6 +13,7 @@ import { AppLogo } from '#core/ui/components/app_logo'
 import { isSection, type NavMainItem } from '#core/ui/app/navigation_types'
 import useAllows from '#core/ui/hooks/use_allows'
 import useActiveNavUrl from '#core/ui/hooks/use_is_active'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 const sidebarMenuButtonVariants =
   'text-sidebar-foreground flex w-full items-center gap-2 overflow-hidden ' +
@@ -32,6 +33,7 @@ export interface NavHeaderMobileProps {
 export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
   const allows = useAllows()
   const activeUrl = useActiveNavUrl(items)
+  const { t } = useTranslation()
 
   return (
     <div className="lg:hidden">
@@ -47,7 +49,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
           className="flex h-full w-72 flex-col items-stretch justify-between"
         >
           <div className="flex flex-1 flex-col items-stretch justify-between gap-4 bg-sidebar px-1">
-            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <SheetTitle className="sr-only">{t('core.layout.navMobile.title')}</SheetTitle>
 
             <SheetHeader className="-mx-1 flex justify-start text-left">
               <AppLogo />
