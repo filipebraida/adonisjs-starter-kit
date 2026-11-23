@@ -1,5 +1,5 @@
 import { TokenUtils } from '#core/utils/token_utils'
-import { DateTime } from 'luxon'
+import { DateTime, type DurationLike } from 'luxon'
 
 import type User from '#auth/models/user'
 import ResetPasswordToken from '#auth/models/reset_password_token'
@@ -8,8 +8,8 @@ import limiter from '@adonisjs/limiter/services/main'
 
 /**
  * Issues, looks up and revokes password reset tokens. A user holds at most
- * one token, valid for an hour; a successful reset also clears the sign in
- * rate limit of that IP and email.
+ * one token, valid for an hour, or a week for an invitation; a successful
+ * reset also clears the sign in rate limit of that IP and email.
  */
 export default class PasswordResetService {
   loginLimiter: Limiter
@@ -20,9 +20,9 @@ export default class PasswordResetService {
       blockDuration: '1 min',
     })
   }
-  async generateToken(user: User) {
+  async generateToken(user: User, validFor: DurationLike = { hours: 1 }) {
     const token = TokenUtils.generateToken()
-    const expiresAt = DateTime.now().plus({ hours: 1 })
+    const expiresAt = DateTime.now().plus(validFor)
 
     await this.deleteTokens(user)
 

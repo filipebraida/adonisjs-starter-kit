@@ -13,7 +13,7 @@ Emails are classes that extend `@adonisjs/mail`'s `BaseMail`. The `prepare()` me
 
 - **Mail class location**: `app/<mod>/mails/<name>_notification.ts` — one file per email.
 - **Class shape**: extends `BaseMail`, declares `from = env.get('EMAIL_FROM')`, sets `subject` either as a class field or dynamically in `prepare()` from a `translations` field.
-- **`prepare()`** does all the work: build any URL (via `signedUrlFor` for time-limited links), call `this.message.to(recipient).subject(...)`, then render with `htmlView('<mod>::emails/<template>', props)`. Always spread `...mailContext()` into props so the layout has `appName` + `appUrl`.
+- **`prepare()`** does all the work: build any URL with `urlFor(..., { prefixUrl: env.get('APP_URL') })`, call `this.message.to(recipient).subject(...)`, then render with `htmlView('<mod>::emails/<template>', props)`. Always spread `...mailContext()` into props so the layout has `appName` + `appUrl`.
 - **Templates** live at `app/<mod>/ui/emails/<name>.edge`. Every template opens with `@email.layout({ title, preview: subtitle })` and closes with `@end`. Between them, only `<mj-section>` markup — body, button, text.
 - **Shared MJML layout** is the single source of truth for typography, colors, header, footer. Change once, all emails update.
 - **`mailContext()`** returns `{ appName, appUrl }` from env with a fallback name. Every mail class spreads it into `htmlView` props so the layout can render brand chrome.
@@ -102,7 +102,7 @@ Edit the shared MJML layout component. Every email updates. Ask whether a change
 
 ### Signed / time-limited URLs
 
-Use `signedUrlFor('route.name', params, { expiresIn, prefixUrl, purpose })` for password-reset-style links so the URL expires and can only be consumed once.
+A link that carries a secret token (reset, invitation) is a plain `urlFor(...)`: the token's expiry in the database is the limit. Use `signedUrlFor('route.name', params, { expiresIn, prefixUrl, purpose })` only when the route checks it with `request.hasValidSignature(purpose)`; a signature nobody checks is a second, decorative limit.
 
 ### Testing
 

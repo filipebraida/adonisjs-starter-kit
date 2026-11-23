@@ -23,7 +23,7 @@ test.group('InviteUser', (group) => {
     db,
     assert,
   }) => {
-    // Fake the event so the mail listener (which builds a signed URL) doesn't run.
+    // Fake the event so the mail listener (which builds the link) doesn't run.
     using fake = emitter.fake(['user:registered'])
     const email = taggedEmail(marker('convidado'))
     const admin = await UserFactory.create()
@@ -87,5 +87,23 @@ test.group('InviteUser', (group) => {
 
     await db.assertMissing('users', { email })
     fake.assertNoneEmitted()
+  })
+
+  test('the invitation link lasts a week, since nobody waits at the inbox for it', async ({
+    assert,
+  }) => {
+    using _fake = emitter.fake(['user:registered'])
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+
+    const invited = await new InviteUser().handle({
+      email: taggedEmail(marker('week')),
+      role: ROLES.USER,
+      executor: admin,
+      i18n: i18n(),
+    })
+
+    const token = await ResetPasswordToken.query().where('userId', invited.id).firstOrFail()
+    assert.isAbove(token.expiresAt.diffNow('days').days, 6)
   })
 })

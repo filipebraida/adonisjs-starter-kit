@@ -39,7 +39,7 @@ test.group('RequestPasswordReset', (group) => {
     db,
     assert,
   }) => {
-    // The real listener's mail.prepare() calls signedUrlFor and needs a live router.
+    // The real listener's mail.prepare() calls urlFor and needs a live router.
     using _events = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 

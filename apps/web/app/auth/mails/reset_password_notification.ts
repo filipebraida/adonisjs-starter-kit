@@ -1,12 +1,12 @@
 import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
-import { signedUrlFor } from '@adonisjs/core/services/url_builder'
+import { urlFor } from '@adonisjs/core/services/url_builder'
 
 import { mailContext } from '#core/utils/mail_context'
 import type User from '#auth/models/user'
 import { type MailBasicTranslation } from '#core/types/mail'
 
-/** The reset password email, with a signed link valid for 30 minutes. */
+/** The reset password email, with the link to choose a new password. */
 export default class ResetPasswordNotification extends BaseMail {
   from = env.get('EMAIL_FROM')
   subject = `Reset your password for app`
@@ -24,14 +24,12 @@ export default class ResetPasswordNotification extends BaseMail {
    * the email is sent or queued.
    */
   async prepare() {
-    /**
-     * Generate a signed URL with the user's email,
-     * which can be used to reset the password.
-     */
-    const signedUrl = signedUrlFor(
+    // The token's own expiry in the database bounds the link; a signed URL
+    // would add a second limit that nothing checks.
+    const resetUrl = urlFor(
       'auth.reset_password.show',
       { token: this.token },
-      { expiresIn: '30m', prefixUrl: env.get('APP_URL'), purpose: 'reset_password' }
+      { prefixUrl: env.get('APP_URL') }
     )
 
     const { subject, title, subtitle, actionBtn, defaultMessage } = this.translations
@@ -43,7 +41,7 @@ export default class ResetPasswordNotification extends BaseMail {
       subtitle,
       actionBtn,
       defaultMessage,
-      signedUrl,
+      resetUrl,
     })
   }
 }

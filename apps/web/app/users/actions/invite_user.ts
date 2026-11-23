@@ -9,6 +9,9 @@ import { AUDIT_EVENTS } from '#auth/enums/audit_event'
 import User from '#auth/models/user'
 import PasswordResetService from '#auth/services/password_reset_service'
 
+// The person invited is not waiting at the inbox, as someone who asked for a reset is.
+const INVITATION_VALID_FOR = { days: 7 }
+
 export interface InviteUserInput {
   email: string
   role: string
@@ -35,7 +38,10 @@ export default class InviteUser {
       const created = await User.create({ email: input.email }, { client: trx })
       await authz.store.withClient(trx).assignRole(authz.refOf(created)!, input.role)
       await created.auditCustom(AUDIT_EVENTS.USER_INVITED, { new: { role: input.role } })
-      return { user: created, ...(await new PasswordResetService().generateToken(created)) }
+      return {
+        user: created,
+        ...(await new PasswordResetService().generateToken(created, INVITATION_VALID_FOR)),
+      }
     })
 
     const translations = {
