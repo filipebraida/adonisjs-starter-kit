@@ -263,7 +263,9 @@
       "system": "Sistema",
       "impersonated_by": "personificado por {name}",
       "no_changes": "Sem alteração de campos",
-      "no_results": "Nenhuma atividade encontrada."
+      "no_results": "Nenhuma atividade encontrada.",
+      "empty_value": "vazio",
+      "more_changes": "{count, plural, one {e mais # campo} other {e mais # campos}}"
     },
     "events": {
       "created": "criou",

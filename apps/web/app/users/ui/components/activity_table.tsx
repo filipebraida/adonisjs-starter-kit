@@ -8,6 +8,7 @@ import { ColumnDef } from '@workspace/ui/components/data-table'
 import { FilterPanel, FiltersButton } from '@workspace/ui/components/filter-panel'
 import { Input } from '@workspace/ui/components/input'
 import { TableToolbar, TableToolbarSearch } from '@workspace/ui/components/table-toolbar'
+import { ValueChange } from '@workspace/ui/components/value-change'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { urlFor } from '~/app/client'
@@ -141,11 +142,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
         return (
           <div className="min-w-0">
             <div className="text-sm">{t(`users.activity.events.${event}`)}</div>
-            <div className="truncate text-xs text-muted-foreground">
-              {changes.length > 0
-                ? changes.map((change) => change.field).join(', ')
-                : t('users.activity.table.no_changes')}
-            </div>
+            <Changes changes={changes} />
             {/* Who and when have their own columns from sm up; below, they ride here. */}
             <div className="mt-0.5 truncate text-xs text-muted-foreground @xl:hidden">
               {actorName(row.original)} · {formatDateTime(row.original.createdAt, language)}
@@ -281,5 +278,42 @@ function EventFilterPanel({
       clearLabel={t('core.table.filters.clear')}
       closeLabel={t('core.table.filters.done')}
     />
+  )
+}
+
+// A row shows the first changes; the rest are counted.
+const CHANGES_IN_A_ROW = 2
+
+/** What the event changed: each field with its old value struck out and the new one beside it. */
+function Changes({ changes }: { changes: AuditRow['changes'] }) {
+  const { t } = useTranslation()
+
+  if (changes.length === 0) {
+    return (
+      <div className="truncate text-xs text-muted-foreground">
+        {t('users.activity.table.no_changes')}
+      </div>
+    )
+  }
+
+  const shown = changes.slice(0, CHANGES_IN_A_ROW)
+  const rest = changes.length - shown.length
+  return (
+    <div className="mt-0.5 flex min-w-0 flex-col gap-1">
+      {shown.map((change) => (
+        <ValueChange
+          key={change.field}
+          field={change.field}
+          from={change.old}
+          to={change.new}
+          emptyLabel={t('users.activity.table.empty_value')}
+        />
+      ))}
+      {rest > 0 && (
+        <span className="text-xs text-muted-foreground">
+          {t('users.activity.table.more_changes', { count: rest })}
+        </span>
+      )}
+    </div>
   )
 }

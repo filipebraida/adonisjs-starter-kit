@@ -263,7 +263,9 @@
       "system": "System",
       "impersonated_by": "impersonated by {name}",
       "no_changes": "No field changes",
-      "no_results": "No activity found."
+      "no_results": "No activity found.",
+      "empty_value": "empty",
+      "more_changes": "{count, plural, one {and # more field} other {and # more fields}}"
     },
     "events": {
       "created": "created",

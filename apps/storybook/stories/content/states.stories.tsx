@@ -7,6 +7,7 @@ import {
   AlertTitle,
 } from "@workspace/ui/components/alert";
 import { Badge } from "@workspace/ui/components/badge";
+import { ValueChange } from "@workspace/ui/components/value-change";
 
 const meta = {
   title: "Content/States",
@@ -62,6 +63,21 @@ export const Labels: Story = {
       <Badge variant="warning">Expiring</Badge>
       <Badge variant="destructive">Failed</Badge>
       <Badge variant="secondary">Draft</Badge>
+    </div>
+  ),
+};
+
+/** What a change did to each field, in a record of activity: old struck out, new beside it. */
+export const Changes: Story = {
+  render: () => (
+    <div className="grid gap-1.5">
+      <ValueChange field="fullName" from="Ada Byron" to="Ada Lovelace" />
+      <ValueChange field="locale" from={null} to="pt" />
+      <ValueChange
+        field="avatarUrl"
+        from="https://example.com/a.png"
+        to={null}
+      />
     </div>
   ),
 };
