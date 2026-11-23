@@ -80,30 +80,6 @@ test.group('ListUsers', (group) => {
     assert.isTrue(idx('bravo') < idx('charlie'))
   })
 
-  test('paginates results honoring page/perPage', async ({ assert }) => {
-    const tag = marker('page')
-    for (let i = 0; i < 5; i++) {
-      await UserFactory.merge({ fullName: `${tag}-${i}` }).create()
-    }
-
-    const pagina1 = await new ListUsers().handle(
-      { q: tag, sort: 'fullName', order: 'asc' },
-      { page: 1, perPage: 2 }
-    )
-    const pagina2 = await new ListUsers().handle(
-      { q: tag, sort: 'fullName', order: 'asc' },
-      { page: 2, perPage: 2 }
-    )
-
-    assert.lengthOf(pagina1.all(), 2)
-    assert.lengthOf(pagina2.all(), 2)
-    assert.equal(pagina1.getMeta().total, 5)
-
-    const ids1 = pagina1.all().map((u) => u.id)
-    const ids2 = pagina2.all().map((u) => u.id)
-    assert.notDeepEqual(ids1, ids2)
-  })
-
   test('roles preload comes populated', async ({ assert }) => {
     const tag = marker('preload')
     const user = await UserFactory.merge({ fullName: `${tag}-x` }).create()

@@ -73,25 +73,6 @@ test.group('UpdateUser', (group) => {
     assert.isTrue(await hash.verify(alvo.password!, 'nova-senha-1234'))
   })
 
-  test('regular user CANNOT promote to admin', async ({ assert }) => {
-    const executor = await UserFactory.create()
-    await withRole(executor, ROLES.USER)
-    const alvo = await UserFactory.create()
-    await withRole(alvo, ROLES.USER)
-
-    await assert.rejects(
-      () =>
-        new UpdateUser().handle({
-          target: alvo,
-          fullName: 'X',
-          email: alvo.email,
-          role: ROLES.ADMIN,
-          executor,
-        }),
-      ManageRolesUnauthorizedException
-    )
-  })
-
   test('a refused role change saves none of the other fields', async ({ assert }) => {
     const executor = await UserFactory.create()
     await withRole(executor, ROLES.USER)

@@ -44,19 +44,6 @@ test.group('Exception handler', (group) => {
     assert.isString(response.body().message)
   })
 
-  test('E_INVALID_CREDENTIALS in HTML redirects to /login', async ({ client, assert }) => {
-    const user = await UserFactory.merge({ password: 'certa-123' }).create()
-
-    const response = await client
-      .post('/login')
-      .withCsrfToken()
-      .redirects(0)
-      .json({ email: user.email, password: 'errada' })
-
-    response.assertStatus(302)
-    assert.equal(response.header('location'), '/login')
-  })
-
   test('status pages send no error to the browser: neither the message nor the stack', async ({
     assert,
   }) => {

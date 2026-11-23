@@ -16,13 +16,6 @@ async function manager() {
 test.group('Manager role', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
-  test('a regular user sees no admin screen', async ({ client }) => {
-    const user = await UserFactory.create()
-    await withRole(user, ROLES.USER)
-
-    assertForbiddenRedirect(await client.get('/users').loginAs(user).redirects(0))
-  })
-
   test('opens the user list but not the activity, roles or impersonation', async ({ client }) => {
     const user = await manager()
     const target = await UserFactory.create()

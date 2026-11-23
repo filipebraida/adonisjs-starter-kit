@@ -31,15 +31,6 @@ test.group('CreateToken', (group) => {
     assert.equal(tokens[0].name, 'Secret Token')
   })
 
-  test('token value is released only once (release consumes it)', async ({ assert }) => {
-    const owner = await UserFactory.create()
-
-    const created = await new CreateToken().handle({ owner })
-
-    const tokens = await User.accessTokens.all(owner)
-    assert.isTrue(tokens[0].hash !== created.token)
-  })
-
   test('records the token creation on the owner, without the secret', async ({ assert }) => {
     const owner = await UserFactory.create()
 

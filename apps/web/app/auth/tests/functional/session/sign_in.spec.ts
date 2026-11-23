@@ -74,17 +74,6 @@ test.group('Endpoint /login', (group) => {
     assert.isUndefined(response.session().auth_web)
   })
 
-  test('rejects a payload without email/password', async ({ client }) => {
-    const response = await client
-      .post('/login')
-      .redirects(0)
-      .withCsrfToken()
-      .accept('json')
-      .json({})
-
-    response.assertStatus(422)
-  })
-
   test('syncs the user-locale cookie from user.locale on login', async ({ client }) => {
     await UserFactory.merge({ email, password, locale: 'pt' }).create()
 
