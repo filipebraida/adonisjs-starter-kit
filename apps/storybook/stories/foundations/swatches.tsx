@@ -10,6 +10,12 @@ const TOKENS: { name: string; use: string }[] = [
   { name: "ring", use: "Focus ring" },
   { name: "destructive", use: "Errors, irreversible actions" },
   { name: "warning", use: "Needs attention" },
+  { name: "success", use: "Done, a rising metric" },
+  { name: "info", use: "Neutral news, in progress" },
+  { name: "success-subtle", use: "Fill of a success notice" },
+  { name: "warning-subtle", use: "Fill of a warning notice" },
+  { name: "destructive-subtle", use: "Fill of an error notice" },
+  { name: "info-subtle", use: "Fill of an info notice" },
 ];
 
 export function Swatches() {

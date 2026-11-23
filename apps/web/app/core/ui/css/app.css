@@ -1,11 +1,6 @@
 @import 'tailwindcss';
 @import '@workspace/ui/globals.css';
 
-@theme {
-  /* A rising metric: emerald 500, the same in both themes. */
-  --color-success: oklch(69.6% 0.17 162.48);
-}
-
 /*
  * A help article from the `xl` breakpoint, as documentation pages lay out: its
  * space's articles, the text in a reading column (760px at most), then "On

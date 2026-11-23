@@ -19,7 +19,11 @@ first, then use it.
   one `Button` default. Everything else next to it is `outline`, `ghost` or `link`.
 - **Color means state, not decoration.** `destructive` for errors and
   irreversible actions, `warning` for something that needs attention (the
-  impersonation banner), neutrals for the rest.
+  impersonation banner), `success` for something done or rising, `info` for
+  neutral news; neutrals for the rest. Each state has a solid color, a
+  `-foreground` for text on its fill, a `-subtle` fill and a `-border`, so a
+  notice is `bg-success-subtle border-success-border text-success-foreground`
+  through a variant, never by hand.
 - **Shapes come from variants.** A component never gets a size, radius or color
   through `className`; a missing shape becomes a variant in `packages/ui`
   (`Button shape="pill"`, `Badge size="count"`).

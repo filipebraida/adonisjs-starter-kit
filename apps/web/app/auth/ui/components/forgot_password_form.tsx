@@ -31,7 +31,7 @@ export function ForgotPasswordForm({ className }: { className?: string }) {
           </div>
 
           {sentMessage && (
-            <Alert role="status">
+            <Alert variant="success" role="status">
               <AlertDescription>{sentMessage}</AlertDescription>
             </Alert>
           )}
