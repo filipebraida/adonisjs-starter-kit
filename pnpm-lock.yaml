@@ -33,7 +33,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       adonis-inertia-modal:
-        specifier: 1.0.0
+        specifier: ^1.0.0
         version: 1.0.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/inertia@5.0.5(49f919d816a7cec2c8d294ea171f3dc6))(@inertiajs/react@3.11.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(axios@1.21.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       i18next:
         specifier: ^26.3.4
@@ -127,7 +127,7 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/i18n@3.0.1(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(yaml@2.9.1))(edge.js@6.5.1)
       '@adonisjs/content':
-        specifier: 1.7.1
+        specifier: ^1.7.1
         version: 1.7.1(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/vite@6.0.4(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/shield@9.0.0(7e97706f75557cae17d06ea6540c06e1))(edge.js@6.5.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(@vinejs/vine@4.4.0)
       '@adonisjs/core':
         specifier: ^7.6.0
@@ -172,7 +172,7 @@ importers:
         specifier: ^6.0.4
         version: 6.0.4(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/shield@9.0.0(d1a2a4d591bb432e85ccdd1dc000fb75))(edge.js@6.5.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       '@facteurjs/adonisjs':
-        specifier: 2.1.0
+        specifier: ^2.1.0
         version: 2.1.0(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@vinejs/vine@4.4.0)(luxon@3.7.2)(pg@8.23.1))(@adonisjs/mail@10.4.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@types/luxon@3.7.6)(@types/node@26.6.6)(dayjs@1.11.23)(edge.js@6.5.1)(luxon@3.7.2)(mjml@5.4.1(svgo@4.1.0)(typescript@6.0.3)))(@adonisjs/transmit@3.0.2(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1)))(@boringnode/transmit@0.4.2)(knex@3.2.9(pg@8.23.1))
       '@filipebraida/adonis-auditing':
         specifier: ^2.0.0
@@ -202,7 +202,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       adonis-inertia-modal:
-        specifier: 1.0.0
+        specifier: ^1.0.0
         version: 1.0.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/inertia@5.0.5(49f919d816a7cec2c8d294ea171f3dc6))(@inertiajs/react@3.11.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(axios@1.21.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       axios:
         specifier: ^1.21.1
@@ -211,7 +211,7 @@ importers:
         specifier: ^6.5.1
         version: 6.5.1
       github-slugger:
-        specifier: 2.0.0
+        specifier: ^2.0.0
         version: 2.0.0
       i18next:
         specifier: ^26.3.4
@@ -226,10 +226,10 @@ importers:
         specifier: ^3.7.2
         version: 3.7.2
       mdast-util-to-string:
-        specifier: 4.0.0
+        specifier: ^4.0.0
         version: 4.0.0
       mermaid:
-        specifier: 12.2.0
+        specifier: ^12.2.0
         version: 12.2.0
       mjml:
         specifier: ^5.4.1
@@ -247,34 +247,34 @@ importers:
         specifier: ^17.0.8
         version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       react-markdown:
-        specifier: 10.1.0
+        specifier: ^10.1.0
         version: 10.1.0(@types/react@19.3.0)(react@19.3.1)
       recharts:
-        specifier: 3.10.1
+        specifier: ^3.10.1
         version: 3.10.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
       rehype-slug:
-        specifier: 6.0.0
+        specifier: ^6.0.0
         version: 6.0.0
       remark-gfm:
-        specifier: 4.0.1
+        specifier: ^4.0.1
         version: 4.0.1
       remark-github-blockquote-alert:
-        specifier: 2.1.0
+        specifier: ^2.1.0
         version: 2.1.0
       remark-parse:
-        specifier: 11.0.0
+        specifier: ^11.0.0
         version: 11.0.0
       sharp:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@26.6.6)
       unified:
-        specifier: 11.0.5
+        specifier: ^11.0.5
         version: 11.0.5
       unist-util-visit:
-        specifier: 5.2.0
+        specifier: ^5.2.0
         version: 5.2.0
       usehooks-ts:
         specifier: ^3.1.1
@@ -305,7 +305,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(@japa/runner@5.4.0)
       '@japa/file-system':
-        specifier: 3.0.0
+        specifier: ^3.0.0
         version: 3.0.0(@japa/assert@4.2.0(@japa/runner@5.4.0))(@japa/runner@5.4.0)
       '@japa/plugin-adonisjs':
         specifier: ^5.2.0
@@ -326,7 +326,7 @@ importers:
         specifier: ^3.7.6
         version: 3.7.6
       '@types/mdast':
-        specifier: 4.0.4
+        specifier: ^4.0.4
         version: 4.0.4
       '@types/node':
         specifier: ~26.6.6
@@ -385,7 +385,7 @@ importers:
         specifier: ^9.3.1
         version: 9.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       adonis-inertia-modal:
-        specifier: 1.0.0
+        specifier: ^1.0.0
         version: 1.0.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@adonisjs/core@7.6.0(@adonisjs/assembler@8.6.0(typescript@6.0.3))(@vinejs/vine@4.4.0)(edge.js@6.5.1)(pino-pretty@13.2.0)(youch@4.1.1))(@adonisjs/inertia@5.0.5(49f919d816a7cec2c8d294ea171f3dc6))(@inertiajs/react@3.11.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(axios@1.21.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       class-variance-authority:
         specifier: ^0.7.1
@@ -415,7 +415,7 @@ importers:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
       recharts:
-        specifier: 3.10.1
+        specifier: ^3.10.1
         version: 3.10.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)
       shadcn:
         specifier: ^4.23.0

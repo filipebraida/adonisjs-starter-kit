@@ -13,7 +13,7 @@
     "@adonisjs/inertia": "^5.0.5",
     "@inertiajs/react": "^3.11.0",
     "@workspace/ui": "workspace:*",
-    "adonis-inertia-modal": "1.0.0",
+    "adonis-inertia-modal": "^1.0.0",
     "i18next": "^26.3.4",
     "i18next-icu": "^2.7.0",
     "lucide-react": "^1.72.0",
