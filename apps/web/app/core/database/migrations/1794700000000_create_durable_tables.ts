@@ -4,15 +4,14 @@ import db from '@adonisjs/lucid/services/db'
 import {
   createDurableRunListIndexes,
   createDurableTables,
-  createDurableTransportTables,
   dropDurableRunListIndexes,
   dropDurableTables,
-  dropDurableTransportTables,
 } from '@adonis-agora/durable'
 
 /**
  * The tables of @adonis-agora/durable: the `lucid` store (runs, step
- * checkpoints, signals, schedules) and the `db` transport. The DDL is the
+ * checkpoints, signals, schedules). Dispatched steps travel through Redis
+ * (the `bullmq` transport), not a table. The DDL is the
  * library's own, and config/durable.ts turns `autoSchema` off, so this is the
  * only path that creates them.
  */
@@ -25,11 +24,9 @@ export default class extends BaseSchema {
     await createDurableTables(db, this.db.connectionName)
     // The indexes the run list of the workflows console sorts and filters by.
     await createDurableRunListIndexes(db, this.db.connectionName)
-    await createDurableTransportTables(db)
   }
 
   async down() {
-    await dropDurableTransportTables(db)
     await dropDurableRunListIndexes(db, this.db.connectionName)
     await dropDurableTables(db, this.db.connectionName)
   }

@@ -1,18 +1,33 @@
 import app from '@adonisjs/core/services/app'
-import { defineConfig, stores, transports } from '@adonis-agora/durable'
+import { controlPlanes, defineConfig, stores, transports } from '@adonis-agora/durable'
 
 import { moduleDirs } from '#core/utils/module_dirs'
+import env from '#start/env'
 
 // The runs that carry a mail's secrets (a password reset token, an invite
 // link): kept only long enough to read a failure.
 const MAIL_WORKFLOWS = ['auth.send-password-reset', 'users.send-welcome']
 
+// The suite must not serve the dev server's steps or cancellations, nor the reverse.
+const prefix = app.inTest ? 'durable-test' : 'durable'
+
 export default defineConfig({
-  // Runs, checkpoints and the transport's rows live in Postgres: no Redis.
-  transport: 'db',
+  // Runs and checkpoints live in Postgres; dispatched steps go through a Redis
+  // queue, the same Redis that carries Transmit between nodes.
+  transport: 'bullmq',
   transports: {
-    db: transports.db({ autoCreate: false }),
+    bullmq: transports.bullmq({
+      connection: {
+        host: env.get('REDIS_HOST'),
+        port: env.get('REDIS_PORT'),
+        password: env.get('REDIS_PASSWORD') || undefined,
+      },
+      prefix,
+    }),
   },
+
+  // Cancellations and lifecycle events reach every instance.
+  controlPlane: controlPlanes.redis({ connection: 'main', prefix }),
 
   store: 'lucid',
   stores: {

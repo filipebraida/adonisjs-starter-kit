@@ -20,6 +20,22 @@ services:
       timeout: 5s
       retries: 3
 
+  redis:
+    container_name: '${COMPOSE_PROJECT_NAME}_redis'
+    image: redis:8-alpine
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    networks:
+      - sail
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   pgadmin:
     container_name: '${COMPOSE_PROJECT_NAME}_pgadmin'
     image: dpage/pgadmin4:9
@@ -57,4 +73,5 @@ networks:
 
 volumes:
   pgsql:
+  redis:
   pgadmin:

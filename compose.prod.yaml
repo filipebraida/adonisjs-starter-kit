@@ -1,23 +1,38 @@
-# Production services next to the PM2 app: Postgres only, bound to localhost.
+# Production services next to the PM2 app: Postgres and Redis, bound to localhost.
 #   docker compose --env-file .env -f compose.prod.yaml up -d
 
 services:
   pgsql:
     image: postgres:18-alpine
     environment:
-      POSTGRES_DB: '${DB_DATABASE:?err}'
-      POSTGRES_USER: '${DB_USER:?err}'
-      POSTGRES_PASSWORD: '${DB_PASSWORD:?err}'
+      POSTGRES_DB: "${DB_DATABASE:?err}"
+      POSTGRES_USER: "${DB_USER:?err}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:?err}"
     volumes:
       - pgsql:/var/lib/postgresql
     ports:
-      - '127.0.0.1:5432:5432'
+      - "127.0.0.1:5432:5432"
     restart: always
     healthcheck:
-      test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USER}']
+      test:
+        ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:8-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 3
 
 volumes:
   pgsql:
+  redis:

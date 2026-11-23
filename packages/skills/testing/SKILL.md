@@ -40,7 +40,7 @@ Every side-effect dependency needs an explicit fake so no test reaches real infr
 | Emitter           | `using fake = emitter.fake(['event:name'])` → `EventsBuffer`                                | Per test                      |
 | Workflow dispatch | `setWorkflowEngineResolver(() => t.engine)` with a `createTestEngine()`, in a listener spec | Per test; undone in `cleanup` |
 | Workflow run      | `createTestEngine()` from `@adonis-agora/durable/testing`                                   | Per test                      |
-| Transmit (SSE)    | `transport: null` in `config/transmit.ts` (default)                                         | Global                        |
+| Transmit (SSE)    | nothing to fake: no spec opens an SSE stream; the Redis transport only publishes            | Global                        |
 
 Durable consumers are off outside the web process (`consumers` in `config/durable.ts`), so a functional spec that lets a listener run only enqueues a run inside the test transaction; nothing executes it.
 

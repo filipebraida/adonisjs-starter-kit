@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # Notifications + SSE
 
-In-app notifications persist as rows in the `notifications` table and stream to the user's personal channel in realtime via SSE. Facteur (`@facteurjs/adonisjs`) is the framework: one `Notification<User, Params>` class per type, with a `deliverBy: { database, transmit }` config and per-channel methods (`asDatabaseMessage`, `asTransmitMessage`). Transmit (`@adonisjs/transmit`) is the SSE transport — in-memory / single-node by default (`transport: null` in `config/transmit.ts`); swap to a distributed transport (e.g. Redis) when scaling out to multiple instances. Emission always goes through domain events: actions emit, a listener schedules a durable workflow, and a `ctx.localStep` of that workflow calls `facteur.notification(...).params(...).to([user]).send()` (see [[actions-events]]).
+In-app notifications persist as rows in the `notifications` table and stream to the user's personal channel in realtime via SSE. Facteur (`@facteurjs/adonisjs`) is the framework: one `Notification<User, Params>` class per type, with a `deliverBy: { database, transmit }` config and per-channel methods (`asDatabaseMessage`, `asTransmitMessage`). Transmit (`@adonisjs/transmit`) is the SSE transport, over Redis (`config/transmit.ts`), so an event sent from one node reaches a browser held by another. Emission always goes through domain events: actions emit, a listener schedules a durable workflow, and a `ctx.localStep` of that workflow calls `facteur.notification(...).params(...).to([user]).send()` (see [[actions-events]]).
 
 ## Rules
 
@@ -42,7 +42,7 @@ In-app notifications persist as rows in the `notifications` table and stream to 
 - **Bell UI** subscribes to the per-user channel via `useNotificationsChannel(user.id, onIncoming)`, hits the endpoint to fetch the list when opened, marks-all-seen on open, marks-read on click.
 - **Channel params are whole path segments.** Transmit matches channels like routes (`matchit`): `notifications/users/:id` works, `notifications/user-:id` is read as literal text, never matches, and leaves the channel unauthorized for everyone.
 - **Frontend SSE client** is a lazy singleton: one `EventSource` on `/__transmit/events`, all channels multiplex through it.
-- **SSE transport** — `apps/web/config/transmit.ts` defaults to `transport: null` (in-memory, single-node). The provider does **not** register the `/__transmit/*` routes: `app/notifications/routes.ts` calls `transmit.registerRoutes(...)` behind `auth()` and `transmit.authorize('notifications/users/:id', ...)` so each user reads only their own channel. Swap `transport` for a distributed driver (Redis) when horizontally scaling.
+- **SSE transport** — `apps/web/config/transmit.ts` uses the Redis driver, imported from `@adonisjs/transmit/transports/redis` (the bare `transports` entry also loads the MQTT driver, which needs a package the app does not have). The provider does **not** register the `/__transmit/*` routes: `app/notifications/routes.ts` calls `transmit.registerRoutes(...)` behind `auth()` and `transmit.authorize('notifications/users/:id', ...)` so each user reads only their own channel.
 
 ## Doc refs
 

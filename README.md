@@ -21,7 +21,7 @@ I use this kit to prototype projects with coding agents, and my students use it 
 - **Auth**: sign-up, password reset, Google sign-in, API tokens and admin impersonation.
 - **RBAC** with [`@adonis-agora/authz`](https://github.com/DavideCarvalho/adonis-agora-authz): typed capabilities, roles in code plus institutional roles built on a roles page, enforced by policies.
 - **Audit trail** with [`@filipebraida/adonis-auditing`](https://github.com/filipebraida/adonis-auditing): who did what, when and from where, on an Activity page.
-- **Durable jobs** with [`@adonis-agora/durable`](https://github.com/DavideCarvalho/adonis-agora-durable): mails and notifications run as retryable workflows on Postgres, with no Redis.
+- **Durable jobs** with [`@adonis-agora/durable`](https://github.com/DavideCarvalho/adonis-agora-durable): mails and notifications run as retryable workflows on Postgres, with dispatched steps and the realtime channel on Redis.
 - **Realtime notifications** over SSE, with a bell and an unread badge.
 - **i18n** in English and Portuguese, with typed keys shared by the server and the frontend.
 - **UI** built on shadcn/ui and Tailwind 4, with four layout shells, modals and a dark mode.

@@ -6,6 +6,8 @@ allowBuilds:
   esbuild: true
   exifreader: true
   lefthook: true
+  # BullMQ's optional native msgpack; the JavaScript fallback is enough.
+  msgpackr-extract: false
   msw: true
   sharp: true
 minimumReleaseAgeExclude:

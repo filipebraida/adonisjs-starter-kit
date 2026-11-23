@@ -80,6 +80,7 @@ export default defineConfig({
     () => import('@adonisjs/transmit/transmit_provider'),
     () => import('@facteurjs/adonisjs/facteur_provider'),
     () => import('@adonis-agora/authz/authz_provider'),
+    () => import('@adonisjs/redis/redis_provider'),
     () => import('@adonis-agora/durable/durable_provider'),
     () => import('@adonis-agora/durable/dashboard_provider'),
     () => import('@filipebraida/adonis-auditing/auditing_provider'),
