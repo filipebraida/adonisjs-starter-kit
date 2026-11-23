@@ -68,8 +68,10 @@ every state: **Inputs** (each control), **Shapes** (how a whole form is laid out
 ## Actions, by context
 
 - **Modal**: `outline` Cancel, then the primary, in the footer, right-aligned.
-- **Settings section**: the primary alone, under the fields, on the left. No Cancel: the
-  section is always editable.
+- **Settings section**: saved data opens for reading (`KeyValueList`), with one `outline`
+  action to edit it ("Edit", "Change password"). Editing shows the fields with the primary
+  under them on the left and a `ghost` Cancel beside it; Esc cancels too. A control that
+  applies at once (the theme, a token list) has no read mode.
 - **Auth page** (sign in, sign up): the primary, full width, under the fields. Alternatives
   (Google) are `outline`, under a separator.
 - **Destructive confirmation**: `outline` Cancel, then `destructive`, in the dialog footer,

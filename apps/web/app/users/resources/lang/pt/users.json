@@ -68,7 +68,9 @@
       "settings": "Configurações"
     },
     "title": "Senha",
-    "description": "Use uma senha longa e aleatória, que você não use em nenhum outro lugar."
+    "description": "Use uma senha longa e aleatória, que você não use em nenhum outro lugar.",
+    "change": "Trocar senha",
+    "hint": "Use uma senha longa, que você não use em nenhum outro lugar."
   },
   "profile": {
     "breadcrumbs": {
@@ -76,7 +78,13 @@
     },
     "title": "Perfil",
     "description": "Como os outros veem você no app.",
-    "email_locked": "Só um administrador altera o e-mail."
+    "email_locked": "Só um administrador altera o e-mail.",
+    "edit": "Editar",
+    "name": "Nome",
+    "email": "E-mail",
+    "role": "Papel",
+    "not_set": "Não informado",
+    "no_role": "Nenhum"
   },
   "tokens": {
     "breadcrumbs": {

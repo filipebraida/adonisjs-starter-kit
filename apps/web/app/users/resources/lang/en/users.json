@@ -68,7 +68,9 @@
       "settings": "Settings"
     },
     "title": "Password",
-    "description": "Use a long, random password that you use nowhere else."
+    "description": "Use a long, random password that you use nowhere else.",
+    "change": "Change password",
+    "hint": "Use a long password that you use nowhere else."
   },
   "profile": {
     "breadcrumbs": {
@@ -76,7 +78,13 @@
     },
     "title": "Profile",
     "description": "How others see you in the app.",
-    "email_locked": "Only an administrator changes the email."
+    "email_locked": "Only an administrator changes the email.",
+    "edit": "Edit",
+    "name": "Name",
+    "email": "E-mail",
+    "role": "Role",
+    "not_set": "Not set",
+    "no_role": "None"
   },
   "tokens": {
     "breadcrumbs": {

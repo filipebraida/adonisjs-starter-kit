@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import SettingsPage from "@web/app/users/ui/pages/settings";
 
@@ -92,4 +93,16 @@ export const RegularUser: Story = { render: () => page("user", {}) };
 export const WhileImpersonating: Story = {
   render: () =>
     page("user", {}, { impersonation: { returnTo: "Ada Lovelace" } }),
+};
+
+/** The profile reads until "Edit"; Cancel, or Esc, puts it back without saving. */
+export const EditingTheProfile: Story = {
+  render: () => page("admin", { tokens: TOKENS }),
+  async play({ canvas, userEvent }) {
+    await expect(canvas.queryByLabelText("Full name")).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Edit" }));
+    await expect(canvas.getByLabelText("Full name")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Cancel" }));
+    await expect(canvas.queryByLabelText("Full name")).toBeNull();
+  },
 };

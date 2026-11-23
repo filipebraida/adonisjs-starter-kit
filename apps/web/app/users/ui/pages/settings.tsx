@@ -7,8 +7,7 @@ import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'
 import { HelpLink } from '#help/ui/components/help/help_link'
 import { AppearanceForm } from '#users/ui/components/appearance_form'
-import { PasswordForm } from '#users/ui/components/password_form'
-import { ProfileForm } from '#users/ui/components/profile_form'
+import { PasswordSection, ProfileSection } from '#users/ui/components/account_sections'
 import { SettingsSection } from '#users/ui/components/settings_section'
 import { TokensSection } from '#users/ui/components/tokens_section'
 
@@ -38,7 +37,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
           help={<HelpLink anchor="users.settings_profile" />}
           description={t('users.profile.description')}
         >
-          <ProfileForm user={profile} />
+          <ProfileSection user={profile} />
         </SettingsSection>
 
         <SettingsSection
@@ -46,7 +45,7 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
           help={<HelpLink anchor="users.settings_password" />}
           description={t('users.password.description')}
         >
-          <PasswordForm />
+          <PasswordSection />
         </SettingsSection>
 
         <SettingsSection

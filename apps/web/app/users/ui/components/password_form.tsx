@@ -13,7 +13,8 @@ import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 
 import { toast } from '@workspace/ui/hooks/use-toast'
 
-export function PasswordForm() {
+/** `onClose` closes the form back to reading: after a save, and on Cancel. */
+export function PasswordForm({ onClose }: { onClose?: () => void }) {
   const { t } = useTranslation()
 
   const { data, setData, errors, put, reset, processing } = useForm({
@@ -28,6 +29,7 @@ export function PasswordForm() {
       preserveScroll: true,
       onSuccess: () => {
         reset()
+        onClose?.()
 
         toast(t('users.action.toast.type_success'), {
           description: t('users.action.toast.settings_updated', {
@@ -73,9 +75,16 @@ export function PasswordForm() {
           </Field>
 
           <Field orientation="responsive">
-            <Button type="submit" disabled={processing}>
-              {t('users.action.actions.save')}
-            </Button>
+            <div className="flex gap-2">
+              <Button type="submit" disabled={processing}>
+                {t('users.action.actions.save')}
+              </Button>
+              {onClose && (
+                <Button type="button" variant="ghost" onClick={onClose}>
+                  {t('users.action.actions.cancel')}
+                </Button>
+              )}
+            </div>
           </Field>
         </FieldGroup>
       </FieldSet>

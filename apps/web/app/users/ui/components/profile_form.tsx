@@ -24,9 +24,11 @@ import type { Data } from '@generated/data'
 
 interface Props {
   user: Data.Users.User.Variants['forProfile']
+  /** Closes the form back to reading: after a save, and on Cancel. */
+  onClose?: () => void
 }
 
-export function ProfileForm({ user }: Props) {
+export function ProfileForm({ user, onClose }: Props) {
   const { t } = useTranslation()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
@@ -54,6 +56,7 @@ export function ProfileForm({ user }: Props) {
       preserveScroll: true,
       onSuccess: () => {
         setPreviewUrl(null)
+        onClose?.()
 
         toast(t('users.action.toast.type_success'), {
           description: t('users.action.toast.settings_updated', {
@@ -126,9 +129,16 @@ export function ProfileForm({ user }: Props) {
           )}
 
           <Field orientation="responsive">
-            <Button type="submit" disabled={processing}>
-              {t('users.action.actions.save')}
-            </Button>
+            <div className="flex gap-2">
+              <Button type="submit" disabled={processing}>
+                {t('users.action.actions.save')}
+              </Button>
+              {onClose && (
+                <Button type="button" variant="ghost" onClick={onClose}>
+                  {t('users.action.actions.cancel')}
+                </Button>
+              )}
+            </div>
           </Field>
         </FieldGroup>
       </FieldSet>

@@ -7,6 +7,7 @@ import {
   AlertTitle,
 } from "@workspace/ui/components/alert";
 import { Badge } from "@workspace/ui/components/badge";
+import { KeyValue, KeyValueList } from "@workspace/ui/components/key-value";
 import { ValueChange } from "@workspace/ui/components/value-change";
 
 const meta = {
@@ -78,6 +79,22 @@ export const Changes: Story = {
         from="https://example.com/a.png"
         to={null}
       />
+    </div>
+  ),
+};
+
+/** Saved data shown for reading, before anyone asks to edit it: label on the left, value on the right. */
+export const ReadOnlyData: Story = {
+  render: () => (
+    <div className="max-w-md">
+      <KeyValueList>
+        <KeyValue label="Name">Ada Lovelace</KeyValue>
+        <KeyValue label="E-mail">ada@example.com</KeyValue>
+        <KeyValue label="Role">Administrator</KeyValue>
+        <KeyValue label="Token" mono>
+          oat_1a2b3c
+        </KeyValue>
+      </KeyValueList>
     </div>
   ),
 };
