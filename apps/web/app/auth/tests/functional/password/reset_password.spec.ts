@@ -1,5 +1,6 @@
 import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
+import limiter from '@adonisjs/limiter/services/main'
 import { DateTime } from 'luxon'
 import { test } from '@japa/runner'
 
@@ -9,6 +10,7 @@ import { UserFactory } from '#auth/database/factories/user'
 
 test.group('Endpoint /reset-password/:token', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+  group.each.setup(() => limiter.clear())
 
   test('valid POST changes the password and redirects to /login', async ({
     client,
@@ -122,5 +124,28 @@ test.group('Endpoint /reset-password/:token', (group) => {
 
     response.assertStatus(302)
     assert.equal(response.header('location'), '/forgot-password')
+  })
+
+  test('a reset lifts the sign-in lockout of that address and e-mail', async ({
+    client,
+    assert,
+  }) => {
+    const user = await UserFactory.merge({ password: 'old-password-1' }).create()
+    const signIn = (password: string) =>
+      client.post('/login').withCsrfToken().redirects(0).json({ email: user.email, password })
+
+    for (const _attempt of Array.from({ length: 5 })) await signIn('wrong-password')
+    const locked = await signIn('old-password-1')
+    assert.equal(locked.header('location'), '/login')
+
+    const { token } = await new PasswordResetService().generateToken(user)
+    await client
+      .post(`/reset-password/${token}`)
+      .redirects(0)
+      .withCsrfToken()
+      .json({ password: 'new-password-2', passwordConfirmation: 'new-password-2' })
+
+    const afterReset = await signIn('new-password-2')
+    assert.notEqual(afterReset.header('location'), '/login')
   })
 })

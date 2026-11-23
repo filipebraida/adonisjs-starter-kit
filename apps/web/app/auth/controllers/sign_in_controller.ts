@@ -1,10 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { type Limiter } from '@adonisjs/limiter'
-import limiter from '@adonisjs/limiter/services/main'
 
 import { afterAuthRedirectRoute } from '#config/auth'
 
 import SignIn from '#auth/actions/sign_in'
+import LoginLimiter from '#auth/services/login_limiter'
 import { returnToKey } from '#auth/middleware/auth_middleware'
 import { signInValidator } from '#auth/validators/auth'
 
@@ -26,15 +25,7 @@ export function isSafeInternalPath(path?: string | null): path is string {
 export default class SignInController {
   static readonly public = true
 
-  private loginLimiter: Limiter
-
-  constructor() {
-    this.loginLimiter = limiter.use({
-      requests: 5,
-      duration: '1 min',
-      blockDuration: '1 min',
-    })
-  }
+  private loginLimiter = new LoginLimiter()
 
   async show({ inertia }: HttpContext) {
     return inertia.render('auth/sign_in', {})
@@ -44,9 +35,9 @@ export default class SignInController {
     const { email, password } = await request.validateUsing(signInValidator)
 
     const returnTo = session.pull(returnToKey, null)
-    const key = `login_${request.ip()}_${email}`
+    const key = this.loginLimiter.key(request.ip(), email)
 
-    const [errors, user] = await this.loginLimiter.penalize(key, async () => {
+    const [errors, user] = await this.loginLimiter.limiter.penalize(key, async () => {
       return new SignIn().handle({ email, password })
     })
 

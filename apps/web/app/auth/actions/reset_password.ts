@@ -1,4 +1,5 @@
 import User from '#auth/models/user'
+import LoginLimiter from '#auth/services/login_limiter'
 import PasswordResetService from '#auth/services/password_reset_service'
 
 export interface ResetPasswordInput {
@@ -22,7 +23,7 @@ export default class ResetPassword {
     user.password = input.password
     await user.save()
 
-    await Promise.all([service.deleteTokens(user), service.clearRateLimits(input.ip, user.email)])
+    await Promise.all([service.deleteTokens(user), new LoginLimiter().clear(input.ip, user.email)])
 
     return user
   }
