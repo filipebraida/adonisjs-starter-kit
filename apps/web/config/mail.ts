@@ -29,8 +29,10 @@ const mailConfig = defineConfig({
       requireTLS: false,
     }),
 
+    // Optional: the default mailer is SMTP, so the app boots without a Resend
+    // account and only a send through this mailer needs the key.
     resend: transports.resend({
-      key: env.get('RESEND_API_KEY'),
+      key: env.get('RESEND_API_KEY', ''),
       baseUrl: 'https://api.resend.com',
     }),
   },
