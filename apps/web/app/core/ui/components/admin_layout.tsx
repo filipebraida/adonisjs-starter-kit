@@ -9,13 +9,14 @@ import { AppSidebar } from '#core/ui/components/app_sidebar'
 import Breadcrumb from '#core/ui/components/breadcrumbs'
 import { NavUser } from '#core/ui/components/nav_user'
 import { NotificationBell } from '#core/ui/components/notification_bell'
+import { TabBar } from '#core/ui/components/tab_bar'
 import { getCookie } from '#core/ui/hooks/cookie'
 
 import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getAdminNav, getNavUser, userRoleLabel } from '#core/ui/app/navigation'
+import { getAdminNav, getNavUser, getTabs, userRoleLabel } from '#core/ui/app/navigation'
 import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
@@ -60,7 +61,11 @@ export default function AdminLayout({
           <SidebarInset className="overflow-hidden">
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
               <div className="flex flex-row items-center gap-2">
-                <SidebarTrigger className="-ml-1" label={t('core.layout.sidebar.toggle')} />
+                {/* On a phone the tab bar takes the sidebar's place. */}
+                <SidebarTrigger
+                  className="-ml-1 hidden md:inline-flex"
+                  label={t('core.layout.sidebar.toggle')}
+                />
 
                 <Breadcrumb breadcrumbs={breadcrumbs} />
               </div>
@@ -71,9 +76,14 @@ export default function AdminLayout({
               </div>
             </header>
             {/* A div: SidebarInset is already the page's <main>. */}
-            <div className="flex flex-1 flex-col gap-4 py-4 px-6 overflow-y-auto">{children}</div>
+            <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-6 pt-4 pb-24 md:pb-4">
+              {children}
+            </div>
           </SidebarInset>
         </SidebarProvider>
+        <div className="md:hidden">
+          <TabBar items={getTabs(t, 'admin')} area="admin" />
+        </div>
       </div>
       <ModalRoot />
     </>

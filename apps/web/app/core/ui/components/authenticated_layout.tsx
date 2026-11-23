@@ -7,15 +7,15 @@ import { Toaster } from '@workspace/ui/components/sonner'
 import { AppLogo } from '#core/ui/components/app_logo'
 import Breadcrumb from '#core/ui/components/breadcrumbs'
 import { NavHeaderMain } from '#core/ui/components/nav_header_main'
-import { NavHeaderMobile } from '#core/ui/components/nav_header_mobile'
 import { NavUser } from '#core/ui/components/nav_user'
 import { NotificationBell } from '#core/ui/components/notification_bell'
+import { TabBar } from '#core/ui/components/tab_bar'
 
 import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getMainNav, getNavUser, userRoleLabel } from '#core/ui/app/navigation'
+import { getMainNav, getNavUser, getTabs, userRoleLabel } from '#core/ui/app/navigation'
 import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
@@ -52,8 +52,6 @@ export default function AuthenticatedLayout({
         <ImpersonationBanner />
         <div className="border-sidebar-border/80 border-b shrink-0">
           <div className="mx-auto flex h-16 items-center px-6 max-w-7xl">
-            <NavHeaderMobile items={navMain} />
-
             <AppLogo />
 
             <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
@@ -76,9 +74,13 @@ export default function AuthenticatedLayout({
             </div>
           </div>
 
-          <main className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4 px-6">
+          {/* On a phone the tab bar covers the foot of the page: the content stops above it. */}
+          <main className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4 px-6 pb-24 lg:pb-0">
             {children}
           </main>
+        </div>
+        <div className="lg:hidden">
+          <TabBar items={getTabs(t, 'app')} area="app" />
         </div>
       </div>
       <ModalRoot />

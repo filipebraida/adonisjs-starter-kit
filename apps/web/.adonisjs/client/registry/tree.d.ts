@@ -57,6 +57,7 @@ export interface ApiDefinition {
     live: typeof routes['health.live']
     ready: typeof routes['health.ready']
   }
+  more: typeof routes['more']
   marketing: {
     show: typeof routes['marketing.show']
   }

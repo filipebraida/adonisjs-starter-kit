@@ -21,16 +21,18 @@
         "system": "Sistema"
       }
     },
-    "navMobile": {
-      "title": "Menu de navegação"
-    },
     "switchLanguage": "Trocar idioma",
     "sidebar": {
       "toggle": "Mostrar ou esconder o menu",
       "title": "Navegação",
       "description": "As seções do sistema."
     },
-    "breadcrumb": "Trilha"
+    "breadcrumb": "Trilha",
+    "more": {
+      "title": "Mais",
+      "account": "Conta"
+    },
+    "tabs": "Navegação principal"
   },
   "table": {
     "no_results": "Nenhum resultado encontrado.",

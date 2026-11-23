@@ -41,6 +41,7 @@ export type ScannedRoutes = {
     'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
+    'more': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }
@@ -113,6 +114,7 @@ export type ScannedRoutes = {
     'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
+    'more': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_up.show': { paramsTuple?: []; params?: {} }
@@ -161,6 +163,7 @@ export type ScannedRoutes = {
     'durable_dashboard.compat': { paramsTuple?: []; params?: {} }
     'health.live': { paramsTuple?: []; params?: {} }
     'health.ready': { paramsTuple?: []; params?: {} }
+    'more': { paramsTuple?: []; params?: {} }
     'marketing.show': { paramsTuple?: []; params?: {} }
     'auth.sign_in.show': { paramsTuple?: []; params?: {} }
     'auth.sign_up.show': { paramsTuple?: []; params?: {} }

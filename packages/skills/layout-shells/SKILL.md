@@ -21,13 +21,14 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
 - **The shell does not name the page**: each page renders its own `<Head title={t('...')} />` inside the shell — see [[inertia]].
 - **Shell decisions are hardcoded**: variant, collapsible, direction, max-width live inside the shell file. Do not accept them as props.
 - **Header widgets are shared** across shells that need them (`<NotificationBell />`, `<ToggleTheme />`, `<LanguageSwitcher />`, `<NavUser />`) — same visual identity, imported directly by each shell that mounts them.
-- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getAdminNav(t)`, `getNavUser(t)`). Nav items support a `can: CAPABILITIES_<MOD>.x` field for RBAC gating (filtered by `useAllows()`) — see [[authorization]]. Nav items are never hardcoded inside the shell file.
+- **Nav configs live in a single file** and are exposed as functions (`getMainNav(t)`, `getAdminNav(t)`, `getNavUser(t, area)`, `getTabs(t, area)`, `getMoreGroups(t, area)`), in `#core/ui/app/navigation`. Nav items support a `can: CAPABILITIES_<MOD>.x` field for RBAC gating (filtered by `useAllows()`) — see [[authorization]]. Nav items are never hardcoded inside the shell file.
 - **Providers stay at the root client entry**, not inside shells. Theme, i18n, Tuyau, modal stack are mounted once so every shell renders inside them.
 - **Adding a shell** is only worth it when the shape is genuinely new (installer wizard chrome, kiosk, checkout). Otherwise reuse an existing shell — the same page can render inside two different shells if two contexts need it.
 
 ## Shell inventory (this kit)
 
-- **`AdminLayout`** (`#core/ui/components/admin_layout`) — the logged-in admin shell: collapsible sidebar fed by `getAdminNav(t)`. Wraps the administration pages (users list, activity).
+- **`AdminLayout`** (`#core/ui/components/admin_layout`) — the logged-in admin shell: collapsible sidebar fed by `getAdminNav(t)`. Wraps the administration pages (users list, activity). It holds admin pages only; the way back to the app is in the user menu.
+- **On a phone** both logged-in shells trade their menus for a `TabBar` at the foot of the screen (`getTabs(t, area)`: the everyday destinations, three or four), whose last tab opens the "More" page (`/more?area=…`, `core/ui/pages/more.tsx`) with everything else, grouped by `getMoreGroups(t, area)`. A nav item's `count` shows as a badge in the tab bar.
 - **`AuthenticatedLayout`** (`#core/ui/components/authenticated_layout`) — the logged-in shell with a top nav fed by `getMainNav(t)`. Wraps the everyday pages (dashboard, settings).
 - **`AuthLayout`** (`#auth/ui/components/auth_layout`) — the pre-login shell (sign-in, sign-up, password flows). Simpler, no nav.
 - **`MarketingLayout`** (`#marketing/ui/components/marketing_layout`) — the public landing chrome (header + footer); the page composes its sections (`<Hero>`, `<FeatureShowcase>`, …) inside it.
@@ -57,7 +58,7 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 
 ### Add a nav item
 
-Edit the navigation config file — `getMainNav(t)` for the top nav, `getAdminNav(t)` for the admin sidebar, `getNavUser(t)` for the user dropdown (shared across logged-in shells). Set `can: CAPABILITIES_<MOD>.x` to gate visibility. Do not put the item inside the shell file.
+Edit the navigation config file — `getMainNav(t)` for the top nav, `getAdminNav(t)` for the admin sidebar, `getNavUser(t, area)` for the user dropdown (it offers the admin panel in the app and the way back in the admin), `getTabs(t, area)` for the phone's tab bar; what is in neither reaches the "More" page on its own. Set `can: CAPABILITIES_<MOD>.x` to gate visibility. Do not put the item inside the shell file.
 
 ### Delete an unused shell in a downstream project
 

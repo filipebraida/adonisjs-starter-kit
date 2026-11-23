@@ -489,6 +489,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/core/controllers/readiness_controller').default['handle']>>>
     }
   }
+  'more': {
+    methods: ["GET","HEAD"]
+    pattern: '/more'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#core/validators/more').moreValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/core/controllers/more_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/core/controllers/more_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#app/core/controllers/more_controller').default['handle']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'marketing.show': {
     methods: ["GET","HEAD"]
     pattern: '/'

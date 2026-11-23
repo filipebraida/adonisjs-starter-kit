@@ -230,6 +230,12 @@ const routes = {
     tokens: [[0,"health"],[0,"ready"]],
     types: placeholder as Registry['health.ready']['types'],
   },
+  'more': {
+    methods: ["GET","HEAD"],
+    pattern: '/more',
+    tokens: [[0,"more"]],
+    types: placeholder as Registry['more']['types'],
+  },
   'marketing.show': {
     methods: ["GET","HEAD"],
     pattern: '/',

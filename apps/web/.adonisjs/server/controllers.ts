@@ -19,6 +19,7 @@ export const controllers = {
   },
   core: {
     Liveness: () => import('#app/core/controllers/liveness_controller'),
+    More: () => import('#app/core/controllers/more_controller'),
     Readiness: () => import('#app/core/controllers/readiness_controller'),
   },
   help: {

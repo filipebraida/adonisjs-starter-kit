@@ -21,16 +21,18 @@
         "system": "System"
       }
     },
-    "navMobile": {
-      "title": "Navigation menu"
-    },
     "switchLanguage": "Switch language",
     "sidebar": {
       "toggle": "Toggle sidebar",
       "title": "Navigation",
       "description": "The sections of the app."
     },
-    "breadcrumb": "Breadcrumb"
+    "breadcrumb": "Breadcrumb",
+    "more": {
+      "title": "More",
+      "account": "Account"
+    },
+    "tabs": "Main navigation"
   },
   "table": {
     "no_results": "No results found.",

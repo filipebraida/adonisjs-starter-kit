@@ -178,3 +178,8 @@
     transparent
   ) !important;
 }
+
+/* Room for the phone's home indicator under a bar fixed to the bottom. */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
