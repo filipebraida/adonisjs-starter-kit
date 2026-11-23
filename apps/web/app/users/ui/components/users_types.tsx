@@ -12,7 +12,7 @@ export type Role = {
 
 /** A role's display name: translated for roles in code, the name itself for institutional ones. */
 export function roleLabel(t: TFunction, role: string): string {
-  return isStructuralRole(role) ? t(`users.roles.${role}.name`) : role
+  return isStructuralRole(role) ? t(`auth.role_names.${role}.name`) : role
 }
 
 /**

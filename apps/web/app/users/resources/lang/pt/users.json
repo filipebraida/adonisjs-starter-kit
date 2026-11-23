@@ -221,20 +221,6 @@
       "default_message": "Obrigado por se juntar à nossa comunidade. Explore nossos recursos e comece sua jornada conosco. Se tiver alguma dúvida, entre em contato!"
     }
   },
-  "roles": {
-    "user": {
-      "name": "Usuário",
-      "description": "Usuário Autenticado"
-    },
-    "manager": {
-      "name": "Gerente",
-      "description": "Gerencia usuários"
-    },
-    "admin": {
-      "name": "Administrador",
-      "description": "Superusuário"
-    }
-  },
   "activity": {
     "page": {
       "title": "Atividade",

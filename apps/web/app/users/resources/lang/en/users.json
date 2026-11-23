@@ -221,20 +221,6 @@
       "default_message": "Thank you for joining our community. Explore our features and start your journey with us. If you have any questions, feel free to reach out!"
     }
   },
-  "roles": {
-    "user": {
-      "name": "User",
-      "description": "Authenticated User"
-    },
-    "manager": {
-      "name": "Manager",
-      "description": "Manages users"
-    },
-    "admin": {
-      "name": "Administrator",
-      "description": "Super User"
-    }
-  },
   "activity": {
     "page": {
       "title": "Activity",

@@ -21,6 +21,13 @@ import { Main } from '#core/ui/components/main'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import type { RoleInMatrix } from '#auth/queries/roles_matrix'
+import {
+  byDomain,
+  capabilityLabel,
+  domainLabel,
+  roleDescription,
+  roleName,
+} from '#auth/ui/components/role_labels'
 
 type PageProps = InertiaProps<{
   roles: RoleInMatrix[]
@@ -59,7 +66,9 @@ function RoleCard({ role, vocabulary }: { role: RoleInMatrix; vocabulary: string
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span className="font-mono">{role.name}</span>
+          <span className={role.structural ? undefined : 'font-mono'}>
+            {roleName(t, role.name)}
+          </span>
           <Badge variant={role.structural ? 'secondary' : 'outline'}>
             {role.structural ? t('auth.roles.structural') : t('auth.roles.institutional')}
           </Badge>
@@ -95,16 +104,27 @@ function ReadCapabilities({ role }: { role: RoleInMatrix }) {
   return (
     <>
       {role.structural && (
-        <p className="mb-3 text-sm text-muted-foreground">{t('auth.roles.in_code')}</p>
+        <p className="mb-3 text-sm text-muted-foreground">
+          {roleDescription(t, role.name)} {t('auth.roles.in_code')}
+        </p>
       )}
       {role.capabilities.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t('auth.roles.no_capabilities')}</p>
       ) : (
-        <div className="flex flex-wrap gap-1.5">
-          {role.capabilities.map((capability) => (
-            <Badge key={capability} variant="outline">
-              {capability}
-            </Badge>
+        <div className="space-y-3">
+          {byDomain(role.capabilities).map(([domain, capabilities]) => (
+            <div key={domain}>
+              <div className="mb-1 text-xs font-medium text-muted-foreground">
+                {domainLabel(t, domain)}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {capabilities.map((capability) => (
+                  <Badge key={capability} variant="outline" title={capability}>
+                    {capabilityLabel(t, capability)}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -126,14 +146,6 @@ function EditCapabilities({
     capabilities: role.capabilities,
   })
 
-  // Grouped by domain (the prefix before the dot): it is by domain that one
-  // reasons about a capability, and one flat list would be unreadable.
-  const byDomain = new Map<string, string[]>()
-  for (const capability of vocabulary) {
-    const domain = capability.split('.')[0]
-    byDomain.set(domain, [...(byDomain.get(domain) ?? []), capability])
-  }
-
   function toggle(capability: string, checked: boolean) {
     setData(
       'capabilities',
@@ -145,19 +157,23 @@ function EditCapabilities({
 
   return (
     <div className="space-y-4">
-      {[...byDomain.entries()].map(([domain, capabilities]) => (
+      {byDomain(vocabulary).map(([domain, capabilities]) => (
         <fieldset key={domain}>
-          <legend className="mb-1 font-mono text-xs uppercase tracking-wide text-muted-foreground">
-            {domain}
+          <legend className="mb-1 text-xs font-medium text-muted-foreground">
+            {domainLabel(t, domain)}
           </legend>
           <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
             {capabilities.map((capability) => (
-              <label key={capability} className="flex items-center gap-2 font-mono text-xs">
+              <label
+                key={capability}
+                className="flex items-center gap-2 text-sm"
+                title={capability}
+              >
                 <Checkbox
                   checked={data.capabilities.includes(capability)}
                   onCheckedChange={(checked) => toggle(capability, checked === true)}
                 />
-                {capability.split('.').slice(1).join('.')}
+                {capabilityLabel(t, capability)}
               </label>
             ))}
           </div>
