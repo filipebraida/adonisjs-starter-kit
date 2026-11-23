@@ -12,6 +12,7 @@
       "settings": "Settings",
       "help": "Help",
       "adminPanel": "Admin panel",
+      "backToApp": "Back to the app",
       "logout": "Log out",
       "theme": {
         "label": "Theme",

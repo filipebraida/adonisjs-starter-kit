@@ -19,6 +19,9 @@ interface NavMainSection {
 
 export type NavMainItem = NavMainSection | ItemNav
 
+/** Which shell a page is in: the app's own, or the administration. */
+export type ShellArea = 'app' | 'admin'
+
 export function isSection(item: NavMainSection | ItemNav): item is NavMainSection {
   return 'items' in item
 }
@@ -38,5 +41,7 @@ export type NavUserOptionsGroup = {
 
 export interface NavUserProps {
   user: Data.Users.User.Variants['forSharedProps']
+  /** The user's role, shown under the name. */
+  role: string | null
   options: NavUserOptionsGroup[]
 }

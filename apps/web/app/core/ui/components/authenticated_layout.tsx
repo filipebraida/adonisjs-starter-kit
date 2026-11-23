@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { ModalRoot } from 'adonis-inertia-modal/react'
+import { useAuthz } from '@adonis-agora/authz-react'
 import { Toaster } from '@workspace/ui/components/sonner'
 
 import { AppLogo } from '#core/ui/components/app_logo'
@@ -14,7 +15,7 @@ import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getMainNav, getNavUser } from '#core/ui/app/navigation'
+import { getMainNav, getNavUser, userRoleLabel } from '#core/ui/app/navigation'
 import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
@@ -35,7 +36,8 @@ export default function AuthenticatedLayout({
   const user = useUser()
   const { t } = useTranslation()
   const navMain = getMainNav(t)
-  const navUser = getNavUser(t)
+  const navUser = getNavUser(t, 'app')
+  const { roles } = useAuthz()
 
   useFlashToasts()
 
@@ -61,7 +63,7 @@ export default function AuthenticatedLayout({
             <div className="ml-auto flex items-center space-x-2">
               <div className="relative flex items-center space-x-1">
                 <NotificationBell />
-                <NavUser user={user} options={navUser} />
+                <NavUser user={user} role={userRoleLabel(t, roles)} options={navUser} />
               </div>
             </div>
           </div>

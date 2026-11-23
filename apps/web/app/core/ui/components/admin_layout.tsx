@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { ModalRoot } from 'adonis-inertia-modal/react'
+import { useAuthz } from '@adonis-agora/authz-react'
 import { Toaster } from '@workspace/ui/components/sonner'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@workspace/ui/components/sidebar'
 
@@ -14,7 +15,7 @@ import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 
-import { getAdminNav, getNavUser } from '#core/ui/app/navigation'
+import { getAdminNav, getNavUser, userRoleLabel } from '#core/ui/app/navigation'
 import { ImpersonationBanner } from '#core/ui/components/impersonation_banner'
 
 interface BreadcrumbItemProps {
@@ -35,7 +36,8 @@ export default function AdminLayout({
   const user = useUser()
   const { t } = useTranslation()
   const navMain = getAdminNav(t)
-  const navUser = getNavUser(t)
+  const navUser = getNavUser(t, 'admin')
+  const { roles } = useAuthz()
   const defaultOpen = getCookie('sidebar_state') !== 'false'
 
   useFlashToasts()
@@ -65,7 +67,7 @@ export default function AdminLayout({
 
               <div className="flex flex-row items-center gap-2 ml-auto">
                 <NotificationBell />
-                <NavUser user={user} options={navUser} />
+                <NavUser user={user} role={userRoleLabel(t, roles)} options={navUser} />
               </div>
             </header>
             {/* A div: SidebarInset is already the page's <main>. */}

@@ -12,6 +12,7 @@
       "settings": "Configurações",
       "help": "Ajuda",
       "adminPanel": "Painel admin",
+      "backToApp": "Voltar ao sistema",
       "logout": "Sair",
       "theme": {
         "label": "Tema",

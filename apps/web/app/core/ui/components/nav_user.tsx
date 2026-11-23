@@ -24,7 +24,7 @@ const THEMES = [
   { value: 'system', icon: Monitor },
 ] as const
 
-export function NavUser({ user, options }: NavUserProps) {
+export function NavUser({ user, role, options }: NavUserProps) {
   const allows = useAllows()
   const visibleGroups = options
     .map((group) => group.filter((option) => allows(option.can)))
@@ -43,6 +43,7 @@ export function NavUser({ user, options }: NavUserProps) {
             <UserAvatar user={user} />
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{user.fullName ?? ''}</span>
+              {role && <span className="truncate text-xs">{role}</span>}
               <span className="truncate text-xs">{user.email}</span>
             </div>
           </div>
