@@ -22,6 +22,24 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
+// Blocked site data (a private window, a strict policy) makes localStorage
+// throw; the page still mounts, with the default theme and no memory of it.
+function readTheme(storageKey: string): Theme | null {
+  try {
+    return localStorage.getItem(storageKey) as Theme | null;
+  } catch {
+    return null;
+  }
+}
+
+function writeTheme(storageKey: string, theme: Theme) {
+  try {
+    localStorage.setItem(storageKey, theme);
+  } catch {
+    // The choice holds for this visit only.
+  }
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = "system",
@@ -29,7 +47,7 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+    () => readTheme(storageKey) || defaultTheme,
   );
 
   useEffect(() => {
@@ -53,7 +71,7 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
+      writeTheme(storageKey, theme);
       setTheme(theme);
     },
     defaultTheme,
