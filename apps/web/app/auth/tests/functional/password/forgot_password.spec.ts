@@ -4,6 +4,7 @@ import { test } from '@japa/runner'
 
 import ResetPasswordToken from '#auth/models/reset_password_token'
 import { UserFactory } from '#auth/database/factories/user'
+import { marker } from '#tests/helpers/marker'
 
 test.group('Endpoint /forgot-password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -55,6 +56,20 @@ test.group('Endpoint /forgot-password', (group) => {
     assert.equal(unknown.header('location'), known.header('location'))
     assert.isString(unknown.flashMessages().success)
     assert.equal(unknown.flashMessages().success, known.flashMessages().success)
+  })
+
+  test('finds the account whatever the e-mail looks like after normalizing', async ({ client }) => {
+    using fake = emitter.fake(['auth:forgot_password'])
+    const local = marker('ada')
+    await UserFactory.merge({ email: `${local.toLowerCase()}+work@googlemail.com` }).create()
+
+    await client
+      .post('/forgot-password')
+      .redirects(0)
+      .withCsrfToken()
+      .json({ email: `${local}+work@googlemail.com` })
+
+    fake.assertEmitted('auth:forgot_password')
   })
 
   test('rejects a malformed email', async ({ client }) => {

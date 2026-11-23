@@ -18,9 +18,13 @@ export const signInValidator = vine.create({
   password: vine.string(),
 })
 
-/** The forgot password form. The email may be unknown: the action stays silent about it. */
+/**
+ * The forgot password form. The email may be unknown: the action stays silent about it.
+ * Normalized as the model stores it (trimmed, lower case) and no further, or an
+ * address with a `+` tag or a provider alias would never find its account.
+ */
 export const forgotPasswordValidator = vine.create({
-  email: vine.string().email().trim().normalizeEmail({ gmail_remove_dots: false }),
+  email: vine.string().email().toLowerCase().trim(),
 })
 
 /** The new password chosen from the reset link, typed twice. The token comes from the URL. */
