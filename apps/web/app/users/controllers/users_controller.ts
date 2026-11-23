@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import CreateUser from '#users/actions/create_user'
 import DeleteUser from '#users/actions/delete_user'
 import UpdateUser from '#users/actions/update_user'
+import { currentImpersonation } from '#auth/enums/impersonation'
 import User from '#auth/models/user'
 import { institutionalRoles } from '#auth/queries/roles_query'
 import ImpersonatePolicy from '#users/policies/impersonate_policy'
@@ -13,7 +14,7 @@ import { createUserValidator, editUserValidator, listUserValidator } from '#user
 
 /** User management for admins: list, create, edit and delete, with forms in modals over the list. */
 export default class UsersController {
-  public async index({ bouncer, inertia, request }: HttpContext) {
+  public async index({ auth, bouncer, inertia, request, session }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
     const payload = await request.validateUsing(listUserValidator)
@@ -28,6 +29,7 @@ export default class UsersController {
 
     // What this screen lets the signed-in user do, decided by the policies: per page and per row.
     const policy = bouncer.with(UserPolicy)
+    const mark = currentImpersonation(session, auth.user!.id)
     const rowCan = Object.fromEntries(
       await Promise.all(
         usersData.map(async (user) => [
@@ -35,7 +37,7 @@ export default class UsersController {
           {
             update: await policy.allows('update', user),
             delete: await policy.allows('delete', user),
-            impersonate: await bouncer.with(ImpersonatePolicy).allows('create', user),
+            impersonate: await bouncer.with(ImpersonatePolicy).allows('create', user, mark),
           },
         ])
       )

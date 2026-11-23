@@ -17,10 +17,10 @@ test.group('ImpersonatePolicy', (group) => {
   test('admin can impersonate another user', async ({ assert }) => {
     const admin = await UserFactory.create()
     await withRole(admin, ROLES.ADMIN)
-    const alvo = await UserFactory.create()
+    const target = await UserFactory.create()
     const p = await policy()
 
-    assert.isTrue(await p.create(admin, alvo))
+    assert.isTrue(await p.create(admin, target, null))
   })
 
   test('admin CANNOT impersonate themselves', async ({ assert }) => {
@@ -28,15 +28,26 @@ test.group('ImpersonatePolicy', (group) => {
     await withRole(admin, ROLES.ADMIN)
     const p = await policy()
 
-    assert.isFalse(await p.create(admin, admin))
+    assert.isFalse(await p.create(admin, admin, null))
   })
 
   test('regular user cannot impersonate', async ({ assert }) => {
     const user = await UserFactory.create()
     await withRole(user, ROLES.USER)
-    const alvo = await UserFactory.create()
+    const target = await UserFactory.create()
     const p = await policy()
 
-    assert.isFalse(await p.create(user, alvo))
+    assert.isFalse(await p.create(user, target, null))
+  })
+
+  test('admin cannot start an impersonation inside another', async ({ assert }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const target = await UserFactory.create()
+    const p = await policy()
+
+    assert.isFalse(
+      await p.create(admin, target, { originalUserId: target.id + 1, targetUserId: admin.id })
+    )
   })
 })

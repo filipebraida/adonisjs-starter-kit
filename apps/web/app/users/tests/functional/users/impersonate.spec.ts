@@ -152,6 +152,29 @@ test.group('Endpoint /users/impersonate/:id', (group) => {
     assert.equal(audit.metadata?.originalUserId, admin.id)
   })
 
+  test('under an impersonation nobody else is impersonated: the mark of who started it stays', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await UserFactory.create()
+    await withRole(admin, ROLES.ADMIN)
+    const otherAdmin = await UserFactory.create()
+    await withRole(otherAdmin, ROLES.ADMIN)
+    const third = await UserFactory.create()
+    const mark = { originalUserId: admin.id, targetUserId: otherAdmin.id }
+
+    const response = await client
+      .post(`/users/impersonate/${third.id}`)
+      .withSession({ impersonation: mark })
+      .loginAs(otherAdmin)
+      .withCsrfToken()
+      .redirects(0)
+
+    assertForbiddenRedirect(response)
+    assert.equal(response.session().auth_web, otherAdmin.id)
+    assert.deepEqual(response.session().impersonation, mark)
+  })
+
   test('switching back without an impersonation is refused', async ({ client, assert }) => {
     const user = await UserFactory.create()
 

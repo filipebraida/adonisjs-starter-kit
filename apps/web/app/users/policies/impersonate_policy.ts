@@ -14,7 +14,16 @@ export default class ImpersonatePolicy extends BasePolicy {
     super()
   }
 
-  async create(currentUser: User, user: User): Promise<AuthorizerResponse> {
+  /**
+   * No impersonation starts inside another: the mark holds one admin, and a new
+   * one would erase who is behind the session.
+   */
+  async create(
+    currentUser: User,
+    user: User,
+    mark: ImpersonationMark | null
+  ): Promise<AuthorizerResponse> {
+    if (mark !== null) return false
     if (currentUser.id === user.id) return false
     return this.authz.can(currentUser, CAPABILITIES_USERS.usersImpersonate)
   }
