@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
-import MarketingLayout from '#marketing/ui/components/marketing_layout'
+import MarketingLayout from '#marketing/ui/layouts/marketing'
 import HeroSection from '#marketing/ui/components/hero'
 import StackSection from '#marketing/ui/components/stack'
 import FeatureShowcase from '#marketing/ui/components/feature_showcase'

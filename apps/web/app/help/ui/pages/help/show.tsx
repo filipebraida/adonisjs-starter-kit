@@ -2,7 +2,7 @@ import { Head, Link } from '@inertiajs/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 import type { InertiaProps } from '#core/ui/app/types'
-import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/layouts/authenticated'
 import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'
 import { Markdown } from '#core/ui/components/markdown'

@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react'
 import type { InertiaProps } from '#core/ui/app/types'
 
-import AdminLayout from '#core/ui/components/admin_layout'
+import AdminLayout from '#core/ui/layouts/admin'
 import Heading from '#core/ui/components/heading'
 import { HelpLink } from '#help/ui/components/help/help_link'
 import { Main } from '#core/ui/components/main'

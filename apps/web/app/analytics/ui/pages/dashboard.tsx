@@ -13,7 +13,7 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { urlFor } from '~/app/client'
 
-import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/layouts/authenticated'
 import { Main } from '#core/ui/components/main'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { formatCurrency, formatNumber, formatPercent } from '#core/ui/format/number'

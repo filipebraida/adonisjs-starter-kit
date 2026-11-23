@@ -13,7 +13,7 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
 
 - **Every page imports its shell explicitly** at the top of the page file. No wrapper picks the shell based on route, role, or props.
   ```tsx
-  import AdminLayout from '#core/ui/components/admin_layout'
+  import AdminLayout from '#core/ui/layouts/admin'
   export default function Page() {
     return <AdminLayout>...</AdminLayout>
   }
@@ -27,11 +27,11 @@ Every page imports the shell it needs; there is no runtime chooser. Variant / co
 
 ## Shell inventory (this kit)
 
-- **`AdminLayout`** (`#core/ui/components/admin_layout`) — the logged-in admin shell: collapsible sidebar fed by `getAdminNav(t)`. Wraps the administration pages (users list, activity). It holds admin pages only; the way back to the app is in the user menu.
+- **`AdminLayout`** (`#core/ui/layouts/admin`) — the logged-in admin shell: collapsible sidebar fed by `getAdminNav(t)`. Wraps the administration pages (users list, activity). It holds admin pages only; the way back to the app is in the user menu.
 - **On a phone** both logged-in shells trade their menus for a `TabBar` at the foot of the screen (`getTabs(t, area)`: the everyday destinations, three or four), whose last tab opens the "More" page (`/more?area=…`, `core/ui/pages/more.tsx`) with everything else, grouped by `getMoreGroups(t, area)`. A nav item's `count` shows as a badge in the tab bar.
-- **`AuthenticatedLayout`** (`#core/ui/components/authenticated_layout`) — the logged-in shell with a top nav fed by `getMainNav(t)`. Wraps the everyday pages (dashboard, settings).
-- **`AuthLayout`** (`#auth/ui/components/auth_layout`) — the pre-login shell (sign-in, sign-up, password flows). Simpler, no nav.
-- **`MarketingLayout`** (`#marketing/ui/components/marketing_layout`) — the public landing chrome (header + footer); the page composes its sections (`<Hero>`, `<FeatureShowcase>`, …) inside it.
+- **`AuthenticatedLayout`** (`#core/ui/layouts/authenticated`) — the logged-in shell with a top nav fed by `getMainNav(t)`. Wraps the everyday pages (dashboard, settings).
+- **`AuthLayout`** (`#auth/ui/layouts/auth`) — the pre-login shell (sign-in, sign-up, password flows). Simpler, no nav.
+- **`MarketingLayout`** (`#marketing/ui/layouts/marketing`) — the public landing chrome (header + footer); the page composes its sections (`<Hero>`, `<FeatureShowcase>`, …) inside it.
 
 Both logged-in shells mount the same header widgets, `useFlashToasts()` and the modal root.
 
@@ -39,7 +39,7 @@ Any additional shell (checkout, kiosk, print-friendly) is added only when its ch
 
 ## Repo refs
 
-- The four shells: `app/core/ui/components/admin_layout.tsx`, `app/core/ui/components/authenticated_layout.tsx`, `app/auth/ui/components/auth_layout.tsx`, `app/marketing/ui/components/marketing_layout.tsx`.
+- The four shells: `app/core/ui/layouts/admin.tsx`, `app/core/ui/layouts/authenticated.tsx`, `app/auth/ui/layouts/auth.tsx`, `app/marketing/ui/layouts/marketing.tsx`.
 - Nav config (single file): `app/core/ui/app/navigation.ts`.
 
 ## Doc refs

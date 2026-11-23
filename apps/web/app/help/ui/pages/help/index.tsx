@@ -20,7 +20,7 @@ import {
 import type { Data } from '@generated/data'
 
 import type { InertiaProps } from '#core/ui/app/types'
-import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/layouts/authenticated'
 import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'
 import { useTranslation } from '#core/ui/hooks/use_translation'

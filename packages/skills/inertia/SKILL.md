@@ -61,7 +61,7 @@ Generic Inertia v3 knowledge, adapted to this kit — load the one you need:
    ```tsx
    import { Head } from '@inertiajs/react'
 
-   import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+   import AuthenticatedLayout from '#core/ui/layouts/authenticated'
    import type { InertiaProps } from '#core/ui/app/types'
    import { useTranslation } from '#core/ui/hooks/use_translation'
 

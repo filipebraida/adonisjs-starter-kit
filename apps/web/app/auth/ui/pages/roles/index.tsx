@@ -14,7 +14,7 @@ import { Input } from '@workspace/ui/components/input'
 
 import { urlFor } from '~/app/client'
 import type { InertiaProps } from '#core/ui/app/types'
-import AdminLayout from '#core/ui/components/admin_layout'
+import AdminLayout from '#core/ui/layouts/admin'
 import { ConfirmDialog } from '#core/ui/components/confirm_dialog'
 import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'

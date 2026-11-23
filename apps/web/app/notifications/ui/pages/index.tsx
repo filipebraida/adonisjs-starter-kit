@@ -14,7 +14,7 @@ import { FilterTabs } from '@workspace/ui/components/filter-tabs'
 
 import { urlFor } from '~/app/client'
 import type { InertiaProps } from '#core/ui/app/types'
-import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/layouts/authenticated'
 import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'
 import { formatDate, formatDateTime } from '#core/ui/format/date'

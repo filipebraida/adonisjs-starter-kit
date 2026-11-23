@@ -9,7 +9,7 @@ Two possible patterns:
 
 ```tsx
 // app/<mod>/ui/pages/<page>.tsx
-import AdminLayout from '#core/ui/components/admin_layout'
+import AdminLayout from '#core/ui/layouts/admin'
 
 export default function Page(props: PageProps) {
   return <AdminLayout breadcrumbs={[...]}>{/* ... */}</AdminLayout>

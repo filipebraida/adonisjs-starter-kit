@@ -2,7 +2,7 @@ import { Head } from '@inertiajs/react'
 import type { InertiaProps } from '#core/ui/app/types'
 import type { Data } from '@generated/data'
 
-import AuthenticatedLayout from '#core/ui/components/authenticated_layout'
+import AuthenticatedLayout from '#core/ui/layouts/authenticated'
 import Heading from '#core/ui/components/heading'
 import { Main } from '#core/ui/components/main'
 import { HelpLink } from '#help/ui/components/help/help_link'
