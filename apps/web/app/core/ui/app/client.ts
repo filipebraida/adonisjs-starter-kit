@@ -2,10 +2,9 @@ import { registry } from '@generated/registry'
 import { createTuyau } from '@tuyau/core/client'
 
 export const client = createTuyau({
-  baseUrl:
-    typeof window !== 'undefined'
-      ? window.location.origin
-      : import.meta.env.VITE_API_URL || `http://localhost:3333`,
+  // The page and the API share an origin, and `urlFor` only returns the path. The browser keeps a
+  // full origin because `client.current()` parses the base with `new URL`.
+  baseUrl: typeof window !== 'undefined' ? window.location.origin : '/',
   registry,
 })
 
