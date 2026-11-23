@@ -2,6 +2,8 @@ import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig, targets } from '@adonisjs/core/logger'
 
+import { logRedaction } from '#core/utils/log_redaction'
+
 const loggerConfig = defineConfig({
   default: 'app',
 
@@ -14,6 +16,7 @@ const loggerConfig = defineConfig({
       enabled: true,
       name: env.get('APP_NAME'),
       level: env.get('LOG_LEVEL'),
+      ...logRedaction,
       transport: {
         targets: targets()
           .pushIf(!app.inProduction, targets.pretty())
