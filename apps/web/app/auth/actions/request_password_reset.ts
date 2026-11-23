@@ -19,7 +19,11 @@ export default class RequestPasswordReset {
     const user = await User.findBy('email', input.email)
     if (!user) return
 
-    const { token } = await new PasswordResetService().generateToken(user)
+    // A link still valid is sent again rather than replaced: otherwise anyone
+    // who knows the e-mail could cancel a pending reset or invitation.
+    const service = new PasswordResetService()
+    const pending = await service.validTokenOf(user)
+    const { token } = pending ?? (await service.generateToken(user))
 
     const translations = {
       subject: input.i18n.t('auth.emails.reset_password.subject'),

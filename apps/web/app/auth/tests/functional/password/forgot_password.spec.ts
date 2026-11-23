@@ -1,5 +1,6 @@
 import emitter from '@adonisjs/core/services/emitter'
 import testUtils from '@adonisjs/core/services/test_utils'
+import limiter from '@adonisjs/limiter/services/main'
 import { test } from '@japa/runner'
 
 import ResetPasswordToken from '#auth/models/reset_password_token'
@@ -8,6 +9,7 @@ import { marker } from '#tests/helpers/marker'
 
 test.group('Endpoint /forgot-password', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+  group.each.setup(() => limiter.clear())
 
   test('generates a token and emits the event for a registered email', async ({
     client,
@@ -81,5 +83,22 @@ test.group('Endpoint /forgot-password', (group) => {
       .json({ email: 'not-an-email' })
 
     response.assertStatus(422)
+  })
+
+  test('turns away a burst of requests from one address, and sends nothing more', async ({
+    client,
+    assert,
+  }) => {
+    using fake = emitter.fake(['auth:forgot_password'])
+    const user = await UserFactory.create()
+    const ask = () =>
+      client.post('/forgot-password').redirects(0).withCsrfToken().json({ email: user.email })
+
+    for (const _attempt of Array.from({ length: 5 })) await ask()
+    const sixth = await ask()
+
+    assert.equal(sixth.header('location'), '/forgot-password')
+    assert.isString(sixth.flashMessages().error)
+    fake.assertEmittedCount('auth:forgot_password', 5)
   })
 })

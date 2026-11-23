@@ -30,6 +30,15 @@ export default class PasswordResetService {
     return { token: resetToken.token, expiresAt: resetToken.expiresAt }
   }
 
+  /** The user's token while it is still valid, or null. */
+  async validTokenOf(user: User) {
+    return user
+      .related('resetPasswordTokens')
+      .query()
+      .where('expires_at', '>', DateTime.now().toSQL())
+      .first()
+  }
+
   async getToken(token: string) {
     const resetToken = await ResetPasswordToken.query()
       .where('token', token)

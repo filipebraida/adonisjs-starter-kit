@@ -35,18 +35,21 @@ test.group('RequestPasswordReset', (group) => {
     fake.assertNoneEmitted()
   })
 
-  test('generating two tokens in a row keeps only the latest one valid', async ({ db, assert }) => {
+  test('a second request while the link is valid sends the same link, so it cancels none', async ({
+    db,
+    assert,
+  }) => {
     // The real listener's mail.prepare() calls signedUrlFor and needs a live router.
     using _events = emitter.fake(['auth:forgot_password'])
     const user = await UserFactory.create()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })
-    const primeiro = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
+    const first = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
 
     await new RequestPasswordReset().handle({ email: user.email, i18n: i18n() })
 
     await db.assertHas('reset_password_tokens', { user_id: user.id }, 1)
-    const atual = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
-    assert.notEqual(atual.token, primeiro.token)
+    const current = await ResetPasswordToken.query().where('userId', user.id).firstOrFail()
+    assert.equal(current.token, first.token)
   })
 })
