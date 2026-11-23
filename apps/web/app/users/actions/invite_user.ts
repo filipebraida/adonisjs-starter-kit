@@ -1,5 +1,8 @@
+import app from '@adonisjs/core/services/app'
 import emitter from '@adonisjs/core/services/emitter'
+import db from '@adonisjs/lucid/services/db'
 import type { I18n } from '@adonisjs/i18n'
+import { AuthzService } from '@adonis-agora/authz'
 
 import { requireExistingRole, requireManageRolesIfEscalating } from '#auth/actions/sync_user_roles'
 import { AUDIT_EVENTS } from '#auth/enums/audit_event'
@@ -15,8 +18,10 @@ export interface InviteUserInput {
 }
 
 /**
- * Invites a user: creates the account with its role and a reset token, then
- * emits `user:registered`, whose listeners send the welcome mail and notification.
+ * Invites a user: creates the account with its role and a reset token in one
+ * transaction, then emits `user:registered`, whose listeners send the welcome
+ * mail and notification. A failure halfway leaves no account without a role or
+ * a link, and announces nothing.
  * @throws ManageRolesUnauthorizedException if granting a role above user without the capability.
  * @throws RoleNotFoundException if the role does not exist.
  */
@@ -25,13 +30,13 @@ export default class InviteUser {
     await requireManageRolesIfEscalating(input.executor, [input.role])
     await requireExistingRole(input.role)
 
-    const user = await User.create({ email: input.email })
-    await user.save()
-
-    await user.assignRole(input.role)
-    await user.auditCustom(AUDIT_EVENTS.USER_INVITED, { new: { role: input.role } })
-
-    const { token } = await new PasswordResetService().generateToken(user)
+    const authz = await app.container.make(AuthzService)
+    const { user, token } = await db.transaction(async (trx) => {
+      const created = await User.create({ email: input.email }, { client: trx })
+      await authz.store.withClient(trx).assignRole(authz.refOf(created)!, input.role)
+      await created.auditCustom(AUDIT_EVENTS.USER_INVITED, { new: { role: input.role } })
+      return { user: created, ...(await new PasswordResetService().generateToken(created)) }
+    })
 
     const translations = {
       subject: input.i18n.t('users.emails.welcome.subject'),
@@ -43,7 +48,7 @@ export default class InviteUser {
       defaultMessage: input.i18n.t('users.emails.welcome.default_message'),
     }
 
-    emitter.emit('user:registered', {
+    await emitter.emit('user:registered', {
       user,
       token,
       translations,

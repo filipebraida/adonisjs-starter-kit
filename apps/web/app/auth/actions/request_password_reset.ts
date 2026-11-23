@@ -33,6 +33,6 @@ export default class RequestPasswordReset {
       defaultMessage: input.i18n.t('auth.emails.reset_password.default_message'),
     }
 
-    emitter.emit('auth:forgot_password', { user, token, translations })
+    await emitter.emit('auth:forgot_password', { user, token, translations })
   }
 }
