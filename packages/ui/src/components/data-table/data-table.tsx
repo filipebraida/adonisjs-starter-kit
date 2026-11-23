@@ -85,6 +85,18 @@ interface DataTableProps<TData extends RowData> {
   data: TData[];
   className?: string;
   Toolbar?: React.ComponentType<{ table: Table<TData> }>;
+  /** The search and filters of the list, inside the card, above the header. */
+  toolbar?: React.ReactNode;
+  /** The open filter panel, between the bar and the table header. */
+  panel?: React.ReactNode;
+  /**
+   * What to open when the person clicks the row. The row gets the hand
+   * cursor; the action must also exist as a link or button in the row itself,
+   * for keyboard users.
+   */
+  onRowClick?: (row: TData) => void;
+  /** Which rows answer the click; without it, all of them. */
+  isRowClickable?: (row: TData) => boolean;
   labels?: Partial<DataTableLabels>;
   remoteTableOptions?: RemoteTableOptions;
   /** Shown instead of the rows when there are none: say why, and offer the next action. */
@@ -138,6 +150,10 @@ export function DataTable<TData extends RowData>({
   columns,
   data,
   Toolbar,
+  toolbar,
+  panel,
+  onRowClick,
+  isRowClickable,
   labels: customLabels,
   remoteTableOptions,
   empty,
@@ -152,6 +168,8 @@ export function DataTable<TData extends RowData>({
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
 
   const isRemote = !!remoteTableOptions;
+  const clickable = (row: TData) =>
+    !!onRowClick && (isRowClickable?.(row) ?? true);
 
   const table = useTable({
     features: dataTableFeatures,
@@ -188,7 +206,20 @@ export function DataTable<TData extends RowData>({
   return (
     <div className="space-y-4">
       {Toolbar && <Toolbar table={table} />}
-      <div className="rounded-md border">
+      <div
+        data-slot="data-table"
+        className="overflow-hidden rounded-xl border bg-card"
+      >
+        {toolbar && (
+          <div data-slot="data-table-toolbar" className="border-b px-4 py-3">
+            {toolbar}
+          </div>
+        )}
+        {panel && (
+          <div data-slot="data-table-panel" className="border-b">
+            {panel}
+          </div>
+        )}
         <Table className={className}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -205,7 +236,7 @@ export function DataTable<TData extends RowData>({
                         <button
                           type="button"
                           onClick={header.column.getToggleSortingHandler()}
-                          className="inline-flex items-center gap-1 select-none hover:text-foreground"
+                          className="-mx-1 inline-flex items-center gap-1 rounded-sm px-1 select-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                         >
                           {flexRender(
                             header.column.columnDef.header,
@@ -237,6 +268,22 @@ export function DataTable<TData extends RowData>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={
+                    clickable(row.original) ? "cursor-pointer" : undefined
+                  }
+                  onClick={
+                    clickable(row.original)
+                      ? (event) => {
+                          // A click on a link or button of the row is theirs, not the row's.
+                          const target = event.target as HTMLElement;
+                          if (
+                            target.closest("a, button, input, [role=menuitem]")
+                          )
+                            return;
+                          onRowClick!(row.original);
+                        }
+                      : undefined
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -263,12 +310,14 @@ export function DataTable<TData extends RowData>({
             )}
           </TableBody>
         </Table>
+        <div data-slot="data-table-footer" className="border-t py-2">
+          <DataTablePagination
+            labels={labels}
+            table={table}
+            total={isRemote ? remoteTableOptions!.total : data.length}
+          />
+        </div>
       </div>
-      <DataTablePagination
-        labels={labels}
-        table={table}
-        total={isRemote ? remoteTableOptions!.total : data.length}
-      />
     </div>
   );
 }

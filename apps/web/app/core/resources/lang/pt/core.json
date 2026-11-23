@@ -45,7 +45,10 @@
       "go_to_page": "Ir para a página {page}"
     },
     "filters": {
-      "clear": "Limpar filtros"
+      "clear": "Limpar filtros",
+      "button": "Filtros",
+      "done": "Pronto",
+      "summary": "{total, plural, =0 {Nenhum resultado.} one {# resultado.} other {# resultados.}}"
     }
   },
   "notifications": {

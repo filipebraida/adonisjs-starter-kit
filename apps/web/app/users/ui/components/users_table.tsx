@@ -19,7 +19,10 @@ import { DataTable } from '#core/ui/components/data_table'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import { formatDate } from '#core/ui/format/date'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
-import UsersTableFilters, { type UsersFilters } from '#users/ui/components/users_table_filters'
+import UsersTableToolbar, {
+  UsersTableFilterPanel,
+  type UsersFilters,
+} from '#users/ui/components/users_table_filters'
 import { Role } from '#users/ui/components/users_types'
 
 import { displayRole, ROLES } from '#auth/enums/role'
@@ -217,38 +220,59 @@ export default function UsersTable({
     )
 
   const filtered = !!q || selectedRoles.length > 0
+  const [filtersOpen, setFiltersOpen] = React.useState(selectedRoles.length > 0)
 
   return (
     <div className="space-y-4">
-      <UsersTableFilters
-        q={q}
-        selectedRoles={selectedRoles}
-        roles={roleOptions}
-        onChange={filter}
-      />
       <DataTable
         columns={columns}
         data={users.data}
         remoteTableOptions={remoteTableOptions}
-        empty={
-          filtered ? (
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <SearchX />
-                </EmptyMedia>
-                <EmptyTitle>{t('users.index.empty.title')}</EmptyTitle>
-                <EmptyDescription>{t('users.index.empty.description')}</EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button variant="outline" onClick={() => filter({ q: '', roles: [] })}>
-                  {t('core.table.filters.clear')}
-                </Button>
-              </EmptyContent>
-            </Empty>
-          ) : undefined
+        toolbar={
+          <UsersTableToolbar
+            q={q}
+            selectedRoles={selectedRoles}
+            open={filtersOpen}
+            onOpenChange={setFiltersOpen}
+            onChange={filter}
+          />
         }
+        panel={
+          filtersOpen && (
+            <UsersTableFilterPanel
+              q={q}
+              selectedRoles={selectedRoles}
+              roles={roleOptions}
+              total={users.metadata.total}
+              onChange={filter}
+              onClose={() => setFiltersOpen(false)}
+            />
+          )
+        }
+        empty={filtered ? <NoMatch onClear={() => filter({ q: '', roles: [] })} /> : undefined}
       />
     </div>
+  )
+}
+
+/** A search or filter left the list empty: say so and offer to clear. */
+function NoMatch({ onClear }: { onClear: () => void }) {
+  const { t } = useTranslation()
+
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <SearchX />
+        </EmptyMedia>
+        <EmptyTitle>{t('users.index.empty.title')}</EmptyTitle>
+        <EmptyDescription>{t('users.index.empty.description')}</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" onClick={onClear}>
+          {t('core.table.filters.clear')}
+        </Button>
+      </EmptyContent>
+    </Empty>
   )
 }

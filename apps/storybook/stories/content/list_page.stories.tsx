@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { Plus, SearchX, Users } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { CheckboxFilter } from "@workspace/ui/components/checkbox-filter";
 import { DataTable, type ColumnDef } from "@workspace/ui/components/data-table";
 import {
   Empty,
@@ -14,8 +14,16 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@workspace/ui/components/empty";
-import { FilterBar } from "@workspace/ui/components/filter-bar";
+import {
+  FilterPanel,
+  FiltersButton,
+} from "@workspace/ui/components/filter-panel";
+import { FilterTabs } from "@workspace/ui/components/filter-tabs";
 import { SearchInput } from "@workspace/ui/components/search-input";
+import {
+  TableToolbar,
+  TableToolbarSearch,
+} from "@workspace/ui/components/table-toolbar";
 
 /**
  * A pattern, not a component: how every list screen is laid out. The live
@@ -29,7 +37,7 @@ const meta = {
       description: {
         component: [
           "**Header**: `Heading` with the page title and one sentence on what the list is for; the primary action on the right.",
-          '**FilterBar**: `SearchInput` first, then the filters (`CheckboxFilter`, `RadioFilter`). "Clear filters" appears only while something is filtered.',
+          '**Card**: the `DataTable` is the card. Its `toolbar` holds a `TableToolbar`: the slices of the list as `FilterTabs` on the left (each with its count), the `SearchInput` (in `TableToolbarSearch`) and the `FiltersButton` on the right. The button opens a `FilterPanel` in the `panel` slot: a group of pills per column, applied as they change, with how many rows are left, "Clear filters" and "Done".',
           "**Search** goes through `useSearchBox`: it searches 300 ms after the last keystroke and at once when cleared (X or Esc). The term lives in the URL (`q`), so back/forward and links restore it; a partial reload asks for `q` and the filters back, which the controller sends as `null` when empty.",
           '**Table**: `DataTable`, the first column identifies the row, row actions in the last column as a ghost icon button. On a narrow table a column hides (`hidden @2xl:table-cell`) and its datum drops under the identifying column (`@2xl:hidden`): the breakpoints follow the width of the table (a `@container`), not of the screen, because the sidebar takes part of the screen. The pagination numbers the pages and shows the range ("21–23 of 23").',
           '**Empty**: never a blank table. Pass `empty` to the `DataTable`: when a search or filter caused it, say so and offer "Clear filters"; when the list has never had anything, offer the action that fills it, as `outline`: the header already holds the primary.',
@@ -117,39 +125,76 @@ function ListPage({
 }) {
   const [search, setSearch] = useState(initialSearch);
   const [roles, setRoles] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  const [slice, setSlice] = useState<"all" | "staff">("all");
   const term = search.trim().toLowerCase();
   const visible = rows.filter(
     (row) =>
       (!term || `${row.name} ${row.email}`.toLowerCase().includes(term)) &&
-      (roles.length === 0 || roles.includes(row.role)),
+      (roles.length === 0 || roles.includes(row.role)) &&
+      (slice === "all" || row.role !== "user"),
   );
-  const filtered = term !== "" || roles.length > 0;
+  const filtered = term !== "" || roles.length > 0 || slice !== "all";
   const clear = () => {
     setSearch("");
     setRoles([]);
+    setSlice("all");
   };
 
   return (
     <div className="grid gap-6">
       <Header />
-      {rows.length > 0 && (
-        <FilterBar filtered={filtered} onClear={clear}>
-          <SearchInput
-            value={search}
-            onValueChange={setSearch}
-            placeholder="Search by name or email"
-          />
-          <CheckboxFilter
-            title="Role"
-            value={roles}
-            onChange={setRoles}
-            options={ROLE_OPTIONS}
-          />
-        </FilterBar>
-      )}
       <DataTable
         columns={COLUMNS}
         data={visible}
+        toolbar={
+          rows.length > 0 && (
+            <TableToolbar
+              tabs={
+                <FilterTabs
+                  label="Who"
+                  value={slice}
+                  onValueChange={setSlice}
+                  options={[
+                    { value: "all", label: "Everyone", count: rows.length },
+                    {
+                      value: "staff",
+                      label: "Staff",
+                      count: rows.filter((row) => row.role !== "user").length,
+                    },
+                  ]}
+                />
+              }
+            >
+              <TableToolbarSearch>
+                <SearchInput
+                  value={search}
+                  onValueChange={setSearch}
+                  placeholder="Search by name or email"
+                />
+              </TableToolbarSearch>
+              <FiltersButton
+                count={roles.length}
+                open={open}
+                onClick={() => setOpen(!open)}
+              >
+                Filters
+              </FiltersButton>
+            </TableToolbar>
+          )
+        }
+        panel={
+          open && (
+            <FilterPanel
+              groups={[{ id: "roles", label: "Role", options: ROLE_OPTIONS }]}
+              value={{ roles }}
+              onValueChange={(next) => setRoles(next.roles ?? [])}
+              summary={`${visible.length} users.`}
+              onClear={() => setRoles([])}
+              onClose={() => setOpen(false)}
+            />
+          )
+        }
         empty={
           filtered ? (
             <Empty>
@@ -202,3 +247,14 @@ export const EmptyFiltered: Story = {
 
 /** Nothing was ever added: no filters to show, and the empty state offers the action that fills the list. */
 export const EmptyFirstUse: Story = { render: () => <ListPage rows={[]} /> };
+
+/** The filters open: a pill per role, the list follows as they change. */
+export const FiltersOpen: Story = {
+  render: () => <ListPage rows={ROWS} />,
+  async play({ canvas, userEvent }) {
+    await userEvent.click(canvas.getByRole("button", { name: "Filters" }));
+    await userEvent.click(canvas.getByRole("checkbox", { name: "Manager" }));
+    await expect(canvas.getByText("2 users.")).toBeVisible();
+    await expect(canvas.queryByText("Alan Turing")).toBeNull();
+  },
+};

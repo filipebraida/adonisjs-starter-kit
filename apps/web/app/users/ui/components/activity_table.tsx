@@ -5,8 +5,9 @@ import { X } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import { ColumnDef } from '@workspace/ui/components/data-table'
+import { FilterPanel, FiltersButton } from '@workspace/ui/components/filter-panel'
 import { Input } from '@workspace/ui/components/input'
-import { RadioFilter } from '@workspace/ui/components/radio-filter'
+import { TableToolbar, TableToolbarSearch } from '@workspace/ui/components/table-toolbar'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { urlFor } from '~/app/client'
@@ -42,6 +43,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
 
   const [querySearch, setQuerySearch] = React.useState(q ?? '')
   const [selectedEvent, setSelectedEvent] = React.useState<AuditEvent | ''>(event ?? '')
+  const [filtersOpen, setFiltersOpen] = React.useState(!!event)
 
   const visit = React.useCallback(
     (params: {
@@ -177,38 +179,37 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
     },
   ]
 
+  const chooseEvent = (next: AuditEvent | '') => {
+    setSelectedEvent(next)
+    visit({ q: querySearch, event: next, actorId: actor?.id, perPage })
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-start">
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
-            placeholder={t('users.activity.table.filters.search_placeholder')}
-            value={querySearch}
-            onChange={(e) => {
-              setQuerySearch(e.target.value)
-              debouncedVisit({
-                q: e.target.value,
-                event: selectedEvent,
-                actorId: actor?.id,
-                perPage,
-              })
-            }}
-            className="h-8 w-37.5 lg:w-62.5"
-          />
-          <RadioFilter
-            title={t('users.activity.table.filters.event')}
-            options={eventOptions}
-            value={selectedEvent}
-            onChange={(next) => {
-              setSelectedEvent(next)
-              visit({ q: querySearch, event: next, actorId: actor?.id, perPage })
-            }}
-            emptyMessage={t('users.activity.table.no_results')}
-          />
+    <DataTable
+      columns={columns}
+      data={audits.data}
+      remoteTableOptions={remoteTableOptions}
+      toolbar={
+        <TableToolbar>
+          <TableToolbarSearch>
+            <Input
+              placeholder={t('users.activity.table.filters.search_placeholder')}
+              aria-label={t('users.activity.table.filters.search_placeholder')}
+              value={querySearch}
+              onChange={(e) => {
+                setQuerySearch(e.target.value)
+                debouncedVisit({
+                  q: e.target.value,
+                  event: selectedEvent,
+                  actorId: actor?.id,
+                  perPage,
+                })
+              }}
+            />
+          </TableToolbarSearch>
           {actor && (
             <Button
               variant="secondary"
-              size="sm"
               onClick={() => visit({ q: querySearch, event: selectedEvent, perPage })}
               aria-label={t('users.activity.table.filters.remove_actor', { name: actor.name })}
             >
@@ -216,17 +217,69 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
               <X />
             </Button>
           )}
-        </div>
+          <FiltersButton
+            count={selectedEvent ? 1 : 0}
+            open={filtersOpen}
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
+            {t('core.table.filters.button')}
+          </FiltersButton>
+          {isFiltered && (
+            <Button variant="ghost" onClick={clearAll}>
+              {t('users.activity.table.filters.clear_filters')}
+              <X />
+            </Button>
+          )}
+        </TableToolbar>
+      }
+      panel={
+        filtersOpen && (
+          <EventFilterPanel
+            events={eventOptions}
+            selected={selectedEvent}
+            total={audits.metadata.total}
+            onChoose={chooseEvent}
+            onClose={() => setFiltersOpen(false)}
+          />
+        )
+      }
+    />
+  )
+}
 
-        {isFiltered && (
-          <Button variant="ghost" onClick={clearAll}>
-            {t('users.activity.table.filters.clear_filters')}
-            <X />
-          </Button>
-        )}
-      </div>
+/** The event filter, open inside the table's card: one event at a time. */
+function EventFilterPanel({
+  events,
+  selected,
+  total,
+  onChoose,
+  onClose,
+}: {
+  events: { value: AuditEvent; label: string }[]
+  selected: AuditEvent | ''
+  total: number
+  onChoose: (event: AuditEvent | '') => void
+  onClose: () => void
+}) {
+  const { t } = useTranslation()
 
-      <DataTable columns={columns} data={audits.data} remoteTableOptions={remoteTableOptions} />
-    </div>
+  return (
+    <FilterPanel
+      groups={[
+        {
+          id: 'event',
+          label: t('users.activity.table.filters.event'),
+          options: events,
+          select: 'single',
+        },
+      ]}
+      value={{ event: selected ? [selected] : [] }}
+      onValueChange={(next) => onChoose((next.event?.[0] as AuditEvent) ?? '')}
+      summary={t('core.table.filters.summary', { total })}
+      onClear={() => onChoose('')}
+      onClose={onClose}
+      clearLabel={t('core.table.filters.clear')}
+      closeLabel={t('core.table.filters.done')}
+    />
   )
 }

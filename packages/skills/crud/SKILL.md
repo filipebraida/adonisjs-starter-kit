@@ -197,7 +197,7 @@ See [[routes]] for verb vs. resource, numeric matchers, nested resources.
 
 ### 9. Inertia pages
 
-- `<mod>/ui/pages/<entities>/index.tsx` — list page: `Heading` with the primary action, then a `FilterBar` (`SearchInput` first, then `CheckboxFilter`/`RadioFilter`), then the `DataTable` with `remoteTableOptions` from `useDataTable` and an `empty` state.
+- `<mod>/ui/pages/<entities>/index.tsx` — list page: `Heading` with the primary action, then the `DataTable` with `remoteTableOptions` from `useDataTable`, a `toolbar` (`TableToolbar` with the `SearchInput` and a `FiltersButton`), the `FilterPanel` in its `panel` slot while open, and an `empty` state.
   - **The URL is the only source of the filters.** The page reads `q` and the filters from its props, never a local copy; a change is a `router.get(urlFor('<entities>.index'), {...}, { preserveState: true, preserveScroll: true, replace: true, only: ['<entities>', 'q', '<filters>'] })`. Without the filters in `only`, a partial reload leaves the old ones.
   - **Search through `useSearchBox(q, onSearch)`** (`#core/ui/hooks/use_search_box`): 300 ms after the last key, at once when cleared, and it takes a term that changed elsewhere (back/forward). Do not write a debounce in the page.
   - **Empty:** pass `empty` to the `DataTable`. Filtered: say nothing matches and offer "Clear filters" (`core.table.filters.clear`). Never had rows: offer the action that fills the list, as `outline` (the header holds the primary).
