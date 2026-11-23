@@ -91,7 +91,7 @@
     "@filipebraida/adonis-auditing": "^2.0.0",
     "@inertiajs/core": "^3.11.0",
     "@inertiajs/react": "^3.11.0",
-    "@jrmc/adonis-attachment": "^5.2.1",
+    "@jrmc/adonis-attachment": "6.0.0-beta.7",
     "@radix-ui/react-direction": "^1.2.0",
     "@radix-ui/react-radio-group": "^1.5.1",
     "@tuyau/core": "^1.3.0",

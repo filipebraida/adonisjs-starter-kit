@@ -41,8 +41,7 @@ export default class UserTransformer extends BaseTransformer<User> {
   }
 
   private avatarUrl() {
-    const thumbnail = this.resource.avatar?.getVariant('thumbnail')?.url
-    return thumbnail ?? this.resource.avatarUrl
+    return this.resource.avatarThumbnailUrl ?? this.resource.avatarUrl
   }
 
   /** Needs `roles` preloaded (`ListUsers`, the edit controller). */

@@ -20,7 +20,7 @@ A collection of skills for AI coding assistants (Claude Code, OpenCode, Cursor, 
 - `help` — in-app help: Markdown articles per module, global Help center and a screen's "?" drawer, filtered by capability.
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count, emission via events.
 - `auditing` — security audit trail: `Auditable` models, `auditCustom` events, actor/IP/impersonation resolvers, Activity page.
-- `attachment` — `@jrmc/adonis-attachment` with converters, model decoration, `preComputeUrls`, Transformer helpers.
+- `attachment` — `@jrmc/adonis-attachment` v6: table-backed `@attachment` relations, converters run after the commit, `preComputeUrls`, Transformer helpers.
 - `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
 
 ## Structure

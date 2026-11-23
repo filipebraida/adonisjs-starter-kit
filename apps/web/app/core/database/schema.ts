@@ -107,10 +107,8 @@ export class ResetPasswordTokenSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['avatar', 'avatarUrl', 'createdAt', 'email', 'fullName', 'id', 'locale', 'password', 'updatedAt'] as const
+  static $columns = ['avatarUrl', 'createdAt', 'email', 'fullName', 'id', 'locale', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
-  @column()
-  declare avatar: any | null
   @column()
   declare avatarUrl: string | null
   @column.dateTime({ autoCreate: true })

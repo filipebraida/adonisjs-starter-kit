@@ -8,8 +8,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { authzRolesRelation } from '@adonis-agora/authz'
 import { Auditable } from '@filipebraida/adonis-auditing'
 import { hasPermissions } from '@adonis-agora/authz/mixins'
-import { attachment, attachmentManager } from '@jrmc/adonis-attachment'
-import type { Attachment } from '@jrmc/adonis-attachment/types/attachment'
+import { attachment, type AttachmentRelation } from '@jrmc/adonis-attachment/lucid'
 
 import BaseModel from '#core/models/base_model'
 
@@ -26,7 +25,7 @@ export default class User extends compose(BaseModel, AuthFinder, hasPermissions(
   static auditableName = AUDITABLE_TYPES.USER
   static auditMask = ['password']
   // The avatar JSON and its derived URL change with every upload; the upload itself is not a security event.
-  static auditExclude = ['avatar', 'avatarUrl']
+  static auditExclude = ['avatarUrl']
 
   @column({ isPrimary: true })
   declare id: number
@@ -43,11 +42,16 @@ export default class User extends compose(BaseModel, AuthFinder, hasPermissions(
   @column()
   declare locale: string | null
 
-  @attachment({ preComputeUrl: false, variants: ['thumbnail'] })
-  declare avatar: Attachment
+  /** The uploaded picture, in the attachment tables rather than a column. */
+  @attachment<User>({ folder: 'avatars', variants: ['thumbnail'], meta: false })
+  declare avatar: AttachmentRelation
 
+  /** The picture a social login brought, used while no picture was uploaded. */
   @column()
   declare avatarUrl: string | null
+
+  /** The uploaded picture's thumbnail URL, set by `preComputeUrls` before a screen reads it. */
+  avatarThumbnailUrl: string | null = null
 
   /** Read-only view of the authz role assignments, for preload and `whereHas`. */
   @manyToMany(() => AuthzRole, authzRolesRelation())
@@ -81,15 +85,8 @@ export default class User extends compose(BaseModel, AuthFinder, hasPermissions(
       return
     }
 
-    if (!models.avatar) {
-      return
-    }
-
-    const thumbnail = models.avatar.getVariant('thumbnail')
-
-    if (thumbnail) {
-      await attachmentManager.computeUrl(thumbnail)
-    }
+    // The original stands in while the thumbnail is still being made.
+    models.avatarThumbnailUrl = await models.avatar.getUrl('thumbnail', { fallback: 'original' })
   }
 
   static accessTokens = DbAccessTokensProvider.forModel(User)

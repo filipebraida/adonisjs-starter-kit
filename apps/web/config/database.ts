@@ -31,6 +31,8 @@ const dbConfig = defineConfig({
         // Tables owned by libraries (authz, auditing, durable) that their own
         // stores read: no model of ours extends a generated schema for them.
         excludeTables: [
+          'adonis_attachment_links',
+          'adonis_attachments',
           'audits',
           'authz_permissions',
           'authz_role_permission',

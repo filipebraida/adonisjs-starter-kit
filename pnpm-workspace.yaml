@@ -12,3 +12,4 @@ allowBuilds:
   sharp: true
 minimumReleaseAgeExclude:
   - "@filipebraida/eslint-config-adonis@0.6.2"
+  - "@jrmc/adonis-attachment@6.0.0-beta.7"

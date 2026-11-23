@@ -11,6 +11,8 @@ import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import { dbAssertions } from '@adonisjs/lucid/plugins/db'
 import testUtils from '@adonisjs/core/services/test_utils'
 
+import { holdVariants } from '#tests/helpers/attachment'
+
 export const plugins: Config['plugins'] = [
   assert(),
   apiClient(),
@@ -25,7 +27,7 @@ export const plugins: Config['plugins'] = [
 ]
 
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [],
+  setup: [() => holdVariants()],
   teardown: [],
 }
 

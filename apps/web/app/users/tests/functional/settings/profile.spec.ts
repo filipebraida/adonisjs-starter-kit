@@ -30,9 +30,9 @@ test.group('Endpoint PUT /settings/profile', (group) => {
 
     const refreshed = await User.findOrFail(user.id)
     assert.equal(refreshed.fullName, 'Depois')
-    assert.isNotNull(refreshed.avatar)
-
-    assert.isTrue(await disk.exists(refreshed.avatar.path!))
+    const avatar = await refreshed.avatar.get()
+    assert.exists(avatar)
+    assert.isTrue(await disk.exists(avatar!.attachment.path))
   })
 
   test('without auth redirects to login and changes no one', async ({ client, assert }) => {

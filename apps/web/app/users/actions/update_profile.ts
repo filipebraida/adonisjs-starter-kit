@@ -13,7 +13,7 @@ export interface UpdateProfileInput {
 export default class UpdateProfile {
   async handle(input: UpdateProfileInput): Promise<User> {
     if (input.avatar) {
-      input.target.avatar = await attachmentManager.createFromFile(input.avatar)
+      input.target.avatar.set(await attachmentManager.createFromFile(input.avatar))
     }
     input.target.fullName = input.fullName
     await input.target.save()
