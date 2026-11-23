@@ -1,4 +1,4 @@
-import { router, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import { Bell, CheckCheck, Loader2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
@@ -206,6 +206,13 @@ export function NotificationBell() {
                 })}
               </ul>
             )}
+          </div>
+          <div className="border-t px-4 py-2 text-center">
+            <Button asChild variant="link" size="sm">
+              <Link href={urlFor('notifications.index')} onClick={() => setOpen(false)}>
+                {t('core.notifications.seeAll')}
+              </Link>
+            </Button>
           </div>
         </div>
       </PopoverContent>

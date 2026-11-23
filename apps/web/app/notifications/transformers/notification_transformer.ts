@@ -18,4 +18,19 @@ export default class NotificationTransformer extends BaseTransformer<Notificatio
       createdAt: notification.createdAt.toISO(),
     }
   }
+
+  /** A notification as the full page reads it: only the title, the text and the content's destination. */
+  forPage() {
+    const { id, type, status, content, createdAt } = this.resource
+
+    return {
+      id,
+      type,
+      status,
+      title: content.title ?? null,
+      body: content.body ?? null,
+      link: content.link ?? null,
+      createdAt: createdAt.toISO()!,
+    }
+  }
 }

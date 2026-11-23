@@ -115,4 +115,45 @@ test.group('Endpoint /notifications', (group) => {
     assert.isTrue(rows.every((n) => n.readAt !== null))
     assert.isTrue(rows.every((n) => n.seenAt !== null))
   })
+
+  test('a browser visit opens the full page, newest first, with the unread count', async ({
+    client,
+    assert,
+  }) => {
+    const user = await UserFactory.create()
+    const notifiableId = String(user.id)
+    await NotificationFactory.merge({ notifiableId }).apply('read').create()
+    const latest = await NotificationFactory.merge({ notifiableId }).create()
+
+    const response = await client.get('/notifications').loginAs(user).withInertia()
+
+    response.assertInertiaComponent('notifications/index')
+    const props = response.inertiaProps as {
+      notifications: { id: number }[]
+      unread: number
+      filter: string | null
+    }
+    assert.equal(props.notifications[0].id, latest.id)
+    assert.equal(props.unread, 1)
+    assert.isNull(props.filter)
+  })
+
+  test('the unread slice leaves out what was opened', async ({ client, assert }) => {
+    const user = await UserFactory.create()
+    const notifiableId = String(user.id)
+    const read = await NotificationFactory.merge({ notifiableId }).apply('read').create()
+    const unread = await NotificationFactory.merge({ notifiableId }).create()
+
+    const response = await client
+      .get('/notifications')
+      .qs({ filter: 'unread' })
+      .loginAs(user)
+      .withInertia()
+
+    const ids = (response.inertiaProps as { notifications: { id: number }[] }).notifications.map(
+      ({ id }) => id
+    )
+    assert.include(ids, unread.id)
+    assert.notInclude(ids, read.id)
+  })
 })

@@ -58,7 +58,27 @@
     "title": "Notificações",
     "markAllRead": "Marcar todas como lidas",
     "empty": "Você não tem notificações.",
-    "ariaLabel": "Notificações"
+    "ariaLabel": "Notificações",
+    "seeAll": "Ver todas",
+    "page": {
+      "description": "O que o sistema avisou a você, do mais novo.",
+      "tabs": "Quais notificações",
+      "all": "Todas",
+      "unread": "Não lidas",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "unreadMark": "(não lida)",
+      "empty": {
+        "all": {
+          "title": "Nenhuma notificação ainda",
+          "description": "Os avisos do sistema para você aparecem aqui."
+        },
+        "unread": {
+          "title": "Tudo lido",
+          "description": "Nenhuma notificação nova."
+        }
+      }
+    }
   },
   "errors": {
     "not_found": {

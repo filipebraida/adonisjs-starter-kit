@@ -58,7 +58,27 @@
     "title": "Notifications",
     "markAllRead": "Mark all as read",
     "empty": "You have no notifications.",
-    "ariaLabel": "Notifications"
+    "ariaLabel": "Notifications",
+    "seeAll": "See all",
+    "page": {
+      "description": "What the app told you, newest first.",
+      "tabs": "Which notifications",
+      "all": "All",
+      "unread": "Unread",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "unreadMark": "(unread)",
+      "empty": {
+        "all": {
+          "title": "No notifications yet",
+          "description": "What the app has to tell you shows up here."
+        },
+        "unread": {
+          "title": "All read",
+          "description": "No new notification."
+        }
+      }
+    }
   },
   "errors": {
     "not_found": {

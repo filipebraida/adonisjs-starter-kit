@@ -11,6 +11,7 @@ import { NavUser } from '#core/ui/components/nav_user'
 import { NotificationBell } from '#core/ui/components/notification_bell'
 import { TabBar } from '#core/ui/components/tab_bar'
 
+import usePageProps from '#core/ui/hooks/use_page_props'
 import useUser from '#core/ui/hooks/use_user'
 import useFlashToasts from '#core/ui/hooks/use_flash_toasts'
 import { useTranslation } from '#core/ui/hooks/use_translation'
@@ -34,6 +35,7 @@ export default function AuthenticatedLayout({
   breadcrumbs = EMPTY_BREADCRUMBS,
 }: AuthenticatedLayoutProps) {
   const user = useUser()
+  const { unseenNotifications } = usePageProps<{ unseenNotifications: number }>()
   const { t } = useTranslation()
   const navMain = getMainNav(t)
   const navUser = getNavUser(t, 'app')
@@ -80,7 +82,7 @@ export default function AuthenticatedLayout({
           </main>
         </div>
         <div className="lg:hidden">
-          <TabBar items={getTabs(t, 'app')} area="app" />
+          <TabBar items={getTabs(t, 'app', { unseenNotifications })} area="app" />
         </div>
       </div>
       <ModalRoot />

@@ -25,6 +25,7 @@ declare module '@adonisjs/inertia/types' {
     'help/help/index': ExtractProps<(typeof import('../../app/help/ui/pages/help/index.tsx'))['default']>
     'help/help/show': ExtractProps<(typeof import('../../app/help/ui/pages/help/show.tsx'))['default']>
     'marketing/show': ExtractProps<(typeof import('../../app/marketing/ui/pages/show.tsx'))['default']>
+    'notifications/index': ExtractProps<(typeof import('../../app/notifications/ui/pages/index.tsx'))['default']>
     'users/activity': ExtractProps<(typeof import('../../app/users/ui/pages/activity.tsx'))['default']>
     'users/create': ExtractProps<(typeof import('../../app/users/ui/pages/create.tsx'))['default']>
     'users/edit': ExtractProps<(typeof import('../../app/users/ui/pages/edit.tsx'))['default']>

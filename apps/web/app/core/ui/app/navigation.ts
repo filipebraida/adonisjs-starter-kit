@@ -1,6 +1,7 @@
 import type { TFunction } from '#core/ui/hooks/use_translation'
 
 import {
+  Bell,
   BookOpen,
   History,
   LayoutDashboard,
@@ -115,7 +116,11 @@ export function userRoleLabel(t: TFunction, roles: string[]): string | null {
 }
 
 /** The phone's tab bar: the everyday destinations, within reach of the thumb; "More" holds the rest. */
-export function getTabs(t: TFunction, area: ShellArea): TabItem[] {
+export function getTabs(
+  t: TFunction,
+  area: ShellArea,
+  counts: { unseenNotifications?: number } = {}
+): TabItem[] {
   if (area === 'admin') {
     return [
       {
@@ -141,6 +146,12 @@ export function getTabs(t: TFunction, area: ShellArea): TabItem[] {
 
   return [
     { title: t('core.layout.navMain.dashboard'), url: '/dashboard', icon: LayoutDashboard },
+    {
+      title: t('core.notifications.title'),
+      url: '/notifications',
+      icon: Bell,
+      count: counts.unseenNotifications,
+    },
     { title: t('core.layout.navUser.help'), url: '/help', icon: BookOpen },
   ]
 }
