@@ -104,7 +104,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
     {
       id: 'createdAt',
       header: t('users.activity.table.columns.when'),
-      meta: { columnClasses: 'hidden sm:table-cell' },
+      meta: { columnClasses: 'hidden @xl:table-cell' },
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-sm">
           {formatDateTime(row.original.createdAt, language)}
@@ -114,7 +114,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
     {
       id: 'actor',
       header: t('users.activity.table.columns.actor'),
-      meta: { columnClasses: 'hidden sm:table-cell' },
+      meta: { columnClasses: 'hidden @xl:table-cell' },
       cell: ({ row }) => {
         const { impersonatedBy } = row.original
         return (
@@ -145,7 +145,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
                 : t('users.activity.table.no_changes')}
             </div>
             {/* Who and when have their own columns from sm up; below, they ride here. */}
-            <div className="mt-0.5 truncate text-xs text-muted-foreground sm:hidden">
+            <div className="mt-0.5 truncate text-xs text-muted-foreground @xl:hidden">
               {actorName(row.original)} · {formatDateTime(row.original.createdAt, language)}
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
     {
       id: 'target',
       header: t('users.activity.table.columns.target'),
-      meta: { columnClasses: 'hidden md:table-cell' },
+      meta: { columnClasses: 'hidden @2xl:table-cell' },
       cell: ({ row }) => (
         <span className="text-sm">
           {row.original.auditableType} #{row.original.auditableId}
@@ -165,7 +165,7 @@ export default function ActivityTable({ audits, events, q, actor, event }: Activ
     {
       id: 'origin',
       header: t('users.activity.table.columns.origin'),
-      meta: { columnClasses: 'hidden lg:table-cell' },
+      meta: { columnClasses: 'hidden @4xl:table-cell' },
       cell: ({ row }) => (
         <div className="min-w-0 text-xs text-muted-foreground">
           <div>{row.original.ipAddress}</div>

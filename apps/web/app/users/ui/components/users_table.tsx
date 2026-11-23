@@ -135,7 +135,7 @@ export default function UsersTable({
                 </span>
               )}
             </div>
-            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground sm:hidden">
+            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground @xl:hidden">
               <span className="truncate">{user.email}</span>
               {userRole && (
                 <>
@@ -156,14 +156,14 @@ export default function UsersTable({
       header: t('users.index.table.columns.email'),
       accessorKey: 'email',
       enableSorting: true,
-      meta: { columnClasses: 'hidden sm:table-cell' },
+      meta: { columnClasses: 'hidden @xl:table-cell' },
     },
     {
       id: 'role',
       accessorFn: (user) => displayRole(user.roles) ?? ROLES.USER,
       header: t('users.index.table.columns.role'),
       enableSorting: false,
-      meta: { columnClasses: 'hidden md:table-cell' },
+      meta: { columnClasses: 'hidden @2xl:table-cell' },
       cell: ({ row }) => {
         const slug = displayRole(row.original.roles) ?? ROLES.USER
         const userRole = roleOptions.find(({ value }) => value === slug)
@@ -185,7 +185,7 @@ export default function UsersTable({
       header: t('users.index.table.columns.created_at'),
       accessorKey: 'createdAt',
       enableSorting: true,
-      meta: { columnClasses: 'hidden lg:table-cell' },
+      meta: { columnClasses: 'hidden @4xl:table-cell' },
       cell: ({ row }) =>
         row.original.createdAt ? formatDate(row.original.createdAt, language) : null,
     },

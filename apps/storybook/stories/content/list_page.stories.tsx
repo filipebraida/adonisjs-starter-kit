@@ -31,7 +31,7 @@ const meta = {
           "**Header**: `Heading` with the page title and one sentence on what the list is for; the primary action on the right.",
           '**FilterBar**: `SearchInput` first, then the filters (`CheckboxFilter`, `RadioFilter`). "Clear filters" appears only while something is filtered.',
           "**Search** goes through `useSearchBox`: it searches 300 ms after the last keystroke and at once when cleared (X or Esc). The term lives in the URL (`q`), so back/forward and links restore it; a partial reload asks for `q` and the filters back, which the controller sends as `null` when empty.",
-          '**Table**: `DataTable`, the first column identifies the row, row actions in the last column as a ghost icon button. The pagination numbers the pages and shows the range ("21–23 of 23").',
+          '**Table**: `DataTable`, the first column identifies the row, row actions in the last column as a ghost icon button. On a narrow table a column hides (`hidden @2xl:table-cell`) and its datum drops under the identifying column (`@2xl:hidden`): the breakpoints follow the width of the table (a `@container`), not of the screen, because the sidebar takes part of the screen. The pagination numbers the pages and shows the range ("21–23 of 23").',
           '**Empty**: never a blank table. Pass `empty` to the `DataTable`: when a search or filter caused it, say so and offer "Clear filters"; when the list has never had anything, offer the action that fills it, as `outline`: the header already holds the primary.',
         ].join("\n\n"),
       },
