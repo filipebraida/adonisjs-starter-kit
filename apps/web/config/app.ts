@@ -2,39 +2,19 @@ import env from '#start/env'
 import { defineConfig } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 
-/**
- * The app key is used for encrypting cookies, generating signed URLs,
- * and by the "encryption" module.
- *
- * The encryption module will fail to decrypt data if the key is lost or
- * changed. Therefore it is recommended to keep the app key secure.
- */
+// Without this key, or with another one, what was encrypted (cookies, signed
+// URLs) can no longer be read: keep it secret.
 export const appKey = env.get('APP_KEY')
 
-/**
- * The app URL can be used in various places where you want to create absolute
- * URLs to your application. For example, when sending emails, images should
- * use absolute URLs.
- */
 export const appUrl = env.get('APP_URL')
 
-/**
- * The configuration settings used by the HTTP server
- */
 export const http = defineConfig({
   generateRequestId: true,
   allowMethodSpoofing: false,
 
-  /**
-   * Enabling async local storage will let you access HTTP context
-   * from anywhere inside your application.
-   */
   useAsyncLocalStorage: true,
 
-  /**
-   * Manage cookies configuration. The settings for the session id cookie are
-   * defined inside the "config/session.ts" file.
-   */
+  // The session cookie is configured apart, in `config/session.ts`.
   cookie: {
     domain: '',
     path: '/',

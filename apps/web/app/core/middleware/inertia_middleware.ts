@@ -14,14 +14,8 @@ import ListReadableHelpArticles from '#help/queries/list_readable_help_articles'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
-    /**
-     * The share method is called everytime an Inertia page is rendered. In
-     * certain cases, a page may get rendered before the session middleware
-     * or the auth middleware are executed. For example: During a 404 request.
-     *
-     * In that case, we must always assume that HttpContext is not fully hydrated
-     * with all the properties
-     */
+    // A page may render before the session and auth middleware (on a 404), so
+    // the HttpContext may be only partly filled.
     const { auth } = ctx as Partial<HttpContext>
 
     // Reads through the library's request cache, the one the policies' checks share.
@@ -80,11 +74,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
   }
 
   /**
-   * The flash bag is sent to every Inertia page as a top-level "flash" field
-   * (a sibling of "props") and is read on the client using "usePage().flash".
-   *
-   * Just like the share method, the flash method may run before the session
-   * middleware, so HttpContext must be treated as partially hydrated.
+   * Sent as the top-level `flash` field, read on the client with `usePage().flash`.
+   * Like `share`, it may run before the session middleware.
    */
   flash(ctx: HttpContext) {
     const { session } = ctx as Partial<HttpContext>
