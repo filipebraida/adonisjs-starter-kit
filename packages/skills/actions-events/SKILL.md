@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # Actions + events
 
-Business logic lives in **actions**; cross-cutting effects run through **events**. Controllers stay thin (`policy → validate → action → response`). Actions take a plain input, never `HttpContext`. When an action needs a side effect (mail, notification, transmit, external HTTP), it **emits a domain event**. The module's `start/events.ts` binds a listener class to it; the listener only **schedules** a durable workflow (`XWorkflow.dispatch(plainData)`), and the workflow performs the effect inside checkpointed steps that retry on failure. The in-process emitter has no retry, so an effect run inside a listener is lost when it fails; the workflow's run lives in Postgres and survives a crash. This keeps actions synchronous domain code, keeps side effects composable (a new listener is a new file, not an edit to the action), and makes each layer testable on its own — fake the emitter, stub `dispatch`, run the workflow on a test engine.
+Business logic lives in **actions**; cross-cutting effects run through **events**. Controllers stay thin (`policy → validate → action → response`). Actions take a plain input, never `HttpContext`. When an action needs a side effect (mail, notification, transmit, external HTTP), it **emits a domain event**. The module's `start/events.ts` binds a listener class to it; the listener only **schedules** a durable workflow (`XWorkflow.dispatch(plainData)`), and the workflow performs the effect inside checkpointed steps that retry on failure. The in-process emitter has no retry, so an effect run inside a listener is lost when it fails; the workflow's run lives in Postgres and survives a crash. This keeps actions synchronous domain code, keeps side effects composable (a new listener is a new file, not an edit to the action), and makes each layer testable on its own — fake the emitter, run the listener and the workflow on a test engine.
 
 ## Rules
 
@@ -172,7 +172,7 @@ Do heavy I/O (file upload, external HTTP) **outside** the transaction so the loc
 One spec per layer, each in the folder that mirrors its source — see [[testing]]:
 
 - **Action** (`tests/unit/actions/`): `using fake = emitter.fake(['user:registered'])`, call the action, `fake.assertEmitted('user:registered')`.
-- **Listener** (`tests/unit/listeners/`): `sinon.stub(XWorkflow, 'dispatch')`, call `new Listener().handle(payload)`, assert `dispatch` got the plain data. Canonical: `app/users/tests/unit/listeners/send_welcome.spec.ts`.
+- **Listener** (`tests/unit/listeners/`): point the workflows at a test engine (`setWorkflowEngineResolver(() => t.engine)`), call `new Listener().handle(payload)`, wait for the run it scheduled and assert its effect. Canonical: `app/users/tests/unit/listeners/send_welcome.spec.ts`.
 - **Workflow** (`tests/unit/workflows/`): run it on `createTestEngine()` from `@adonis-agora/durable/testing`, `assertRunStatus(t.store, runId, 'completed')`, then assert the effect (`using mails = mail.fake()`, notification row). Canonical: `app/users/tests/unit/workflows/send_welcome_workflow.spec.ts`.
 
 ## Anti-patterns

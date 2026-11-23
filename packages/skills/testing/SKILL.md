@@ -33,14 +33,14 @@ Never assume a table is empty or holds only your rows (a developer may have seed
 
 Every side-effect dependency needs an explicit fake so no test reaches real infra:
 
-| Dependency        | How to fake                                                                            | Scope                                   |
-| ----------------- | -------------------------------------------------------------------------------------- | --------------------------------------- |
-| Mail              | `using mails = mail.fake()`, in the spec that reaches `mail.send` (a workflow spec)    | Per test                                |
-| Drive             | `using disk = drive.fake(env.get('DRIVE_DISK') \|\| 'fs')`, in every test that uploads | Per test                                |
-| Emitter           | `using fake = emitter.fake(['event:name'])` → `EventsBuffer`                           | Per test                                |
-| Workflow dispatch | `sinon.stub(XWorkflow, 'dispatch')`, in a listener spec                                | Per test; `sinon.restore()` in teardown |
-| Workflow run      | `createTestEngine()` from `@adonis-agora/durable/testing`                              | Per test                                |
-| Transmit (SSE)    | `transport: null` in `config/transmit.ts` (default)                                    | Global                                  |
+| Dependency        | How to fake                                                                                 | Scope                         |
+| ----------------- | ------------------------------------------------------------------------------------------- | ----------------------------- |
+| Mail              | `using mails = mail.fake()`, in the spec that reaches `mail.send` (a workflow spec)         | Per test                      |
+| Drive             | `using disk = drive.fake(env.get('DRIVE_DISK') \|\| 'fs')`, in every test that uploads      | Per test                      |
+| Emitter           | `using fake = emitter.fake(['event:name'])` → `EventsBuffer`                                | Per test                      |
+| Workflow dispatch | `setWorkflowEngineResolver(() => t.engine)` with a `createTestEngine()`, in a listener spec | Per test; undone in `cleanup` |
+| Workflow run      | `createTestEngine()` from `@adonis-agora/durable/testing`                                   | Per test                      |
+| Transmit (SSE)    | `transport: null` in `config/transmit.ts` (default)                                         | Global                        |
 
 Durable consumers are off outside the web process (`consumers` in `config/durable.ts`), so a functional spec that lets a listener run only enqueues a run inside the test transaction; nothing executes it.
 
@@ -82,7 +82,7 @@ using fake = emitter.fake(['user:registered']) // ✅
 
 - Functional spec (per-test transaction via `client`): `app/users/tests/functional/users/users.spec.ts`.
 - Unit spec (sinon, action in isolation): `app/users/tests/unit/actions/create_user.spec.ts`. Action + emitter fake: `app/users/tests/unit/actions/invite_user.spec.ts`.
-- Listener spec (`dispatch` stubbed): `app/users/tests/unit/listeners/send_welcome.spec.ts`. Workflow spec (test engine + mail fake): `app/users/tests/unit/workflows/send_welcome_workflow.spec.ts`.
+- Listener spec (the test engine in place of the app's): `app/users/tests/unit/listeners/send_welcome.spec.ts`. Workflow spec (test engine + mail fake): `app/users/tests/unit/workflows/send_welcome_workflow.spec.ts`.
 - `using` drive fake, asserted and `_`-prefixed: `app/users/tests/functional/settings/profile.spec.ts`.
 - RBAC helper: `tests/helpers/rbac.ts`. Unique markers: `tests/helpers/marker.ts`. Forbidden-redirect assertion: `tests/helpers/http.ts`.
 - Test database: `commands/prepare_test_database.ts`, `.env.test`.
@@ -203,22 +203,21 @@ const auth = { use: () => ({ login }) } as unknown as Parameters<Action['handle'
   // ... call the action or hit the endpoint
   fake.assertEmitted('user:registered')
   ```
-- **Listener** — it only schedules, so stub the workflow's `dispatch` and assert the plain data:
+- **Listener** — assert the effect, not the call. The test engine stands in for the app's, the listener really schedules on it, and the spec waits for the run and checks what it did:
   ```ts
-  const dispatch = sinon.stub(SendWelcomeWorkflow, 'dispatch').resolves({ runId: 'run-1' } as never)
-  await new SendWelcome().handle({
-    user,
-    token: 'invite-token',
-    translations,
-    message: 'Hi',
-  })
-  sinon.assert.calledOnce(dispatch)
-  assert.deepEqual(dispatch.firstCall.args[0], {
-    userId: user.id,
-    token: 'invite-token',
-    translations,
-    message: 'Hi',
-  })
+  const t = createTestEngine()
+  const { name, version } = SendWelcomeWorkflow.workflow
+  t.engine.register(name, version, (ctx, input) =>
+    new SendWelcomeWorkflow().run(ctx, input as SendWelcomeInput)
+  )
+  setWorkflowEngineResolver(() => t.engine)
+  cleanup(() => setWorkflowEngineResolver(undefined))
+
+  await new SendWelcome().handle({ user, token: 'invite-token', translations, message: 'Hi' })
+
+  const [run] = await t.store.listRuns({}) // the one run it scheduled
+  await t.engine.waitForRun(run.id)
+  mails.mails.assertSent(WelcomeNotification, (sent) => sent.message.hasTo(user.email))
   ```
 - **Workflow** — run it on the in-memory test engine and assert the effect:
   ```ts
@@ -276,7 +275,9 @@ const auth = { use: () => ({ login }) } as unknown as Parameters<Action['handle'
 - ❌ Sharing state between tests via module-level variables — transaction rollback doesn't clean JS state.
 - ❌ Testing controllers directly (instantiate + call handler) — go through `client` so middleware, validators and policies actually run.
 - ❌ Faking the emitter _and_ expecting the listener to run — the fake swallows the event.
-- ❌ An end-to-end spec that emits the event and expects the mail — the listener only enqueues a run and nothing consumes it in tests; test the listener and the workflow separately.
+- ❌ A functional spec that emits the event and expects the workflow's effect without a test engine — the listener only enqueues a run on the app's engine, and nothing consumes it in tests.
+- ❌ `sinon.stub(XWorkflow, 'dispatch')` and asserting its arguments — it proves the code calls what it calls. Assert the effect.
+- ❌ A library test: what the framework or a package does with our config (Lucid's `preload`, the router's 404, VineJS rejecting a missing field). A spec guards our behavior.
 
 ## Related skills
 
