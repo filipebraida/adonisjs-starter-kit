@@ -1,5 +1,6 @@
 import { BaseWorkflow, type WorkflowCtx } from '@adonis-agora/durable'
 import mail from '@adonisjs/mail/services/main'
+import { urlFor } from '@adonisjs/core/services/url_builder'
 import facteur from '@facteurjs/adonisjs/services/main'
 
 import User from '#auth/models/user'
@@ -42,7 +43,7 @@ export default class SendWelcomeWorkflow extends BaseWorkflow {
         .params({
           title: input.translations.title,
           body: input.translations.subtitle,
-          link: '/settings',
+          link: urlFor('settings.index'),
         })
         .to([user])
         .send()
