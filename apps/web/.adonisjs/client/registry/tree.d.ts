@@ -82,13 +82,6 @@ export interface ApiDefinition {
   dashboard: {
     show: typeof routes['dashboard.show']
   }
-  help: {
-    index: typeof routes['help.index']
-    space: typeof routes['help.space']
-    image: typeof routes['help.image']
-    show: typeof routes['help.show']
-    content: typeof routes['help.content']
-  }
   notifications: {
     index: typeof routes['notifications.index']
     markRead: typeof routes['notifications.markRead']
@@ -98,4 +91,11 @@ export interface ApiDefinition {
   eventStream: typeof routes['event_stream']
   subscribe: typeof routes['subscribe']
   unsubscribe: typeof routes['unsubscribe']
+  help: {
+    index: typeof routes['help.index']
+    space: typeof routes['help.space']
+    image: typeof routes['help.image']
+    show: typeof routes['help.show']
+    content: typeof routes['help.content']
+  }
 }

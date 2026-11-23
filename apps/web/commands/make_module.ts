@@ -6,7 +6,7 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 /**
  * Scaffold a new bounded-context module AND wire every manual registration
- * step, so the touchpoints that otherwise fail silently at runtime (preloads,
+ * step, so the touchpoints that otherwise fail silently at runtime (routes, preloads,
  * migration paths, tsconfig include) are never forgotten.
  *
  * @example
@@ -120,7 +120,8 @@ export default class MakeModule extends BaseCommand {
       `    "#providers/*":`,
       `    "#${name}/*": "./app/${name}/*.js",\n`
     )
-    this.wirePreloads()
+    this.wireRoutes()
+    if (this.events) this.wirePreloads()
     // The client tsconfig needs each module's ui/ globs, plus its types/ glob
     // when the module augments EventsList — without it the events declaration
     // merge is invisible to the client tsc and typecheck breaks.
@@ -169,17 +170,33 @@ export default class MakeModule extends BaseCommand {
     this.nextSteps()
   }
 
-  /** Inject preload lines into the preloads array specifically (not commands/providers). */
+  /** Append the module's routes to `start/routes.ts`, which registers them in order. */
+  private wireRoutes(): void {
+    const path = this.app.makePath('start/routes.ts')
+    const src = readFileSync(path, 'utf-8')
+    const line = `await import('#${this.name}/routes')`
+    if (src.includes(line)) {
+      this.logger.info('skip   start/routes.ts (already wired)')
+      return
+    }
+    const anchor = '\n\nexport {}'
+    if (!src.includes(anchor)) {
+      this.logger.error(`could not wire start/routes.ts — add ${line} by hand`)
+      return
+    }
+    writeFileSync(path, src.replace(anchor, `\n${line}${anchor}`))
+    this.logger.success('wire   start/routes.ts')
+  }
+
+  /** Inject the events preload into the preloads array specifically (not commands/providers). */
   private wirePreloads(): void {
     const path = this.app.makePath('adonisrc.ts')
     const src = readFileSync(path, 'utf-8')
-    if (src.includes(`#${this.name}/routes`)) {
+    if (src.includes(`#${this.name}/start/events`)) {
       this.logger.info('skip   adonisrc.ts (already wired)')
       return
     }
-    const lines = [`    //${this.name}`, `    () => import('#${this.name}/routes'),`]
-    if (this.events) lines.push(`    () => import('#${this.name}/start/events'),`)
-    const block = `\n\n${lines.join('\n')}`
+    const block = `\n\n    //${this.name}\n    () => import('#${this.name}/start/events'),`
 
     // Match `preloads: [ ...entries... \n  ],` and append before the closing `]`.
     const updated = src.replace(
@@ -187,7 +204,7 @@ export default class MakeModule extends BaseCommand {
       (_match, open, body, close) => `${open}${body}${block}${close}`
     )
     if (updated === src) {
-      this.logger.error('could not wire adonisrc.ts preloads — add the routes preload by hand')
+      this.logger.error('could not wire adonisrc.ts preloads — add the events preload by hand')
       return
     }
     writeFileSync(path, updated)
@@ -218,7 +235,7 @@ export default class MakeModule extends BaseCommand {
   private nextSteps(): void {
     this.logger.log('')
     this.logger.info(`Module app/${this.name}/ created and wired.`)
-    this.logger.info('Next: run `pnpm dev` (or `node ace ...`) to regenerate route/page types,')
+    this.logger.info('Next: run `pnpm ace codegen` to regenerate route/page types,')
     this.logger.info('then `pnpm typecheck`.')
     if (this.db)
       this.logger.info(

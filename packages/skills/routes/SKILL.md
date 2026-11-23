@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # Routes
 
-Each module owns its `routes.ts`. The file gets discovered by the preload wired in [[module-scaffolding]] — there is no autoloader. Controllers are referenced through the generated registry (`controllers.<mod>.<Name>` from `#generated/controllers`, rebuilt by `pnpm ace codegen` or the dev server), and middleware comes from `#start/kernel`. Routes have three loads to bear: they're the source of truth for URL generation (typed clients like Tuyau and the server-side URL builder read the named routes), for the middleware chain that guards the endpoint, and for the param typing that keeps garbage input out of the ORM.
+Each module owns its `routes.ts`. The file is imported, in order, by `apps/web/start/routes.ts`, wired in [[module-scaffolding]] — there is no autoloader. Controllers are referenced through the generated registry (`controllers.<mod>.<Name>` from `#generated/controllers`, rebuilt by `pnpm ace codegen` or the dev server), and middleware comes from `#start/kernel`. Routes have three loads to bear: they're the source of truth for URL generation (typed clients like Tuyau and the server-side URL builder read the named routes), for the middleware chain that guards the endpoint, and for the param typing that keeps garbage input out of the ORM.
 
 ## Rules
 

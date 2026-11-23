@@ -42,11 +42,6 @@ export type ScannedRoutes = {
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.store': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
-    'help.index': { paramsTuple?: []; params?: {} }
-    'help.space': { paramsTuple: [ParamValue]; params: {'space': ParamValue} }
-    'help.image': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'file': ParamValue} }
-    'help.show': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
-    'help.content': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
     'notifications.index': { paramsTuple?: []; params?: {} }
     'notifications.markRead': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'notifications.markAllSeen': { paramsTuple?: []; params?: {} }
@@ -54,6 +49,11 @@ export type ScannedRoutes = {
     'event_stream': { paramsTuple?: []; params?: {} }
     'subscribe': { paramsTuple?: []; params?: {} }
     'unsubscribe': { paramsTuple?: []; params?: {} }
+    'help.index': { paramsTuple?: []; params?: {} }
+    'help.space': { paramsTuple: [ParamValue]; params: {'space': ParamValue} }
+    'help.image': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'file': ParamValue} }
+    'help.show': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
+    'help.content': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -75,13 +75,13 @@ export type ScannedRoutes = {
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'notifications.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
     'help.index': { paramsTuple?: []; params?: {} }
     'help.space': { paramsTuple: [ParamValue]; params: {'space': ParamValue} }
     'help.image': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'file': ParamValue} }
     'help.show': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
     'help.content': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
-    'notifications.index': { paramsTuple?: []; params?: {} }
-    'event_stream': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
@@ -103,13 +103,13 @@ export type ScannedRoutes = {
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'notifications.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
     'help.index': { paramsTuple?: []; params?: {} }
     'help.space': { paramsTuple: [ParamValue]; params: {'space': ParamValue} }
     'help.image': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'file': ParamValue} }
     'help.show': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
     'help.content': { paramsTuple: [ParamValue,ParamValue]; params: {'space': ParamValue,'article': ParamValue} }
-    'notifications.index': { paramsTuple?: []; params?: {} }
-    'event_stream': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'auth.sign_in.handle': { paramsTuple?: []; params?: {} }

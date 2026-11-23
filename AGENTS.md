@@ -17,16 +17,16 @@ AdonisJS 7 + Inertia/React 19 starter kit, pnpm monorepo. The app is `apps/web`;
 
 Run from the repo root.
 
-| Command                                                  | What it does                                                                                                              |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                                               | Dev server on `:3333` (hot reload + Vite HMR)                                                                             |
-| `pnpm test`                                              | Full Japa suite on its own `app_test` database, recreated and migrated first                                              |
-| `pnpm typecheck` / `pnpm lint`                           | Required before saying done                                                                                               |
-| `pnpm test:stories`                                      | Every Storybook story rendered in Chromium, with its `play`                                                               |
-| `pnpm ace <cmd>`                                         | Adonis CLI (`pnpm --filter web exec node ace <cmd>`)                                                                      |
-| `pnpm ace codegen`                                       | Regenerates the committed `.adonisjs/`; CI fails when it is stale                                                         |
-| `pnpm ace make:module <name> [--db] [--i18n] [--events]` | Scaffolds `app/<name>/` and wires the alias, preloads, client tsconfig include and (with `--db`) the migration path       |
-| `pnpm infra:up` / `infra:down`                           | Postgres 18, Mailpit and pgAdmin via compose; host ports follow `DB_PORT`, `SMTP_PORT`, `MAILPIT_UI_PORT`, `PGADMIN_PORT` |
+| Command                                                  | What it does                                                                                                                |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                                               | Dev server on `:3333` (hot reload + Vite HMR)                                                                               |
+| `pnpm test`                                              | Full Japa suite on its own `app_test` database, recreated and migrated first                                                |
+| `pnpm typecheck` / `pnpm lint`                           | Required before saying done                                                                                                 |
+| `pnpm test:stories`                                      | Every Storybook story rendered in Chromium, with its `play`                                                                 |
+| `pnpm ace <cmd>`                                         | Adonis CLI (`pnpm --filter web exec node ace <cmd>`)                                                                        |
+| `pnpm ace codegen`                                       | Regenerates the committed `.adonisjs/`; CI fails when it is stale                                                           |
+| `pnpm ace make:module <name> [--db] [--i18n] [--events]` | Scaffolds `app/<name>/` and wires the alias, routes, preloads, client tsconfig include and (with `--db`) the migration path |
+| `pnpm infra:up` / `infra:down`                           | Postgres 18, Mailpit and pgAdmin via compose; host ports follow `DB_PORT`, `SMTP_PORT`, `MAILPIT_UI_PORT`, `PGADMIN_PORT`   |
 
 ## Where code goes
 

@@ -8,7 +8,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob
 
 # Module scaffolding
 
-Every feature lives under `app/<mod>/` as a self-contained module. There is no autoloader — preloads, import aliases, migration paths, tsconfig includes, and event listener mounts are all wired explicitly. Miss any of these and the module simply won't load, its rows won't migrate, or its event types won't typecheck.
+Every feature lives under `app/<mod>/` as a self-contained module. There is no autoloader — the routes list, preloads, import aliases, migration paths, tsconfig includes, and event listener mounts are all wired explicitly. Miss any of these and the module simply won't load, its rows won't migrate, or its event types won't typecheck.
 
 ## Quick start — `make:module`
 
@@ -23,13 +23,14 @@ node ace make:module <mod> --db --i18n --events
 - `--i18n` — adds `resources/lang/{en,pt}/<mod>.json`; the server and the frontend find the folder on their own.
 - `--events` — adds `start/events.ts` + `types/events.ts`, preloads events, **and** adds the `types/**` glob to the core tsconfig (skip that and the `EventsList` merge breaks the client typecheck). The stub's commented example shows an inline closure; replace it with a lazy listener-class binding (`emitter.on('<mod>:created', [() => import('#<mod>/listeners/...')])`) — see [[actions-events]].
 
-Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**` tsconfig include. After running it, `pnpm dev` (or any `node ace`) regenerates route/page types, then `pnpm typecheck`. The rest of this skill is what the command does under the hood — use it to add a piece later or to wire a module by hand.
+Always wired: the `#<mod>/*` alias, the `#<mod>/routes` line in `start/routes.ts`, and the `ui/**` tsconfig include. After running it, `pnpm ace codegen` regenerates route/page types, then `pnpm typecheck`. The rest of this skill is what the command does under the hood — use it to add a piece later or to wire a module by hand.
 
 ## Conventions
 
 - **Module dir tree & existing modules** — see AGENTS.md → "Architecture — module per bounded context" (always in context). Create only the pieces you need; `routes.ts` is the only mandatory file.
 - **Aliases go in** `apps/web/package.json` → `"imports"`. Add `"#<mod>/*": "./app/<mod>/*.js"`.
-- **Preloads go in** `apps/web/adonisrc.ts` → `preloads`. Always add `() => import('#<mod>/routes')` at minimum. Add `#<mod>/start/events` if the module binds listeners. Add `#<mod>/start/view` if it mounts edge templates.
+- **Routes are registered in** `apps/web/start/routes.ts`, one `await import('#<mod>/routes')` per module, in order. Never as a preload: Adonis imports the preloads in parallel, so the route order (and the precedence of overlapping routes) would depend on which file loads first.
+- **Preloads go in** `apps/web/adonisrc.ts` → `preloads`. Add `#<mod>/start/events` if the module binds listeners, `#<mod>/start/view` if it mounts edge templates.
 - **Migrations/seeders** paths append to `apps/web/config/database.ts` → `connections.postgres.migrations.paths` and `seeders.paths`.
 - **tsconfig include** — when the module has `ui/`, add `../../<mod>/ui/**/*.ts` and `../../<mod>/ui/**/*.tsx` to `apps/web/app/core/ui/tsconfig.json` → `include`. Add `../../<mod>/types/**/*.ts` when it has `types/events.ts`, or the `EventsList` merge is invisible to the client tsc and event typechecks break.
 - **Durable workflows** — a module's `workflows/` folder is found on its own: `config/durable.ts` (`workflowsPath`) and the `workflowsHook` in `adonisrc.ts` both read `moduleDirs(root, 'workflows')` (`#core/utils/module_dirs`). Restart the dev server (or run `pnpm ace codegen`) after creating the first one, so the generated `.adonisjs/durable/workflows.ts` picks it up.
@@ -38,7 +39,7 @@ Always wired: the `#<mod>/*` alias, the `#<mod>/routes` preload, and the `ui/**`
 
 ## Repo refs
 
-- Preloads registration: `apps/web/adonisrc.ts` → `preloads`.
+- Routes registration: `apps/web/start/routes.ts`. Preloads registration: `apps/web/adonisrc.ts` → `preloads`.
 - Import aliases: `apps/web/package.json` → `"imports"` (all `#mod/*` entries).
 - Migration paths: `apps/web/config/database.ts` → `migrations.paths`.
 - tsconfig include (client typecheck): `apps/web/app/core/ui/tsconfig.json` → `include` (see the `auth`/`users` `ui/**` + `types/**` entries).
@@ -63,11 +64,14 @@ Prefer `node ace make:module <mod> [--db] [--i18n] [--events]` (see Quick start)
      ...
    }
    ```
-3. **Register preload(s)** in `apps/web/adonisrc.ts`:
+3. **Register the routes** in `apps/web/start/routes.ts`, before the final `export {}`:
+   ```ts
+   await import('#<mod>/routes')
+   ```
+   and the **preload(s)**, if any, in `apps/web/adonisrc.ts`:
    ```ts
    preloads: [
      ...
-     () => import('#<mod>/routes'),
      // add if the module emits / listens to events
      () => import('#<mod>/start/events'),
      // add if the module has edge templates

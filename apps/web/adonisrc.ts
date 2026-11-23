@@ -94,31 +94,15 @@ export default defineConfig({
   */
   preloads: [
     () => import('#start/kernel'),
-
-    //core
-    () => import('#core/routes'),
-
-    //marketing
-    () => import('#marketing/routes'),
+    () => import('#start/routes'),
 
     //auth
     () => import('#auth/start/view'),
     () => import('#auth/start/events'),
-    () => import('#auth/routes'),
 
     //users
     () => import('#users/start/view'),
     () => import('#users/start/events'),
-    () => import('#users/routes'),
-
-    //analytics
-    () => import('#analytics/routes'),
-
-    //notifications
-    () => import('#notifications/routes'),
-
-    //help
-    () => import('#help/routes'),
   ],
 
   /*
