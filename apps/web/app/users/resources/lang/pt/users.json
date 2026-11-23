@@ -144,7 +144,7 @@
       "avatar_hint": "JPG, GIF ou PNG. Máximo de 1MB."
     },
     "toast": {
-      "title": "Você enviou os seguintes dados:",
+      "title": "Usuário salvo",
       "type_success": "Sucesso",
       "settings_updated": "{setting} atualizado com sucesso"
     }
@@ -159,7 +159,7 @@
       "description": "Tenha cuidado, esta operação não poderá ser desfeita."
     },
     "toast": {
-      "title": "O seguinte usuário foi excluído:"
+      "title": "Usuário excluído"
     }
   },
   "delete_token": {
@@ -172,7 +172,7 @@
       "description": "Tenha cuidado, esta operação não poderá ser desfeita."
     },
     "toast": {
-      "title": "O seguinte token foi excluído:"
+      "title": "Token excluído"
     }
   },
   "impersonate": {
@@ -181,10 +181,10 @@
     "confirm_button": "Assumir",
     "alert": {
       "title": "Atenção",
-      "description": "Você pode voltar para sua conta original a qualquer momento fazendo logout."
+      "description": "Você pode voltar à sua conta a qualquer momento pela faixa no topo da página."
     },
     "toast": {
-      "title": "Você agora está assumindo o seguinte usuário:"
+      "title": "Agora você está na conta deste usuário"
     }
   },
   "invite": {
@@ -209,7 +209,7 @@
       "submit": "Enviar Convite"
     },
     "toast": {
-      "title": "Você enviou os seguintes valores:"
+      "title": "Convite enviado"
     }
   },
   "emails": {

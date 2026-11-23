@@ -22,7 +22,13 @@
     "navMobile": {
       "title": "Navigation menu"
     },
-    "switchLanguage": "Switch language"
+    "switchLanguage": "Switch language",
+    "sidebar": {
+      "toggle": "Toggle sidebar",
+      "title": "Navigation",
+      "description": "The sections of the app."
+    },
+    "breadcrumb": "Breadcrumb"
   },
   "table": {
     "no_results": "No results found.",
@@ -83,5 +89,12 @@
   "confirm": {
     "cancel": "Cancel",
     "continue": "Continue"
+  },
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password"
+  },
+  "dialog": {
+    "close": "Close"
   }
 }

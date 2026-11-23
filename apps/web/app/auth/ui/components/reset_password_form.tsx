@@ -1,9 +1,9 @@
 import { Field, FieldError, Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { PasswordInput } from '#core/ui/components/password_input'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
-import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, FieldLabel } from '@workspace/ui/components/field'
 
 export function ResetPasswordForm({ token, className }: { token: string; className?: string }) {

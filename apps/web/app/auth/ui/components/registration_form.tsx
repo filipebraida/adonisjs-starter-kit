@@ -3,13 +3,12 @@ import { usePage } from '@inertiajs/react'
 
 import { Field, FieldError, Form } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { PasswordInput } from '#core/ui/components/password_input'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { FieldSet, FieldGroup, FieldLabel } from '@workspace/ui/components/field'
-
-import { PasswordInput } from '@workspace/ui/components/password-input'
 
 export function RegistrationForm({ className }: { className?: string }) {
   const { t } = useTranslation()

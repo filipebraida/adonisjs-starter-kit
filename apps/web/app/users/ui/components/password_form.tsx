@@ -4,10 +4,10 @@ import React from 'react'
 import { useForm } from '@inertiajs/react'
 
 import { useTranslation } from '#core/ui/hooks/use_translation'
+import { PasswordInput } from '#core/ui/components/password_input'
 import { urlFor } from '~/app/client'
 
 import { Button } from '@workspace/ui/components/button'
-import { PasswordInput } from '@workspace/ui/components/password-input'
 import { FieldSet, FieldGroup, Field, FieldLabel } from '@workspace/ui/components/field'
 import { FieldErrorBag } from '@workspace/ui/components/field-error-bag'
 

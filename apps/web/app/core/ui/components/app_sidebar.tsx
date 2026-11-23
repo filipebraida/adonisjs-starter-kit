@@ -2,6 +2,7 @@ import React from 'react'
 
 import { NavSidebarMain } from '#core/ui/components/nav_sidebar_main'
 import { AppLogo } from '#core/ui/components/app_logo'
+import { useTranslation } from '#core/ui/hooks/use_translation'
 
 import type { NavMainItem } from '#core/ui/app/navigation_types'
 
@@ -19,8 +20,14 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ navMain, ...props }: AppSidebarProps) {
+  const { t } = useTranslation()
+
   return (
-    <Sidebar {...props}>
+    <Sidebar
+      mobileTitle={t('core.layout.sidebar.title')}
+      mobileDescription={t('core.layout.sidebar.description')}
+      {...props}
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

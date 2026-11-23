@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { FieldLabel } from '@workspace/ui/components/field'
 import { Input } from '@workspace/ui/components/input'
-import { PasswordInput } from '@workspace/ui/components/password-input'
 import {
   Select,
   SelectContent,
@@ -15,6 +14,7 @@ import {
 import { Field, FieldError } from '#core/ui/components/form'
 import { useTranslation } from '#core/ui/hooks/use_translation'
 import type { Role } from '#users/ui/components/users_types'
+import { PasswordInput } from '#core/ui/components/password_input'
 
 export type UserFormDefaults = {
   fullName: string

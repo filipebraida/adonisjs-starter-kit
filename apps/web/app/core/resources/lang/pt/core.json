@@ -22,7 +22,13 @@
     "navMobile": {
       "title": "Menu de navegação"
     },
-    "switchLanguage": "Trocar idioma"
+    "switchLanguage": "Trocar idioma",
+    "sidebar": {
+      "toggle": "Mostrar ou esconder o menu",
+      "title": "Navegação",
+      "description": "As seções do sistema."
+    },
+    "breadcrumb": "Trilha"
   },
   "table": {
     "no_results": "Nenhum resultado encontrado.",
@@ -83,5 +89,12 @@
   "confirm": {
     "cancel": "Cancelar",
     "continue": "Continuar"
+  },
+  "password": {
+    "show": "Mostrar a senha",
+    "hide": "Esconder a senha"
+  },
+  "dialog": {
+    "close": "Fechar"
   }
 }

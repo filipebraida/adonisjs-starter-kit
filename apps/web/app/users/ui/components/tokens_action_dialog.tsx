@@ -25,7 +25,7 @@ export function TokensActionDialog({ open, onOpenChange }: Props) {
   // The dialog unmounts its content on close, so a reopened form starts empty.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" closeLabel={t('core.dialog.close')}>
         <DialogHeader className="text-left">
           <DialogTitle>{t('users.tokens.dialogs.add.title')}</DialogTitle>
           <DialogDescription>{t('users.tokens.dialogs.add.description')}</DialogDescription>

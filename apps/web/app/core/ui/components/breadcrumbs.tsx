@@ -10,15 +10,19 @@ import {
   BreadcrumbSeparator,
 } from '@workspace/ui/components/breadcrumb'
 
+import { useTranslation } from '#core/ui/hooks/use_translation'
+
 interface BreadcrumbsProps {
   breadcrumbs: { label: string; href?: string }[]
 }
 
 export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
+  const { t } = useTranslation()
+
   return (
     <>
       {breadcrumbs.length > 0 && (
-        <Breadcrumb>
+        <Breadcrumb aria-label={t('core.layout.breadcrumb')}>
           <BreadcrumbList>
             {breadcrumbs.map((item, index) => (
               <React.Fragment key={`${item.href ?? ''}:${item.label}`}>

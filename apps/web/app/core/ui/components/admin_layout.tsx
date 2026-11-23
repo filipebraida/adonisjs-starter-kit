@@ -58,7 +58,7 @@ export default function AdminLayout({
           <SidebarInset className="overflow-hidden">
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-6">
               <div className="flex flex-row items-center gap-2">
-                <SidebarTrigger className="-ml-1" />
+                <SidebarTrigger className="-ml-1" label={t('core.layout.sidebar.toggle')} />
 
                 <Breadcrumb breadcrumbs={breadcrumbs} />
               </div>

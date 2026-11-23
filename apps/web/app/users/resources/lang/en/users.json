@@ -144,7 +144,7 @@
       "avatar_hint": "JPG, GIF or PNG. 1MB max."
     },
     "toast": {
-      "title": "You submitted the following values:",
+      "title": "User saved",
       "type_success": "Success",
       "settings_updated": "{setting} updated successfully"
     }
@@ -159,7 +159,7 @@
       "description": "Please be carefull, this operation can not be rolled back."
     },
     "toast": {
-      "title": "The following user has been deleted:"
+      "title": "User deleted"
     }
   },
   "delete_token": {
@@ -172,7 +172,7 @@
       "description": "Please be carefull, this operation can not be rolled back."
     },
     "toast": {
-      "title": "The following token has been deleted:"
+      "title": "Token deleted"
     }
   },
   "impersonate": {
@@ -181,10 +181,10 @@
     "confirm_button": "Impersonate",
     "alert": {
       "title": "Note",
-      "description": "You can revert to your original account at any time by logging out."
+      "description": "You can return to your own account at any time from the banner at the top of the page."
     },
     "toast": {
-      "title": "You are now impersonating the following user:"
+      "title": "You are now signed in as this user"
     }
   },
   "invite": {
@@ -209,7 +209,7 @@
       "submit": "Send Invitation"
     },
     "toast": {
-      "title": "You submitted the following values:"
+      "title": "Invitation sent"
     }
   },
   "emails": {

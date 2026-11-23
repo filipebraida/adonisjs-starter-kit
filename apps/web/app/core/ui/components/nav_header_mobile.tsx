@@ -45,6 +45,7 @@ export function NavHeaderMobile({ items }: NavHeaderMobileProps) {
         </SheetTrigger>
 
         <SheetContent
+          closeLabel={t('core.dialog.close')}
           side="left"
           className="flex h-full w-72 flex-col items-stretch justify-between"
         >
