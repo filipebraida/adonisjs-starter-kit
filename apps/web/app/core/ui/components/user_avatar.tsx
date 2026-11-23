@@ -12,15 +12,17 @@ export interface NavUserProps {
   shape?: 'circle' | 'square'
 }
 
-function generateFallbackText(user: { name?: string; email: string }): string {
-  if (user.name) {
-    const initials = user.name
-      .split(' ')
+function generateFallbackText(user: {
+  fullName: string | null | undefined
+  email: string
+}): string {
+  const words = user.fullName?.trim().split(/\s+/).filter(Boolean) ?? []
+  if (words.length > 0) {
+    return words
       .map((word) => word[0])
       .join('')
       .slice(0, 2)
       .toUpperCase()
-    return initials
   }
   return user.email.slice(0, 2).toUpperCase()
 }
