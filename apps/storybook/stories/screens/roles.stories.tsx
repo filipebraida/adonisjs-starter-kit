@@ -46,11 +46,7 @@ export const Default: Story = {
           {
             name: "admin",
             structural: true,
-            capabilities: [
-              "users.view_list",
-              "users.manage_roles",
-              "workflows.view",
-            ],
+            capabilities: ["tokens.*", "users.*", "workflows.*"],
             members: 2,
           },
           {
@@ -72,6 +68,11 @@ export const Default: Story = {
   async play({ canvas }) {
     await expect(canvas.getByText("Administrator")).toBeVisible();
     await expect(canvas.getByText("Invite users")).toBeVisible();
+    // A wildcard grant reads as the whole area, never as `users.*`.
+    await expect(canvas.queryByText("users.*")).toBeNull();
+    await expect(canvas.getAllByText("Everything in this area")).toHaveLength(
+      3,
+    );
     await expect(canvas.getByText("ethics_committee")).toBeVisible();
   },
 };

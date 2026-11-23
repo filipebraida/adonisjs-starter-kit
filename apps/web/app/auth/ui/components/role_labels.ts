@@ -12,8 +12,13 @@ export function roleDescription(t: TFunction, role: string): string | null {
   return isStructuralRole(role) ? t(`auth.role_names.${role}.description`) : null
 }
 
-/** A capability as a sentence ("Invite users"); a slug with no label shows itself. */
+/**
+ * A capability as a sentence ("Invite users"); a wildcard grant (`users.*`)
+ * reads as its whole domain, shown under the domain's name. A slug with no
+ * label shows itself.
+ */
 export function capabilityLabel(t: TFunction, capability: string): string {
+  if (capability.endsWith('.*')) return t('auth.roles.whole_domain')
   return t(`auth.capabilities.${capability}`, { defaultValue: capability })
 }
 
