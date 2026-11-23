@@ -56,4 +56,22 @@ test.group('Exception handler', (group) => {
     response.assertStatus(302)
     assert.equal(response.header('location'), '/login')
   })
+
+  test('status pages send no error to the browser: neither the message nor the stack', async ({
+    assert,
+  }) => {
+    const { default: HttpExceptionHandler } = await import('#core/exceptions/handler')
+    const pages = (
+      new HttpExceptionHandler() as unknown as {
+        statusPages: Record<string, (error: unknown, ctx: unknown) => unknown>
+      }
+    ).statusPages
+    const rendered: unknown[] = []
+    const ctx = { inertia: { render: (_: string, props: unknown) => rendered.push(props) } }
+
+    await pages['500..599'](new Error('database password: secret'), ctx)
+    await pages['404'](new Error('internal route'), ctx)
+
+    assert.deepEqual(rendered, [{}, {}])
+  })
 })
