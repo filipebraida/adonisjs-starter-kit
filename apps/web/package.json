@@ -65,9 +65,9 @@
     "youch": "^4.1.1"
   },
   "dependencies": {
-    "@adonis-agora/authz": "^0.20.2",
-    "@adonis-agora/authz-react": "^0.3.1",
-    "@adonis-agora/durable": "^1.0.0-rc.43",
+    "@adonis-agora/authz": "^1.0.0",
+    "@adonis-agora/authz-react": "^1.0.1",
+    "@adonis-agora/durable": "^1.4.0",
     "@adonisjs/ally": "^6.3.2",
     "@adonisjs/auth": "^10.1.0",
     "@adonisjs/bouncer": "^4.0.1",
